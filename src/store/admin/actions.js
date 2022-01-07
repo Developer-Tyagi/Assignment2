@@ -6,9 +6,35 @@ import localDB, { getCollection } from '@services/dexie';
 export async function getActionOverDues({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/overduerules?workflowID=${params}`);
+    let combinedData = [];
 
-    commit('setActionOverDues', data);
+    for (const workflow of params) {
+      const { data } = await request.get(
+        `/overduerules?workflowID=${workflow}`
+      );
+
+      combinedData.push(...data);
+    }
+    commit('setActionOverDues', combinedData);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+//assignedTO search role/user
+
+export async function assignedToSearch({ commit, dispatch }, params) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/users/autocomplete?q=${params}`);
+
+    commit('assignedTOSearchData', data);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -25,9 +51,16 @@ export async function getActionCompletion({ commit, dispatch }, params) {
   dispatch('setLoading', true);
 
   try {
-    const { data } = await request.get(`/completionrules?workflowID=${params}`);
+    let combinedData = [];
 
-    commit('setActionCompletion', data);
+    for (const workflow of params) {
+      const { data } = await request.get(
+        `/completionrules?workflowID=${workflow}`
+      );
+
+      combinedData.push(...data);
+    }
+    commit('setActionCompletion', combinedData);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -43,9 +76,17 @@ export async function getActionCompletion({ commit, dispatch }, params) {
 export async function getActionReasons({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/ruletriggers?workflowID=${params}`);
+    let combinedData = [];
 
-    commit('setActionReasons', data);
+    for (const workflow of params) {
+      const { data } = await request.get(
+        `/ruletriggers?workflowID=${workflow}`
+      );
+
+      combinedData.push(...data);
+    }
+
+    commit('setActionReasons', combinedData);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -57,12 +98,17 @@ export async function getActionReasons({ commit, dispatch }, params) {
   }
 }
 
-// this function is used to get the list of workflow in the admin action item pannel.
+// this function is used to get the list of rules in the admin action item pannel.
 export async function getAllWorkFlow({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/workflows/${params}/rules`);
-    commit('setAllWorkFlow', data);
+    let combinedData = [];
+
+    for (const workflow of params) {
+      const { data } = await request.get(`/workflows/${workflow}/rules`);
+      combinedData.push(...data);
+    }
+    commit('setAllWorkFlow', combinedData);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -71,6 +117,30 @@ export async function getAllWorkFlow({ commit, dispatch }, params) {
       type: 'negative',
       message: e.response[0].title
     });
+  }
+}
+
+// function is used to toggle the action item enable/disable switch.
+export async function actionItemToggleSwitch({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `workflows/${payload.workflowId}/rules/${payload.ruleId}/${payload.toggleStatus}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Toggle Status Updated'
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Toggle Status Update Failed!'
+    });
+    return false;
   }
 }
 
@@ -79,7 +149,7 @@ export async function addWorkflowAction({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `workflows/${payload.machineValue}/actions`,
+      `workflows/${payload.machineValue}/rules`,
       buildApiData('actions', payload.data)
     );
     dispatch('setLoading', false);
@@ -105,7 +175,7 @@ export async function editAdminActionItem({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.patch(
-      `workflows/${payload.workflowID}/actions/${payload.id}`,
+      `workflows/${payload.workflowID}/rules/${payload.id}`,
       buildApiData('actions', payload.attributes)
     );
     dispatch('setLoading', false);
@@ -127,11 +197,12 @@ export async function adminActionItemDelete({ commit, dispatch }, payload) {
   dispatch('setLoading', true);
   try {
     await request.del(
-      `workflows/${payload.workFlowID}/actions/${payload.itemID}`
+      `workflows/${payload.workFlowID}/rules/${payload.itemID}`
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'postive',
+      color: 'green',
       message: 'Item deleted successfully!'
     });
   } catch (e) {
@@ -147,7 +218,7 @@ export async function adminActionItemDelete({ commit, dispatch }, payload) {
 export async function getWorkflowAction({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/workflows ');
+    const { data } = await request.get('/workflows');
 
     commit('setWorkflowAction', data);
     dispatch('setLoading', false);

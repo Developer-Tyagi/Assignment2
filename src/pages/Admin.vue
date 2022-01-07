@@ -5,7 +5,12 @@
         <div class="row" flat bordered>
           <!-- Main Template -->
           <q-tab-panels
-            class="q-ml-xl full-height mobile-container-page-without-search full-width"
+            class="
+              q-ml-xl
+              full-height
+              mobile-container-page-without-search
+              full-width
+            "
             v-model="webSubOptionMenuTab.key"
             animated
             swipeable
@@ -25,7 +30,12 @@
                   <div>
                     <a
                       @click="onEditClick"
-                      class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
+                      class="
+                        text-primary
+                        cursor-pointer
+                        text-subtitle1 text-weight-bold
+                        q-mr-xs
+                      "
                     >
                       Edit
                       <i class="text-primary fas fa-edit"></i>
@@ -192,7 +202,12 @@
                   <div>
                     <a
                       @click="onEditClickOrganization"
-                      class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
+                      class="
+                        text-primary
+                        cursor-pointer
+                        text-subtitle1 text-weight-bold
+                        q-mr-xs
+                      "
                     >
                       Edit
                       <i class="text-primary fas fa-edit"></i>
@@ -349,7 +364,12 @@
                   <div>
                     <a
                       @click="onEditClickOrganization('PHOTOIDFORM')"
-                      class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
+                      class="
+                        text-primary
+                        cursor-pointer
+                        text-subtitle1 text-weight-bold
+                        q-mr-xs
+                      "
                       >Edit
                       <i class="text-primary fas fa-edit"></i>
                     </a>
@@ -573,672 +593,743 @@
               </q-scroll-area>
             </q-tab-panel>
             <q-tab-panel name="actionItems">
-              <q-card class="q-pa-lg card-style" flat bordered>
-                <div class="text-h6 text-bold">Claim Action Item</div>
-                <div class="row">
-                  <q-btn
-                    color="primary"
-                    label="+ Add Default Action "
-                    @click="addDefaultActionItem()"
-                    :disable="claimType == ''"
-                  />
-                </div>
-
-                <q-card class="q-mt-md">
-                  <div class="row bg-grey-3 items-center q-px-md">
-                    <div class="q-pa-lg" v-if="claimType">
-                      {{ allAction.length }} Action Items
+              <div class="col">
+                <div class="row justify-between">
+                  <div class="text-weight-bold text-h5">Automation</div>
+                  <div class="row">
+                    <div
+                      class="
+                        text-underline text-body1 text-bold
+                        cursor-pointer
+                        text-primary
+                      "
+                      @click="addDefaultActionItem()"
+                    >
+                      Create New rules
                     </div>
-                    <div class="" v-else>Please Select Action Items</div>
-
-                    <div class="text-h6 q-ml-auto q-mr-lg">Workflow</div>
-                    <q-select
-                      dense
-                      class="q-py-sm input-extra-padding"
-                      outlined
-                      options-dense
-                      behavior="menu"
-                      v-model="claimType"
-                      option-value="machineValue"
-                      option-label="value"
-                      :options="workflowAction"
-                      @input="claimActionItem(claimType)"
-                      map-options
-                      emit-value
+                    <q-icon
+                      class="q-ml-sm fas fa-cogs"
+                      size="sm"
+                      color="primary"
                     />
                   </div>
-                  <div class="">
-                    <q-scroll-area class="claim-list-scrollable">
-                      <div
-                        v-for="(item, index) in allAction"
-                        :key="index"
-                        class="row q-pb-md"
-                      >
-                        <div class="col-11">
-                          <div class="text-blue">
-                            {{ item.name ? item.name : '-' }}
-                          </div>
-                          <div>
-                            {{ item.createdDesc ? item.createdDesc : '-' }}
-                          </div>
-                        </div>
-                        <!--this is for edit and delete -->
-                        <div class="row justify-between">
-                          <div
-                            class="col-1 cursor-pointer text-h6"
-                            @click="toEditActionItem(item)"
-                          >
-                            <q-icon size="md" color="primary" name="create" />
-                          </div>
-                          <div
-                            class="col-1 cursor-pointer text-h6"
-                            @click="toDeleteActionItem(item)"
-                          >
-                            <q-icon size="md" color="primary" name="delete" />
-                          </div>
+                </div>
+                <div class="q-mt-md">
+                  <div v-if="copyRule">Copy Rule</div>
+                  <div v-else-if="editDefaultActionItem">Edit Rule</div>
+                  <div v-else-if="addDefaultActionDialogBox">
+                    Create New Rule
+                  </div>
+                </div>
+
+                <!-- Dialog Box for Adding Action Items -->
+                <div class="column q-mt-sm" v-if="addDefaultActionDialogBox">
+                  <q-separator />
+                  <div class="row q-mt-lg">
+                    <div class="col-3">
+                      <div>Rule Details</div>
+                      <div class="row">
+                        <div class="q-mr-md col-3 q-mt-sm">
+                          <q-separator />
                         </div>
                       </div>
-                    </q-scroll-area>
+                      <q-timeline color="secondary">
+                        <q-timeline-entry icon="warning">
+                          <template v-slot:subtitle>
+                            When: {{ actions.triggerEvent.type }}
+                          </template>
+                        </q-timeline-entry>
+
+                        <q-timeline-entry
+                          v-if="actions.actions.completionRule[0].type != ''"
+                          v-for="(item, index) in actions.actions
+                            .completionRule"
+                          :key="index"
+                          icon="chevron_right"
+                        >
+                          <template v-slot:subtitle>
+                            <span v-if="index == 0"> Then: </span>
+                            <span v-else>And:</span>
+                            {{ actions.actions.completionRule[index].type }}
+                          </template>
+                        </q-timeline-entry>
+                      </q-timeline>
+                    </div>
+
+                    <div class="col q-ml-xl">
+                      <!--  rule name -->
+                      <q-form ref="automationRuleForm">
+                        <div class="row q-mb-sm">
+                          <div class="col-2">
+                            Rule Name <span class="text-red"> *</span>
+                          </div>
+                          <div class="col-3 q-ml-xs">
+                            <q-input
+                              outlined
+                              dense
+                              :prefix="copyRule ? 'Copy-' : ''"
+                              class="full-width"
+                              v-model="actions.name"
+                              maxlength="128"
+                              :label="
+                                editDefaultActionItem
+                                  ? copyRule
+                                    ? 'Copy-Rule '
+                                    : 'Edit Rule'
+                                  : 'Create New Rule'
+                              "
+                              :rules="[
+                                val =>
+                                  (val && val.length > 0) ||
+                                  'Please add rule name'
+                              ]"
+                            />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-2">
+                            Workflow <span class="text-red"> *</span>
+                          </div>
+                          <div class="col-3 q-ml-xs">
+                            <q-select
+                              dense
+                              outlined
+                              options-dense
+                              behavior="menu"
+                              v-model="workflowActionItem"
+                              option-label="value"
+                              :options="workflowAction"
+                              option-value="machineValue"
+                              map-options
+                              emit-value
+                              label="Create a claim"
+                              class="input-extra-padding"
+                              :rules="[
+                                val =>
+                                  (val && val.length > 0) ||
+                                  'Please select any workflow'
+                              ]"
+                            />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-2">
+                            Trigger event<span class="text-red"> *</span>
+                          </div>
+                          <div class="col-3 q-ml-xs">
+                            <q-select
+                              dense
+                              outlined
+                              options-dense
+                              behavior="menu"
+                              v-model="actions.triggerEvent.type"
+                              option-label="value"
+                              :options="actionReason"
+                              option-value="machineValue"
+                              @input="
+                                createdWhenSubType(
+                                  actions.triggerEvent.type,
+                                  (isEditable = true)
+                                )
+                              "
+                              map-options
+                              emit-value
+                              label="Created when"
+                              class="input-extra-padding"
+                              :rules="[
+                                val =>
+                                  (val && val.length > 0) ||
+                                  'Please select any event'
+                              ]"
+                            />
+                            <div
+                              class="q-ml-xs"
+                              v-if="
+                                actions.triggerEvent.type &&
+                                actionReason[indexOfActionReason]
+                                  .additionalReasons
+                              "
+                            >
+                              <q-select
+                                dense
+                                class="input-extra-padding"
+                                outlined
+                                options-dense
+                                behavior="menu"
+                                v-model="actions.triggerEvent.task[0]"
+                                option-label="value"
+                                option-value="machineValue"
+                                map-options
+                                emit-value
+                                :options="
+                                  actionReason[indexOfActionReason]
+                                    .additionalReasons
+                                "
+                                label="Sub-option"
+                                :rules="[
+                                  val =>
+                                    (val && val.length > 0) ||
+                                    'Please select any action'
+                                ]"
+                              >
+                                <template v-slot:no-option>
+                                  <q-item>
+                                    <q-item-section class="text-grey">
+                                      No data present
+                                    </q-item-section>
+                                  </q-item>
+                                </template>
+                              </q-select>
+                            </div>
+                          </div>
+                          <q-checkbox
+                            class="q-ml-md q-mb-md"
+                            @input="toEnableDisabledUpdate(actions)"
+                            v-model="actions.isEnabled"
+                            label="Enable rule"
+                          />
+                        </div>
+                        <div class="row">
+                          <div class="col-2">
+                            Actions <span class="text-red"> *</span>
+                          </div>
+                          <div class="col-9 q-ml-xs">
+                            <div
+                              class="row"
+                              v-for="(val, index) in actions.actions
+                                .completionRule"
+                              :key="index"
+                            >
+                              <div class="col-4">
+                                <div>
+                                  <q-select
+                                    dense
+                                    outlined
+                                    options-dense
+                                    behavior="menu"
+                                    v-model="
+                                      actions.actions.completionRule[index].type
+                                    "
+                                    option-label="value"
+                                    option-value="machineValue"
+                                    map-options
+                                    emit-value
+                                    :options="actionCompletion"
+                                    @input="
+                                      setSubTypeOfAction(
+                                        actions.actions.completionRule[index]
+                                          .type,
+                                        index,
+                                        (isEditable = true)
+                                      )
+                                    "
+                                    label="Completion Action"
+                                    class="input-extra-padding"
+                                    :rules="[
+                                      val =>
+                                        (val && val.length > 0) ||
+                                        'Please select any category'
+                                    ]"
+                                  />
+                                </div>
+
+                                <div
+                                  class="q-ml-md col-1"
+                                  v-if="
+                                    actions.actions.completionRule[index]
+                                      .type &&
+                                    actionCompletion[indexOfSubTypeOfCompletion]
+                                      .subOptions
+                                  "
+                                >
+                                  <q-select
+                                    dense
+                                    class="col-3 input-extra-padding"
+                                    outlined
+                                    v-model="
+                                      actions.actions.completionRule[index]
+                                        .task[0]
+                                    "
+                                    behavior="menu"
+                                    option-value="machineValue"
+                                    option-label="value"
+                                    :options="
+                                      actionCompletion[
+                                        indexOfSubTypeOfCompletion
+                                      ].subOptions
+                                    "
+                                    label="Sub-option"
+                                    @input="
+                                      setSubTypeForAction(
+                                        actions.actions.completionRule[index]
+                                          .task[0],
+                                        indexOfSubTypeOfCompletion,
+                                        index,
+                                        (isEditable = true)
+                                      )
+                                    "
+                                    map-options
+                                    emit-value
+                                    options-dense
+                                    :rules="[
+                                      val =>
+                                        (val && val.length > 0) ||
+                                        'Please select any category'
+                                    ]"
+                                  />
+                                </div>
+                                <div
+                                  class="q-ml-md col-1"
+                                  v-if="
+                                    actions.actions.completionRule[index]
+                                      .task &&
+                                    actions.actions.completionRule[index]
+                                      .task[0] &&
+                                    actionCompletion[indexOfSubTypeOfCompletion]
+                                      .subOptions
+                                      ? actionCompletion[
+                                          indexOfSubTypeOfCompletion
+                                        ].subOptions[
+                                          indexOfSubOfSubTypeOfCompletion
+                                        ]
+                                        ? actionCompletion[
+                                            indexOfSubTypeOfCompletion
+                                          ].subOptions[
+                                            indexOfSubOfSubTypeOfCompletion
+                                          ].subTypes.length > 0
+                                        : false
+                                      : false
+                                  "
+                                >
+                                  <q-select
+                                    v-if="
+                                      actions.actions.completionRule[index]
+                                        .task[0] == 'user'
+                                    "
+                                    dense
+                                    class="input-extra-padding"
+                                    outlined
+                                    v-model="
+                                      actions.actions.completionRule[index]
+                                        .task[1]
+                                    "
+                                    behavior="menu"
+                                    option-value="id"
+                                    option-label="value"
+                                    :options="
+                                      actionCompletion[
+                                        indexOfSubTypeOfCompletion
+                                      ].subOptions[
+                                        indexOfSubOfSubTypeOfCompletion
+                                      ].subTypes
+                                    "
+                                    label="Sub-option"
+                                    map-options
+                                    emit-value
+                                    options-dense
+                                    :rules="[
+                                      val =>
+                                        (val && val.length > 0) ||
+                                        'Please select any category'
+                                    ]"
+                                  />
+                                  <q-select
+                                    v-else
+                                    dense
+                                    class="input-extra-padding"
+                                    outlined
+                                    v-model="
+                                      actions.actions.completionRule[index]
+                                        .task[1]
+                                    "
+                                    behavior="menu"
+                                    option-value="machineValue"
+                                    option-label="value"
+                                    :options="
+                                      actionCompletion[
+                                        indexOfSubTypeOfCompletion
+                                      ].subOptions[
+                                        indexOfSubOfSubTypeOfCompletion
+                                      ].subTypes
+                                    "
+                                    label="Sub-option"
+                                    map-options
+                                    emit-value
+                                    options-dense
+                                    :rules="[
+                                      val =>
+                                        (val && val.length > 0) ||
+                                        'Please select any category'
+                                    ]"
+                                  />
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div
+                                  class="text-bold"
+                                  v-if="
+                                    actions.actions.completionRule.length > 1
+                                  "
+                                >
+                                  <q-icon
+                                    class="clickable"
+                                    size="md"
+                                    color="primary"
+                                    name="clear"
+                                    @click="removeCompletionAction(index)"
+                                  />
+                                </div>
+
+                                <div
+                                  v-if="
+                                    actions.actions.completionRule.length ==
+                                    index + 1
+                                  "
+                                >
+                                  <q-icon
+                                    class="clickable"
+                                    size="md"
+                                    color="primary"
+                                    name="add"
+                                    @click="addAnotherOnClick"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-2">
+                            Assign To<span class="text-red"> *</span>
+                          </div>
+                          <div class="col-3 q-ml-xs">
+                            <div class="q-mb-md">
+                              <q-select
+                                dense
+                                outlined
+                                v-model="assignedToInfo"
+                                use-input
+                                input-debounce="0"
+                                @input="setAssignTo(assignedToInfo)"
+                                option-label="name"
+                                option-value="id"
+                                label="Assigned To"
+                                @filter="AssignedTOSearch"
+                                :options="assignedTo"
+                              >
+                                <template v-slot:no-option>
+                                  <q-item>
+                                    <q-item-section class="text-grey">
+                                      No results
+                                    </q-item-section>
+                                  </q-item>
+                                </template>
+                              </q-select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!--Due Date-->
+                        <div class="row">
+                          <div class="col-2">Due Date</div>
+                          <div class="col-1 q-ml-xs">
+                            <q-input
+                              dense
+                              v-model.number="actions.due.interval"
+                              outlined
+                              min="0"
+                              type="number"
+                              placeholder="Day"
+                              :rules="[val => !!val || 'Please enter days']"
+                            />
+                          </div>
+                        </div>
+
+                        <!--OverDue-->
+
+                        <div
+                          class="row"
+                          v-for="(Overdue, index) in actions.actions
+                            .overdueRule"
+                          :key="index"
+                        >
+                          <div class="col-2" v-if="index == 0">If overdue:</div>
+                          <div
+                            class="col-3 q-ml-xs"
+                            v-if="actions.actions.overdueRule.length > 0"
+                          >
+                            <div>
+                              <q-select
+                                dense
+                                outlined
+                                v-model="
+                                  actions.actions.overdueRule[index].type
+                                "
+                                behavior="menu"
+                                option-value="machineValue"
+                                option-label="value"
+                                :options="actionOverDues"
+                                map-options
+                                emit-value
+                                @input="
+                                  setSubType(
+                                    actions.actions.overdueRule[index].type,
+                                    index,
+                                    (isEditable = true)
+                                  )
+                                "
+                                label="OverDue"
+                                options-dense
+                                class="input-extra-padding"
+                              />
+
+                              <div
+                                class="q-ml-lg"
+                                v-if="
+                                  actions.actions.overdueRule[index].type &&
+                                  actionOverDues[indexOfSubType].subOptions
+                                "
+                              >
+                                <q-select
+                                  class="input-extra-padding"
+                                  outlined
+                                  dense
+                                  options-dense
+                                  v-model="
+                                    actions.actions.overdueRule[index].task[0]
+                                  "
+                                  behavior="menu"
+                                  option-value="machineValue"
+                                  option-label="value"
+                                  map-options
+                                  :options="
+                                    actionOverDues[indexOfSubType].subOptions
+                                  "
+                                  @input="
+                                    setSubOfSubType(
+                                      actions.actions.overdueRule[index]
+                                        .task[0],
+                                      indexOfSubType,
+                                      index,
+                                      true
+                                    )
+                                  "
+                                  emit-value
+                                  label="Sub-option"
+                                />
+                              </div>
+
+                              <div
+                                class="q-ml-lg"
+                                v-if="
+                                  actions.actions.overdueRule[index].task &&
+                                  actions.actions.overdueRule[index].task[0] &&
+                                  actionOverDues[indexOfSubType].subOptions
+                                    ? actionOverDues[indexOfSubType].subOptions[
+                                        indexOfSubOfSubType
+                                      ]
+                                      ? actionOverDues[indexOfSubType]
+                                          .subOptions[indexOfSubOfSubType]
+                                          .subTypes.length > 0
+                                      : false
+                                    : false
+                                "
+                              >
+                                <q-select
+                                  v-if="
+                                    actions.actions.overdueRule[index]
+                                      .task[0] == 'user'
+                                  "
+                                  dense
+                                  class="col-3 input-extra-padding"
+                                  outlined
+                                  options-dense
+                                  v-model="
+                                    actions.actions.overdueRule[index].task[1]
+                                  "
+                                  behavior="menu"
+                                  option-value="id"
+                                  option-label="value"
+                                  map-options
+                                  emit-value
+                                  :options="
+                                    actionOverDues[indexOfSubType].subOptions[
+                                      indexOfSubOfSubType
+                                    ].subTypes
+                                  "
+                                  label="Sub-option"
+                                />
+                                <q-select
+                                  v-else
+                                  dense
+                                  class="col-3 input-extra-padding"
+                                  outlined
+                                  options-dense
+                                  v-model="
+                                    actions.actions.overdueRule[index].task[1]
+                                  "
+                                  behavior="menu"
+                                  option-value="machineValue"
+                                  option-label="value"
+                                  map-options
+                                  emit-value
+                                  :options="
+                                    actionOverDues[indexOfSubType].subOptions[
+                                      indexOfSubOfSubType
+                                    ].subTypes
+                                  "
+                                  label="Sub-options"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Notes-->
+                        <div class="row">
+                          <div class="col-2">Notes</div>
+                          <div class="col q-ml-xs">
+                            <textarea
+                              v-model="actions.notes"
+                              rows="4"
+                              maxlength="1024"
+                              style="width: 50%"
+                            />
+                          </div>
+                        </div>
+
+                        <!--Submit button-->
+                        <div class="row justify-end">
+                          <div class="col-8">
+                            <div class="row">
+                              <div class="col-2">
+                                <q-btn
+                                  bordered
+                                  label="Cancel"
+                                  style="width: 100%"
+                                  class="col-6 q-mt-lg q-mr-xl"
+                                  @click="toActionItemCancel()"
+                                />
+                              </div>
+                              <div
+                                v-if="editDefaultActionItem"
+                                class="q-ml-md col-2"
+                              >
+                                <q-btn
+                                  v-if="copyRule"
+                                  color="primary"
+                                  label="Save"
+                                  style="width: 100%"
+                                  class="q-my-lg"
+                                  @click="onClickSaveButton"
+                                />
+                                <q-btn
+                                  v-else
+                                  color="primary"
+                                  label="Update"
+                                  style="width: 100%"
+                                  class="q-my-lg"
+                                  @click="onClickEditSaveButton"
+                                />
+                              </div>
+                              <!--button action for adding new action item-->
+                              <div v-else class="col-2 q-ml-xl">
+                                <q-btn
+                                  color="primary"
+                                  label="Save"
+                                  style="width: 100%"
+                                  class="q-my-lg"
+                                  @click="onClickSaveButton"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </q-form>
+                    </div>
                   </div>
-                </q-card>
-              </q-card>
+                </div>
+
+                <div class="col">
+                  <table class="action-item-table">
+                    <tr>
+                      <th class="table-th text-black">Rule Name</th>
+                      <th class="table-th text-black">Workflow</th>
+                      <th class="table-th text-black">Assigned To</th>
+                      <th class="table-th text-black">Person</th>
+                      <th class="table-th text-black">State</th>
+                      <th class="table-th text-black">Actions</th>
+                    </tr>
+
+                    <tr
+                      class="table-tr"
+                      v-for="(item, index) in allAction"
+                      :key="index"
+                    >
+                      <td class="table-td">{{ item.name }}</td>
+                      <td class="table-td">{{ item.workflow.value }}</td>
+                      <td class="table-td">{{ item.assignedTo[0].type }}</td>
+                      <td class="table-td">{{ item.assignedTo[0].name }}</td>
+                      <td class="table-td">
+                        {{ item.isEnabled ? 'ON' : 'OFF' }}
+                      </td>
+                      <td class="table-td">
+                        <div class="justify-between">
+                          <q-icon
+                            name="edit"
+                            class="cursor-pointer"
+                            @click="toEditActionItem(item)"
+                          />
+                          <q-icon
+                            class="q-px-md cursor-pointer"
+                            name="fas fa-power-off"
+                            :color="item.isEnabled ? 'primary' : 'grey'"
+                            @click="toActionItemToggleSwitch(item)"
+                          >
+                            <q-tooltip>
+                              {{ item.isEnabled ? 'Enabled' : 'Disabled' }}
+                            </q-tooltip>
+                          </q-icon>
+                          <q-icon
+                            class="cursor-pointer"
+                            name="fas fa-ellipsis-v"
+                            @click="toActionItemKebabMenu(item)"
+                          />
+
+                          <q-menu
+                            v-if="ActionItemKebabMenu == item.name"
+                            anchor="bottom right"
+                            self="top right"
+                          >
+                            <q-list style="min-width: 100px">
+                              <q-item
+                                clickable
+                                v-close-popup
+                                @click="toCopyRule(item)"
+                              >
+                                <q-item-section>Copy Rule</q-item-section>
+                              </q-item>
+                              <q-item
+                                clickable
+                                v-close-popup
+                                @click="toDeleteActionItem(item)"
+                              >
+                                <q-item-section>Delete Rule</q-item-section>
+                              </q-item>
+                            </q-list>
+                          </q-menu>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
             </q-tab-panel>
           </q-tab-panels>
         </div>
       </div>
     </div>
-
-    <!-- Dialog Box for Adding Action Items -->
-    <q-dialog v-model="addDefaultActionDialogBox">
-      <q-card style="width: 60%; height: 88vh">
-        <q-bar class="row justify-between bg-primary" style="height: 50px">
-          <div
-            v-if="editDefaultActionItem"
-            class="q-px-xs text-bold text-white"
-          >
-            Edit Action Item
-          </div>
-          <div v-else class="q-px-xs text-bold text-white">Add Action Item</div>
-          <q-btn dense flat icon="close" color="white" v-close-popup>
-            <q-tooltip>Close</q-tooltip>
-          </q-btn>
-        </q-bar>
-        <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-md">
-          <q-form ref="addActionForm">
-            <div class="row full-width">
-              <div class="q-pa-sm text-bold">
-                Action Item <span class="text-red">*</span> :
-              </div>
-              <q-input
-                dense
-                v-model="actions.name"
-                class="q-mx-md"
-                style="width: 200px"
-                outlined
-                :rules="[
-                  val => (val && val.length > 0) || 'Please enter action'
-                ]"
-              />
-            </div>
-
-            <!-- second -->
-            <div class="row q-mt-md full-width">
-              <div class="q-pa-sm text-bold">
-                Created When <span class="text-red">*</span> :
-              </div>
-              <q-select
-                dense
-                outlined
-                options-dense
-                behavior="menu"
-                v-model="actions.createWhen.type"
-                option-label="value"
-                :options="actionReason"
-                option-value="machineValue"
-                @input="
-                  createdWhenSubType(
-                    actions.createWhen.type,
-                    (isEditable = true)
-                  )
-                "
-                map-options
-                emit-value
-                label="Created when"
-                class="input-extra-padding"
-                style="width: 26%"
-                :rules="[
-                  val => (val && val.length > 0) || 'Please select any category'
-                ]"
-              />
-
-              <div
-                class="q-ml-xs"
-                v-if="
-                  actions.createWhen.type &&
-                  actionReason[indexOfActionReason].additionalReasons
-                "
-              >
-                <q-select
-                  dense
-                  class="input-extra-padding"
-                  outlined
-                  options-dense
-                  behavior="menu"
-                  v-model="actions.createWhen.task[0]"
-                  option-label="value"
-                  option-value="machineValue"
-                  map-options
-                  emit-value
-                  :options="actionReason[indexOfActionReason].additionalReasons"
-                  label="Sub-option"
-                  style="width: 220px"
-                  :rules="[
-                    val =>
-                      (val && val.length > 0) || 'Please select any category'
-                  ]"
-                >
-                  <template v-slot:no-option>
-                    <q-item>
-                      <q-item-section class="text-grey">
-                        No data present
-                      </q-item-section>
-                    </q-item>
-                  </template>
-                </q-select>
-              </div>
-            </div>
-            <div class="row q-pa-sm">
-              <div class="q-py-md text-bold">
-                Enabled <span class="text-red">*</span> :
-              </div>
-              <q-toggle v-model="actions.isEnabled" left-label class="" />
-              <q-badge color="primary" dense style="margin: auto 10px">{{
-                actions.isEnabled ? 'Enable' : 'Disable'
-              }}</q-badge>
-              <div class="q-pa-md text-bold">
-                Default Priority <span class="text-red">*</span> :
-              </div>
-              <div class="col-2 q-mt-xs">
-                <q-toggle
-                  v-model="defaultPriority"
-                  left-label
-                  @input="TogglePriority"
-                />
-                <q-badge color="primary" v-if="defaultPriority == true"
-                  >High</q-badge
-                >
-                <q-badge v-else color="primary">Low</q-badge>
-              </div>
-            </div>
-
-            <!-- 3 -->
-            <div class="row q-mt-md full-width">
-              <div class="row q-pa-xs">
-                <div class="q-py-sm text-bold">
-                  Assign To <span class="text-red">*</span> :
-                </div>
-                <div class="q-ml-sm row text-bold">
-                  <q-select
-                    dense
-                    outlined
-                    v-model="actions.assignedTo[0].type"
-                    options-dense
-                    behavior="menu"
-                    option-label="value"
-                    :options="assignTo"
-                    @input="
-                      callAssignApi(
-                        actions.assignedTo[0].type,
-                        (isEditable = true)
-                      )
-                    "
-                    option-value="machineValue"
-                    map-options
-                    emit-value
-                    label="Assign To"
-                    class="input-extra-padding"
-                    style="width: 200px"
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please select any category'
-                    ]"
-                  />
-
-                  <q-select
-                    v-if="actions.assignedTo[0].type"
-                    v-model="actions.assignedTo[0].name"
-                    dense
-                    outlined
-                    options-dense
-                    behavior="menu"
-                    option-label="name"
-                    :options="assignToSubOption"
-                    option-value="machineValue"
-                    @input="setAssignTo(actions.assignedTo[0].name)"
-                    map-options
-                    emit-value
-                    class="q-ml-sm input-extra-padding"
-                    style="width: 200px"
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please select any user '
-                    ]"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="q-py-sm q-pl-xs text-bold">
-              Due Date <span class="text-red">*</span> :
-            </div>
-            <div class="row q-pl-xs full-width">
-              <!-- <div class="q-pa-sm text-bold">Due Date :</div> -->
-              <div class="text-grey-9 text-bold q-py-sm">Task will be Due</div>
-
-              <q-input
-                dense
-                v-model.number="actions.due.interval"
-                class="q-mx-sm"
-                outlined
-                placeholder="Day"
-                style="width: 20%"
-                :rules="[val => !!val || 'Please enter days']"
-              />
-
-              <q-select
-                dense
-                class="q-mx-sm"
-                outlined
-                options-dense
-                v-model="actions.due.type"
-                behavior="menu"
-                option-value="options"
-                :options="dueDays"
-                label="Type"
-                style="width: 200px"
-                :rules="[
-                  val => (val && val.length > 0) || 'Please select any category'
-                ]"
-              />
-
-              <div class="q-pa-sm text-grey-9 text-bold">
-                days after it is created
-              </div>
-            </div>
-
-            <div class="row q-mt-md full-width">
-              <q-card
-                class="q-pa-sm q-pl-sm text-bold"
-                style="letter-spacing: 1px; width: 100%"
-                flat
-                bordered
-              >
-                Note : Actions are executed in the order specified
-              </q-card>
-            </div>
-            <div
-              v-for="(val, index) in actions.actions.onComplete"
-              v-if="actions.actions.onComplete.length > 0"
-              class="row q-mt-md full-width"
-              :key="index"
-            >
-              <div>
-                <div class="q-pa-sm text-bold" v-if="index == 0">
-                  Completion Action <span class="text-red">*</span> :
-                </div>
-                <div
-                  class="q-pa-sm text-bold"
-                  v-else
-                  style="visibility: hidden"
-                >
-                  Completion Action :
-                </div>
-              </div>
-              <div>
-                <q-select
-                  dense
-                  outlined
-                  options-dense
-                  behavior="menu"
-                  v-model="actions.actions.onComplete[index].type"
-                  option-label="value"
-                  option-value="machineValue"
-                  map-options
-                  emit-value
-                  :options="actionCompletion"
-                  @input="
-                    setSubTypeOfAction(
-                      actions.actions.onComplete[index].type,
-                      index,
-                      (isEditable = true)
-                    )
-                  "
-                  label="Completion Action"
-                  class="input-extra-padding"
-                  style="width: 200px"
-                  :rules="[
-                    val =>
-                      (val && val.length > 0) || 'Please select any category'
-                  ]"
-                />
-              </div>
-
-              <div
-                class="q-ml-xs"
-                v-if="
-                  actions.actions.onComplete[index].type &&
-                  actionCompletion[indexOfSubTypeOfCompletion].subOptions
-                "
-              >
-                <q-select
-                  dense
-                  class="col-3 input-extra-padding"
-                  outlined
-                  v-model="actions.actions.onComplete[index].task[0]"
-                  behavior="menu"
-                  option-value="machineValue"
-                  option-label="value"
-                  :options="
-                    actionCompletion[indexOfSubTypeOfCompletion].subOptions
-                  "
-                  label="Sub-option"
-                  @input="
-                    setSubTypeForAction(
-                      actions.actions.onComplete[index].task[0],
-                      indexOfSubTypeOfCompletion,
-                      index,
-                      (isEditable = true)
-                    )
-                  "
-                  map-options
-                  emit-value
-                  options-dense
-                  style="width: 200px"
-                  :rules="[
-                    val =>
-                      (val && val.length > 0) || 'Please select any category'
-                  ]"
-                />
-              </div>
-              <div
-                class="q-ml-xs"
-                v-if="
-                  actions.actions.onComplete[index].task &&
-                  actions.actions.onComplete[index].task[0] &&
-                  actionCompletion[indexOfSubTypeOfCompletion].subOptions
-                    ? actionCompletion[indexOfSubTypeOfCompletion].subOptions[
-                        indexOfSubOfSubTypeOfCompletion
-                      ]
-                      ? actionCompletion[indexOfSubTypeOfCompletion].subOptions[
-                          indexOfSubOfSubTypeOfCompletion
-                        ].subTypes.length > 0
-                      : false
-                    : false
-                "
-              >
-                <q-select
-                  v-if="actions.actions.onComplete[index].task[0] == 'user'"
-                  dense
-                  class="input-extra-padding"
-                  outlined
-                  v-model="actions.actions.onComplete[index].task[1]"
-                  behavior="menu"
-                  option-value="id"
-                  option-label="value"
-                  :options="
-                    actionCompletion[indexOfSubTypeOfCompletion].subOptions[
-                      indexOfSubOfSubTypeOfCompletion
-                    ].subTypes
-                  "
-                  label="Sub-option"
-                  map-options
-                  emit-value
-                  options-dense
-                  style="width: 200px"
-                  :rules="[
-                    val =>
-                      (val && val.length > 0) || 'Please select any category'
-                  ]"
-                />
-                <q-select
-                  v-else
-                  dense
-                  class="input-extra-padding"
-                  outlined
-                  v-model="actions.actions.onComplete[index].task[1]"
-                  behavior="menu"
-                  option-value="machineValue"
-                  option-label="value"
-                  :options="
-                    actionCompletion[indexOfSubTypeOfCompletion].subOptions[
-                      indexOfSubOfSubTypeOfCompletion
-                    ].subTypes
-                  "
-                  label="Sub-option"
-                  map-options
-                  emit-value
-                  options-dense
-                  style="width: 200px"
-                  :rules="[
-                    val =>
-                      (val && val.length > 0) || 'Please select any category'
-                  ]"
-                />
-              </div>
-              <div class="q-ml-md q-mt-sm">
-                <q-icon
-                  class="clickable"
-                  size="md"
-                  color="primary"
-                  name="add"
-                  @click="addAnotherOnClick"
-                />
-              </div>
-              <div
-                class="q-ml-sm q-pt-sm text-bold"
-                v-if="actions.actions.onComplete.length > 1"
-              >
-                <q-icon
-                  class="clickable"
-                  size="md"
-                  color="primary"
-                  name="clear"
-                  @click="removeCompletionAction(index)"
-                />
-              </div>
-            </div>
-            <!-- OverDue -->
-
-            <div
-              v-for="(Overdue, index) in actions.actions.onOverdue"
-              :key="index"
-              v-if="actions.actions.onOverdue.length > 0"
-              class="row q-mt-md full-width"
-            >
-              <div>
-                <div class="q-pa-sm text-bold" v-if="index == 0">
-                  OverDue Action:
-                </div>
-                <div
-                  class="q-pa-sm text-bold"
-                  v-else
-                  style="visibility: hidden"
-                >
-                  OverDue Action:
-                </div>
-              </div>
-
-              <div class="q-ml-lg">
-                <q-select
-                  dense
-                  outlined
-                  v-model="actions.actions.onOverdue[index].type"
-                  behavior="menu"
-                  option-value="machineValue"
-                  option-label="value"
-                  :options="actionOverDues"
-                  map-options
-                  emit-value
-                  @input="
-                    setSubType(
-                      actions.actions.onOverdue[index].type,
-                      index,
-                      (isEditable = true)
-                    )
-                  "
-                  label="OverDue"
-                  options-dense
-                  class="input-extra-padding"
-                  style="width: 200px"
-                />
-              </div>
-
-              <div
-                class="q-ml-xs"
-                v-if="
-                  actions.actions.onOverdue[index].type &&
-                  actionOverDues[indexOfSubType].subOptions
-                "
-              >
-                <q-select
-                  class="input-extra-padding"
-                  outlined
-                  dense
-                  options-dense
-                  v-model="actions.actions.onOverdue[index].task[0]"
-                  behavior="menu"
-                  option-value="machineValue"
-                  option-label="value"
-                  map-options
-                  :options="actionOverDues[indexOfSubType].subOptions"
-                  @input="
-                    setSubOfSubType(
-                      actions.actions.onOverdue[index].task[0],
-                      indexOfSubType,
-                      index,
-                      true
-                    )
-                  "
-                  emit-value
-                  label="Sub-option"
-                  style="width: 200px"
-                />
-              </div>
-
-              <div
-                class="q-ml-xs"
-                v-if="
-                  actions.actions.onOverdue[index].task &&
-                  actions.actions.onOverdue[index].task[0] &&
-                  actionOverDues[indexOfSubType].subOptions
-                    ? actionOverDues[indexOfSubType].subOptions[
-                        indexOfSubOfSubType
-                      ]
-                      ? actionOverDues[indexOfSubType].subOptions[
-                          indexOfSubOfSubType
-                        ].subTypes.length > 0
-                      : false
-                    : false
-                "
-              >
-                <q-select
-                  v-if="actions.actions.onOverdue[index].task[0] == 'user'"
-                  dense
-                  class="col-3 input-extra-padding"
-                  outlined
-                  options-dense
-                  v-model="actions.actions.onOverdue[index].task[1]"
-                  behavior="menu"
-                  option-value="id"
-                  option-label="value"
-                  map-options
-                  emit-value
-                  :options="
-                    actionOverDues[indexOfSubType].subOptions[
-                      indexOfSubOfSubType
-                    ].subTypes
-                  "
-                  label="Sub-option"
-                  style="width: 200px"
-                />
-                <q-select
-                  v-else
-                  dense
-                  class="col-3 input-extra-padding"
-                  outlined
-                  options-dense
-                  v-model="actions.actions.onOverdue[index].task[1]"
-                  behavior="menu"
-                  option-value="machineValue"
-                  option-label="value"
-                  map-options
-                  emit-value
-                  :options="
-                    actionOverDues[indexOfSubType].subOptions[
-                      indexOfSubOfSubType
-                    ].subTypes
-                  "
-                  label="Sub-options"
-                  style="width: 200px"
-                />
-              </div>
-
-              <div class="q-ml-md q-pt-sm text-bold">
-                <q-icon
-                  class="clickable"
-                  size="md"
-                  color="primary"
-                  name="add"
-                  @click="addMoreOverDue"
-                />
-              </div>
-              <div
-                class="q-ml-sm q-pt-sm text-bold"
-                v-if="actions.actions.onOverdue.length > 1"
-              >
-                <q-icon
-                  class="clickable"
-                  size="md"
-                  color="primary"
-                  name="clear"
-                  @click="RemoveOverDue(index)"
-                />
-              </div>
-            </div>
-
-            <div class="row q-mt-md full-width">
-              <div class="">
-                <div class="q-pa-sm text-bold">Notes/Instruction:</div>
-              </div>
-              <div class="q-ml-md col-5">
-                <textarea
-                  v-model="actions.notes"
-                  rows="4"
-                  style="width: 100%"
-                />
-              </div>
-            </div>
-          </q-form>
-        </div>
-        <!--button for edited action item-->
-        <div v-if="editDefaultActionItem" class="row justify-center">
-          <q-btn
-            color="primary"
-            label="Save"
-            class="single-next-button-style col-6 q-my-lg"
-            @click="onClickEditSaveButton"
-          />
-        </div>
-        <!--button action for adding new action item-->
-        <div v-else class="row justify-center">
-          <q-btn
-            color="primary"
-            label="Save"
-            class="single-next-button-style col-6 q-my-lg"
-            @click="onClickSaveButton"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
   </q-page>
 </template>
 <script>
@@ -1261,6 +1352,10 @@ export default {
 
   data() {
     return {
+      editedRule: {},
+      enabledDisabledByEditCopy: {},
+      assignedToInfo: '',
+      assignedTo: [],
       paid: false,
       roles: [],
       privileges: [
@@ -1274,6 +1369,9 @@ export default {
         'tasks',
         'admin'
       ],
+      copyRule: false,
+      workflowActionItem: '',
+      ActionItemKebabMenu: false,
       editAccountSummary: false,
       editCompanyDetails: false,
       editPhotoIDDetails: false,
@@ -1309,7 +1407,6 @@ export default {
       arrOfRoles: [],
       value: {},
       userId: '',
-      defaultPriority: false,
       selectedRole: '',
       organizations: {
         name: '',
@@ -1360,27 +1457,26 @@ export default {
       actions: {
         name: '',
         isEnabled: false,
-        createWhen: {
+        triggerEvent: {
           type: '',
           task: []
         },
-
-        priority: 'low',
         assignedTo: [
           {
             type: '',
             name: '',
+            machineValue: '',
             id: ''
           }
         ],
         actions: {
-          onComplete: [
+          completionRule: [
             {
               type: '',
               task: []
             }
           ],
-          onOverdue: [
+          overdueRule: [
             {
               type: '',
               task: []
@@ -1388,7 +1484,6 @@ export default {
           ]
         },
         due: {
-          type: '',
           interval: 0,
           unit: 'days'
         },
@@ -1406,12 +1501,12 @@ export default {
       indexOfSubOfSubType: 0,
 
       addDefaultActionDialogBox: false,
-      model: null,
-      dueDays: ['Bussiness', 'Calendar']
+      model: null
     };
   },
   computed: {
     ...mapGetters([
+      'assignedToData',
       'webSubOptionMenuTab',
       'actionOverDues',
       'actionCompletion',
@@ -1450,6 +1545,8 @@ export default {
       return plan[0].toUpperCase() + plan.slice(1);
     },
     ...mapActions([
+      'assignedToSearch',
+      'actionItemToggleSwitch',
       'editAdminActionItem',
       'getActionOverDues',
       'getActionCompletion',
@@ -1474,29 +1571,47 @@ export default {
     validateEmail,
     validateText,
     validateUrl,
-
+    toActionItemCancel() {
+      this.copyRule = false;
+      this.addDefaultActionDialogBox = false;
+    },
+    //function is used to check if the enable and disable is updated from the Edit rule mode.
+    toEnableDisabledUpdate(val) {
+      if (this.editDefaultActionItem) this.enabledDisabledByEditCopy = val;
+    },
+    //assignedTO user/role search
+    async AssignedTOSearch(val, update) {
+      if (val != '') {
+        await this.assignedToSearch(val);
+        update(() => {
+          this.assignedTo = this.assignedToData;
+        });
+      } else {
+        this.assignedTo = [];
+      }
+    },
     //to Delete Admin Action item
     async toDeleteActionItem(item) {
       const payload = {
-        itemID: item.id,
-        workFlowID: this.selectedWorkflowID
+        itemID: item.machineValue,
+        workFlowID: item.workflow.machineValue
       };
       this.adminActionItemDelete(payload);
-      await this.getAllWorkFlow(this.claimType);
+      this.getAllWorkFlow(this.claimType);
     },
     addDefaultActionItem() {
-      this.addDefaultActionDialogBox = true;
+      (this.assignedToInfo = ''),
+        (this.assignedTo = []),
+        (this.addDefaultActionDialogBox = true);
       this.editDefaultActionItem = false;
-      this.defaultPriority = false;
+      this.workflowActionItem = '';
       this.actions = {
         name: '',
         isEnabled: false,
-        createWhen: {
+        triggerEvent: {
           type: '',
           task: []
         },
-
-        priority: 'low',
         assignedTo: [
           {
             type: '',
@@ -1505,13 +1620,13 @@ export default {
           }
         ],
         actions: {
-          onComplete: [
+          completionRule: [
             {
               type: '',
               task: []
             }
           ],
-          onOverdue: [
+          overdueRule: [
             {
               type: '',
               task: []
@@ -1519,25 +1634,72 @@ export default {
           ]
         },
         due: {
-          type: '',
           interval: 0,
           unit: 'days'
         },
         notes: ''
       };
     },
+    //function is used to switch the toggle status
+    async toActionItemToggleSwitch(item) {
+      if (this.editDefaultActionItem) {
+        if (item.isEnabled) {
+          var toggleDetail = {
+            toggleStatus: 'enable',
+            ruleId: item.machineValue,
+            workflowId: item.workflowID
+          };
+          await this.actionItemToggleSwitch(toggleDetail);
+        } else {
+          var toggleDetail = {
+            toggleStatus: 'disable',
+            ruleId: item.machineValue,
+            workflowId: item.workflowID
+          };
+          await this.actionItemToggleSwitch(toggleDetail);
+        }
+      } else {
+        if (item.isEnabled) {
+          var toggleDetail = {
+            toggleStatus: 'disable',
+            ruleId: item.machineValue,
+            workflowId: item.workflow.machineValue
+          };
+          await this.actionItemToggleSwitch(toggleDetail);
+        } else {
+          var toggleDetail = {
+            toggleStatus: 'enable',
+            ruleId: item.machineValue,
+            workflowId: item.workflow.machineValue
+          };
+          await this.actionItemToggleSwitch(toggleDetail);
+        }
+      }
+
+      this.getAllWorkFlow(this.claimType);
+    },
+    //function is used to copy the rule
+    toCopyRule(item) {
+      this.copyRule = true;
+      this.toEditActionItem(item);
+    },
+    //function is used to edit the rule item
     toEditActionItem(item) {
-      this.addDefaultActionDialogBox = !this.addDefaultActionDialogBox;
+      this.editedRule = item;
+      this.workflowActionItem = item.workflow.machineValue;
+      this.addDefaultActionDialogBox = true;
       this.editDefaultActionItem = true;
-      this.editedActionItemID = item.id;
+      this.editedActionItemID = item.machineValue;
       this.actions.name = item.name;
       this.actions.isEnabled = item.isEnabled;
-      this.actions.createWhen.type =
-        item.createWhen && item.createWhen.type ? item.createWhen.type : '';
-      this.actions.createWhen.task =
-        item.createWhen && item.createWhen.task ? item.createWhen.task : [];
-      this.actions.priority = item.priority;
-      this.editedDefaultPriority(this.actions.priority);
+      this.actions.triggerEvent.type =
+        item.triggerEvent && item.triggerEvent.type
+          ? item.triggerEvent.type
+          : '';
+      this.actions.triggerEvent.task =
+        item.triggerEvent && item.triggerEvent.task
+          ? item.triggerEvent.task
+          : [];
       this.actions.assignedTo[0].id =
         item.assignedTo && item.assignedTo[0].id ? item.assignedTo[0].id : '';
       this.actions.assignedTo[0].name =
@@ -1549,123 +1711,107 @@ export default {
           ? item.assignedTo[0].type
           : '';
 
-      this.actions.actions.onComplete[0].task =
-        item.actions.onComplete && item.actions.onComplete[0].task
-          ? item.actions.onComplete[0].task
+      this.actions.actions.completionRule[0].task =
+        item.actions.completionRule && item.actions.completionRule[0].task
+          ? item.actions.completionRule[0].task
           : [];
-      this.actions.actions.onComplete[0].type =
-        item.actions.onComplete && item.actions.onComplete[0].type
-          ? item.actions.onComplete[0].type
+      this.actions.actions.completionRule[0].type =
+        item.actions.completionRule && item.actions.completionRule[0].type
+          ? item.actions.completionRule[0].type
           : '';
 
-      this.actions.actions.onOverdue[0].type =
-        item.actions.onOverdue && item.actions.onOverdue[0].type
-          ? item.actions.onOverdue[0].type
+      this.actions.actions.overdueRule[0].type =
+        item.actions.overdueRule && item.actions.overdueRule[0].type
+          ? item.actions.overdueRule[0].type
           : '';
-      this.actions.actions.onOverdue[0].task =
-        item.actions.onOverdue && item.actions.onOverdue[0].task
-          ? item.actions.onOverdue[0].task
+      this.actions.actions.overdueRule[0].task =
+        item.actions.overdueRule && item.actions.overdueRule[0].task
+          ? item.actions.overdueRule[0].task
           : [];
-
-      this.actions.due.type = item.due && item.due.type ? item.due.type : '';
       this.actions.due.interval =
         item.due && item.due.interval ? item.due.interval : '';
       this.actions.due.unit = item.due && item.due.unit ? item.due.unit : '';
       this.actions.notes = item.notes ? item.notes : '';
 
       this.createdWhenSubType(
-        this.actions.createWhen.type,
+        this.actions.triggerEvent.type,
         (this.isEditable = false)
       );
-      if (this.actions.assignedTo[0].type != '')
-        this.callAssignApi(
-          this.actions.assignedTo[0].type,
-          (this.isEditable = false)
-        );
-      if (this.actions.assignedTo[0].name != '')
-        this.setAssignTo(this.actions.assignedTo[0].name);
 
-      for (let i = 0; i < this.actions.actions.onComplete.length; i++) {
-        if (this.actions.actions.onComplete[i].type != '')
+      this.actions.assignedTo[0].type = item.assignedTo[0].type;
+      this.actions.assignedTo[0].name = item.assignedTo[0].name;
+      this.actions.assignedTo[0].id = item.assignedTo[0].id;
+      this.actions.assignedTo[0].machineValue = item.assignedTo[0].machineValue;
+      this.assignedToInfo = item.assignedTo[0].name;
+
+      for (let i = 0; i < this.actions.actions.completionRule.length; i++) {
+        if (this.actions.actions.completionRule[i].type != '')
           this.setSubTypeOfAction(
-            this.actions.actions.onComplete[i].type,
+            this.actions.actions.completionRule[i].type,
             i,
             (this.isEditable = false)
           );
 
-        if (this.actions.actions.onComplete[i].task.length != 0)
+        if (this.actions.actions.completionRule[i].task.length != 0)
           this.setSubTypeForAction(
-            this.actions.actions.onComplete[i].task[0],
+            this.actions.actions.completionRule[i].task[0],
             this.indexOfSubTypeOfCompletion,
             i,
             (this.isEditable = false)
           );
       }
-      for (let i = 0; i < this.actions.actions.onOverdue.length; i++) {
-        if (this.actions.actions.onOverdue[i].type != '')
+      for (let i = 0; i < this.actions.actions.overdueRule.length; i++) {
+        if (this.actions.actions.overdueRule[i].type != '')
           this.setSubType(
-            this.actions.actions.onOverdue[i].type,
+            this.actions.actions.overdueRule[i].type,
             i,
             (this.isEditable = false)
           );
-        if (this.actions.actions.onOverdue[i].task.length != 0)
+        if (this.actions.actions.overdueRule[i].task.length != 0)
           this.setSubOfSubType(
-            this.actions.actions.onOverdue[i].task[0],
+            this.actions.actions.overdueRule[i].task[0],
             this.indexOfSubType,
             i,
             false
           );
       }
     },
-    //this function is used for resetting the Dafault Priority toggle
-    editedDefaultPriority(val) {
-      if (val == 'critical') {
-        this.defaultPriority = true;
-      } else this.defaultPriority = false;
-    },
-    // this function is used to update the subcolumn of AssignTo data.
-    async callAssignApi(val, isEditable) {
-      this.assignToSubOption = [];
-      if (isEditable) {
-        if (this.actions.assignedTo && this.actions.assignedTo[0].name)
-          this.actions.assignedTo[0].name = '';
-      }
 
-      this.assignee = val;
-      if (val == 'user') {
-        await this.getAllUsers();
-        this.allUsers.forEach(user => {
-          this.assignToSubOption.push({
-            machineValue: user.name,
-            name: user.name,
-            id: user.id
-          });
-        });
-      } else {
-        await this.getRoles();
-        this.roleTypes.forEach(user => {
-          this.assignToSubOption.push({
-            machineValue: user.machineValue,
-            name: user.name,
-            id: user.id
-          });
-        });
-      }
+    //this is for action item kebeb menu item
+    toActionItemKebabMenu(item) {
+      if (this.ActionItemKebabMenu == item.name) this.ActionItemKebabMenu = '';
+      //this is used to disable the kebab menu , when click it on again.
+      else this.ActionItemKebabMenu = item.name;
     },
 
-    // this function is used to get the detail of sub options of selected AssignedTo.
-    setAssignTo(val) {
-      if (this.assignee == 'user') {
-        const obj = this.allUsers.find(item => {
-          return item.name === val;
-        });
+    async setAssignTo(val) {
+      if (val) {
+        if (val.type == 'users') {
+          await this.getAllUsers();
+          const obj = this.allUsers.find(item => {
+            return item.id === val.id;
+          });
 
-        this.actions.assignedTo[0].id = obj.id;
-      } else {
-        const obj = this.roleTypes.find(item => {
-          return item.machineValue === val;
-        });
-        this.actions.assignedTo[0].id = obj.id;
+          this.actions.assignedTo[0].id = obj.id ? obj.id : '';
+          this.actions.assignedTo[0].machineValue = obj.attributes.roles[0]
+            .machineValue
+            ? obj.attributes.roles[0].machineValue
+            : '';
+          this.actions.assignedTo[0].type = val.type;
+          this.actions.assignedTo[0].name = obj.name;
+        } else {
+          await this.getRoles();
+          const obj = this.roleTypes.find(item => {
+            return item.machineValue === val.id;
+          });
+
+          this.actions.assignedTo[0].type = val.type;
+          this.actions.assignedTo[0].name = obj.name;
+          this.actions.assignedTo[0].id = obj.id ? obj.id : '';
+          this.actions.assignedTo[0].machineValue = obj.machineValue
+            ? obj.machineValue
+            : '';
+        }
       }
     },
 
@@ -1808,18 +1954,12 @@ export default {
       this.claimType = mValue;
       this.selectedWorkflowID = mValue;
     },
-    // Toggle Priority Set
-    TogglePriority() {
-      if (this.defaultPriority) {
-        this.actions.priority = 'critical';
-      } else this.actions.priority = 'low';
-    },
 
     //  Finding and Clearing the Other Sub data while changing the main DRopdown data
     createdWhenSubType(value, isEditable) {
       if (isEditable) {
-        if (this.actions.createWhen.task && this.actions.createWhen.task[0])
-          this.actions.createWhen.task[0] = '';
+        if (this.actions.triggerEvent.task && this.actions.triggerEvent.task[0])
+          this.actions.triggerEvent.task[0] = '';
       }
       var index = this.actionReason.findIndex(
         std => std.machineValue === value
@@ -1842,15 +1982,15 @@ export default {
     setSubType(val, index, isEditable) {
       if (isEditable) {
         if (
-          this.actions.actions.onOverdue[index].task &&
-          this.actions.actions.onOverdue[index].task[0]
+          this.actions.actions.overdueRule[index].task &&
+          this.actions.actions.overdueRule[index].task[0]
         )
-          this.actions.actions.onOverdue[index].task[0] = '';
+          this.actions.actions.overdueRule[index].task[0] = '';
         if (
-          this.actions.actions.onOverdue[index].task &&
-          this.actions.actions.onOverdue[index].task[1]
+          this.actions.actions.overdueRule[index].task &&
+          this.actions.actions.overdueRule[index].task[1]
         )
-          this.actions.actions.onOverdue[index].task[1] = '';
+          this.actions.actions.overdueRule[index].task[1] = '';
       }
       if (val) {
         var index = this.actionOverDues.findIndex(
@@ -1864,10 +2004,10 @@ export default {
     setSubOfSubType(subValue, indexOfSubType, index, isEditable) {
       if (isEditable) {
         if (
-          this.actions.actions.onOverdue[index].task &&
-          this.actions.actions.onOverdue[index].task[1]
+          this.actions.actions.overdueRule[index].task &&
+          this.actions.actions.overdueRule[index].task[1]
         )
-          this.actions.actions.onOverdue[index].task[1] = '';
+          this.actions.actions.overdueRule[index].task[1] = '';
       }
 
       if (subValue) {
@@ -1885,12 +2025,12 @@ export default {
     setSubTypeForAction(SubOptionValue, sValue, index, isEditable) {
       if (isEditable) {
         if (
-          this.actions.actions.onComplete[index].task &&
-          this.actions.actions.onComplete[index].task[1]
+          this.actions.actions.completionRule[index].task &&
+          this.actions.actions.completionRule[index].task[1]
         )
-          this.actions.actions.onComplete[index].task[1] = '';
+          this.actions.actions.completionRule[index].task[1] = '';
       }
-      if (SubOptionValue) {
+      if (SubOptionValue != '') {
         const ob = this.actionCompletion[sValue].subOptions.findIndex(item => {
           return item.machineValue === SubOptionValue;
         });
@@ -1899,151 +2039,166 @@ export default {
     },
 
     RemoveOverDue(val) {
-      this.actions.actions.onOverdue.splice(val, 1);
+      this.actions.actions.overdueRule.splice(val, 1);
     },
     // OnSaveButtonClick
     async onClickSaveButton() {
-      const success = await this.$refs.addActionForm.validate();
+      /* This Filter function is used for elimination the null and empty values from the array     */
+      const success = await this.$refs.automationRuleForm.validate();
       if (success) {
-        /* This Filter function is used for elimination the null and empty values from the array     */
-        this.actions.actions.onComplete.forEach(val => {
+        this.actions.actions.completionRule.forEach(val => {
           val.task = val.task.filter(function (el) {
             return el != '';
           });
         });
 
-        this.actions.actions.onOverdue.forEach(val => {
+        this.actions.actions.overdueRule.forEach(val => {
           val.task = val.task.filter(function (el) {
             return el != '';
           });
         });
 
-        this.actions.createWhen.task = this.actions.createWhen.task.filter(
+        this.actions.triggerEvent.task = this.actions.triggerEvent.task.filter(
           function (el) {
             return el != '';
           }
         );
 
-        const param = { machineValue: this.claimType, data: this.actions };
+        if (this.copyRule) {
+          this.actions.name = 'Copy- ' + this.actions.name;
+        }
+        const param = {
+          machineValue: this.workflowActionItem,
+          data: this.actions
+        };
+
         await this.addWorkflowAction(param);
         this.addDefaultActionDialogBox = false;
         this.getAllWorkFlow(this.claimType);
+        this.copyRule = false;
+        this.editDefaultActionItem = false;
+
         /*  Clearing the form     */
-        this.defaultPriority = false;
-        this.actions = {
-          name: '',
-          isEnabled: false,
-          createWhen: {
-            type: '',
-            task: []
-          },
-          priority: 'low',
-          assignedTo: [
-            {
+        (this.workflowActionItem = ''),
+          (this.actions = {
+            name: '',
+
+            isEnabled: false,
+            triggerEvent: {
               type: '',
-              name: '',
-              id: ''
-            }
-          ],
-          actions: {
-            onComplete: [
+              task: []
+            },
+            assignedTo: [
               {
                 type: '',
-                task: []
+                name: '',
+                id: ''
               }
             ],
-            onOverdue: [
-              {
-                type: '',
-                task: []
-              }
-            ]
-          },
-          due: {
-            type: '',
-            interval: 0,
-            unit: 'days'
-          },
-          notes: ''
-        };
+            actions: {
+              completionRule: [
+                {
+                  type: '',
+                  task: []
+                }
+              ],
+              overdueRule: [
+                {
+                  type: '',
+                  task: []
+                }
+              ]
+            },
+            due: {
+              interval: 0,
+              unit: 'days'
+            },
+            notes: ''
+          });
       }
     },
 
     //on Edit Button For Action Item
     async onClickEditSaveButton() {
-      const success = await this.$refs.addActionForm.validate();
+      const success = await this.$refs.automationRuleForm.validate();
       if (success) {
         const payload = {
           id: this.editedActionItemID,
-          workflowID: this.selectedWorkflowID,
+          workflowID: this.workflowActionItem,
           attributes: {
             name: this.actions.name,
-            isEnabled: this.actions.isEnabled,
-            createWhen: {
-              type: this.actions.createWhen.type,
-              task: this.actions.createWhen.task
+            triggerEvent: {
+              type: this.actions.triggerEvent.type,
+              task: this.actions.triggerEvent.task
             },
-            priority: this.actions.priority,
             assignedTo: [
               {
                 type: this.actions.assignedTo[0].type,
                 name: this.actions.assignedTo[0].name,
-                id: this.actions.assignedTo[0].id
+                id: this.actions.assignedTo[0].id,
+                machineValue: this.actions.assignedTo[0].machineValue
               }
             ],
             actions: {
-              onComplete: [
+              completionRule: [
                 {
-                  type: this.actions.actions.onComplete[0].type,
-                  task: this.actions.actions.onComplete[0].task
+                  type: this.actions.actions.completionRule[0].type,
+                  task: this.actions.actions.completionRule[0].task
                 }
               ],
-              onOverdue: [
+              overdueRule: [
                 {
-                  type: this.actions.actions.onOverdue[0].type,
-                  task: this.actions.actions.onOverdue[0].task
+                  type: this.actions.actions.overdueRule[0].type,
+                  task: this.actions.actions.overdueRule[0].task
                 }
               ]
             },
             due: {
-              type: this.actions.due.type,
               interval: this.actions.due.interval,
               unit: this.actions.due.unit
             },
             notes: this.actions.notes
           }
         };
-        this.editDefaultActionItem = false;
-        (this.editedActionItemID = ''),
-          (this.addDefaultActionDialogBox = false);
+        this.enabledDisabledByEditCopy = {
+          isEnabled: this.actions.isEnabled,
+          machineValue: this.editedRule.machineValue,
+          workflowID: this.editedRule.workflow.machineValue
+        };
+        this.toActionItemToggleSwitch(this.enabledDisabledByEditCopy);
         await this.editAdminActionItem(payload);
-
+        this.editDefaultActionItem = false;
+        this.editedActionItemID = '';
+        this.editedRule = {};
+        this.enabledDisabledByEditCopy = {};
+        this.addDefaultActionDialogBox = false;
         this.getAllWorkFlow(this.claimType);
         /*  Clearing the form     */
-        this.defaultPriority = false;
+
         this.actions = {
           name: '',
           isEnabled: false,
-          createWhen: {
+          triggerEvent: {
             type: '',
             task: []
           },
-          priority: 'low',
+
           assignedTo: [
             {
               type: '',
               name: '',
-              id: ''
+              id: '',
+              machineValue: ''
             }
           ],
           actions: {
-            onComplete: [
+            completionRule: [
               {
                 type: '',
                 task: []
               }
             ],
-            onOverdue: [
+            overdueRule: [
               {
                 type: '',
                 task: []
@@ -2051,7 +2206,6 @@ export default {
             ]
           },
           due: {
-            type: '',
             interval: 0,
             unit: 'days'
           },
@@ -2062,7 +2216,7 @@ export default {
 
     // Remove Completion Multiple Values
     removeCompletionAction(val) {
-      this.actions.actions.onComplete.splice(val, 1);
+      this.actions.actions.completionRule.splice(val, 1);
     },
     cancelAccountSummaryUpdate() {
       this.users.fname = this.user.contact.fname;
@@ -2111,13 +2265,13 @@ export default {
       this.organizations.users.mailingAddress = this.user.mailingAddress;
     },
     addAnotherOnClick() {
-      this.actions.actions.onComplete.push({
+      this.actions.actions.completionRule.push({
         type: '',
         task: []
       });
     },
     addMoreOverDue() {
-      this.actions.actions.onOverdue.push({
+      this.actions.actions.overdueRule.push({
         type: '',
         task: []
       });
@@ -2127,15 +2281,15 @@ export default {
     setSubTypeOfAction(val, index, isEditable) {
       if (isEditable) {
         if (
-          this.actions.actions.onComplete[index].task &&
-          this.actions.actions.onComplete[index].task[0]
+          this.actions.actions.completionRule[index].task &&
+          this.actions.actions.completionRule[index].task[0]
         )
-          this.actions.actions.onComplete[index].task[0] = '';
+          this.actions.actions.completionRule[index].task[0] = '';
         if (
-          this.actions.actions.onComplete[index].task &&
-          this.actions.actions.onComplete[index].task[1]
+          this.actions.actions.completionRule[index].task &&
+          this.actions.actions.completionRule[index].task[1]
         )
-          this.actions.actions.onComplete[index].task[1] = '';
+          this.actions.actions.completionRule[index].task[1] = '';
       }
       if (val) {
         var indexOfCompletionAction = this.actionCompletion.findIndex(
@@ -2170,7 +2324,8 @@ export default {
       this.userId = getCurrentUser().id;
     }
     this.getWorkflowAction();
-    this.claimType = 'claim_new_claim';
+    this.claimType = ['claim_new_claim', 'claim_estimation'];
+    await this.claimActionItem(this.claimType);
     this.getRoles().then(async () => {
       this.roleTypes.forEach(val => {
         this.arrOfRoles.push({
@@ -2226,6 +2381,7 @@ export default {
 .q-dialog__inner--minimized > div {
   max-width: 80%;
 }
+
 tr:nth-child(even) {
   background-color: $grey-3 !important;
 }
@@ -2246,5 +2402,40 @@ table {
 td {
   padding: 8px 16px;
   border: 1px solid #ccc;
+}
+.action-item-table {
+  width: 100%;
+  overflow: auto;
+}
+.table-th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #f9e7d8;
+  color: white;
+}
+.table-th1 {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #f9e7d8;
+  color: white;
+}
+
+.table-th,
+.table-td {
+  text-align: center;
+  padding: 12px;
+}
+
+.table-tr:nth-child(odd) {
+  background-color: white;
+}
+.table-tr:nth-child(even) {
+  background-color: $grey-3;
+}
+.table-data {
+  width: 33.33%;
+  text-align: center;
 }
 </style>

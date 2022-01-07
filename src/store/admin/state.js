@@ -1,10 +1,11 @@
-export default function() {
+export default function () {
   return {
     actionOverDues: [],
     actionCompletion: [],
     actionReason: [],
     workflowAction: [],
     allAction: [],
-    officeTaskActions: []
+    officeTaskActions: [],
+    assignedToData: []
   };
 }
