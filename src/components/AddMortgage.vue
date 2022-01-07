@@ -364,7 +364,12 @@ export default {
             delete payload.address;
           }
           const response = await this.addClaimMortgage(payload);
-          this.getMortgages();
+          const params = {
+            hideLoader: false,
+            limit: 20,
+            offset: 0
+          };
+          this.getMortgages(params);
           if (response.id) {
             this.mortgage.id = response.id;
             payload.id = response.id;

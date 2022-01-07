@@ -383,7 +383,9 @@ export default {
           }
           const response = await this.addCarrier(payload);
           const params = {
-            hideLoader: false
+            hideLoader: false,
+            limit: 20,
+            offset: 0
           };
           this.getCarriers(params);
 
