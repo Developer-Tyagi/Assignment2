@@ -439,6 +439,18 @@ const routes = [
         name: 'admin',
         caseSensitive: true,
         component: () => import('pages/Admin.vue')
+      },
+      {
+        path: 'account-summary',
+        name: 'account-summary',
+        caseSensitive: true,
+        component: () => import('pages/admin/AccountSummary.vue')
+      },
+      {
+        path: 'automation',
+        name: 'automation',
+        caseSensitive: true,
+        component: () => import('pages/admin/Automation.vue')
       }
     ]
   },
