@@ -58,6 +58,7 @@ export async function getAllUsers(
       const { data } = await request.get('/users', params);
       commit('setAllUsers', data);
       dispatch('setLoading', false);
+      return;
     } catch (e) {
       console.log(e);
       dispatch('setLoading', false);
@@ -263,6 +264,7 @@ export async function getOrganization({ commit, dispatch }) {
     const { data } = await request.get('/organizations/info');
     commit('setOrganization', data);
     dispatch('setLoading', false);
+    return true;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
@@ -596,7 +598,10 @@ export async function dataURItoBlob(dataURI) {
   else byteString = unescape(dataURI.split(',')[1]);
 
   // separate out the mime component
-  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+  var mimeString = dataURI
+    .split(',')[0]
+    .split(':')[1]
+    .split(';')[0];
 
   // write the bytes of the string to a typed array
   var ia = new Uint8Array(byteString.length);
