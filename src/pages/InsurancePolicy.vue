@@ -44,12 +44,6 @@
           >
             <div>
               {{
-                selectedClaimCarrier.carrier.address.houseNumber
-                  ? selectedClaimCarrier.carrier.address.houseNumber
-                  : '-'
-              }}
-
-              {{
                 selectedClaimCarrier.carrier.address.address1
                   ? selectedClaimCarrier.carrier.address.address1
                   : '-'
@@ -172,11 +166,6 @@
 
           <span class="col-7 heading-light" v-if="personnel.address">
             <div class="row q-ml-sm" v-if="personnel.address.houseNumber">
-              {{
-                personnel.address.houseNumber
-                  ? personnel.address.houseNumber
-                  : '-'
-              }}
               ,
               {{
                 personnel.address.address1 ? personnel.address.address1 : '-'
