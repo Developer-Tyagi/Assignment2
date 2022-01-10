@@ -2,10 +2,12 @@
   <div>
     <div>
       <div v-if="vendorLists.Vendors">
-        <q-card class="q-pa-md"  :key="index" v-for="(vendor, index) in vendorLists.Vendors">
-          <div
-            class="form-heading  text-capitalize q-mt-xs row justify-between"
-          >
+        <q-card
+          class="q-pa-md"
+          :key="index"
+          v-for="(vendor, index) in vendorLists.Vendors"
+        >
+          <div class="form-heading text-capitalize q-mt-xs row justify-between">
             <span class="q-my-auto"> {{ vendor.name }}</span>
             <q-icon
               class="q-my-auto"
@@ -18,9 +20,6 @@
           <div class="row q-mt-sm">
             <div class="heading-light col-3">Address Details</div>
             <div class="col-7" v-if="vendor.address">
-              {{
-                vendor.address.houseNumber ? vendor.address.houseNumber : '-'
-              }}
               {{ vendor.address.address1 ? vendor.address.address1 : '-' }}
               <div v-if="vendor.address && vendor.address.address2">
                 {{ vendor.address.address2 }}
@@ -77,11 +76,9 @@
           </div>
         </q-card>
       </div>
-      <div v-else class="full-width  text-center">
+      <div v-else class="full-width text-center">
         <div class="q-mt-xs">
-          <div style="color: #666666">
-            You haven't added a Expert Vendor
-          </div>
+          <div style="color: #666666">You haven't added a Expert Vendor</div>
           <div class="text-center">
             <img
               src="~assets/add.svg"
