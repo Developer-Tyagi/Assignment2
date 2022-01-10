@@ -1,11 +1,11 @@
 <template>
   <q-page>
     <div>
-      <div class="q-mt-sm row justify-center">
-        <q-badge
-          color="red "
-          v-if="!organization.photoIDAPIKey && this.userRole == 'owner'"
-        >
+      <div
+        class="q-mt-sm row justify-center"
+        v-if="!organization.photoIDAPIKey && this.userRole == 'owner'"
+      >
+        <q-badge color="red ">
           PhotoId Key has not been added in the system
           <q-icon name="warning" color="white" class="q-ml-xs"></q-icon>
         </q-badge>
@@ -30,62 +30,99 @@
           @click="onSearchBackButtonClick"
         />
         <q-separator vertical></q-separator>
-        <q-btn @click="addClient" flat><img src="~assets/add.svg"/></q-btn>
+        <q-btn @click="addClient" flat><img src="~assets/add.svg" /></q-btn>
       </div>
-      <div class="mobile-container-page">
+      <div class="">
         <div class="clients-list" v-if="clients.length">
-          <div class="clients-list" v-for="client in clients" :key="client.id">
-            <q-item-section @click="onClientsListClick(client)">
-              <div class="client-list-item">
-                <div class="row form-heading q-pb-md">
-                  <span>
-                    {{ client['insuredInfo']['primary']['fname'] }}
+          <div v-if="!loading">
+            <q-scroll-area class="scroll-area">
+              <q-infinite-scroll
+                @load="onLoad"
+                :offset="250"
+                ref="infiniteScroll"
+              >
+                <template v-slot:loading>
+                  <div class="row justify-center q-my-md">
+                    <q-spinner-dots color="primary" size="md" />
+                  </div>
+                </template>
+                <div
+                  class="clients-list"
+                  v-for="client in clients"
+                  :key="client.id"
+                >
+                  <q-item-section @click="onClientsListClick(client)">
+                    <div class="client-list-item">
+                      <div class="row form-heading q-pb-md">
+                        <span>
+                          {{ client['insuredInfo']['primary']['fname'] }}
 
-                    {{ client['insuredInfo']['primary']['lname'] }}
-                  </span>
+                          {{ client['insuredInfo']['primary']['lname'] }}
+                        </span>
+                      </div>
+                      <div class="row">
+                        <span>
+                          {{
+                            client['meta'] ? client['meta']['totalClaims'] : 0
+                          }}
+                          Total Claims /
+                          {{
+                            client['meta'] ? client['meta']['openClaims'] : 0
+                          }}
+                          Open Claim
+                        </span>
+                      </div>
+                      <div class="row">
+                        <div
+                          class="row"
+                          v-if="client.insuredInfo.primary.phoneNumber"
+                        >
+                          <span
+                            >Mob:
+                            <span
+                              class="clickLink"
+                              @click="
+                                onPhoneNumberClick(
+                                  client.insuredInfo.primary.phoneNumber[0]
+                                    .number,
+                                  $event
+                                )
+                              "
+                            >
+                              {{
+                                showPhoneNumber(
+                                  client.insuredInfo.primary.phoneNumber[0]
+                                    .number
+                                )
+                              }}
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                      <div><span>File No. 12345678</span></div>
+                      <div class="row justify-between">
+                        <div>
+                          Status: {{ client.status ? client.status : '-' }}
+                        </div>
+                        <div>
+                          {{ dateWithTime(client.created) }}
+                        </div>
+                      </div>
+                    </div>
+                  </q-item-section>
                 </div>
-                <div class="row">
-                  <span>
-                    {{ client['meta'] ? client['meta']['totalClaims'] : 0 }}
-                    Total Claims /
-                    {{ client['meta'] ? client['meta']['openClaims'] : 0 }}
-                    Open Claim
-                  </span>
+                <div
+                  class="
+                    no-more-results-msg
+                    border-bottom-secondary
+                    text-body1 text-h5 text-center text-manatee
+                  "
+                  v-if="noMoreResults"
+                >
+                  <span class="bg-whiteSmoke q-px-sm">No more results</span>
                 </div>
-                <div class="row">
-                  <div
-                    class="row"
-                    v-if="client.insuredInfo.primary.phoneNumber"
-                  >
-                    <span
-                      >Mob:
-                      <span
-                        class="clickLink"
-                        @click="
-                          onPhoneNumberClick(
-                            client.insuredInfo.primary.phoneNumber[0].number,
-                            $event
-                          )
-                        "
-                      >
-                        {{
-                          showPhoneNumber(
-                            client.insuredInfo.primary.phoneNumber[0].number
-                          )
-                        }}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div><span>File No. 12345678</span></div>
-                <div class="row justify-between">
-                  <div>Status: {{ client.status ? client.status : '-' }}</div>
-                  <div>
-                    {{ dateWithTime(client.created) }}
-                  </div>
-                </div>
-              </div>
-            </q-item-section>
+              </q-infinite-scroll>
+            </q-scroll-area>
           </div>
         </div>
         <div v-else class="full-height full-width column">
@@ -112,13 +149,15 @@ import { dateWithTime } from '@utils/date';
 import { onPhoneNumberClick, showPhoneNumber } from '@utils/clickable';
 import localDB, { getCollection } from '@services/dexie';
 import { getCurrentUser } from 'src/utils/auth';
-
+const CLIENT_LIST_LIMIT = 20;
 export default {
   name: 'Clients',
   data() {
     return {
       userRole: '',
       searchText: '',
+      loading: true,
+      noMoreResults: false,
       openSearchInput: false
     };
   },
@@ -136,16 +175,12 @@ export default {
   },
 
   async created() {
-    const payload = {
-      status: '',
-      name: ''
-    };
-    this.getClients(payload);
     //only owner have the permission to view the organization info
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
     if (this.userRole == 'owner') {
       await this.getOrganization();
     }
+    this.getClientListData();
   },
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails', 'getOrganization']),
@@ -157,9 +192,42 @@ export default {
     dateWithTime,
     onPhoneNumberClick,
     showPhoneNumber,
+    // code for Pagination
+    async getClientListData() {
+      let params = {
+        limit: CLIENT_LIST_LIMIT,
+        offset: 0
+      };
+      this.loading = true;
+      await this.getClients(params);
+      this.loading = false;
+    },
+    // this function is for pagination and this is get called when the user start scrolling down.
+    async onLoad(index, done) {
+      let clientListBeforeLoad = this.clients.length;
+      let params = {
+        limit: CLIENT_LIST_LIMIT,
+        offset: index * CLIENT_LIST_LIMIT
+      };
+      if (clientListBeforeLoad >= CLIENT_LIST_LIMIT) {
+        await this.getClients(params);
+      }
+      let clientListAfterLoad = this.clients.length;
+      if (
+        clientListBeforeLoad == clientListAfterLoad ||
+        clientListAfterLoad - clientListBeforeLoad < CLIENT_LIST_LIMIT
+      ) {
+        if (clientListBeforeLoad > 0) {
+          this.noMoreResults = true;
+        }
+        this.$refs.infiniteScroll.stop();
+      }
+      done();
+    },
     onSearchBackButtonClick() {
       this.searchText = '';
-      this.search();
+      this.getClientListData();
+      this.noMoreResults = false;
     },
     async onClientsListClick(client) {
       this.getSingleClientDetails(client.id);
@@ -177,11 +245,15 @@ export default {
       this.selectedLead.id = '';
     },
 
-    search(e) {
-      const payload = {
-        name: this.searchText ? this.searchText : ''
+    async search(e) {
+      let params = {
+        name: ''
       };
-      this.getClients(payload);
+      params.name = e;
+      if (e == '') {
+        this.getClientListData();
+        this.noMoreResults = false;
+      } else await this.getClients(params);
     }
   }
 };

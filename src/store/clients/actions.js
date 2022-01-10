@@ -21,10 +21,13 @@ export async function getClients(
   if (isOnline) {
     try {
       const { data } = await request.get('/clients', {
+        limit: payload.limit,
+        offset: payload.offset,
         status: payload.status,
         name: payload.name
       });
-      commit('setClients', data);
+      const payloadData = { data: data, params: payload };
+      commit('setClients', payloadData);
 
       dispatch('setLoading', false);
     } catch (e) {
