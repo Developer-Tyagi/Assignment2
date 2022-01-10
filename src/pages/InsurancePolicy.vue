@@ -102,6 +102,7 @@
           >
         </div>
         <div
+          v-if="selectedClaimCarrier.carrier.email"
           class="click-link"
           @click="onEmailClick(selectedClaimCarrier.carrier.email, $event)"
         >
