@@ -14,7 +14,9 @@ export async function getMortgages(
   },
   params
 ) {
-  params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
+  if (params.hideLoader == false) {
+    dispatch('setLoading', true);
+  }
   if (isOnline) {
     try {
       const { data } = await request.get('/mortgages', params);

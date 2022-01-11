@@ -25,6 +25,7 @@ export async function getCarriers(
       const { data } = await request.get('/carriers', params);
       const payload = { data: data, params: params };
       commit('setCarriers', payload);
+      dispatch('setLoading', false);
     } catch (error) {
       dispatch('redirectTo404Page', error);
       if (error.response) {
