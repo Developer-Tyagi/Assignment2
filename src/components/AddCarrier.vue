@@ -271,7 +271,9 @@ export default {
         info: {
           website: '',
           notes: ''
-        }
+        },
+        isEditable: true,
+        canEditContactOnly: false
       }
     };
   },
@@ -373,7 +375,9 @@ export default {
         info: {
           website: this.carrier.info.website,
           notes: this.carrier.info.notes
-        }
+        },
+        isEditable: this.carrier.isEditable,
+        canEditContactOnly: this.carrier.canEditContactOnly
       };
 
       if (success) {
