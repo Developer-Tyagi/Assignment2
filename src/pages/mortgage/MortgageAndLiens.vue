@@ -27,11 +27,6 @@
           <div class="row q-mt-sm">
             <div class="heading-light col-3">Address Details</div>
             <div class="col-7" v-if="mortgage.address">
-              {{
-                mortgage.address.houseNumber
-                  ? mortgage.address.houseNumber
-                  : '-'
-              }}
               {{ mortgage.address.address1 ? mortgage.address.address1 : '-' }}
               <div v-if="mortgage.address && mortgage.address.address2">
                 {{ mortgage.address.address2 }}
