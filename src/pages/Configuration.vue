@@ -1,7 +1,32 @@
 <template>
-  <q-page class="row height-without-header">
+  <q-page class="row q-ml-xl height-without-header">
     <div class="col-10">
-      <div class="my-font text-bold row q-ma-md">Setup Company Account</div>
+      <div class="my-font text-bold text-h4 row q-ma-md">
+        Global Master Data Management
+      </div>
+      <div class="q-ml-md text-body1">
+        <p>
+          Master Data management allows you to edit and refine those values that
+          are used by all ClaimGuru accounts .please be aware that changes you
+          make will effect all users and accounts so be judicious. To manage
+          master data, select the Data type from the menu below and edit the
+          data in the table shown.
+        </p>
+      </div>
+
+      <div class="row q-ml-md">
+        <div class="col-1 q-mt-sm">Data Type</div>
+        <div class="col-4">
+          <q-select
+            dense
+            class="col-3 input-extra-padding"
+            outlined
+            options-dense
+            behavior="menu"
+            label="Please select a data type"
+          />
+        </div>
+      </div>
       <div class="q-mx-md" flat bordered v-if="tab.key != 'template'">
         <div class="row full-width justify-between">
           <span class="text-bold" style="line-height: 36px">{{
@@ -15,13 +40,14 @@
           <table class="table" v-if="table.length">
             <thead>
               <tr class="table-tr" v-if="tab.key !== 'inspectionType'">
-                <th class="table-th">Name</th>
-                <th class="table-th">Action</th>
+                <th class="table-th text-black">Name</th>
+                <th class="table-th text-black">Action</th>
               </tr>
               <tr class="table-tr" v-if="tab.key == 'inspectionType'">
-                <th class="table-th">Name</th>
-                <th class="table-th">Duration</th>
-                <th class="table-th">Action</th>
+                <th class="table-th text-black">Name</th>
+                <th class="table-th text-black">SubType</th>
+                <th class="table-th text-black">Duration (hrs)</th>
+                <th class="table-th text-black">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -32,19 +58,21 @@
               >
                 <td class="table-td">{{ list.value || list.name }}</td>
                 <td class="table-td">
-                  <span>
-                    <!-- <q-icon size="sm" color="primary" name="create" /> -->
-                  </span>
-                  <span>
-                    <!-- <q-icon
-                      class="q-ml-xs"
+                  <div class="justify-between">
+                    <q-icon
+                      name="edit"
                       size="sm"
-                      color="primary"
-                      name="delete"
-                    /> -->
-                  </span>
+                      class="q-pr-md cursor-pointer"
+                    ></q-icon>
+                    <q-icon
+                      name="visibility"
+                      size="sm"
+                      class="q-pl-md cursor-pointer"
+                    ></q-icon>
+                  </div>
                 </td>
               </tr>
+
               <tr
                 class="table-tr"
                 v-for="list in table"
@@ -52,6 +80,8 @@
               >
                 <td class="table-td">
                   <div class="text-bold">{{ list.value }}</div>
+                </td>
+                <td class="table-td">
                   <div v-for="type in list.subtypes">
                     <div>{{ type.value }}</div>
                   </div>
@@ -63,22 +93,30 @@
                   </div>
                 </td>
                 <td class="table-td">
-                  <div>&nbsp;</div>
-                  <div v-for="type in list.subtypes">
-                    <span>
-                      <!-- <q-icon size="sm" color="primary" name="create" /> -->
-                    </span>
-                    <span>
-                      <!-- <q-icon
-                        class="q-ml-xs"
-                        size="sm"
-                        color="primary"
-                        name="delete"
-                      /> -->
-                    </span>
+                  <div class="justify-between">
+                    <q-icon
+                      name="edit"
+                      size="sm"
+                      class="q-pr-md cursor-pointer"
+                    ></q-icon>
+                    <q-icon
+                      name="visibility"
+                      size="sm"
+                      class="q-pl-md cursor-pointer"
+                    ></q-icon>
                   </div>
                 </td>
               </tr>
+              <td>
+                <q-icon
+                  name="add_box"
+                  size="md"
+                  class="q-ml-md cursor-pointer"
+                ></q-icon>
+              </td>
+              <td></td>
+              <td v-if="tab.key == 'inspectionType'"></td>
+              <td v-if="tab.key == 'inspectionType'"></td>
             </tbody>
           </table>
 
@@ -507,14 +545,17 @@ export default {
     }
   },
   async created() {
+    this.getAllConfigurationData();
     (this.tab = this.webSubOptionMenuTab), this.setSelectedTab(this.tab);
     this.getInspectionTypes().then(async () => {
       this.table = this.inspectionTypes;
     });
+    console.log(this.setAllConfigurationData, 'setAllConfigurationData');
   },
 
   computed: {
     ...mapGetters([
+      'setAllConfigurationData',
       'webSubOptionMenuTab',
       'contactTypes',
       'titles',
@@ -535,6 +576,7 @@ export default {
 
   methods: {
     ...mapActions([
+      'getAllConfigurationData',
       'addUser',
       'addInspectionType',
       'addHonorifics',

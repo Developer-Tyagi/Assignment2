@@ -34,6 +34,25 @@ export async function getInspectionTypes(
   }
 }
 
+//function used to get all configuration data
+export async function getAllConfigurationData({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const data = await request.get('/config-data?viewAll=true');
+    console.log(data, 'data123');
+    commit('setAllConfigurationData', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
 // function is used for adding the new Inspection type.
 export async function addInspectionTypes({ dispatch, state }, payload) {
   dispatch('setLoading', true);

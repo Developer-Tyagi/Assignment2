@@ -160,7 +160,13 @@
             />
           </div>
           <div
-            class="col column text-weight-bold text-white q-pa-sm q-ml-md text-h6"
+            class="
+              col
+              column
+              text-weight-bold text-white
+              q-pa-sm q-ml-md
+              text-h6
+            "
             style="width: calc(100% - 54px)"
           >
             <div
@@ -320,7 +326,10 @@
                     v-if="menuItem.subOption"
                     @click="changeParentColor(menuItem.title)"
                   >
-                    <q-expansion-item group="somegroup">
+                    <q-expansion-item
+                      group="somegroup"
+                      @click="toRouteMenuBarPage(menuItem)"
+                    >
                       <template v-slot:header>
                         <q-item
                           :class="
