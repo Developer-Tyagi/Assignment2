@@ -81,6 +81,7 @@
             <div class="">
               <div class="form-heading">Carrier's Address</div>
               <div class="q-mt-xs">
+                {{ carrier.address }}
                 <AutoCompleteAddress
                   :id="'CarrierAddress'"
                   :readOnly="isDisabled()"
@@ -127,6 +128,9 @@
                     label="Last Name"
                   />
                   <div class="row justify-between">
+                    {{ carrier.contact.phoneNumber[0].type }}
+                    {{ carrier.contact.phoneNumber[0].number }}
+
                     <q-select
                       borderless
                       class="input-style input-overlay col-5"
@@ -301,33 +305,37 @@ export default {
     if (this.isEdit) {
       this.carrier.name = this.selectedCarrier.name;
       this.carrier.email = this.selectedCarrier.email;
-      this.carrier.phoneNumber[0].number =
-        this.selectedCarrier.phoneNumber[0].number;
-      this.carrier.phoneNumber[0].type =
-        this.selectedCarrier.phoneNumber[0].type;
+      if (this.selectedCarrier.phoneNumber[0]) {
+        this.carrier.phoneNumber[0].number =
+          this.selectedCarrier.phoneNumber[0].number;
+        this.carrier.phoneNumber[0].type =
+          this.selectedCarrier.phoneNumber[0]?.type || '';
+      }
       this.carrier.meta.claimFiledByEmail =
         this.selectedCarrier.meta.claimFiledByEmail;
       if (this.selectedCarrier.address) {
-        if (
-          this.selectedCarrier.address.dropBox &&
-          this.selectedCarrier.address.dropBox.isPresent
-        ) {
-          this.carrier.address.dropBox.isPresent =
-            this.selectedCarrier.address.dropBox.isPresent;
-        }
+        // if (
+        //   this.selectedCarrier.address.dropBox &&
+        //   this.selectedCarrier.address.dropBox.isPresent
+        // ) {
+        //   this.carrier.address.dropBox.isPresent =
+        //     this.selectedCarrier.address.dropBox.isPresent;
+        // }
         this.carrier.address = this.selectedCarrier.address;
       }
 
       this.isEditable = this.selectedCarrier.isEditable;
       this.canEditContactOnly = this.selectedCarrier.canEditContactOnly;
 
-      this.carrier.contact.fname = this.selectedCarrier.contact.fname;
-      this.carrier.contact.lname = this.selectedCarrier.contact.lname;
-      this.carrier.contact.phoneNumber =
-        this.selectedCarrier.contact.phoneNumber;
-      this.carrier.contact.email = this.selectedCarrier.contact.email;
-      this.carrier.info.website = this.selectedCarrier.info.website;
-      this.carrier.info.notes = this.selectedCarrier.info.notes;
+      if (this.selectedCarrier.contact) {
+        this.carrier.contact.fname = this.selectedCarrier.contact?.fname || '';
+        this.carrier.contact.lname = this.selectedCarrier.contact?.lname || '';
+        this.carrier.contact.phoneNumber =
+          this.selectedCarrier.contact?.phoneNumber || '';
+        this.carrier.contact.email = this.selectedCarrier.contact?.email || '';
+      }
+      this.carrier.info.website = this.selectedCarrier.info?.website || '';
+      this.carrier.info.notes = this.selectedCarrier.info?.notes || '';
     }
     this.getTitles();
     this.getContactTypes();
