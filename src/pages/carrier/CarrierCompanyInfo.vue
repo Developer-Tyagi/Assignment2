@@ -214,7 +214,6 @@ export default {
         this.selectedCarrier.canEditContactOnly == true &&
         this.selectedCarrier.isEditable == false
       ) {
-        this.onlyContact = true;
         return '';
       } else if (
         this.selectedCarrier.canEditContactOnly == false &&
