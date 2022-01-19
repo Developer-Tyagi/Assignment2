@@ -16,11 +16,17 @@
 
       <div class="row q-ml-md">
         <div class="col-1 q-mt-sm">Data Type</div>
+
         <div class="col-4">
           <q-select
             dense
             class="col-3 input-extra-padding"
             outlined
+            v-model="configuration.dataType"
+            :options="setAllConfigurationData"
+            option-label="dataTypeValue"
+            option-value="type"
+            @input=""
             options-dense
             behavior="menu"
             label="Please select a data type"
@@ -53,20 +59,51 @@
             <tbody>
               <tr
                 class="table-tr"
-                v-for="list in table"
+                v-for="(list, index) in table"
+                :key="index"
                 v-if="tab.key !== 'inspectionType'"
               >
-                <td class="table-td">{{ list.value || list.name }}</td>
+                <td class="table-td">
+                  <span v-if="!toEditConfigurationData">{{
+                    list.value || list.name
+                  }}</span>
+                  <span class="row justify-center text-center">
+                    <q-input
+                      v-model="
+                        toEditConfigurationWithoutSubtype.attributes[index]
+                          .value
+                      "
+                      v-if="toEditConfigurationData"
+                    ></q-input
+                  ></span>
+                </td>
                 <td class="table-td">
                   <div class="justify-between">
                     <q-icon
                       name="edit"
                       size="sm"
+                      v-if="!toEditConfigurationData"
+                      @click="toEditConfiguration(list, index)"
+                      class="q-pr-md cursor-pointer"
+                    ></q-icon>
+                    <q-icon
+                      name="block"
+                      size="sm"
+                      v-if="toEditConfigurationData"
+                      @click="toCancelConfigurationEdit()"
                       class="q-pr-md cursor-pointer"
                     ></q-icon>
                     <q-icon
                       name="visibility"
                       size="sm"
+                      v-if="!toEditConfigurationData"
+                      class="q-pl-md cursor-pointer"
+                    ></q-icon>
+                    <q-icon
+                      name="save"
+                      size="sm"
+                      @click="toSaveConfigurationEdit()"
+                      v-if="toEditConfigurationData"
                       class="q-pl-md cursor-pointer"
                     ></q-icon>
                   </div>
@@ -489,6 +526,7 @@ export default {
 
   data() {
     return {
+      toEditConfigurationData: false,
       newTab: '',
       uploadTemplateDialogBox: false,
       dataURl: '',
@@ -500,6 +538,18 @@ export default {
       templateTokens: [],
       groupedTokens: [],
       templatetype: { value: '', machineValue: '' },
+      configuration: {
+        dataType: ''
+      },
+      toEditConfigurationWithoutSubtype: {
+        type: '',
+        attributes: [
+          {
+            value: '',
+            machineValue: ''
+          }
+        ]
+      },
       uploadTemplatetype: { value: '', machineValue: '', id: '' },
       definitions: {
         insert_img: {
@@ -632,7 +682,24 @@ export default {
     },
 
     getBase64,
-
+    //function is used to cancel the edit configuration data
+    toCancelConfigurationEdit() {
+      this.toEditConfigurationData = false;
+    },
+    //function is used to save the configuration edit data
+    toSaveConfigurationEdit() {
+      this.toEditConfigurationData = false;
+    },
+    //funvtion is used to edit the configurationData
+    toEditConfiguration(data, index) {
+      this.toEditConfigurationData = true;
+      console.log(data, 'toEditConfiguration');
+      this.toEditConfigurationWithoutSubtype.type = data.type;
+      this.toEditConfigurationWithoutSubtype.attributes[index].value =
+        data.value;
+      this.toEditConfigurationWithoutSubtype.attributes[index].machineValue =
+        data.machineValue;
+    },
     async onFileInputClick(event) {
       document.getElementById('uploadFile').click();
       this.dataURI = await this.getBase64(event.target.files[0]);

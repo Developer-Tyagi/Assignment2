@@ -37,7 +37,7 @@ export async function setOfflineClients(state) {
   });
 
   state.clients = await getCollection('clients').toArray();
-  state.clients.sort(function(a, b) {
+  state.clients.sort(function (a, b) {
     return new Date(b.updated).getTime() - new Date(a.updated).getTime();
   });
 }
@@ -83,7 +83,8 @@ export async function setPropertyTypes(state, types) {
   const propertyTypes = types.map(type => ({
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
-    id: type.id
+    id: type.id,
+    type: type.type
   }));
   state.propertyTypes = propertyTypes;
   if ((await propertyTypesCollection.count()) > 0) {
@@ -101,7 +102,8 @@ export async function setPolicyTypes(state, types) {
   const policyTypes = types.map(type => ({
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
-    id: type.id
+    id: type.id,
+    type: type.type
   }));
   state.policyTypes = policyTypes;
   if ((await policyTypesCollection.count()) > 0) {
@@ -119,7 +121,8 @@ export async function setClaimReasons(state, reasons) {
   const claimReasons = reasons.map(reason => ({
     id: reason.id,
     name: reason.attributes.value,
-    machineValue: reason.attributes.machineValue
+    machineValue: reason.attributes.machineValue,
+    type: reason.type
   }));
   state.claimReasons = claimReasons;
   if ((await claimReasonsCollection.count()) > 0) {
@@ -137,7 +140,8 @@ export async function setClaimSeverities(state, types) {
   const claimSeverity = types.map(type => ({
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
-    id: type.id
+    id: type.id,
+    type: type.type
   }));
   state.claimSeverity = claimSeverity;
   if ((await claimSeveritiesCollection.count()) > 0) {
@@ -155,7 +159,8 @@ export async function setPolicyCategories(state, types) {
   const policyCategories = types.map(type => ({
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
-    id: type.id
+    id: type.id,
+    type: type.type
   }));
   state.policyCategories = policyCategories;
   if ((await policyCategoriesCollection.count()) > 0) {

@@ -18,7 +18,7 @@ export async function setClaims(state, claimsData = []) {
 
 export async function setOfflineClaims(state) {
   state.claims = await getCollection('claims').toArray();
-  state.claims.sort(function(a, b) {
+  state.claims.sort(function (a, b) {
     return new Date(b.updated).getTime() - new Date(a.updated).getTime();
   });
 }
@@ -135,9 +135,10 @@ export async function setTemplateTypes(state, types) {
 
   const templateTypeCollection = await getCollection('templateTypes');
   const templateType = types.map(type => ({
-    name: type.attributes.value,
+    value: type.attributes.value,
     machineValue: type.attributes.machineValue,
-    id: type.id
+    id: type.id,
+    type: type.type
   }));
   state.templateOptions = templateType;
 

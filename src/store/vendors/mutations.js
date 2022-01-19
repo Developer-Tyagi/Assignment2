@@ -25,7 +25,7 @@ export async function setVendors(state, vendorsData) {
 
 export async function setOfflineVendors(state, params) {
   state.vendors = await getCollection('vendors').toArray();
-  state.vendors.sort(function(a, b) {
+  state.vendors.sort(function (a, b) {
     return new Date(b.updated).getTime() - new Date(a.updated).getTime();
   });
 }
@@ -47,8 +47,9 @@ export async function setvendorsIndustries(state, vendorIndustriesData) {
   const vendorIndusrtyCollection = await getCollection('vendorIndustry');
   const vendorIndustries = vendorIndustriesData.map(vendorIndustry => ({
     machineValue: vendorIndustry.attributes.machineValue,
-    name: vendorIndustry.attributes.value,
-    id: vendorIndustry.id
+    value: vendorIndustry.attributes.value,
+    id: vendorIndustry.id,
+    type: vendorIndustry.type
   }));
   state.vendorIndustries = vendorIndustries;
   if ((await vendorIndusrtyCollection.count()) > 0) {
