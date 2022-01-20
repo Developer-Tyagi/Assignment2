@@ -39,7 +39,7 @@
             <q-timeline color="secondary">
               <q-timeline-entry icon="warning">
                 <template v-slot:subtitle>
-                  When: {{ actions.triggerEvent.type }}
+                  When: {{ actions.triggerEvent.type.value }}
                 </template>
               </q-timeline-entry>
 
@@ -52,7 +52,7 @@
                 <template v-slot:subtitle>
                   <span v-if="index == 0"> Then: </span>
                   <span v-else>And:</span>
-                  {{ actions.actions.completionRule[index].type }}
+                  {{ actions.actions.completionRule[index].type.value }}
                 </template>
               </q-timeline-entry>
             </q-timeline>
@@ -121,7 +121,7 @@
                     outlined
                     options-dense
                     behavior="menu"
-                    v-model="actions.triggerEvent.type"
+                    v-model="actions.triggerEvent.type.machineValue"
                     option-label="value"
                     :options="actionReason"
                     option-value="machineValue"
@@ -140,10 +140,11 @@
                         (val && val.length > 0) || 'Please select any event'
                     ]"
                   />
+
                   <div
                     class="q-ml-xs"
                     v-if="
-                      actions.triggerEvent.type &&
+                      actions.triggerEvent.type.value &&
                         actionReason[indexOfActionReason].additionalReasons
                     "
                   >
@@ -153,13 +154,19 @@
                       outlined
                       options-dense
                       behavior="menu"
-                      v-model="actions.triggerEvent.task[0]"
+                      v-model="triggerEventSubType"
                       option-label="value"
                       option-value="machineValue"
                       map-options
                       emit-value
                       :options="
                         actionReason[indexOfActionReason].additionalReasons
+                      "
+                      @input="
+                        setSubTypeForTriggerEvents(
+                          triggerEventSubType,
+                          indexOfActionReason
+                        )
                       "
                       label="Sub-option"
                       :rules="[
@@ -201,7 +208,7 @@
                           outlined
                           options-dense
                           behavior="menu"
-                          v-model="actions.actions.completionRule[index].type"
+                          v-model="actionCompletionRuleType[index]"
                           option-label="value"
                           option-value="machineValue"
                           map-options
@@ -209,7 +216,7 @@
                           :options="actionCompletion"
                           @input="
                             setSubTypeOfAction(
-                              actions.actions.completionRule[index].type,
+                              actionCompletionRuleType[index],
                               index,
                               (isEditable = true)
                             )
@@ -228,29 +235,29 @@
                         class="q-ml-md col-1"
                         v-if="
                           actions.actions.completionRule[index].type &&
-                            actionCompletion[indexOfSubTypeOfCompletion]
-                              .subOptions
+                            actionCompletion[
+                              actions.actions.completionRule[index].typeVal
+                            ].hasAdditionalActions
                         "
                       >
                         <q-select
                           dense
                           class="col-3 input-extra-padding"
                           outlined
-                          v-model="
-                            actions.actions.completionRule[index].task[0]
-                          "
+                          v-model="actionCompletionRuleSubType[index]"
                           behavior="menu"
                           option-value="machineValue"
                           option-label="value"
                           :options="
-                            actionCompletion[indexOfSubTypeOfCompletion]
-                              .subOptions
+                            actionCompletion[
+                              actions.actions.completionRule[index].typeVal
+                            ].subOptions
                           "
                           label="Sub-option"
                           @input="
                             setSubTypeForAction(
-                              actions.actions.completionRule[index].task[0],
-                              indexOfSubTypeOfCompletion,
+                              actionCompletionRuleSubType[index],
+                              actions.actions.completionRule[index].typeVal,
                               index,
                               (isEditable = true)
                             )
@@ -265,45 +272,63 @@
                           ]"
                         />
                       </div>
+
                       <div
                         class="q-ml-md col-1"
                         v-if="
                           actions.actions.completionRule[index].task &&
                           actions.actions.completionRule[index].task[0] &&
-                          actionCompletion[indexOfSubTypeOfCompletion]
-                            .subOptions
-                            ? actionCompletion[indexOfSubTypeOfCompletion]
-                                .subOptions[indexOfSubOfSubTypeOfCompletion]
-                              ? actionCompletion[indexOfSubTypeOfCompletion]
-                                  .subOptions[indexOfSubOfSubTypeOfCompletion]
-                                  .subTypes.length > 0
+                          actionCompletion[
+                            actions.actions.completionRule[index].typeVal
+                          ].hasAdditionalActions
+                            ? actionCompletion[
+                                actions.actions.completionRule[index].typeVal
+                              ].subOptions[
+                                actions.actions.completionRule[index].subTypeVal
+                              ]
+                              ? actionCompletion[
+                                  actions.actions.completionRule[index].typeVal
+                                ].subOptions[
+                                  actions.actions.completionRule[index]
+                                    .subTypeVal
+                                ].subTypes.length > 0
                               : false
                             : false
                         "
                       >
                         <q-select
                           v-if="
-                            actions.actions.completionRule[index].task[0] ==
-                              'user'
+                            actions.actions.completionRule[index].task[0]
+                              .machineValue == 'user'
                           "
                           dense
                           class="input-extra-padding"
                           outlined
-                          v-model="
-                            actions.actions.completionRule[index].task[1]
-                          "
+                          v-model="actionCompletionRuleSubValueType[index]"
                           behavior="menu"
                           option-value="id"
                           option-label="value"
                           :options="
-                            actionCompletion[indexOfSubTypeOfCompletion]
-                              .subOptions[indexOfSubOfSubTypeOfCompletion]
-                              .subTypes
+                            actionCompletion[
+                              actions.actions.completionRule[index].typeVal
+                            ].subOptions[
+                              actions.actions.completionRule[index].subTypeVal
+                            ].subTypes
                           "
                           label="Sub-option"
                           map-options
                           emit-value
                           options-dense
+                          @input="
+                            setSubTypeValueForAction(
+                              actionCompletionRuleSubValueType[index],
+                              actions.actions.completionRule[index].typeVal,
+                              actions.actions.completionRule[index].subTypeVal,
+                              index,
+                              (isEditable = true),
+                              (isUserType = true)
+                            )
+                          "
                           :rules="[
                             val =>
                               (val && val.length > 0) ||
@@ -315,21 +340,31 @@
                           dense
                           class="input-extra-padding"
                           outlined
-                          v-model="
-                            actions.actions.completionRule[index].task[1]
-                          "
+                          v-model="actionCompletionRuleSubValueType[index]"
                           behavior="menu"
                           option-value="machineValue"
                           option-label="value"
                           :options="
-                            actionCompletion[indexOfSubTypeOfCompletion]
-                              .subOptions[indexOfSubOfSubTypeOfCompletion]
-                              .subTypes
+                            actionCompletion[
+                              actions.actions.completionRule[index].typeVal
+                            ].subOptions[
+                              actions.actions.completionRule[index].subTypeVal
+                            ].subTypes
                           "
                           label="Sub-option"
                           map-options
                           emit-value
                           options-dense
+                          @input="
+                            setSubTypeValueForAction(
+                              actionCompletionRuleSubValueType[index],
+                              actions.actions.completionRule[index].typeVal,
+                              actions.actions.completionRule[index].subTypeVal,
+                              index,
+                              (isEditable = true),
+                              (isUserType = false)
+                            )
+                          "
                           :rules="[
                             val =>
                               (val && val.length > 0) ||
@@ -433,7 +468,7 @@
                     <q-select
                       dense
                       outlined
-                      v-model="actions.actions.overdueRule[index].type"
+                      v-model="overDueType"
                       behavior="menu"
                       option-value="machineValue"
                       option-label="value"
@@ -441,11 +476,7 @@
                       map-options
                       emit-value
                       @input="
-                        setSubType(
-                          actions.actions.overdueRule[index].type,
-                          index,
-                          (isEditable = true)
-                        )
+                        setSubType(overDueType, index, (isEditable = true))
                       "
                       label="OverDue"
                       options-dense
@@ -464,7 +495,7 @@
                         outlined
                         dense
                         options-dense
-                        v-model="actions.actions.overdueRule[index].task[0]"
+                        v-model="overDueSubTaskTypeVal"
                         behavior="menu"
                         option-value="machineValue"
                         option-label="value"
@@ -472,7 +503,7 @@
                         :options="actionOverDues[indexOfSubType].subOptions"
                         @input="
                           setSubOfSubType(
-                            actions.actions.overdueRule[index].task[0],
+                            overDueSubTaskTypeVal,
                             indexOfSubType,
                             index,
                             true
@@ -501,13 +532,14 @@
                     >
                       <q-select
                         v-if="
-                          actions.actions.overdueRule[index].task[0] == 'user'
+                          actions.actions.overdueRule[index].task[0]
+                            .machineValue == 'user'
                         "
                         dense
                         class="col-3 input-extra-padding"
                         outlined
                         options-dense
-                        v-model="actions.actions.overdueRule[index].task[1]"
+                        v-model="overDueSubTaskSubVal"
                         behavior="menu"
                         option-value="id"
                         option-label="value"
@@ -519,6 +551,16 @@
                           ].subTypes
                         "
                         label="Sub-option"
+                        @input="
+                          setSubOfSubTypeVal(
+                            overDueSubTaskSubVal,
+                            indexOfSubType,
+                            indexOfSubOfSubType,
+                            index,
+                            true,
+                            true
+                          )
+                        "
                       />
                       <q-select
                         v-else
@@ -526,7 +568,7 @@
                         class="col-3 input-extra-padding"
                         outlined
                         options-dense
-                        v-model="actions.actions.overdueRule[index].task[1]"
+                        v-model="overDueSubTaskSubVal"
                         behavior="menu"
                         option-value="machineValue"
                         option-label="value"
@@ -536,6 +578,16 @@
                           actionOverDues[indexOfSubType].subOptions[
                             indexOfSubOfSubType
                           ].subTypes
+                        "
+                        @input="
+                          setSubOfSubTypeVal(
+                            overDueSubTaskSubVal,
+                            indexOfSubType,
+                            indexOfSubOfSubType,
+                            index,
+                            true,
+                            false
+                          )
                         "
                         label="Sub-options"
                       />
@@ -682,6 +734,13 @@ export default {
   name: 'Automation',
   data() {
     return {
+      triggerEventSubType: '',
+      actionCompletionRuleType: [],
+      actionCompletionRuleSubType: [],
+      actionCompletionRuleSubValueType: [],
+      overDueType: '',
+      overDueSubTaskTypeVal: '',
+      overDueSubTaskSubVal: '',
       editedRule: {},
       enabledDisabledByEditCopy: {},
       assignedToInfo: '',
@@ -719,10 +778,18 @@ export default {
       userId: '',
       actions: {
         name: '',
-        isEnabled: false,
+        isEnabled: true,
         triggerEvent: {
-          type: '',
-          task: []
+          type: {
+            value: '',
+            machineValue: ''
+          },
+          task: [
+            {
+              value: '',
+              machineValue: ''
+            }
+          ]
         },
         assignedTo: [
           {
@@ -735,13 +802,15 @@ export default {
         actions: {
           completionRule: [
             {
-              type: '',
+              typeVal: '',
+              subTypeVal: '',
+              type: {},
               task: []
             }
           ],
           overdueRule: [
             {
-              type: '',
+              type: {},
               task: []
             }
           ]
@@ -843,10 +912,13 @@ export default {
       this.workflowActionItem = '';
       this.actions = {
         name: '',
-        isEnabled: false,
+        isEnabled: true,
         triggerEvent: {
-          type: '',
-          task: []
+          type: {
+            value: '',
+            machineValue: ''
+          },
+          task: [{ value: '', machineValue: '' }]
         },
         assignedTo: [
           {
@@ -858,6 +930,8 @@ export default {
         actions: {
           completionRule: [
             {
+              typeVal: '',
+              subTypeVal: '',
               type: '',
               task: []
             }
@@ -936,6 +1010,7 @@ export default {
         item.triggerEvent && item.triggerEvent.task
           ? item.triggerEvent.task
           : [];
+
       this.actions.assignedTo[0].id =
         item.assignedTo && item.assignedTo[0].id ? item.assignedTo[0].id : '';
       this.actions.assignedTo[0].name =
@@ -973,43 +1048,64 @@ export default {
         this.actions.triggerEvent.type,
         (this.isEditable = false)
       );
-
-      this.actions.assignedTo[0].type = item.assignedTo[0].type;
+      (this.triggerEventSubType = this.actions.triggerEvent.task[0].value),
+        (this.actions.assignedTo[0].type = item.assignedTo[0].type);
       this.actions.assignedTo[0].name = item.assignedTo[0].name;
       this.actions.assignedTo[0].id = item.assignedTo[0].id;
       this.actions.assignedTo[0].machineValue = item.assignedTo[0].machineValue;
       this.assignedToInfo = item.assignedTo[0].name;
 
       for (let i = 0; i < this.actions.actions.completionRule.length; i++) {
-        if (this.actions.actions.completionRule[i].type != '')
+        if (this.actions.actions.completionRule[i].type != '') {
+          this.actionCompletionRuleType[
+            i
+          ] = this.actions.actions.completionRule[i].type.value;
           this.setSubTypeOfAction(
-            this.actions.actions.completionRule[i].type,
+            this.actions.actions.completionRule[i].type.machineValue,
             i,
             (this.isEditable = false)
           );
+        }
+        if (this.actions.actions.completionRule[i].task.length != 0) {
+          (this.actionCompletionRuleSubType = this.actions.actions.completionRule[
+            i
+          ].task[0].value),
+            (this.actionCompletionRuleSubValueType = this.actions.actions.completionRule[
+              i
+            ].task[1].value);
 
-        if (this.actions.actions.completionRule[i].task.length != 0)
           this.setSubTypeForAction(
-            this.actions.actions.completionRule[i].task[0],
+            this.actions.actions.completionRule[i].task[0].machineValue,
             this.indexOfSubTypeOfCompletion,
             i,
             (this.isEditable = false)
           );
+        }
       }
+
       for (let i = 0; i < this.actions.actions.overdueRule.length; i++) {
-        if (this.actions.actions.overdueRule[i].type != '')
+        if (this.actions.actions.overdueRule[i].type != '') {
+          this.overDueType = this.actions.actions.overdueRule[i].type.value;
           this.setSubType(
-            this.actions.actions.overdueRule[i].type,
+            this.actions.actions.overdueRule[i].type.machineValue,
             i,
             (this.isEditable = false)
           );
-        if (this.actions.actions.overdueRule[i].task.length != 0)
+        }
+        if (this.actions.actions.overdueRule[i].task.length != 0) {
+          this.overDueSubTaskTypeVal = this.actions.actions.overdueRule[
+            i
+          ].task[0].value;
+          this.overDueSubTaskSubVal = this.actions.actions.overdueRule[
+            i
+          ].task[1].value;
           this.setSubOfSubType(
-            this.actions.actions.overdueRule[i].task[0],
+            this.actions.actions.overdueRule[i].task[0].machineValue,
             this.indexOfSubType,
             i,
             false
           );
+        }
       }
     },
 
@@ -1063,15 +1159,29 @@ export default {
       this.selectedWorkflowID = mValue;
     },
 
+    setSubTypeForTriggerEvents(value, pValue) {
+      var index = this.actionReason[pValue].additionalReasons.findIndex(
+        std => std.machineValue === value
+      );
+      // this.actions.triggerEvent.task=[];
+      let subTaskData = {
+        value: this.actionReason[pValue].additionalReasons[index].value,
+        machineValue: this.actionReason[pValue].additionalReasons[index]
+          .machineValue
+      };
+      this.actions.triggerEvent.task[0] = subTaskData;
+    },
+
     //  Finding and Clearing the Other Sub data while changing the main DRopdown data
     createdWhenSubType(value, isEditable) {
       if (isEditable) {
         if (this.actions.triggerEvent.task && this.actions.triggerEvent.task[0])
-          this.actions.triggerEvent.task[0] = '';
+          this.actions.triggerEvent.task[0] = { value: '', machineValue: '' };
       }
       var index = this.actionReason.findIndex(
-        std => std.machineValue === value
+        std => std.machineValue === value.machineValue
       );
+      this.actions.triggerEvent.type.value = this.actionReason[index].value;
       this.indexOfActionReason = index;
     },
 
@@ -1093,8 +1203,52 @@ export default {
         var index = this.actionOverDues.findIndex(
           std => std.machineValue === val
         );
+        let overdueObj = {
+          value: this.actionOverDues[index].value,
+          machineValue: this.actionOverDues[index].machineValue
+        };
+        this.actions.actions.overdueRule[0].type = overdueObj;
         this.indexOfSubType = index;
       }
+    },
+    setSubOfSubTypeVal(
+      subValue,
+      indexOfSubType,
+      indexOfSubOfSubType,
+      index,
+      isEditable,
+      isUserType
+    ) {
+      if (subValue && isUserType) {
+        // For subtype user
+        var ind = this.actionOverDues[indexOfSubType].subOptions[
+          indexOfSubOfSubType
+        ].subTypes.findIndex(std => std.id === subValue);
+
+        var overdueObj = {
+          value: this.actionOverDues[indexOfSubType].subOptions[
+            indexOfSubOfSubType
+          ].subTypes[ind].value,
+          machineValue: this.actionOverDues[indexOfSubType].subOptions[
+            indexOfSubOfSubType
+          ].subTypes[ind].id
+        };
+      } else {
+        // For subtype role
+        var ind = this.actionOverDues[indexOfSubType].subOptions[
+          indexOfSubOfSubType
+        ].subTypes.findIndex(std => std.machineValue === subValue);
+
+        var overdueObj = {
+          value: this.actionOverDues[indexOfSubType].subOptions[
+            indexOfSubOfSubType
+          ].subTypes[ind].value,
+          machineValue: this.actionOverDues[indexOfSubType].subOptions[
+            indexOfSubOfSubType
+          ].subTypes[ind].machineValue
+        };
+      }
+      this.actions.actions.overdueRule[index].task[1] = overdueObj;
     },
 
     // this function is used to update the selected subOption of onOverdue, and also used to find the index of selected subtoption index.
@@ -1113,9 +1267,53 @@ export default {
             return item.machineValue === subValue;
           }
         );
-
+        let valObj = {
+          value: this.actionOverDues[indexOfSubType].subOptions[obj].value,
+          machineValue: this.actionOverDues[indexOfSubType].subOptions[obj]
+            .machineValue
+        };
+        this.actions.actions.overdueRule[index].task[0] = valObj;
         this.indexOfSubOfSubType = obj;
       }
+    },
+    setSubTypeValueForAction(
+      SubOptionValue,
+      sValue,
+      sTValue,
+      index,
+      isEditable,
+      isUserType
+    ) {
+      if (SubOptionValue != '' && isUserType) {
+        var ob = this.actionCompletion[sValue].subOptions[
+          sTValue
+        ].subTypes.findIndex(item => {
+          return item.id === SubOptionValue;
+        });
+
+        var valObj = {
+          value: this.actionCompletion[sValue].subOptions[sTValue].subTypes[ob]
+            .value,
+          machineValue: this.actionCompletion[sValue].subOptions[sTValue]
+            .subTypes[ob].id
+        };
+      } else {
+        var ob = this.actionCompletion[sValue].subOptions[
+          sTValue
+        ].subTypes.findIndex(item => {
+          return item.machineValue === SubOptionValue;
+        });
+
+        var valObj = {
+          value: this.actionCompletion[sValue].subOptions[sTValue].subTypes[ob]
+            .value,
+          machineValue: this.actionCompletion[sValue].subOptions[sTValue]
+            .subTypes[ob].machineValue
+        };
+      }
+      this.actions.actions.completionRule[index].task[1] = valObj;
+      this.actions.actions.completionRule[index].subTypeVal = ob;
+      this.indexOfSubOfSubTypeOfCompletion = ob;
     },
 
     // this function is used to update the subOption of onComplete row and use to find the index value of selected onComplete subOption, which we used further to display subOption of Selected SubOption.
@@ -1131,6 +1329,13 @@ export default {
         const ob = this.actionCompletion[sValue].subOptions.findIndex(item => {
           return item.machineValue === SubOptionValue;
         });
+        let valObj = {
+          value: this.actionCompletion[sValue].subOptions[ob].value,
+          machineValue: this.actionCompletion[sValue].subOptions[ob]
+            .machineValue
+        };
+        this.actions.actions.completionRule[index].task[0] = valObj;
+        this.actions.actions.completionRule[index].subTypeVal = ob;
         this.indexOfSubOfSubTypeOfCompletion = ob;
       }
     },
@@ -1164,9 +1369,16 @@ export default {
         if (this.copyRule) {
           this.actions.name = 'Copy- ' + this.actions.name;
         }
+        let data = this.actions;
+        data.actions.completionRule.forEach(item => {
+          delete item.subTypeVal;
+          delete item.typeVal;
+        });
+        // delete data.actions.completionRule[0].typeVal;
+        // delete data.actions.completionRule[0].subTypeVal;
         const param = {
           machineValue: this.workflowActionItem,
-          data: this.actions
+          data: data
         };
 
         await this.addWorkflowAction(param);
@@ -1182,7 +1394,10 @@ export default {
 
             isEnabled: false,
             triggerEvent: {
-              type: '',
+              type: {
+                value: '',
+                machineValue: ''
+              },
               task: []
             },
             assignedTo: [
@@ -1276,8 +1491,11 @@ export default {
           name: '',
           isEnabled: false,
           triggerEvent: {
-            type: '',
-            task: []
+            type: {
+              value: '',
+              machineValue: ''
+            },
+            task: [{ value: '', machineValue: '' }]
           },
 
           assignedTo: [
@@ -1314,10 +1532,15 @@ export default {
     // Remove Completion Multiple Values
     removeCompletionAction(val) {
       this.actions.actions.completionRule.splice(val, 1);
+      this.actionCompletionRuleType.splice(val, 1);
+      this.actionCompletionRuleSubType.splice(val, 1);
+      this.actionCompletionRuleSubValueType.splice(val, 1);
     },
 
     addAnotherOnClick() {
       this.actions.actions.completionRule.push({
+        typeVal: '',
+        subTypeVal: '',
         type: '',
         task: []
       });
@@ -1347,7 +1570,16 @@ export default {
         var indexOfCompletionAction = this.actionCompletion.findIndex(
           std => std.machineValue === val
         );
-        this.indexOfSubTypeOfCompletion = indexOfCompletionAction;
+        let actionCompletionObj = {
+          value: this.actionCompletion[indexOfCompletionAction].value,
+          machineValue: this.actionCompletion[indexOfCompletionAction]
+            .machineValue
+        };
+        this.actions.actions.completionRule[index].type = actionCompletionObj;
+        this.actions.actions.completionRule[
+          index
+        ].typeVal = indexOfCompletionAction;
+        //this.indexOfSubTypeOfCompletion = indexOfCompletionAction;
       }
     }
   },
