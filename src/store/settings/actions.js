@@ -39,7 +39,6 @@ export async function getAllConfigurationData({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/config-types');
-    console.log(data, 'data123');
     commit('setAllConfigurationData', data);
     dispatch('setLoading', false);
   } catch (e) {

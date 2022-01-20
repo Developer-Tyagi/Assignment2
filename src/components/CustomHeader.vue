@@ -549,21 +549,7 @@ export default {
           title: 'Configuration',
           key: 'configuration',
           link: '/configuration',
-          subOption: [
-            { name: 'Inspection Type', key: 'inspectionType' },
-            { name: ' Industry Type', key: 'industryType' },
-            { name: 'Honorific', key: 'honorific' },
-            { name: 'Phone Type', key: 'phoneType' },
-            { name: 'Client Type', key: 'clientType' },
-            { name: 'Policy Categories', key: 'policyCategories' },
-            { name: 'Policy Type', key: 'policyType' },
-            { name: 'Property Type', key: 'propertyType' },
-            { name: 'Claim Reason', key: 'claimReason' },
-            { name: 'Loss Cause', key: 'lossCause' },
-            { name: 'Claim Severity', key: 'claimSeverity' },
-            { name: 'Template Type', key: 'templateType' },
-            { name: 'Template', key: 'template' }
-          ],
+          subOption: [{ name: 'Template', key: 'template' }],
           icon: 'configuration_big.svg',
           description: 'View, Add and Manage all types of configuration.'
         },
