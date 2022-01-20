@@ -132,7 +132,7 @@
             @click="onClickBreadcrumbsItem(breadcrumbsData.menuItem)"
           />
           <q-breadcrumbs-el
-            v-if="breadcrumbsData.subItemTitle"
+            v-if="breadcrumbsData.subItemTitle && webSubOptionMenuTab != ''"
             :label="breadcrumbsData.subItemTitle"
           />
         </q-breadcrumbs>
@@ -160,7 +160,13 @@
             />
           </div>
           <div
-            class="col column text-weight-bold text-white q-pa-sm q-ml-md text-h6"
+            class="
+              col
+              column
+              text-weight-bold text-white
+              q-pa-sm q-ml-md
+              text-h6
+            "
             style="width: calc(100% - 54px)"
           >
             <div
@@ -320,7 +326,10 @@
                     v-if="menuItem.subOption"
                     @click="changeParentColor(menuItem.title)"
                   >
-                    <q-expansion-item group="somegroup">
+                    <q-expansion-item
+                      group="somegroup"
+                      @click="toRouteMenuBarPage(menuItem)"
+                    >
                       <template v-slot:header>
                         <q-item
                           :class="
@@ -362,7 +371,10 @@
                           {{ subMenuOption.name }}
                           <div
                             class="q-mr-xl q-pr-lg"
-                            v-if="subOptionSelected.key == subMenuOption.key"
+                            v-if="
+                              subOptionSelected.key == subMenuOption.key &&
+                              webSubOptionMenuTab != ''
+                            "
                           >
                             <q-separator style="background: #ef5926" />
                           </div>
@@ -540,21 +552,7 @@ export default {
           title: 'Configuration',
           key: 'configuration',
           link: '/configuration',
-          subOption: [
-            { name: 'Inspection Type', key: 'inspectionType' },
-            { name: ' Industry Type', key: 'industryType' },
-            { name: 'Honorific', key: 'honorific' },
-            { name: 'Phone Type', key: 'phoneType' },
-            { name: 'Client Type', key: 'clientType' },
-            { name: 'Policy Categories', key: 'policyCategories' },
-            { name: 'Policy Type', key: 'policyType' },
-            { name: 'Property Type', key: 'propertyType' },
-            { name: 'Claim Reason', key: 'claimReason' },
-            { name: 'Loss Cause', key: 'lossCause' },
-            { name: 'Claim Severity', key: 'claimSeverity' },
-            { name: 'Template Type', key: 'templateType' },
-            { name: 'Template', key: 'template' }
-          ],
+          subOption: [{ name: 'Template', key: 'template' }],
           icon: 'configuration_big.svg',
           description: 'View, Add and Manage all types of configuration.'
         },
@@ -781,6 +779,7 @@ export default {
       return this.$router.history.current.path.substring(1);
     },
     ...mapGetters([
+      'webSubOptionMenuTab',
       'converted',
       'pageAccess',
       'isOnline',

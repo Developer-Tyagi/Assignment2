@@ -18,7 +18,7 @@
             $route.name != 'create client' &&
             $route.name != 'edit  lead' &&
             $route.name != 'vendors' &&
-            $route.name != 'configuration  ' &&
+            $route.name != 'configuration' &&
             $route.name != 'manage users' &&
             $route.name != 'admin' &&
             $route.name != 'reports' &&

@@ -10,6 +10,7 @@ export async function setClientTypes(state, typesData) {
   const types = typesData.map(types => ({
     name: types.attributes.value,
     id: types.id,
+    type: types.type,
     machineValue: types.attributes.machineValue
   }));
   state.clientTypes = types;
@@ -39,6 +40,7 @@ export async function setTitles(state, titleData) {
   const titles = titleData.map(title => ({
     value: title.attributes.value,
     id: title.id,
+    type: title.type,
     machineValue: title.attributes.machineValue
   }));
   state.titles = titles;
@@ -57,7 +59,8 @@ export async function setContactTypes(state, types) {
   const contactTypes = types.map(type => ({
     id: type.id,
     name: type.attributes.value,
-    machineValue: type.attributes.machineValue
+    machineValue: type.attributes.machineValue,
+    type: type.type
   }));
   state.contactTypes = contactTypes;
   if ((await contactTypesCollection.count()) > 0) {
@@ -82,7 +85,8 @@ export async function setLossCause(state, causes) {
   const lossCauses = causes.map(cause => ({
     name: cause.attributes.value,
     machineValue: cause.attributes.machineValue,
-    id: cause.id
+    id: cause.id,
+    type: cause.type
   }));
   state.lossCauses = lossCauses;
   if ((await lossCausesCollection.count()) > 0) {

@@ -1,57 +1,126 @@
 <template>
-  <q-page class="row height-without-header">
+  <q-page class="row q-ml-xl height-without-header">
     <div class="col-10">
-      <div class="my-font text-bold row q-ma-md">Setup Company Account</div>
-      <div class="q-mx-md" flat bordered v-if="tab.key != 'template'">
+      <div class="my-font text-bold text-h4 row q-ma-md">
+        Global Master Data Management
+      </div>
+      <div class="q-ml-md text-body1">
+        <p>
+          Master Data management allows you to edit and refine those values that
+          are used by all ClaimGuru accounts .please be aware that changes you
+          make will effect all users and accounts so be judicious. To manage
+          master data, select the Data type from the menu below and edit the
+          data in the table shown.
+        </p>
+      </div>
+
+      <div class="row q-ml-md">
+        <div class="col-1 q-mt-sm">Data Type</div>
+
+        <div class="col-4">
+          <q-select
+            dense
+            class="col-3 input-extra-padding"
+            outlined
+            v-model="configuration.dataType"
+            :options="setAllConfigurationData"
+            option-label="dataTypeValue"
+            option-value="dataTypeMachineValue"
+            @input="setSelectedTab(configuration.dataType, 'true')"
+            options-dense
+            behavior="menu"
+            label="Please select a data type"
+          />
+        </div>
+      </div>
+      <q-separator class="q-my-md" />
+      <div class="q-mx-md" flat bordered v-if="tab != 'template'">
         <div class="row full-width justify-between">
-          <span class="text-bold" style="line-height: 36px">{{
-            tab.name
-          }}</span>
-          <q-btn @click="onClickingAddButton(tab)" color="primary">
-            Add {{ tab.name }}
-          </q-btn>
+          <span class="text-bold" style="line-height: 36px">{{ newTab }}</span>
+          <div class="row">
+            <q-icon
+              name="add_box"
+              size="lg"
+              @click="onClickingAddButton(tab)"
+              class="q-ml-md cursor-pointer"
+            ></q-icon>
+            <span class="q-my-sm">Add Item</span>
+          </div>
         </div>
         <div class="bg-grey-3 q-mt-md">
           <table class="table" v-if="table.length">
             <thead>
-              <tr class="table-tr" v-if="tab.key !== 'inspectionType'">
-                <th class="table-th">Name</th>
-                <th class="table-th">Action</th>
+              <tr class="table-tr" v-if="tab !== 'inspections'">
+                <th class="table-th text-black">Name</th>
+                <th class="table-th text-black">Action</th>
               </tr>
-              <tr class="table-tr" v-if="tab.key == 'inspectionType'">
-                <th class="table-th">Name</th>
-                <th class="table-th">Duration</th>
-                <th class="table-th">Action</th>
+              <tr class="table-tr" v-if="tab == 'inspections'">
+                <th class="table-th text-black">Name</th>
+                <th class="table-th text-black">SubType</th>
+                <th class="table-th text-black">Duration (hrs)</th>
+                <th class="table-th text-black">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr
                 class="table-tr"
-                v-for="list in table"
-                v-if="tab.key !== 'inspectionType'"
+                v-for="(list, index) in table"
+                :key="index"
+                v-if="tab !== 'inspections'"
               >
-                <td class="table-td">{{ list.value || list.name }}</td>
                 <td class="table-td">
-                  <span>
-                    <!-- <q-icon size="sm" color="primary" name="create" /> -->
-                  </span>
-                  <span>
-                    <!-- <q-icon
-                      class="q-ml-xs"
+                  <span v-if="!toEditConfigurationData">{{
+                    list.value || list.name
+                  }}</span>
+                  <span class="row justify-center text-center">
+                    <q-input
+                      v-model="
+                        toEditConfigurationWithoutSubtype.attributes[index]
+                          .value
+                      "
+                      v-if="toEditConfigurationData"
+                    ></q-input
+                  ></span>
+                </td>
+                <td class="table-td">
+                  <div class="justify-between">
+                    <q-icon
+                      name="edit"
                       size="sm"
-                      color="primary"
-                      name="delete"
-                    /> -->
-                  </span>
+                      v-if="!toEditConfigurationData"
+                      class="q-pr-md cursor-pointer"
+                    ></q-icon>
+                    <q-icon
+                      name="block"
+                      size="sm"
+                      v-if="toEditConfigurationData"
+                      class="q-pr-md cursor-pointer"
+                    ></q-icon>
+                    <q-icon
+                      name="visibility"
+                      size="sm"
+                      v-if="!toEditConfigurationData"
+                      class="q-pl-md cursor-pointer"
+                    ></q-icon>
+                    <q-icon
+                      name="save"
+                      size="sm"
+                      v-if="toEditConfigurationData"
+                      class="q-pl-md cursor-pointer"
+                    ></q-icon>
+                  </div>
                 </td>
               </tr>
+
               <tr
                 class="table-tr"
                 v-for="list in table"
-                v-if="tab.key === 'inspectionType'"
+                v-if="tab === 'inspections'"
               >
                 <td class="table-td">
                   <div class="text-bold">{{ list.value }}</div>
+                </td>
+                <td class="table-td">
                   <div v-for="type in list.subtypes">
                     <div>{{ type.value }}</div>
                   </div>
@@ -63,22 +132,30 @@
                   </div>
                 </td>
                 <td class="table-td">
-                  <div>&nbsp;</div>
-                  <div v-for="type in list.subtypes">
-                    <span>
-                      <!-- <q-icon size="sm" color="primary" name="create" /> -->
-                    </span>
-                    <span>
-                      <!-- <q-icon
-                        class="q-ml-xs"
-                        size="sm"
-                        color="primary"
-                        name="delete"
-                      /> -->
-                    </span>
+                  <div class="justify-between">
+                    <q-icon
+                      name="edit"
+                      size="sm"
+                      class="q-pr-md cursor-pointer"
+                    ></q-icon>
+                    <q-icon
+                      name="visibility"
+                      size="sm"
+                      class="q-pl-md cursor-pointer"
+                    ></q-icon>
                   </div>
                 </td>
               </tr>
+              <td>
+                <q-icon
+                  name="add_box"
+                  size="md"
+                  class="q-ml-md cursor-pointer"
+                ></q-icon>
+              </td>
+              <td></td>
+              <td v-if="tab == 'inspections'"></td>
+              <td v-if="tab == 'inspections'"></td>
             </tbody>
           </table>
 
@@ -88,9 +165,7 @@
       <div v-else>
         <div class="q-mx-md">
           <div class="row full-width justify-between">
-            <span class="text-bold" style="line-height: 36px">{{
-              tab.name
-            }}</span>
+            <span class="text-bold" style="line-height: 36px">{{ tab }}</span>
 
             <div class="row">
               <q-btn @click="openAddTemplateBox" color="primary">
@@ -156,15 +231,15 @@
     <q-dialog v-model="dialogBox">
       <q-card
         :class="{
-          'inspection-dialog-box': tab.key === 'inspectionType',
-          'other-dialog-box': tab.key !== 'inspectionType'
+          'inspection-dialog-box': tab === 'inspections',
+          'other-dialog-box': tab !== 'inspections'
         }"
       >
         <q-bar
           class="row justify-between bg-primary text-white"
           style="height: 50px"
         >
-          <div class="col-7 text-bold">Add {{ dialogBoxName.name }}</div>
+          <div class="col-7 text-bold">Add {{ dialogBoxName }}</div>
           <q-btn dense flat icon="close" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
@@ -172,12 +247,12 @@
 
         <q-card-section
           :class="{
-            'dialog-box-content': tab.key === 'inspectionType',
-            'other-dialog-box-content': tab.key !== 'inspectionType'
+            'dialog-box-content': tab === 'inspections',
+            'other-dialog-box-content': tab !== 'inspections'
           }"
         >
           <div class="column">
-            <q-form ref="form" v-if="tab.key !== 'inspectionType'">
+            <q-form ref="form" v-if="tab !== 'inspections'">
               <div class="q-pl-xs">
                 <q-input
                   dense
@@ -186,13 +261,12 @@
                   outlined
                   :rules="[
                     val =>
-                      (val && val.length > 0) ||
-                      'Please Fill ' + dialogBoxName.name
+                      (val && val.length > 0) || 'Please Fill ' + dialogBoxName
                   ]"
                 />
               </div>
             </q-form>
-            <q-form ref="form" v-if="tab.key == 'inspectionType'">
+            <q-form ref="form" v-if="tab == 'inspections'">
               <q-card
                 class="q-ma-md q-pa-md"
                 v-for="(subtype, index) in inspectionType.subtypes"
@@ -229,7 +303,7 @@
           </div>
           <div
             class="row justify-between text-primary"
-            v-if="tab.key == 'inspectionType'"
+            v-if="tab == 'inspections'"
           >
             <div class="q-ml-xl" @click="addAnotherSubType">
               + Another Sub Type Of Inspection
@@ -451,6 +525,7 @@ export default {
 
   data() {
     return {
+      toEditConfigurationData: false,
       newTab: '',
       uploadTemplateDialogBox: false,
       dataURl: '',
@@ -462,6 +537,18 @@ export default {
       templateTokens: [],
       groupedTokens: [],
       templatetype: { value: '', machineValue: '' },
+      configuration: {
+        dataType: 'inspections'
+      },
+      toEditConfigurationWithoutSubtype: {
+        type: '',
+        attributes: [
+          {
+            value: '',
+            machineValue: ''
+          }
+        ]
+      },
       uploadTemplatetype: { value: '', machineValue: '', id: '' },
       definitions: {
         insert_img: {
@@ -473,7 +560,7 @@ export default {
       title: '',
       post: { body: '' },
       dialogBox: false,
-      dialogBoxName: {},
+      dialogBoxName: '',
       tab: { name: 'Inspection Type', key: 'inspectionType' },
       table: [],
       inspectionType: {
@@ -503,11 +590,14 @@ export default {
   },
   watch: {
     webSubOptionMenuTab() {
-      (this.tab = this.webSubOptionMenuTab), this.setSelectedTab(this.tab);
+      (this.tab = this.webSubOptionMenuTab.key),
+        this.setSelectedTab(this.tab, 'false');
     }
   },
   async created() {
-    (this.tab = this.webSubOptionMenuTab), this.setSelectedTab(this.tab);
+    this.getAllConfigurationData();
+    (this.tab = this.webSubOptionMenuTab.key),
+      this.setSelectedTab(this.tab, 'false');
     this.getInspectionTypes().then(async () => {
       this.table = this.inspectionTypes;
     });
@@ -515,6 +605,7 @@ export default {
 
   computed: {
     ...mapGetters([
+      'setAllConfigurationData',
       'webSubOptionMenuTab',
       'contactTypes',
       'titles',
@@ -535,6 +626,7 @@ export default {
 
   methods: {
     ...mapActions([
+      'getAllConfigurationData',
       'addUser',
       'addInspectionType',
       'addHonorifics',
@@ -590,7 +682,23 @@ export default {
     },
 
     getBase64,
-
+    //function is used to cancel the edit configuration data
+    toCancelConfigurationEdit() {
+      this.toEditConfigurationData = false;
+    },
+    //function is used to save the configuration edit data
+    toSaveConfigurationEdit() {
+      this.toEditConfigurationData = false;
+    },
+    //funvtion is used to edit the configurationData
+    toEditConfiguration(data, index) {
+      this.toEditConfigurationData = true;
+      this.toEditConfigurationWithoutSubtype.type = data.type;
+      this.toEditConfigurationWithoutSubtype.attributes[index].value =
+        data.value;
+      this.toEditConfigurationWithoutSubtype.attributes[index].machineValue =
+        data.machineValue;
+    },
     async onFileInputClick(event) {
       document.getElementById('uploadFile').click();
       this.dataURI = await this.getBase64(event.target.files[0]);
@@ -773,26 +881,30 @@ export default {
       this.tokenDialogBox = false;
     },
 
-    async setSelectedTab(e) {
-      this.tab = e;
-      switch (this.tab.key) {
-        case 'inspectionType':
+    async setSelectedTab(e, status) {
+      if (status == 'true') {
+        this.webMenuSubOptionTab('');
+      }
+      this.tab = status == 'true' ? e.dataTypeMachineValue : e;
+      this.newTab = status == 'true' ? e.dataTypeValue : 'inspections';
+      switch (this.tab) {
+        case 'inspections':
           await this.getInspectionTypes();
           this.table = this.inspectionTypes;
           break;
-        case 'honorific':
+        case 'honorifics':
           await this.getTitles();
           this.table = this.titles;
           break;
-        case 'industryType':
+        case 'industries':
           await this.getVendorIndustries();
           this.table = this.vendorIndustries;
           break;
-        case 'phoneType':
+        case 'phone_types':
           await this.getContactTypes();
           this.table = this.contactTypes;
           break;
-        case 'clientType':
+        case 'client_types':
           await this.getClientTypes();
           this.table = this.clientTypes;
           break;
@@ -800,27 +912,27 @@ export default {
           await this.getPolicyTypes();
           this.table = this.policyTypes;
           break;
-        case 'policyCategories':
+        case 'policy_categories':
           await this.getPolicyCategory();
           this.table = this.policyCategories;
           break;
-        case 'propertyType':
+        case 'property_types':
           await this.getPropertyTypes();
           this.table = this.propertyTypes;
           break;
-        case 'claimReason':
+        case 'claim_reasons':
           await this.getClaimReasons();
           this.table = this.claimReasons;
           break;
-        case 'lossCause':
+        case 'loss_causes':
           await this.getLossCauses();
           this.table = this.lossCauses;
           break;
-        case 'claimSeverity':
+        case 'claim_severities':
           await this.getSeverityClaim();
           this.table = this.claimSeverity;
           break;
-        case 'templateType':
+        case 'template_types':
           await this.getTemplates();
           this.table = this.templateOptions;
           break;
@@ -838,8 +950,8 @@ export default {
     async onSubmit(tab) {
       var vald = await this.$refs.form.validate();
       if (vald) {
-        switch (tab.key) {
-          case 'inspectionType':
+        switch (tab) {
+          case 'inspections':
             for (var i = 0; i <= this.inspectionType.subtypes.length - 1; i++) {
               if (this.inspectionType.subtypes[i].value == '') {
                 this.inspectionType.subtypes[i].value =
@@ -847,43 +959,66 @@ export default {
               }
             }
             var response = await this.addInspectionType(this.inspectionType);
+            await this.getInspectionTypes();
+            this.table = this.inspectionTypes;
             break;
-          case 'honorific':
+          case 'honorifics':
             var response = await this.addHonorifics(this.payload);
+            await this.getTitles();
+            this.table = this.titles;
             break;
-          case 'industryType':
+          case 'industries':
             var response = await this.addIndustry(this.payload);
+            await this.getVendorIndustries();
+            this.table = this.vendorIndustries;
             break;
-          case 'phoneType':
+          case 'phone_types':
             var response = await this.addPhone(this.payload);
+            await this.getContactTypes();
+            this.table = this.contactTypes;
             break;
-          case 'clientType':
+          case 'client_types':
             var response = await this.addClientType(this.payload);
+            await this.getClientTypes();
+            this.table = this.clientTypes;
             break;
           case 'policyType':
             var response = await this.addPolicy(this.payload);
+            await this.getPolicyTypes();
+            this.table = this.policyTypes;
             break;
-          case 'policyCategories':
+          case 'policy_categories':
             var response = await this.addPolicyCategories(this.payload);
+            await this.getPolicyCategory();
+            this.table = this.policyCategories;
             break;
-          case 'propertyType':
+          case 'property_types':
             var response = await this.addProperty(this.payload);
+            await this.getPropertyTypes();
+            this.table = this.propertyTypes;
             break;
-          case 'claimReason':
+          case 'claim_reasons':
             var response = await this.addClaimReason(this.payload);
+            await this.getClaimReasons();
+            this.table = this.claimReasons;
             break;
-          case 'lossCause':
+          case 'loss_causes':
             var response = await this.addLoss(this.payload);
+            await this.getLossCauses();
+            this.table = this.lossCauses;
             break;
-          case 'claimSeverity':
+          case 'claim_severities':
             var response = await this.addClaimSeverity(this.payload);
+            await this.getSeverityClaim();
+            this.table = this.claimSeverity;
             break;
-          case 'templateType':
+          case 'template_types':
             var response = await this.addTemplateType(this.payload);
+            await this.getTemplates();
+            this.table = this.templateOptions;
             break;
         }
         if (response) {
-          this.setSelectedTab(tab);
           this.clear();
           this.dialogBox = false;
         }
@@ -909,7 +1044,7 @@ export default {
 
     //For clearing the Secondary Dilog box Data when clicked to clearing
     clear() {
-      if (this.tab.key == 'inspectionType') {
+      if (this.tab == 'inspections') {
         this.inspectionType = {
           value: '',
 

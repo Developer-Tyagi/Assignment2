@@ -86,3 +86,15 @@ export function setAllUsers(state, Users = []) {
     }
   }
 }
+
+//function used to set all the configuration data
+export async function setAllConfigurationData(state, data) {
+  state.setAllConfigurationData = [];
+  state.setAllConfigurationData = data.map(item => ({
+    attributes: item.attributes,
+    type: item.type,
+    id: item.id,
+    dataTypeValue: item.attributes.value,
+    dataTypeMachineValue: item.attributes.machineValue
+  }));
+}
