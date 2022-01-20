@@ -132,7 +132,7 @@
             @click="onClickBreadcrumbsItem(breadcrumbsData.menuItem)"
           />
           <q-breadcrumbs-el
-            v-if="breadcrumbsData.subItemTitle"
+            v-if="breadcrumbsData.subItemTitle && webSubOptionMenuTab != ''"
             :label="breadcrumbsData.subItemTitle"
           />
         </q-breadcrumbs>
@@ -371,7 +371,10 @@
                           {{ subMenuOption.name }}
                           <div
                             class="q-mr-xl q-pr-lg"
-                            v-if="subOptionSelected.key == subMenuOption.key"
+                            v-if="
+                              subOptionSelected.key == subMenuOption.key &&
+                              webSubOptionMenuTab != ''
+                            "
                           >
                             <q-separator style="background: #ef5926" />
                           </div>
@@ -776,6 +779,7 @@ export default {
       return this.$router.history.current.path.substring(1);
     },
     ...mapGetters([
+      'webSubOptionMenuTab',
       'converted',
       'pageAccess',
       'isOnline',

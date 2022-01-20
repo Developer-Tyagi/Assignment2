@@ -239,7 +239,7 @@
           class="row justify-between bg-primary text-white"
           style="height: 50px"
         >
-          <div class="col-7 text-bold">Add {{ dialogBoxName.name }}</div>
+          <div class="col-7 text-bold">Add {{ dialogBoxName }}</div>
           <q-btn dense flat icon="close" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
@@ -261,8 +261,7 @@
                   outlined
                   :rules="[
                     val =>
-                      (val && val.length > 0) ||
-                      'Please Fill ' + dialogBoxName.name
+                      (val && val.length > 0) || 'Please Fill ' + dialogBoxName
                   ]"
                 />
               </div>
@@ -561,7 +560,7 @@ export default {
       title: '',
       post: { body: '' },
       dialogBox: false,
-      dialogBoxName: {},
+      dialogBoxName: '',
       tab: { name: 'Inspection Type', key: 'inspectionType' },
       table: [],
       inspectionType: {
@@ -883,6 +882,9 @@ export default {
     },
 
     async setSelectedTab(e, status) {
+      if (status == 'true') {
+        this.webMenuSubOptionTab('');
+      }
       this.tab = status == 'true' ? e.dataTypeMachineValue : e;
       this.newTab = status == 'true' ? e.dataTypeValue : 'inspections';
       switch (this.tab) {
