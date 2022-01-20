@@ -26,30 +26,41 @@
             :options="setAllConfigurationData"
             option-label="dataTypeValue"
             option-value="type"
-            @input=""
+            @input="setSelectedTab(configuration.dataType)"
             options-dense
             behavior="menu"
             label="Please select a data type"
           />
         </div>
       </div>
-      <div class="q-mx-md" flat bordered v-if="tab.key != 'template'">
+      <div
+        class="q-mx-md"
+        flat
+        bordered
+        v-if="tab.dataTypeMachineValue != 'template'"
+      >
         <div class="row full-width justify-between">
           <span class="text-bold" style="line-height: 36px">{{
-            tab.name
+            tab.dataTypeValue
           }}</span>
           <q-btn @click="onClickingAddButton(tab)" color="primary">
-            Add {{ tab.name }}
+            Add {{ tab.dataTypeValue }}
           </q-btn>
         </div>
         <div class="bg-grey-3 q-mt-md">
           <table class="table" v-if="table.length">
             <thead>
-              <tr class="table-tr" v-if="tab.key !== 'inspectionType'">
+              <tr
+                class="table-tr"
+                v-if="tab.dataTypeMachineValue !== 'inspection_type'"
+              >
                 <th class="table-th text-black">Name</th>
                 <th class="table-th text-black">Action</th>
               </tr>
-              <tr class="table-tr" v-if="tab.key == 'inspectionType'">
+              <tr
+                class="table-tr"
+                v-if="tab.dataTypeMachineValue == 'inspection_type'"
+              >
                 <th class="table-th text-black">Name</th>
                 <th class="table-th text-black">SubType</th>
                 <th class="table-th text-black">Duration (hrs)</th>
@@ -61,7 +72,7 @@
                 class="table-tr"
                 v-for="(list, index) in table"
                 :key="index"
-                v-if="tab.key !== 'inspectionType'"
+                v-if="tab.dataTypeMachineValue !== 'inspection_type'"
               >
                 <td class="table-td">
                   <span v-if="!toEditConfigurationData">{{
@@ -113,7 +124,7 @@
               <tr
                 class="table-tr"
                 v-for="list in table"
-                v-if="tab.key === 'inspectionType'"
+                v-if="tab.dataTypeMachineValue === 'inspection_ype'"
               >
                 <td class="table-td">
                   <div class="text-bold">{{ list.value }}</div>
@@ -145,9 +156,22 @@
                 </td>
               </tr>
               <td>
+                <q-input
+                  dense
+                  v-if="addNew"
+                  v-model="payload.value"
+                  class="full-width"
+                  outlined
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) ||
+                      'Please Fill ' + dialogBoxName.name
+                  ]"
+                />
                 <q-icon
                   name="add_box"
                   size="md"
+                  @click="addNew = true"
                   class="q-ml-md cursor-pointer"
                 ></q-icon>
               </td>
@@ -526,6 +550,7 @@ export default {
 
   data() {
     return {
+      addNew: false,
       toEditConfigurationData: false,
       newTab: '',
       uploadTemplateDialogBox: false,
@@ -562,7 +587,7 @@ export default {
       post: { body: '' },
       dialogBox: false,
       dialogBoxName: {},
-      tab: { name: 'Inspection Type', key: 'inspectionType' },
+      tab: {},
       table: [],
       inspectionType: {
         value: '',
@@ -597,10 +622,12 @@ export default {
   async created() {
     this.getAllConfigurationData();
     (this.tab = this.webSubOptionMenuTab), this.setSelectedTab(this.tab);
-    this.getInspectionTypes().then(async () => {
-      this.table = this.inspectionTypes;
-    });
+    // this.getInspectionTypes().then(async () => {
+    //   this.table = this.inspectionTypes;
+    // console.log("this.table", this.table);
+    // });
     console.log(this.setAllConfigurationData, 'setAllConfigurationData');
+    console.log('honorifics', this.getTitles);
   },
 
   computed: {
@@ -884,52 +911,54 @@ export default {
 
     async setSelectedTab(e) {
       this.tab = e;
-      switch (this.tab.key) {
-        case 'inspectionType':
+      console.log('inside selected tab', this.tab.dataTypeMachineValue);
+      switch (this.tab.dataTypeMachineValue) {
+        case 'inspections':
+          console.log('in case 1');
           await this.getInspectionTypes();
           this.table = this.inspectionTypes;
           break;
-        case 'honorific':
+        case 'honorifics':
           await this.getTitles();
           this.table = this.titles;
           break;
-        case 'industryType':
+        case 'industries':
           await this.getVendorIndustries();
           this.table = this.vendorIndustries;
           break;
-        case 'phoneType':
+        case 'phone_types':
           await this.getContactTypes();
           this.table = this.contactTypes;
           break;
-        case 'clientType':
+        case 'client-types':
           await this.getClientTypes();
           this.table = this.clientTypes;
           break;
-        case 'policyType':
+        case 'policy_types':
           await this.getPolicyTypes();
           this.table = this.policyTypes;
           break;
-        case 'policyCategories':
+        case 'policy_categories':
           await this.getPolicyCategory();
           this.table = this.policyCategories;
           break;
-        case 'propertyType':
+        case 'property_types':
           await this.getPropertyTypes();
           this.table = this.propertyTypes;
           break;
-        case 'claimReason':
+        case 'claim_reasons':
           await this.getClaimReasons();
           this.table = this.claimReasons;
           break;
-        case 'lossCause':
+        case 'loss_causes':
           await this.getLossCauses();
           this.table = this.lossCauses;
           break;
-        case 'claimSeverity':
+        case 'claim_severity':
           await this.getSeverityClaim();
           this.table = this.claimSeverity;
           break;
-        case 'templateType':
+        case 'template_types':
           await this.getTemplates();
           this.table = this.templateOptions;
           break;
