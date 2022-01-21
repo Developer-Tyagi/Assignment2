@@ -26,7 +26,7 @@
             :options="setAllConfigurationData"
             option-label="dataTypeValue"
             option-value="dataTypeMachineValue"
-            @input="setSelectedTab(configuration.dataType, 'true')"
+            @input="setSelectedTabs(configuration.dataType, 'true')"
             options-dense
             behavior="menu"
             label="Please select a data type"
@@ -538,7 +538,7 @@ export default {
       groupedTokens: [],
       templatetype: { value: '', machineValue: '' },
       configuration: {
-        dataType: 'inspections'
+        dataType: ''
       },
       toEditConfigurationWithoutSubtype: {
         type: '',
@@ -596,11 +596,6 @@ export default {
   },
   async created() {
     this.getAllConfigurationData();
-    (this.tab = this.webSubOptionMenuTab.key),
-      this.setSelectedTab(this.tab, 'false');
-    this.getInspectionTypes().then(async () => {
-      this.table = this.inspectionTypes;
-    });
   },
 
   computed: {
@@ -626,6 +621,7 @@ export default {
 
   methods: {
     ...mapActions([
+      'getAllConfigurationTableData',
       'getAllConfigurationData',
       'addUser',
       'addInspectionType',
@@ -880,60 +876,64 @@ export default {
       this.post.body += value;
       this.tokenDialogBox = false;
     },
-
+    setSelectedTabs(e, value) {
+      console.log(e, value);
+      this.newTab = value == 'true' ? e.dataTypeValue : '';
+      this.tab = value == 'true' ? e.dataTypeMachineValue : e;
+      this.setSelectedTab(e, value);
+    },
     async setSelectedTab(e, status) {
       if (status == 'true') {
         this.webMenuSubOptionTab('');
       }
-      this.tab = status == 'true' ? e.dataTypeMachineValue : e;
-      this.newTab = status == 'true' ? e.dataTypeValue : 'inspections';
+
       switch (this.tab) {
         case 'inspections':
-          await this.getInspectionTypes();
+          await this.getAllConfigurationTableData('inspections');
           this.table = this.inspectionTypes;
           break;
         case 'honorifics':
-          await this.getTitles();
+          await this.getAllConfigurationTableData('honorifics');
           this.table = this.titles;
           break;
         case 'industries':
-          await this.getVendorIndustries();
+          await this.getAllConfigurationTableData('industries');
           this.table = this.vendorIndustries;
           break;
         case 'phone_types':
-          await this.getContactTypes();
+          await this.getAllConfigurationTableData('phone_types');
           this.table = this.contactTypes;
           break;
         case 'client_types':
-          await this.getClientTypes();
+          await this.getAllConfigurationTableData('client_types');
           this.table = this.clientTypes;
           break;
         case 'policyType':
-          await this.getPolicyTypes();
+          await this.getAllConfigurationTableData('policyType');
           this.table = this.policyTypes;
           break;
         case 'policy_categories':
-          await this.getPolicyCategory();
+          await this.getAllConfigurationTableData('policy_categories');
           this.table = this.policyCategories;
           break;
         case 'property_types':
-          await this.getPropertyTypes();
+          await this.getAllConfigurationTableData('property_types');
           this.table = this.propertyTypes;
           break;
         case 'claim_reasons':
-          await this.getClaimReasons();
+          await this.getAllConfigurationTableData('claim_reasons');
           this.table = this.claimReasons;
           break;
         case 'loss_causes':
-          await this.getLossCauses();
+          await this.getAllConfigurationTableData('loss_causes');
           this.table = this.lossCauses;
           break;
         case 'claim_severities':
-          await this.getSeverityClaim();
+          await this.getAllConfigurationTableData('claim_severities');
           this.table = this.claimSeverity;
           break;
         case 'template_types':
-          await this.getTemplates();
+          await this.getAllConfigurationTableData('template_types');
           this.table = this.templateOptions;
           break;
         case 'template':
@@ -959,62 +959,62 @@ export default {
               }
             }
             var response = await this.addInspectionType(this.inspectionType);
-            await this.getInspectionTypes();
+            await this.getAllConfigurationTableData('inspections');
             this.table = this.inspectionTypes;
             break;
           case 'honorifics':
             var response = await this.addHonorifics(this.payload);
-            await this.getTitles();
+            await this.getAllConfigurationTableData('honorifics');
             this.table = this.titles;
             break;
           case 'industries':
             var response = await this.addIndustry(this.payload);
-            await this.getVendorIndustries();
+            await this.getAllConfigurationTableData('industries');
             this.table = this.vendorIndustries;
             break;
           case 'phone_types':
             var response = await this.addPhone(this.payload);
-            await this.getContactTypes();
+            await this.getAllConfigurationTableData('phone_types');
             this.table = this.contactTypes;
             break;
           case 'client_types':
             var response = await this.addClientType(this.payload);
-            await this.getClientTypes();
+            await this.getAllConfigurationTableData('client_types');
             this.table = this.clientTypes;
             break;
           case 'policyType':
             var response = await this.addPolicy(this.payload);
-            await this.getPolicyTypes();
+            await this.getAllConfigurationTableData('policyType');
             this.table = this.policyTypes;
             break;
           case 'policy_categories':
             var response = await this.addPolicyCategories(this.payload);
-            await this.getPolicyCategory();
+            await this.getAllConfigurationTableData('policy_categories');
             this.table = this.policyCategories;
             break;
           case 'property_types':
             var response = await this.addProperty(this.payload);
-            await this.getPropertyTypes();
+            await this.getAllConfigurationTableData('property_types');
             this.table = this.propertyTypes;
             break;
           case 'claim_reasons':
             var response = await this.addClaimReason(this.payload);
-            await this.getClaimReasons();
+            await this.getAllConfigurationTableData('claim_reasons');
             this.table = this.claimReasons;
             break;
           case 'loss_causes':
             var response = await this.addLoss(this.payload);
-            await this.getLossCauses();
+            await this.getAllConfigurationTableData('loss_causes');
             this.table = this.lossCauses;
             break;
           case 'claim_severities':
             var response = await this.addClaimSeverity(this.payload);
-            await this.getSeverityClaim();
+            await this.getAllConfigurationTableData('claim_severities');
             this.table = this.claimSeverity;
             break;
           case 'template_types':
             var response = await this.addTemplateType(this.payload);
-            await this.getTemplates();
+            await this.getAllConfigurationTableData('template_types');
             this.table = this.templateOptions;
             break;
         }
