@@ -44,6 +44,12 @@
           >
             <div>
               {{
+                selectedClaimCarrier.carrier.address.houseNumber
+                  ? selectedClaimCarrier.carrier.address.houseNumber
+                  : '-'
+              }}
+
+              {{
                 selectedClaimCarrier.carrier.address.address1
                   ? selectedClaimCarrier.carrier.address.address1
                   : '-'
@@ -52,7 +58,7 @@
             <div
               v-if="
                 selectedClaimCarrier.carrier.address &&
-                selectedClaimCarrier.carrier.address.address2
+                  selectedClaimCarrier.carrier.address.address2
               "
             >
               {{ selectedClaimCarrier.carrier.address.address2 }}
@@ -102,7 +108,6 @@
           >
         </div>
         <div
-          v-if="selectedClaimCarrier.carrier.email"
           class="click-link"
           @click="onEmailClick(selectedClaimCarrier.carrier.email, $event)"
         >
@@ -167,6 +172,11 @@
 
           <span class="col-7 heading-light" v-if="personnel.address">
             <div class="row q-ml-sm" v-if="personnel.address.houseNumber">
+              {{
+                personnel.address.houseNumber
+                  ? personnel.address.houseNumber
+                  : '-'
+              }}
               ,
               {{
                 personnel.address.address1 ? personnel.address.address1 : '-'
@@ -505,17 +515,17 @@
           <img src="~assets/add_adjustor.svg" height="120" width="24" />
         </q-btn>
 
-        <div class="actions-div">
-          <div v-if="!params.industry" class="q-ml-xs row q-pr-md">
-            <div class="row">
+        <!-- <div class="actions-div"> -->
+        <!-- <div v-if="!params.industry" class="q-ml-xs row q-pr-md"> -->
+        <!-- <div class="row">
               <div @click="filterDialog = true" class="q-ml-md">
                 <img src="~assets/filter.svg" /><span class="heading-light"
                   >Filter</span
                 >
               </div>
-            </div>
-            <div class="q-ml-auto edit-icon">
-              <q-btn
+            </div> -->
+        <!-- <div class="q-ml-auto edit-icon"> -->
+        <!-- <q-btn
                 v-if="params.role"
                 class="q-ml-auto"
                 color="white"
@@ -524,9 +534,9 @@
                 flat
                 dense
                 label="Clear"
-              ></q-btn>
-              <!-- Commented for some time -->
-              <!-- <q-btn
+              ></q-btn> -->
+        <!-- Commented for some time -->
+        <!-- <q-btn
                 :disabled="isAssignDisabled"
                 color="primary"
                 class="q-mr-lg"
@@ -534,9 +544,9 @@
                 label="Assign"
                 @click="assignDialog = true"
               /> -->
-            </div>
-          </div>
-        </div>
+        <!-- </div> -->
+        <!-- </div> -->
+        <!-- </div> -->
         <div class="mobile-container-page">
           <div v-if="carrierPersonnel.personnel">
             <div
@@ -991,15 +1001,16 @@ export default {
   async created() {
     await this.getClaimCarrier(this.selectedClaimId);
     this.getPolicy(this.selectedClaimId);
-    this.insuranceDetails.policyEffectiveDate =
-      this.insuranceDetails.policyExpireDate = date.formatDate(
-        Date.now(),
-        'MM/DD/YYYY'
-      );
+    this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = date.formatDate(
+      Date.now(),
+      'MM/DD/YYYY'
+    );
   },
   methods: {
     ...mapActions([
       'getPolicy',
+      'getPolicyTypes',
+      'getPolicyCategory',
       'editInsurancePolicy',
       'getSelectedClaim',
       'getClaimCarrier',
@@ -1012,8 +1023,7 @@ export default {
       'getCarriers',
       'addClaimCarrier',
       'editCarrierPersonnelToClaim',
-      'getClaimRoles',
-      'getAllConfigurationTableData'
+      'getClaimRoles'
     ]),
     sendMap,
     toGetStateShortName,
@@ -1093,10 +1103,12 @@ export default {
 
     onEditAdjustorPersonnel(index) {
       this.id = this.selectedClaimCarrier.carrier.personnel[index].id;
-      this.personnelID =
-        this.selectedClaimCarrier.carrier.personnel[index].personnelID;
-      const name =
-        this.selectedClaimCarrier.carrier.personnel[index].name.split(' ');
+      this.personnelID = this.selectedClaimCarrier.carrier.personnel[
+        index
+      ].personnelID;
+      const name = this.selectedClaimCarrier.carrier.personnel[
+        index
+      ].name.split(' ');
 
       this.editPersonnelDialog = true;
       this.$emit('editCarrierDialog', true);
@@ -1114,12 +1126,14 @@ export default {
         ? this.selectedClaimCarrier.carrier.personnel[index].phoneNumber
         : '';
       if (this.selectedClaimCarrier.carrier.personnel[index].address) {
-        this.editPersonnel.address =
-          this.selectedClaimCarrier.carrier.personnel[index].address;
+        this.editPersonnel.address = this.selectedClaimCarrier.carrier.personnel[
+          index
+        ].address;
       }
 
-      this.editPersonnel.notes =
-        this.selectedClaimCarrier.carrier.personnel[index].note;
+      this.editPersonnel.notes = this.selectedClaimCarrier.carrier.personnel[
+        index
+      ].note;
     },
 
     validateDate,
@@ -1128,21 +1142,17 @@ export default {
 
     onEditPolicyInfo() {
       this.insuranceInfoDialog = true;
-      this.getAllConfigurationTableData({
-        name: 'policy_categories'
-      });
-      this.getAllConfigurationTableData({ name: 'policy_types' });
+      this.getPolicyCategory();
+      this.getPolicyTypes();
       this.$emit('editCarrierDialog', true);
       this.insuranceDetails.isThisIsForcedPlacedPolicyToggle = this.policy
         .policyInfo.isForcedPlaced
         ? this.policy.policyInfo.isForcedPlaced
         : false;
-      this.insuranceDetails.hasAppraisalClause =
-        this.policy.policyInfo.hasAppraisalClause;
+      this.insuranceDetails.hasAppraisalClause = this.policy.policyInfo.hasAppraisalClause;
       this.insuranceDetails.totalAmount = this.policy.policyInfo.totalAmount;
       this.insuranceDetails.ordinance = this.policy.policyInfo.ordinance;
-      this.insuranceDetails.debrisRemoval =
-        this.policy.policyInfo.debrisRemoval;
+      this.insuranceDetails.debrisRemoval = this.policy.policyInfo.debrisRemoval;
       this.insuranceDetails.mold = this.policy.policyInfo.mold;
 
       this.insuranceDetails.businessInt = this.policy.policyInfo.businessInt;
@@ -1188,17 +1198,12 @@ export default {
         );
       }
 
-      this.insuranceDetails.dwellingLimitA =
-        this.policy.policyInfo.limitCoverage.dwelling;
-      this.insuranceDetails.contentsLimit =
-        this.policy.policyInfo.limitCoverage.content;
-      this.insuranceDetails.otherStructureB =
-        this.policy.policyInfo.limitCoverage.otherStructure;
-      this.insuranceDetails.lossOfUSD =
-        this.policy.policyInfo.limitCoverage.lossOfUse;
+      this.insuranceDetails.dwellingLimitA = this.policy.policyInfo.limitCoverage.dwelling;
+      this.insuranceDetails.contentsLimit = this.policy.policyInfo.limitCoverage.content;
+      this.insuranceDetails.otherStructureB = this.policy.policyInfo.limitCoverage.otherStructure;
+      this.insuranceDetails.lossOfUSD = this.policy.policyInfo.limitCoverage.lossOfUse;
       this.insuranceDetails.deprecation = this.policy.policyInfo.depreciation;
-      this.insuranceDetails.deductible =
-        this.policy.policyInfo.deductibleAmount;
+      this.insuranceDetails.deductible = this.policy.policyInfo.deductibleAmount;
       this.insuranceDetails.priorPayment = this.policy.policyInfo.priorPayment;
     },
     async onCloseCarrierList() {
@@ -1372,8 +1377,8 @@ export default {
             policyInfo: {
               number: this.insuranceDetails.policyNumber,
               isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
-              isForcedPlaced:
-                this.insuranceDetails.isThisIsForcedPlacedPolicyToggle,
+              isForcedPlaced: this.insuranceDetails
+                .isThisIsForcedPlacedPolicyToggle,
               hasAppraisalClause: this.insuranceDetails.hasAppraisalClause,
               category: {
                 id: this.insuranceDetails.policyCategory.id,
@@ -1393,8 +1398,8 @@ export default {
                 this.insuranceDetails.policyExpireDate
               ),
               isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
-              isForcedPlaced:
-                this.insuranceDetails.isThisIsForcedPlacedPolicyToggle,
+              isForcedPlaced: this.insuranceDetails
+                .isThisIsForcedPlacedPolicyToggle,
               limitCoverage: {
                 dwelling: this.insuranceDetails.dwellingLimitA
                   ? this.insuranceDetails.dwellingLimitA
