@@ -32,13 +32,11 @@
                   class="input-style input-overlay required"
                   v-model="vendor.industry.value"
                   use-input
-                  input-debounce="0"
-                  option-label="name"
+                  option-label="value"
                   label=" Industry"
                   :options="options"
-                  option-value="name"
-                  @filter="searchFilterBy"
-                  @input="setVendorIndustryName"
+                  option-value="machineValue"
+                  @input="setVendorIndustryName(vendor.industry.value)"
                   behavior="menu"
                   options-dense
                   emit-value
@@ -370,22 +368,23 @@ export default {
     validateNonRequiredEmail,
     validateUrl,
     successMessage,
-    searchFilterBy(val, update) {
-      this.vendor.industry.value = null;
-      if (val === ' ') {
-        update(() => {
-          this.options = this.vendorIndustries;
-        });
-        return;
-      }
+    // searchFilterBy(val, update) {
+    //   this.vendor.industry.value = null;
+    //   if (val === ' ') {
+    //     update(() => {
+    //       industries
+    //       this.options = this.vendorIndustries;
+    //     });
+    //     return;
+    //   }
 
-      update(() => {
-        const search = val.toLowerCase();
-        this.options = this.vendorIndustries.filter(
-          v => v.name.toLowerCase().indexOf(search) > -1
-        );
-      });
-    },
+    //   update(() => {
+    //     const search = val.toLowerCase();
+    //     this.options = this.vendorIndustries.filter(
+    //       v => v.name.toLowerCase().indexOf(search) > -1
+    //     );
+    //   });
+    // },
 
     setTitleName(selectedTitle) {
       const selected = this.titles.find(obj => {
@@ -396,12 +395,11 @@ export default {
       selectedTitle.machineValue = selected.machineValue;
     },
 
-    setVendorIndustryName() {
-      const selectedName = this.vendor.industry.value;
+    setVendorIndustryName(val) {
       const result = this.vendorIndustries.find(obj => {
-        return obj.name === selectedName;
+        return obj.machineValue === val;
       });
-      this.vendor.industry.value = result.name;
+      this.vendor.industry.value = result.value;
 
       this.vendor.industry.id = result.id;
       this.vendor.industry.machineValue = result.machineValue;

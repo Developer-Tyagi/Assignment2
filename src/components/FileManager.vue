@@ -9,8 +9,8 @@
       <q-select
         dense
         v-model="templatetype.value"
-        option-value="name"
-        option-label="name"
+        option-value="value"
+        option-label="value"
         map-options
         options-dense
         behavior="menu"
