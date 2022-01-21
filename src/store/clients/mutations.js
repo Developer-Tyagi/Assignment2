@@ -2,7 +2,7 @@ import localDB, { getCollection } from '@services/dexie';
 
 export async function setClients(state, clientsData) {
   const clientsCollection = await getCollection('clients');
-  const clients = clientsData.map(client => ({
+  const clients = clientsData.data.map(client => ({
     ...client.attributes,
     id: client.id,
     name:
@@ -10,16 +10,30 @@ export async function setClients(state, clientsData) {
       ' ' +
       client.attributes.insuredInfo.primary.lname
   }));
-  state.clients = clients;
-  if ((await clientsCollection.count()) > 0) {
+  //Initially we Clear the Client data  otherwise this will create duplications of Client and give an error , this scenario is happens when a user is switched from online to offline mode and vice versa.
+  if (clientsData.params.offset == 0) state.clients = [];
+  if (clientsData.params.limit == 0 && clientsData.params.offset == 0) {
+    // this condition is used to store the entire data in local DB which is used for the offline mode.
+    await clientsCollection.delete([]);
+
+    await localDB.clients.bulkAdd(clients);
+  } else if (clientsData.params.name) {
+    // this condition is use for searching clients item.
+    state.clients = clients;
+  }
+
+  // this condition is for when we user start scrolling down for more than one time.
+  else state.clients = state.clients.concat(clients);
+
+  if ((await clientsCollection.count()) > 0 && !clientsData.params) {
     await clientsCollection.delete([]);
   }
-  await localDB.clients.bulkAdd(clients);
 }
 
 export async function setOfflineClients(state) {
   let claims = await getCollection('claims').toArray();
   let clients = await getCollection('clients').toArray();
+
   var claimsForClient;
   clients.forEach(client => {
     if (client.offline) {

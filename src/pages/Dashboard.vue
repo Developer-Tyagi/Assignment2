@@ -367,8 +367,8 @@ export default {
 
     //this API is for offline clients
     const payload = {
-      status: '',
-      name: ''
+      limit: 0,
+      offset: 0
     };
     this.getClients(payload);
     this.getClaims();
