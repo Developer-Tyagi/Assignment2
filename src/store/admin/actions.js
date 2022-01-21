@@ -224,7 +224,7 @@ export async function getOfficeTaskActions(
   if (isOnline) {
     dispatch('setLoading', true);
     try {
-      const { data } = await request.get(`/workflows/claim_new_claim/actions`);
+      const { data } = await request.get(`/workflows/claim_new_claim/rules`);
       commit('setOfficeTaskActions', data);
       dispatch('setLoading', false);
     } catch (e) {
