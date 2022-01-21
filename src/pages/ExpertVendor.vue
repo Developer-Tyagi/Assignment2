@@ -224,7 +224,7 @@ export default {
       'addSingleVendor',
       'getClaimVendors',
       'deleteClaimVendor',
-      'getVendorIndustries'
+      'getAllConfigurationTableData'
     ]),
     toGetStateShortName,
     setVendorId(value) {
@@ -233,7 +233,7 @@ export default {
     },
     onAddExpertVendorClick() {
       this.expertVendorDialogBox = true;
-      this.getVendorIndustries();
+      this.getAllConfigurationTableData({ name: 'industries' });
     },
     onDelete(index) {
       this.currentIndex = index;

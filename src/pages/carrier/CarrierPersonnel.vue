@@ -421,8 +421,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getContactTypes',
-      'getTitles',
+      'getAllConfigurationTableData',
       'addCarrierPersonnel',
       'getCarrierPersonnel',
       'getCarrierDetails',
@@ -433,8 +432,8 @@ export default {
     toCheckAddressData,
     onEdit(index) {
       this.editPersonnelDialog = true;
-      this.getContactTypes();
-      this.getTitles();
+      this.getAllConfigurationTableData({ name: 'phone_types' });
+      this.getAllConfigurationTableData({ name: 'honorifics' });
       this.personnel.fname = this.carrierPersonnel.personnel[index].fname;
       this.personnel.lname = this.carrierPersonnel.personnel[index].lname;
       this.personnel.email = this.carrierPersonnel.personnel[index].email;

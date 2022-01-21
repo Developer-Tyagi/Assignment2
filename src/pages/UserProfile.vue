@@ -289,7 +289,7 @@ export default {
   },
 
   created() {
-    this.getContactTypes();
+    this.getAllConfigurationTableData({ name: 'phone_types' });
     if (getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
       this.userId = getCurrentUser().id;
@@ -307,7 +307,7 @@ export default {
     toGetStateShortName,
     ...mapActions([
       'toRedirectGoogleAuth',
-      'getContactTypes',
+      'getAllConfigurationTableData',
       'editUserInfo',
       'getUserInfo',
       'editUserProfile'

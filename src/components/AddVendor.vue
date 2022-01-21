@@ -355,15 +355,13 @@ export default {
           ? this.selectedVendor.notes
           : '';
     }
-    this.getTitles();
+    this.getAllConfigurationTableData({ name: 'honorifics' });
   },
 
   methods: {
     ...mapActions([
       'addVendor',
-      'getVendorIndustries',
-      'getTitles',
-      'getContactTypes',
+      'getAllConfigurationTableData',
       'getVendors',
       'getVendorDetails',
       'editVendorInfo'
@@ -487,7 +485,7 @@ export default {
   },
 
   created() {
-    this.getContactTypes();
+    this.getAllConfigurationTableData({ name: 'phone_types' });
     this.industryFilterDisabled = true;
     this.options = this.vendorIndustries;
     if (this.industryValue) {

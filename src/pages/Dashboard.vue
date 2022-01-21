@@ -331,12 +331,30 @@ export default {
   created() {
     // if user login first time  we are calling all the APIs so that we can save data in Local Database which we are needed while creating client,lead and claim
 
-    this.getClientTypes('hideLoader');
-    this.getContactTypes('hideLoader');
-    this.getTitles('hideLoader');
-    this.getLossCauses('hideLoader');
-    this.getInspectionTypes('hideLoader');
-    this.getVendorIndustries('hideLoader');
+    this.getAllConfigurationTableData({
+      name: 'client_types',
+      loaders: 'hideLoader'
+    });
+    this.getAllConfigurationTableData({
+      name: 'phone_types',
+      loaders: 'hideLoader'
+    });
+    this.getAllConfigurationTableData({
+      name: 'honorifics',
+      loaders: 'hideLoader'
+    });
+    this.getAllConfigurationTableData({
+      name: 'loss_causes',
+      loaders: 'hideLoader'
+    });
+    this.getAllConfigurationTableData({
+      name: 'inspections',
+      loaders: 'hideLoader'
+    });
+    this.getAllConfigurationTableData({
+      name: 'industries',
+      loaders: 'hideLoader'
+    });
     //estimator  have no permission to these APIs
     const userRole = getCurrentUser().attributes.roles[0].machineValue;
 
@@ -352,11 +370,26 @@ export default {
       this.getMortgages(params);
     }
 
-    this.getPropertyTypes('hideLoader');
-    this.getPolicyTypes('hideLoader');
-    this.getPolicyCategory('hideLoader');
-    this.getClaimReasons('hideLoader');
-    this.getSeverityClaim('hideLoader');
+    this.getAllConfigurationTableData({
+      name: 'property_types',
+      loaders: 'hideLoader'
+    });
+    this.getAllConfigurationTableData({
+      name: 'policy_types',
+      loaders: 'hideLoader'
+    });
+    this.getAllConfigurationTableData({
+      name: 'policy_categories',
+      loaders: 'hideLoader'
+    });
+    this.getAllConfigurationTableData({
+      name: 'claim_reasons',
+      loaders: 'hideLoader'
+    });
+    this.getAllConfigurationTableData({
+      name: 'claim_severities',
+      loaders: 'hideLoader'
+    });
     this.getClaimRoles('hideLoader');
     this.getAllUsers('hideLoader');
     this.getPaidUsers('hideLoader');
@@ -372,7 +405,7 @@ export default {
     };
     this.getClients(payload);
     this.getClaims();
-    this.getTemplates();
+    this.getAllConfigurationTableData({ name: 'template_types' });
     this.getAllTemplate();
   },
   methods: {
@@ -381,26 +414,15 @@ export default {
       'getOfficeTaskActions',
       'getEstimators',
       'getMortgages',
-      'getPropertyTypes',
-      'getClientTypes',
       'getPaidUsers',
       'getClaimRoles',
       'getAllUsers',
-      'getClaimReasons',
-      'getSeverityClaim',
-      'getPolicyTypes',
-      'getPolicyCategory',
-      'getInspectionTypes',
-      'getVendorIndustries',
+      'getAllConfigurationTableData',
       'getVendors',
-      'getContactTypes',
-      'getTitles',
-      'getLossCauses',
       'getClients',
       'getActiveLeadsList',
       'getClaims',
       'getArchivedLeadsList',
-      'getTemplates',
       'getAllTemplate',
       'getCarriers'
     ]),

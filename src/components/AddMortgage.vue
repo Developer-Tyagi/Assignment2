@@ -292,16 +292,14 @@ export default {
       this.mortgage.info.website = this.selectedMortgage.info.website;
       this.mortgage.info.notes = this.selectedMortgage.info.notes;
     }
-
-    this.getTitles();
-    this.getContactTypes();
+    this.getAllConfigurationTableData({ name: 'honorifics' });
+    this.getAllConfigurationTableData({ name: 'phone_types' });
   },
 
   methods: {
     ...mapActions([
       'addClaimMortgage',
-      'getTitles',
-      'getContactTypes',
+      'getAllConfigurationTableData',
       'getMortgages',
       'editMortgageInfo',
       'getMortgageDetails'

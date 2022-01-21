@@ -307,12 +307,7 @@ export default {
     ])
   },
   methods: {
-    ...mapActions([
-      'getVendors',
-      'getClaimReasons',
-      'getSeverityClaim',
-      'getRoles'
-    ]),
+    ...mapActions(['getVendors', 'getAllConfigurationTableData', 'getRoles']),
 
     lossDateOption(dateopn) {
       return dateopn <= date.formatDate(Date.now(), 'YYYY/MM/DD');

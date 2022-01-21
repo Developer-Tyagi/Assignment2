@@ -264,12 +264,7 @@ export default {
     ])
   },
   methods: {
-    ...mapActions([
-      'getVendors',
-      'getClaimReasons',
-      'getSeverityClaim',
-      'getRoles'
-    ]),
+    ...mapActions(['getVendors', 'getAllConfigurationTableData', 'getRoles']),
 
     lossDateOption(dateopn) {
       if (

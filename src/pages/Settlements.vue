@@ -1305,8 +1305,7 @@ export default {
   methods: {
     ...mapActions([
       'getPolicy',
-      'getPolicyTypes',
-      'getPolicyCategory',
+      'getAllConfigurationTableData',
       'editInsurancePolicy',
       'getSettlements',
       'getSettlementTypes',
@@ -1354,8 +1353,10 @@ export default {
         this.proofOfLossInfo.sentCarrierDate =
           date.formatDate(Date.now(), 'MM/DD/YYYY');
       this.settlementDialog = true;
-      this.getPolicyCategory();
-      this.getPolicyTypes();
+      this.getAllConfigurationTableData({
+        name: 'policy_categories'
+      });
+      this.getAllConfigurationTableData({ name: 'policy_types' });
       this.getSettlementTypes();
     },
     onClickEdit(val, dialogName) {

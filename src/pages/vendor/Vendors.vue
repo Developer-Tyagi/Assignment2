@@ -42,9 +42,9 @@ export default {
     };
   },
   created() {
-    this.getTitles();
-    this.getContactTypes();
-    this.getVendorIndustries();
+    this.getAllConfigurationTableData({ name: 'honorifics' });
+    this.getAllConfigurationTableData({ name: 'phone_types' });
+    this.getAllConfigurationTableData({ name: 'industries' });
     this.getVendors(this.params);
   },
   computed: {
@@ -56,12 +56,7 @@ export default {
     ])
   },
   methods: {
-    ...mapActions([
-      'getVendorIndustries',
-      'getTitles',
-      'getContactTypes',
-      'getVendors'
-    ]),
+    ...mapActions(['getAllConfigurationTableData', 'getVendors']),
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
       if (e) {

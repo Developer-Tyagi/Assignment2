@@ -134,7 +134,7 @@
       <q-card class="">
         <q-card-section
           class="q-pa-sm"
-          style="width:2480px; overflow: scroll; height:88%"
+          style="width: 2480px; overflow: scroll; height: 88%"
         >
           <div v-html="finalDocumentString"></div>
         </q-card-section>
@@ -193,7 +193,7 @@ export default {
 
   async created() {
     this.claim = await this.getSingleClaims(this.selectedClaimId);
-    await this.getTemplates();
+    await this.getAllConfigurationTableData({ name: 'template_types' });
 
     // await this.getPersonnelInfo(this.selectedClaimId);
 
@@ -866,7 +866,7 @@ export default {
 
   methods: {
     ...mapActions([
-      'getTemplates',
+      'getAllConfigurationTableData',
       'addTemplateLocal',
       'getPersonnelInfo',
       'getSingleClientDetails',

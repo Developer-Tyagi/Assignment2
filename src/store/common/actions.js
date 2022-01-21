@@ -77,100 +77,69 @@ export function setNotification({ commit }, notification) {
   commit('setNotification', notification);
 }
 
-// function is used for getting the list of all loss cause , this function is called both in online and offline mode.
-export async function getLossCauses(
-  {
-    rootState: {
-      common: { isOnline }
-    },
-    commit,
-    dispatch
-  },
-  params
-) {
-  if (isOnline) {
-    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
-    try {
-      const { data } = await request.get('/losscauses');
-      commit('setLossCause', data);
-      dispatch('setLoading', false);
-    } catch (e) {
-      console.log(e);
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: e.response[0].title
-      });
-    }
-  } else {
-    commit('setOfflineLossCauses');
-    dispatch('setLoading', false);
-  }
-}
+// // function is used for getting the list of getContactTypes , this function is called both in online and offline mode.
+// export async function getContactTypes(
+//   {
+//     rootState: {
+//       common: { isOnline }
+//     },
+//     commit,
+//     dispatch
+//   },
+//   params
+// ) {
+//   if (isOnline) {
+//     params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
 
-// function is used for getting the list of getContactTypes , this function is called both in online and offline mode.
-export async function getContactTypes(
-  {
-    rootState: {
-      common: { isOnline }
-    },
-    commit,
-    dispatch
-  },
-  params
-) {
-  if (isOnline) {
-    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
+//     try {
+//       const { data } = await request.get('/phonetypes');
+//       commit('setContactTypes', data);
+//       dispatch('setLoading', false);
+//     } catch (e) {
+//       console.log(e);
+//       dispatch('setLoading', false);
+//       dispatch('setNotification', {
+//         type: 'negative',
+//         message: e.response[0].title
+//       });
+//     }
+//   } else {
+//     // for offline mode we called contact type from local storage.
+//     commit('setOfflineContactTypes');
+//     dispatch('setLoading', false);
+//   }
+// }
 
-    try {
-      const { data } = await request.get('/phonetypes');
-      commit('setContactTypes', data);
-      dispatch('setLoading', false);
-    } catch (e) {
-      console.log(e);
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: e.response[0].title
-      });
-    }
-  } else {
-    // for offline mode we called contact type from local storage.
-    commit('setOfflineContactTypes');
-    dispatch('setLoading', false);
-  }
-}
-
-// function is used for getting the list of  titles , this function is called both in online and offline mode.
-export async function getTitles(
-  {
-    rootState: {
-      common: { isOnline }
-    },
-    commit,
-    dispatch
-  },
-  params
-) {
-  if (isOnline) {
-    try {
-      params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
-      const { data } = await request.get('/honorifics');
-      commit('setTitles', data);
-      dispatch('setLoading', false);
-    } catch (e) {
-      console.log(e);
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: e.response[0].title
-      });
-    }
-  } else {
-    commit('setOfflineTitles');
-    dispatch('setLoading', false);
-  }
-}
+// // function is used for getting the list of  titles , this function is called both in online and offline mode.
+// export async function getTitles(
+//   {
+//     rootState: {
+//       common: { isOnline }
+//     },
+//     commit,
+//     dispatch
+//   },
+//   params
+// ) {
+//   if (isOnline) {
+//     try {
+//       params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
+//       const { data } = await request.get('/honorifics');
+//       commit('setTitles', data);
+//       dispatch('setLoading', false);
+//     } catch (e) {
+//       console.log(e);
+//       dispatch('setLoading', false);
+//       dispatch('setNotification', {
+//         type: 'negative',
+//         message: e.response[0].title
+//       });
+//     }
+//   } else {
+//     commit('setOfflineTitles');
+//     dispatch('setLoading', false);
+//   }
+// }
 
 // function is used for getting the list of all plans .
 export async function getAllPlans({ commit, dispatch }) {
@@ -598,10 +567,7 @@ export async function dataURItoBlob(dataURI) {
   else byteString = unescape(dataURI.split(',')[1]);
 
   // separate out the mime component
-  var mimeString = dataURI
-    .split(',')[0]
-    .split(':')[1]
-    .split(';')[0];
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
   // write the bytes of the string to a typed array
   var ia = new Uint8Array(byteString.length);

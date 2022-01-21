@@ -9,12 +9,12 @@
             (planInfo.attributes &&
               planInfo.attributes.coupons[0] &&
               planInfo.attributes.coupons[0].amtAfterDicount) ||
-              (planInfo.attributes &&
-                planInfo.attributes.coupons &&
-                planInfo.attributes.coupons[1]) ||
-              (planInfo.attributes &&
-                planInfo.attributes.coupons &&
-                planInfo.attributes.coupons[0].trial)
+            (planInfo.attributes &&
+              planInfo.attributes.coupons &&
+              planInfo.attributes.coupons[1]) ||
+            (planInfo.attributes &&
+              planInfo.attributes.coupons &&
+              planInfo.attributes.coupons[0].trial)
           "
         >
           <q-badge color="green"> Coupon Applied Successfully </q-badge>
@@ -51,9 +51,9 @@
                           planInfo.attributes.coupons[0] &&
                           planInfo.attributes.coupons[0].amtAfterDicount &&
                           planInfo.attributes.coupons[0].amtAfterDicount) ||
-                          (planInfo.attributes &&
-                            planInfo.attributes.coupons[1] &&
-                            planInfo.attributes.coupons[1].amtAfterDicount)
+                        (planInfo.attributes &&
+                          planInfo.attributes.coupons[1] &&
+                          planInfo.attributes.coupons[1].amtAfterDicount)
                       "
                       >Amount to Pay after Discount</span
                     >
@@ -68,9 +68,9 @@
                           planInfo.attributes.coupons[0] &&
                           planInfo.attributes.coupons[0].amtAfterDicount &&
                           planInfo.attributes.coupons[0].amtAfterDicount) ||
-                          (planInfo.attributes &&
-                            planInfo.attributes.coupons[1] &&
-                            planInfo.attributes.coupons[1].amtAfterDicount)
+                        (planInfo.attributes &&
+                          planInfo.attributes.coupons[1] &&
+                          planInfo.attributes.coupons[1].amtAfterDicount)
                       "
                     >
                       $
@@ -689,7 +689,7 @@ export default {
     ...mapActions([
       'getPlanInfo',
       'getAllPlans',
-      'getContactTypes',
+      'getAllConfigurationTableData',
       'createUserForOrganization'
     ]),
 

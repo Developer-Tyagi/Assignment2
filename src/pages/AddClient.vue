@@ -666,7 +666,12 @@
                           </div>
                         </div>
                         <div
-                          class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-pr-xs"
+                          class="
+                            text-capitalize
+                            q-pt-xs
+                            text-caption
+                            q-mr-xl q-my-xs q-pr-xs
+                          "
                         >
                           <p>{{ item.desc }}</p>
 
@@ -886,7 +891,12 @@
                           </div>
                         </div>
                         <div
-                          class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs"
+                          class="
+                            text-capitalize
+                            q-pt-xs
+                            text-caption
+                            q-mr-xl q-my-xs q-px-xs
+                          "
                         >
                           <p>{{ item.desc }}</p>
 
@@ -2038,10 +2048,10 @@ export default {
         }
       }
     }
-    await this.getClientTypes();
-    await this.getTitles();
-    await this.getContactTypes();
-    await this.getPropertyTypes();
+    await this.getAllConfigurationTableData({ name: 'client_types' });
+    await this.getAllConfigurationTableData({ name: 'honorifics' });
+    await this.getAllConfigurationTableData({ name: 'phone_types' });
+    await this.getAllConfigurationTableData({ name: 'property_types' });
 
     this.companyPersonnel.startDate =
       this.companyPersonnel.endDate =
@@ -2195,18 +2205,9 @@ export default {
       'getClaimRoles',
       'getVendorDetails',
       'addClient',
-      'getClaimReasons',
-      'getLossCauses',
       'getVendors',
-      'getClientTypes',
-      'getPolicyTypes',
-      'getContactTypes',
-      'getTitles',
-      'getPolicyCategory',
-      'getVendorIndustries',
-      'getPropertyTypes',
+      'getAllConfigurationTableData',
       'getRoles',
-      'getSeverityClaim',
       'addClaim',
       'getLeadDetails',
       'addMultipleTaskToClaim',
@@ -2895,16 +2896,18 @@ export default {
       this.step++;
       switch (this.stepArr[this.step].ref) {
         case 'insuranceInfo':
-          this.getPolicyTypes();
-          this.getPolicyCategory();
+          this.getAllConfigurationTableData({ name: 'policy_types' });
+          this.getAllConfigurationTableData({
+            name: 'policy_categories'
+          });
           break;
         case 'lossInfo':
-          this.getLossCauses();
-          this.getClaimReasons();
-          this.getSeverityClaim();
+          this.getAllConfigurationTableData({ name: 'loss_causes' });
+          this.getAllConfigurationTableData({ name: 'claim_reasons' });
+          this.getAllConfigurationTableData({ name: 'claim_severities' });
           break;
         case 'vendorInfo':
-          this.getVendorIndustries();
+          this.getAllConfigurationTableData({ name: 'industries' });
           break;
         case 'personnelInfo':
           this.getClaimRoles();

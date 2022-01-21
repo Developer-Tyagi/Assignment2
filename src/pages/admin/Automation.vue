@@ -861,7 +861,7 @@ export default {
       'getWorkflowAction',
       'getAllWorkFlow',
       'addWorkflowAction',
-      'getContactTypes',
+      'getAllConfigurationTableData',
       'editUserInfo',
       'editUserProfile',
       'getUserInfo',
@@ -1578,7 +1578,7 @@ export default {
 
   async created() {
     this.getAllUsers();
-    this.getContactTypes();
+    this.getAllConfigurationTableData({ name: 'phone_types' });
     if (getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
       this.userId = getCurrentUser().id;

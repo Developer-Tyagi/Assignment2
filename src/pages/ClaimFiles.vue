@@ -30,7 +30,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getSingleClaims', 'getTemplates'])
+    ...mapActions(['getSingleClaims', 'getAllConfigurationTableData'])
   }
 };
 </script>

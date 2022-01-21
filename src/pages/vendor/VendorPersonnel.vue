@@ -574,14 +574,13 @@ export default {
   created() {
     this.getVendorDetails(this.$route.params.id);
     this.getVendorPersonnel(this.$route.params.id);
-    this.getContactTypes();
-    this.getTitles();
+    this.getAllConfigurationTableData({ name: 'phone_types' });
+    this.getAllConfigurationTableData({ name: 'honorifics' });
     this.getClaimRoles();
   },
   methods: {
     ...mapActions([
-      'getContactTypes',
-      'getTitles',
+      'getAllConfigurationTableData',
       'addVendorPersonnel',
       'getVendorPersonnel',
       'getVendorDetails',

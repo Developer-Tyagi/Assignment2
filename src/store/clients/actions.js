@@ -558,162 +558,68 @@ export async function addEstimatorLocal({ dispatch }, payload) {
   }
 }
 
-// this function is used to get the property type, this function is used in both online and offline mode.
-export async function getPropertyTypes(
-  {
-    rootState: {
-      common: { isOnline }
-    },
-    commit,
-    dispatch
-  },
-  params
-) {
-  if (isOnline) {
-    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
-    try {
-      const { data } = await request.get('/prtypes');
-      commit('setPropertyTypes', data);
-      dispatch('setLoading', false);
-    } catch (e) {
-      console.log(e);
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: e.response[0].title
-      });
-    }
-  } else {
-    // this method is called in the offline mode to get the property type of the client.
-    commit('setOfflinePropertyTypes');
-    dispatch('setLoading', false);
-  }
-}
-
 // this function is used to get the policy type in the online mode.
-export async function getPolicyTypes(
-  {
-    rootState: {
-      common: { isOnline }
-    },
-    commit,
-    dispatch
-  },
-  params
-) {
-  if (isOnline) {
-    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
-    try {
-      const { data } = await request.get('/ptypes');
-      commit('setPolicyTypes', data);
-      dispatch('setLoading', false);
-    } catch (e) {
-      console.log(e);
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: e.response[0].title
-      });
-    }
-  } else {
-    // this function is used to get the policy type in the offline mode.
-    commit('setOfflinePolicyTypes');
-    dispatch('setLoading', false);
-  }
-}
+// export async function getPolicyTypes(
+//   {
+//     rootState: {
+//       common: { isOnline }
+//     },
+//     commit,
+//     dispatch
+//   },
+//   params
+// ) {
+//   if (isOnline) {
+//     params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
+//     try {
+//       const { data } = await request.get('/ptypes');
+//       commit('setPolicyTypes', data);
+//       dispatch('setLoading', false);
+//     } catch (e) {
+//       console.log(e);
+//       dispatch('setLoading', false);
+//       dispatch('setNotification', {
+//         type: 'negative',
+//         message: e.response[0].title
+//       });
+//     }
+//   } else {
+//     // this function is used to get the policy type in the offline mode.
+//     commit('setOfflinePolicyTypes');
+//     dispatch('setLoading', false);
+//   }
+// }
 
-// function is used to get the claim reason, this function is used to call both in offline and online mode.
-export async function getClaimReasons(
-  {
-    rootState: {
-      common: { isOnline }
-    },
-    commit,
-    dispatch
-  },
-  params
-) {
-  if (isOnline) {
-    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
-    try {
-      const { data } = await request.get('/claimreasons');
-      commit('setClaimReasons', data);
-      dispatch('setLoading', false);
-    } catch (e) {
-      console.log(e);
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: e.response[0].title
-      });
-    }
-  } else {
-    // for the offline mode we fetch the claim reason from the local storage.
-    commit('setOfflineClaimReasons');
-    dispatch('setLoading', false);
-  }
-}
-// function is used to get the list of severity for both in offline and online mode.
-export async function getSeverityClaim(
-  {
-    rootState: {
-      common: { isOnline }
-    },
-    commit,
-    dispatch
-  },
-  params
-) {
-  if (isOnline) {
-    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
-    try {
-      const { data } = await request.get('/severities');
-      commit('setClaimSeverities', data);
-      dispatch('setLoading', false);
-    } catch (e) {
-      console.log(e);
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: e.response[0].title
-      });
-    }
-  } else {
-    commit('setOfflineClaimSeverities');
-    dispatch('setLoading', false);
-  }
-}
-
-// function is used to get the list of policy category.
-export async function getPolicyCategory(
-  {
-    rootState: {
-      common: { isOnline }
-    },
-    commit,
-    dispatch
-  },
-  params
-) {
-  if (isOnline) {
-    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
-    try {
-      const { data } = await request.get('/pcategories');
-      commit('setPolicyCategories', data);
-      dispatch('setLoading', false);
-    } catch (e) {
-      console.log(e);
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: e.response[0].title
-      });
-    }
-  } else {
-    commit('setOfflinePolicyCategories');
-    dispatch('setLoading', false);
-  }
-}
+// // function is used to get the list of policy category.
+// export async function getPolicyCategory(
+//   {
+//     rootState: {
+//       common: { isOnline }
+//     },
+//     commit,
+//     dispatch
+//   },
+//   params
+// ) {
+//   if (isOnline) {
+//     params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
+//     try {
+//       const { data } = await request.get('/pcategories');
+//       commit('setPolicyCategories', data);
+//       dispatch('setLoading', false);
+//     } catch (e) {
+//       console.log(e);
+//       dispatch('setLoading', false);
+//       dispatch('setNotification', {
+//         type: 'negative',
+//         message: e.response[0].title
+//       });
+//     }
+//   } else {
+//     commit('setOfflinePolicyCategories');
+//     dispatch('setLoading', false);
+//   }
+// }
 
 // function is used to delete the claim notes.
 export async function deletedClientNote({ commit, dispatch }, payload) {

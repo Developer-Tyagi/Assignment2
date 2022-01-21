@@ -553,8 +553,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getContactTypes',
-      'getTitles',
+      'getAllConfigurationTableData',
       'addMortgagePersonnel',
       'getMortgagePersonnel',
       'getMortgageDetails',
@@ -567,8 +566,8 @@ export default {
 
     onEdit(index) {
       this.editPersonnelDialog = true;
-      this.getContactTypes();
-      this.getTitles();
+      this.getAllConfigurationTableData({ name: 'phone_types' });
+      this.getAllConfigurationTableData({ name: 'honorifics' });
       this.personnel.fname = this.mortgagePersonnel.personnel[index].fname;
       this.personnel.lname = this.mortgagePersonnel.personnel[index].lname;
       this.personnel.email = this.mortgagePersonnel.personnel[index].email;

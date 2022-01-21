@@ -51,14 +51,14 @@
           <table class="table" v-if="table.length">
             <thead>
               <tr class="table-tr" v-if="tab !== 'inspections'">
-                <th class="table-th text-black">Name</th>
-                <th class="table-th text-black">Action</th>
+                <th class="table-th text-white">Name</th>
+                <th class="table-th text-white">Action</th>
               </tr>
               <tr class="table-tr" v-if="tab == 'inspections'">
-                <th class="table-th text-black">Name</th>
-                <th class="table-th text-black">SubType</th>
-                <th class="table-th text-black">Duration (hrs)</th>
-                <th class="table-th text-black">Action</th>
+                <th class="table-th text-white">Name</th>
+                <th class="table-th text-white">SubType</th>
+                <th class="table-th text-white">Duration (hrs)</th>
+                <th class="table-th text-white">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -83,7 +83,7 @@
                   ></span>
                 </td>
                 <td class="table-td">
-                  <div class="justify-between">
+                  <!-- <div class="justify-between">
                     <q-icon
                       name="edit"
                       size="sm"
@@ -108,7 +108,7 @@
                       v-if="toEditConfigurationData"
                       class="q-pl-md cursor-pointer"
                     ></q-icon>
-                  </div>
+                  </div> -->
                 </td>
               </tr>
 
@@ -132,7 +132,7 @@
                   </div>
                 </td>
                 <td class="table-td">
-                  <div class="justify-between">
+                  <!-- <div class="justify-between">
                     <q-icon
                       name="edit"
                       size="sm"
@@ -143,10 +143,10 @@
                       size="sm"
                       class="q-pl-md cursor-pointer"
                     ></q-icon>
-                  </div>
+                  </div> -->
                 </td>
               </tr>
-              <td>
+              <!-- <td>
                 <q-icon
                   name="add_box"
                   size="md"
@@ -155,7 +155,7 @@
               </td>
               <td></td>
               <td v-if="tab == 'inspections'"></td>
-              <td v-if="tab == 'inspections'"></td>
+              <td v-if="tab == 'inspections'"></td> -->
             </tbody>
           </table>
 
@@ -636,18 +636,7 @@ export default {
       'addLoss',
       'addClaimSeverity',
       'addOnboardingStep',
-      'getTitles',
-      'getClientTypes',
-      'getContactTypes',
-      'getInspectionTypes',
-      'getVendorIndustries',
-      'getPolicyTypes',
-      'getPolicyCategory',
-      'getPropertyTypes',
-      'getSeverityClaim',
-      'getClaimReasons',
-      'getLossCauses',
-      'getTemplates',
+      'getAllConfigurationTableData',
       'addTemplateRemote',
       'getTemplateToken',
       'getAllTemplate',
@@ -877,7 +866,6 @@ export default {
       this.tokenDialogBox = false;
     },
     setSelectedTabs(e, value) {
-      console.log(e, value);
       this.newTab = value == 'true' ? e.dataTypeValue : '';
       this.tab = value == 'true' ? e.dataTypeMachineValue : e;
       this.setSelectedTab(e, value);
@@ -889,55 +877,57 @@ export default {
 
       switch (this.tab) {
         case 'inspections':
-          await this.getAllConfigurationTableData('inspections');
+          await this.getAllConfigurationTableData({ name: 'inspections' });
           this.table = this.inspectionTypes;
           break;
         case 'honorifics':
-          await this.getAllConfigurationTableData('honorifics');
+          await this.getAllConfigurationTableData({ name: 'honorifics' });
           this.table = this.titles;
           break;
         case 'industries':
-          await this.getAllConfigurationTableData('industries');
+          await this.getAllConfigurationTableData({ name: 'industries' });
           this.table = this.vendorIndustries;
           break;
         case 'phone_types':
-          await this.getAllConfigurationTableData('phone_types');
+          await this.getAllConfigurationTableData({ name: 'phone_types' });
           this.table = this.contactTypes;
           break;
         case 'client_types':
-          await this.getAllConfigurationTableData('client_types');
+          await this.getAllConfigurationTableData({ name: 'client_types' });
           this.table = this.clientTypes;
           break;
-        case 'policyType':
-          await this.getAllConfigurationTableData('policyType');
+        case 'policy_types':
+          await this.getAllConfigurationTableData({ name: 'policy_types' });
           this.table = this.policyTypes;
           break;
         case 'policy_categories':
-          await this.getAllConfigurationTableData('policy_categories');
+          await this.getAllConfigurationTableData({
+            name: 'policy_categories'
+          });
           this.table = this.policyCategories;
           break;
         case 'property_types':
-          await this.getAllConfigurationTableData('property_types');
+          await this.getAllConfigurationTableData({ name: 'property_types' });
           this.table = this.propertyTypes;
           break;
         case 'claim_reasons':
-          await this.getAllConfigurationTableData('claim_reasons');
+          await this.getAllConfigurationTableData({ name: 'claim_reasons' });
           this.table = this.claimReasons;
           break;
         case 'loss_causes':
-          await this.getAllConfigurationTableData('loss_causes');
+          await this.getAllConfigurationTableData({ name: 'loss_causes' });
           this.table = this.lossCauses;
           break;
         case 'claim_severities':
-          await this.getAllConfigurationTableData('claim_severities');
+          await this.getAllConfigurationTableData({ name: 'claim_severities' });
           this.table = this.claimSeverity;
           break;
         case 'template_types':
-          await this.getAllConfigurationTableData('template_types');
+          await this.getAllConfigurationTableData({ name: 'template_types' });
           this.table = this.templateOptions;
           break;
         case 'template':
-          await this.getTemplates();
+          await this.getAllConfigurationTableData({ name: 'template_types' });
           await this.getAllTemplate();
           await this.getTemplateToken();
           this.table = this.templates;
@@ -959,62 +949,66 @@ export default {
               }
             }
             var response = await this.addInspectionType(this.inspectionType);
-            await this.getAllConfigurationTableData('inspections');
+            await this.getAllConfigurationTableData({ name: 'inspections' });
             this.table = this.inspectionTypes;
             break;
           case 'honorifics':
             var response = await this.addHonorifics(this.payload);
-            await this.getAllConfigurationTableData('honorifics');
+            await this.getAllConfigurationTableData({ name: 'honorifics' });
             this.table = this.titles;
             break;
           case 'industries':
             var response = await this.addIndustry(this.payload);
-            await this.getAllConfigurationTableData('industries');
+            await this.getAllConfigurationTableData({ name: 'industries' });
             this.table = this.vendorIndustries;
             break;
           case 'phone_types':
             var response = await this.addPhone(this.payload);
-            await this.getAllConfigurationTableData('phone_types');
+            await this.getAllConfigurationTableData({ name: 'phone_types' });
             this.table = this.contactTypes;
             break;
           case 'client_types':
             var response = await this.addClientType(this.payload);
-            await this.getAllConfigurationTableData('client_types');
+            await this.getAllConfigurationTableData({ name: 'client_types' });
             this.table = this.clientTypes;
             break;
-          case 'policyType':
+          case 'policy_types':
             var response = await this.addPolicy(this.payload);
-            await this.getAllConfigurationTableData('policyType');
+            await this.getAllConfigurationTableData({ name: 'policy_types' });
             this.table = this.policyTypes;
             break;
           case 'policy_categories':
             var response = await this.addPolicyCategories(this.payload);
-            await this.getAllConfigurationTableData('policy_categories');
+            await this.getAllConfigurationTableData({
+              name: 'policy_categories'
+            });
             this.table = this.policyCategories;
             break;
           case 'property_types':
             var response = await this.addProperty(this.payload);
-            await this.getAllConfigurationTableData('property_types');
+            await this.getAllConfigurationTableData({ name: 'property_types' });
             this.table = this.propertyTypes;
             break;
           case 'claim_reasons':
             var response = await this.addClaimReason(this.payload);
-            await this.getAllConfigurationTableData('claim_reasons');
+            await this.getAllConfigurationTableData({ name: 'claim_reasons' });
             this.table = this.claimReasons;
             break;
           case 'loss_causes':
             var response = await this.addLoss(this.payload);
-            await this.getAllConfigurationTableData('loss_causes');
+            await this.getAllConfigurationTableData({ name: 'loss_causes' });
             this.table = this.lossCauses;
             break;
           case 'claim_severities':
             var response = await this.addClaimSeverity(this.payload);
-            await this.getAllConfigurationTableData('claim_severities');
+            await this.getAllConfigurationTableData({
+              name: 'claim_severities'
+            });
             this.table = this.claimSeverity;
             break;
           case 'template_types':
             var response = await this.addTemplateType(this.payload);
-            await this.getAllConfigurationTableData('template_types');
+            await this.getAllConfigurationTableData({ name: 'template_types' });
             this.table = this.templateOptions;
             break;
         }
@@ -1058,7 +1052,7 @@ export default {
     // onSaveInspectionType
     async onSaveInspectionType() {
       if (response) {
-        this.getInspectionTypes();
+        this.getAllConfigurationTableData({ name: 'inspections' });
         this.InspectionDialogBox = false;
         this.inspection = {
           value: '',

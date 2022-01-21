@@ -286,25 +286,7 @@ export async function addClientType({ dispatch, state }, payload) {
   }
 }
 // Add Policy Type
-export async function addPolicy({ dispatch, state }, payload) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.post(
-      '/ptypes',
-      buildApiData('ptypes', payload)
-    );
-    dispatch('setLoading', false);
-    return true;
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
-    return false;
-  }
-}
+
 // Add  policyCategories
 export async function addPolicyCategories({ dispatch, state }, payload) {
   dispatch('setLoading', true);
