@@ -141,7 +141,6 @@ export async function setTemplateTypes(state, types) {
     type: type.type
   }));
   state.templateOptions = templateType;
-
   if ((await templateTypeCollection.count()) > 0) {
     await templateTypeCollection.delete([]);
   }

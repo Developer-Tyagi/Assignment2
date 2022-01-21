@@ -18,7 +18,10 @@ export async function getAllConfigurationTableData(
       const { data } = await request.get(
         `/config-data?viewAll=true&type=${params.name}`
       );
-      if (params.name == 'inspections') {
+      if (params.name == 'roles') {
+        commit('setRoles', data);
+        dispatch('setLoading', false);
+      } else if (params.name == 'inspections') {
         commit('setInspectionTypes', data);
         dispatch('setLoading', false);
       } else if (params.name == 'honorifics') {

@@ -378,8 +378,8 @@
                 dense
                 class="input-extra-padding q-ma-sm required"
                 v-model="templatetype.value"
-                option-value="name"
-                option-label="name"
+                option-value="value"
+                option-label="value"
                 map-options
                 options-dense
                 behavior="menu"
@@ -465,8 +465,8 @@
                   dense
                   class="input-extra-padding q-ma-sm required"
                   v-model="uploadTemplatetype.value"
-                  option-value="name"
-                  option-label="name"
+                  option-value="value"
+                  option-label="value"
                   map-options
                   options-dense
                   behavior="menu"
@@ -728,6 +728,8 @@ export default {
     },
 
     openAddTemplateBox() {
+      this.getAllConfigurationTableData({ name: 'template_types' });
+      this.table = this.templateOptions;
       this.isEdit = false;
       this.templateTokens = [];
       this.groupedTokens = [];
@@ -832,7 +834,7 @@ export default {
 
     setTypes(value) {
       const obj = this.templateOptions.find(item => {
-        return item.name === value;
+        return item.value === value;
       });
       this.templatetype.machineValue = obj.machineValue;
       this.uploadTemplatetype.machineValue = obj.machineValue;
