@@ -44,11 +44,7 @@
           />
         </div>
         <!--toShowCamera is True only when we route from Camera Option in dashboard page and it will false when we route from Scan & Upload option in dashboard page-->
-        <div
-          @click="onClickUploadButton"
-          class="column"
-          v-if="toShowCamera == 'true'"
-        >
+        <div @click="addFile" class="column" v-if="toShowCamera == 'true'">
           <img class="q-ml-lg" src="~assets/scan_file.svg" style="width: 50%" />
           <div class="form-heading text-center q-mt-xs q-mr-xs">Camera</div>
         </div>
@@ -129,7 +125,10 @@ export default {
         byteString = atob(dataURI.split(',')[1]);
       else byteString = unescape(dataURI.split(',')[1]);
       // separate out the mime component
-      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+      var mimeString = dataURI
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0];
       // write the bytes of the string to a typed array
       var ia = new Uint8Array(byteString.length);
       for (var i = 0; i < byteString.length; i++) {
