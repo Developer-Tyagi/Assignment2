@@ -144,7 +144,7 @@
             @click="selectFilter(filter)"
           >
             <div class="row">
-              {{ filter.name }}
+              {{ filter.value }}
               <q-radio
                 v-model="selectedFilter"
                 :val="filter.machineValue"
@@ -191,6 +191,9 @@ export default {
     ...mapGetters(['vendors', 'vendorIndustries'])
   },
 
+  created() {
+    this.getAllConfigurationTableData({ name: 'industries' });
+  },
   mounted() {
     if (this.filterName) {
       this.params.industry = this.filterName;
