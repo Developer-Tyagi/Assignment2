@@ -529,7 +529,7 @@ export default {
   async created() {
     await this.getPhotoIdKeys();
     await this.getSingleClaimDetails(this.selectedClaimId);
-    this.getPhases();
+    this.getAllConfigurationTableData({ name: 'claim_phases' });
     this.options = this.phases;
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
     if (this.notificationRouteTo == 'task') {
@@ -543,6 +543,7 @@ export default {
   },
   methods: {
     ...mapActions([
+      'getAllConfigurationTableData',
       'getSingleClaimDetails',
       'editClaimNumber',
       'editClaimPhase',
