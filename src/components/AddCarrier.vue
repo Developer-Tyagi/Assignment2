@@ -11,6 +11,7 @@
             <div class="rounded">
               <q-input
                 dense
+                :disable="isDisabled()"
                 borderless
                 class="required input-style input-overlay"
                 v-model="carrier.name"
@@ -24,6 +25,7 @@
 
               <div class="row justify-between">
                 <q-select
+                  :disable="isDisabled()"
                   dense
                   borderless
                   class="input-style input-overlay col-5"
@@ -44,6 +46,7 @@
                 <q-input
                   dense
                   borderless
+                  :disable="contactOnly"
                   class="input-style input-overlay required col-6"
                   v-model.number="carrier.phoneNumber[0].number"
                   label="Phone"
@@ -57,6 +60,7 @@
               </div>
               <q-input
                 dense
+                :disable="contactOnly"
                 borderless
                 class="input-style input-overlay"
                 v-model="carrier.email"
@@ -77,8 +81,10 @@
             <div class="">
               <div class="form-heading">Carrier's Address</div>
               <div class="q-mt-xs">
+                {{ carrier.address }}
                 <AutoCompleteAddress
                   :id="'CarrierAddress'"
+                  :readOnly="isDisabled()"
                   :address="carrier.address"
                   :isDropBoxEnable="false"
                   :isChecksEnable="false"
@@ -94,6 +100,7 @@
                 <div class="q-mt-sm">
                   <q-select
                     borderless
+                    :disable="isDisabled()"
                     v-model="carrier.contact.honorific.value"
                     :options="titles"
                     option-label="value"
@@ -109,6 +116,7 @@
                   <q-input
                     class="input-style input-overlay"
                     borderless
+                    :disable="isDisabled()"
                     v-model="carrier.contact.fname"
                     label="First Name"
                   />
@@ -116,9 +124,13 @@
                     borderless
                     class="input-style input-overlay"
                     v-model="carrier.contact.lname"
+                    :disable="isDisabled()"
                     label="Last Name"
                   />
                   <div class="row justify-between">
+                    {{ carrier.contact.phoneNumber[0].type }}
+                    {{ carrier.contact.phoneNumber[0].number }}
+
                     <q-select
                       borderless
                       class="input-style input-overlay col-5"
@@ -126,6 +138,7 @@
                       :options="contactTypes"
                       option-value="machineValue"
                       option-label="name"
+                      :disable="isDisabled()"
                       label="Type"
                       behavior="menu"
                       emit-value
@@ -137,12 +150,14 @@
                       class="input-style input-overlay col-6"
                       v-model.number="carrier.contact.phoneNumber[0].number"
                       label="Phone1"
+                      :disable="isDisabled()"
                       mask="(###) ###-####"
                     />
                   </div>
                   <q-input
                     class="input-style input-overlay q-mb-md"
                     dense
+                    :disable="isDisabled()"
                     borderless
                     v-model="carrier.contact.email"
                     lazy-rules
@@ -162,6 +177,7 @@
                 dense
                 class="input-style input-overlay"
                 borderless
+                :disable="isDisabled()"
                 v-model="carrier.info.website"
                 label="Website"
                 lazy-rules
@@ -171,6 +187,7 @@
                 class="input-style input-overlay q-mb-sm"
                 dense
                 type="textarea"
+                :disable="isDisabled()"
                 borderless
                 v-model="carrier.info.notes"
                 label="Notes"
@@ -223,6 +240,9 @@ export default {
   data() {
     return {
       constants: constants,
+      isEditable: false,
+      canEditContactOnly: false,
+      contactOnly: false,
       options: '',
       countries: [],
       states: [],
@@ -285,30 +305,37 @@ export default {
     if (this.isEdit) {
       this.carrier.name = this.selectedCarrier.name;
       this.carrier.email = this.selectedCarrier.email;
-      this.carrier.phoneNumber[0].number =
-        this.selectedCarrier.phoneNumber[0].number;
-      this.carrier.phoneNumber[0].type =
-        this.selectedCarrier.phoneNumber[0].type;
+      if (this.selectedCarrier.phoneNumber[0]) {
+        this.carrier.phoneNumber[0].number =
+          this.selectedCarrier.phoneNumber[0].number;
+        this.carrier.phoneNumber[0].type =
+          this.selectedCarrier.phoneNumber[0]?.type || '';
+      }
       this.carrier.meta.claimFiledByEmail =
         this.selectedCarrier.meta.claimFiledByEmail;
       if (this.selectedCarrier.address) {
-        if (
-          this.selectedCarrier.address.dropBox &&
-          this.selectedCarrier.address.dropBox.isPresent
-        ) {
-          this.carrier.address.dropBox.isPresent =
-            this.selectedCarrier.address.dropBox.isPresent;
-        }
+        // if (
+        //   this.selectedCarrier.address.dropBox &&
+        //   this.selectedCarrier.address.dropBox.isPresent
+        // ) {
+        //   this.carrier.address.dropBox.isPresent =
+        //     this.selectedCarrier.address.dropBox.isPresent;
+        // }
         this.carrier.address = this.selectedCarrier.address;
       }
 
-      this.carrier.contact.fname = this.selectedCarrier.contact.fname;
-      this.carrier.contact.lname = this.selectedCarrier.contact.lname;
-      this.carrier.contact.phoneNumber =
-        this.selectedCarrier.contact.phoneNumber;
-      this.carrier.contact.email = this.selectedCarrier.contact.email;
-      this.carrier.info.website = this.selectedCarrier.info.website;
-      this.carrier.info.notes = this.selectedCarrier.info.notes;
+      this.isEditable = this.selectedCarrier.isEditable;
+      this.canEditContactOnly = this.selectedCarrier.canEditContactOnly;
+
+      if (this.selectedCarrier.contact) {
+        this.carrier.contact.fname = this.selectedCarrier.contact?.fname || '';
+        this.carrier.contact.lname = this.selectedCarrier.contact?.lname || '';
+        this.carrier.contact.phoneNumber =
+          this.selectedCarrier.contact?.phoneNumber || '';
+        this.carrier.contact.email = this.selectedCarrier.contact?.email || '';
+      }
+      this.carrier.info.website = this.selectedCarrier.info?.website || '';
+      this.carrier.info.notes = this.selectedCarrier.info?.notes || '';
     }
     this.getTitles();
     this.getContactTypes();
@@ -376,6 +403,10 @@ export default {
         }
       };
 
+      if (this.isEdit) {
+        (payload.isEditable = this.isEditable),
+          (payload.canEditContactOnly = this.canEditContactOnly);
+      }
       if (success) {
         if (!this.isEdit) {
           if (!this.carrier.address.address1) {
@@ -405,6 +436,15 @@ export default {
           this.getCarrierDetails(this.carrier.id);
           this.$emit('closeDialog', true);
         }
+      }
+    },
+    isDisabled() {
+      if (this.isEditable == true) {
+        this.contactOnly = false;
+        return false;
+      } else if (this.canEditContactOnly == true) {
+        this.contactOnly = false;
+        return true;
       }
     }
   }

@@ -2,7 +2,7 @@
   <div>
     <div class="q-my-auto row">
       <q-icon
-        :style="selectedCarrier.isEditable == false ? 'visibility:hidden;' : ''"
+        :style="editableOrNOt()"
         size="xs"
         name="create "
         color="primary"
@@ -203,6 +203,29 @@ export default {
     },
     closeAddCarrierDialog() {
       this.addCarrierDialog = false;
+    },
+    editableOrNOt() {
+      if (
+        this.selectedCarrier.canEditContactOnly == false &&
+        this.selectedCarrier.isEditable == false
+      ) {
+        return 'visibility:hidden;';
+      } else if (
+        this.selectedCarrier.canEditContactOnly == true &&
+        this.selectedCarrier.isEditable == false
+      ) {
+        return '';
+      } else if (
+        this.selectedCarrier.canEditContactOnly == false &&
+        this.selectedCarrier.isEditable == true
+      ) {
+        return '';
+      } else if (
+        this.selectedCarrier.canEditContactOnly == true &&
+        this.selectedCarrier.isEditable == true
+      ) {
+        return '';
+      }
     }
   }
 };

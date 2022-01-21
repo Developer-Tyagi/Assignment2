@@ -221,6 +221,7 @@
         visibility: !isFieldsDisable
       }"
     >
+      {{ address }}
       <input
         type="text"
         borderless
