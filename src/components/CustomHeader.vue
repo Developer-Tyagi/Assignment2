@@ -543,7 +543,7 @@ export default {
           subOption: [
             { name: 'Account Summary', key: 'accountSummary' },
             { name: 'Group Permission ', key: 'groupPermission' },
-            { name: ' Action items', key: 'actionItems' }
+            { name: ' Automation', key: 'actionItems' }
           ],
           icon: 'admin_big.svg',
           description: 'Setup Company , account, email, actions etc.'
