@@ -173,7 +173,9 @@ export async function getRoles(
   if (isOnline) {
     dispatch('setLoading', true);
     try {
-      const { data } = await request.get('/roles');
+      const { data } = await request.get(
+        '/config-data?viewAll=true&type=roles'
+      );
 
       commit('setRoles', data);
       dispatch('setLoading', false);
@@ -196,7 +198,9 @@ export async function getRoles(
 export async function getPermissions({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/permissions');
+    const { data } = await request.get(
+      '/config-data?viewAll=true&type=permissions'
+    );
     commit('setPermissions', data);
     dispatch('setLoading', false);
   } catch (e) {

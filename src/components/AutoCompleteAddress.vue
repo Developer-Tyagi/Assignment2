@@ -221,7 +221,6 @@
         visibility: !isFieldsDisable
       }"
     >
-      {{ address }}
       <input
         type="text"
         borderless
@@ -246,7 +245,7 @@
       />
     </div>
     <div class="col q-mx-sm">
-      <div class=" ">
+      <div class="">
         <!-- <div class="row text-subtitle1 text-weight-bold">
           City<span class="text-red">*</span>
         </div> -->
@@ -265,7 +264,7 @@
           ]"
         />
       </div>
-      <div class=" ">
+      <div class="">
         <!-- <div class="row text-subtitle1 text-weight-bold">
           State<span class="text-red">*</span>
         </div> -->
@@ -283,7 +282,7 @@
           :rules="[val => checkValidations(val) || 'Please fill the state']"
         />
       </div>
-      <div class=" ">
+      <div class="">
         <!-- <div class="row text-subtitle1 text-weight-bold">
           ZIP Code<span class="text-red">*</span>
         </div> -->
