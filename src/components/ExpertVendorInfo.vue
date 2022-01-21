@@ -144,7 +144,7 @@
             <div
               v-if="
                 item.vendor.mailingAddress &&
-                  item.vendor.mailingAddress.address1
+                item.vendor.mailingAddress.address1
               "
             >
               <div>
@@ -162,7 +162,7 @@
               <div
                 v-if="
                   item.vendor.mailingAddress &&
-                    item.vendor.mailingAddress.address2
+                  item.vendor.mailingAddress.address2
                 "
               >
                 {{ item.vendor.mailingAddress.address2 }}
@@ -299,7 +299,7 @@
             <div
               v-if="
                 item.vendor.mailingAddress &&
-                  item.vendor.mailingAddress.address1
+                item.vendor.mailingAddress.address1
               "
             >
               <div>
@@ -317,7 +317,7 @@
               <div
                 v-if="
                   item.vendor.mailingAddress &&
-                    item.vendor.mailingAddress.address2
+                  item.vendor.mailingAddress.address2
                 "
               >
                 {{ item.vendor.mailingAddress.address2 }}
@@ -394,7 +394,7 @@
           rows="5"
           type="textarea"
           borderless
-          class="required  input-style "
+          class="required input-style"
           v-model="expertVendorInfo.notes"
           style="resize: none"
         />
@@ -403,7 +403,7 @@
           disabled
           borderless
           type="textarea"
-          class="required  input-style"
+          class="required input-style"
           v-model="expertVendorInfo.notes"
           style="resize: none"
           v-if="isOfflineClientEdit"
@@ -417,7 +417,7 @@
         <q-input
           borderless
           type="textarea"
-          class="required  input-style"
+          class="required input-style"
           v-if="!isOfflineClientEdit"
           rows="5"
           v-model="expertVendorInfo.internalNotes"
@@ -429,7 +429,7 @@
           disabled
           rows="5"
           borderless
-          class="required  input-style"
+          class="required input-style"
           v-model="expertVendorInfo.internalNotes"
           style="resize: none"
         />
@@ -486,7 +486,7 @@ export default {
       this.expertVendorInfo.anyOtherExpertHiredToggle = true;
     }
     if (this.expertVendorInfo.anyOtherExpertHiredToggle) {
-      await this.getVendorIndustries();
+      await this.getAllConfigurationTableData({ name: 'industries' });
     }
   },
 
@@ -500,7 +500,11 @@ export default {
     ])
   },
   methods: {
-    ...mapActions(['getVendors', 'addIndustry', 'getVendorIndustries']),
+    ...mapActions([
+      'getVendors',
+      'addIndustry',
+      'getAllConfigurationTableData'
+    ]),
 
     onPhoneNumberClick,
     onEmailClick,

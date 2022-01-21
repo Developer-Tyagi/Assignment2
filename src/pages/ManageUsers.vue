@@ -660,7 +660,7 @@ export default {
         }
       });
     });
-    this.getContactTypes();
+    this.getAllConfigurationTableData({ name: 'phone_types' });
   },
 
   watch: {
@@ -682,7 +682,7 @@ export default {
       'setOnboard',
       'getAllUsers',
       'getRoles',
-      'getContactTypes',
+      'getAllConfigurationTableData',
       'editUserInfo',
       'setSingleRole'
     ]),

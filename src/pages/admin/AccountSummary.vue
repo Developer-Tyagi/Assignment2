@@ -4,9 +4,9 @@
       <q-card
         class="q-pa-xl"
         style="
-                    border-radius: 20px;
-                    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-                    "
+          border-radius: 20px;
+          box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+        "
       >
         <div class="row justify-between">
           <div class="text-h5 text-weight-bold">Account Summary</div>
@@ -14,11 +14,11 @@
             <a
               @click="onEditClick"
               class="
-                            text-primary
-                            cursor-pointer
-                            text-subtitle1 text-weight-bold
-                            q-mr-xs
-                        "
+                text-primary
+                cursor-pointer
+                text-subtitle1 text-weight-bold
+                q-mr-xs
+              "
             >
               Edit
               <i class="text-primary fas fa-edit"></i>
@@ -167,9 +167,9 @@
       <q-card
         class="q-pa-xl q-mt-xl"
         style="
-                    border-radius: 20px;
-                    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-                    "
+          border-radius: 20px;
+          box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+        "
       >
         <div class="row justify-between">
           <div class="text-h5 text-weight-bold">Company Details</div>
@@ -177,11 +177,11 @@
             <a
               @click="onEditClickOrganization"
               class="
-                            text-primary
-                            cursor-pointer
-                            text-subtitle1 text-weight-bold
-                            q-mr-xs
-                        "
+                text-primary
+                cursor-pointer
+                text-subtitle1 text-weight-bold
+                q-mr-xs
+              "
             >
               Edit
               <i class="text-primary fas fa-edit"></i>
@@ -310,9 +310,9 @@
       <q-card
         class="q-pa-xl q-mt-xl"
         style="
-                    border-radius: 20px;
-                    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-                    "
+          border-radius: 20px;
+          box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+        "
       >
         <div class="row justify-between">
           <div class="text-h5 text-weight-bold">
@@ -333,11 +333,11 @@
             <a
               @click="onEditClickOrganization('PHOTOIDFORM')"
               class="
-                            text-primary
-                            cursor-pointer
-                            text-subtitle1 text-weight-bold
-                            q-mr-xs
-                        "
+                text-primary
+                cursor-pointer
+                text-subtitle1 text-weight-bold
+                q-mr-xs
+              "
               >Edit
               <i class="text-primary fas fa-edit"></i>
             </a>
@@ -502,7 +502,7 @@ export default {
       return plan[0].toUpperCase() + plan.slice(1);
     },
     ...mapActions([
-      'getContactTypes',
+      'getAllConfigurationTableData',
       'editUserInfo',
       'editUserProfile',
       'getUserInfo',
@@ -593,12 +593,16 @@ export default {
       this.users.contact.type = this.user.phoneNumber.type;
       this.users.contact.number = this.user.phoneNumber.number;
       this.users.email = this.user.email;
-      this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
-      this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
-      this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+      this.users.mailingAddress.addressRegion =
+        this.user.mailingAddress.addressRegion;
+      this.users.mailingAddress.addressLocality =
+        this.user.mailingAddress.addressLocality;
+      this.users.mailingAddress.houseNumber =
+        this.user.mailingAddress.houseNumber;
       this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
       this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-      this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
+      this.users.mailingAddress.postalCode =
+        this.user.mailingAddress.postalCode;
       this.editAccountSummary = false;
     },
     cancelCompanyDetailsUpdate() {
@@ -608,12 +612,18 @@ export default {
 
       // this.organizations.users.contact.number = this.organization.website;
       //this.organizations.users.email = this.organization.photoIDEmail;
-      this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
-      this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
-      this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
-      this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
-      this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
-      this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+      this.organizations.users.mailingAddress.addressRegion =
+        this.organization.billingInfo.address.addressRegion;
+      this.organizations.users.mailingAddress.addressLocality =
+        this.organization.billingInfo.address.addressLocality;
+      this.organizations.users.mailingAddress.houseNumber =
+        this.organization.billingInfo.address.houseNumber;
+      this.organizations.users.mailingAddress.address1 =
+        this.organization.billingInfo.address.address1;
+      this.organizations.users.mailingAddress.address2 =
+        this.organization.billingInfo.address.address2;
+      this.organizations.users.mailingAddress.postalCode =
+        this.organization.billingInfo.address.postalCode;
     },
     cancelPhotoIDUpdate() {
       this.editPhotoIDDetails = false;
@@ -630,7 +640,7 @@ export default {
 
     this.paidUnpaidUserDetails;
 
-    this.getContactTypes();
+    this.getAllConfigurationTableData({ name: 'phone_types' });
     if (getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
       this.userId = getCurrentUser().id;
@@ -642,12 +652,16 @@ export default {
       this.users.contact.type = this.user.phoneNumber.type;
       this.users.contact.number = this.user.phoneNumber.number;
       this.users.email = this.user.email;
-      this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
-      this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
-      this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+      this.users.mailingAddress.addressRegion =
+        this.user.mailingAddress.addressRegion;
+      this.users.mailingAddress.addressLocality =
+        this.user.mailingAddress.addressLocality;
+      this.users.mailingAddress.houseNumber =
+        this.user.mailingAddress.houseNumber;
       this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
       this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-      this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
+      this.users.mailingAddress.postalCode =
+        this.user.mailingAddress.postalCode;
     }
     await this.getOrganization();
 
@@ -657,12 +671,18 @@ export default {
 
       // this.organizations.users.contact.number = this.organization.website;
       this.organizations.users.email = this.organization.photoIDEmail;
-      this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
-      this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
-      this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
-      this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
-      this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
-      this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+      this.organizations.users.mailingAddress.addressRegion =
+        this.organization.billingInfo.address.addressRegion;
+      this.organizations.users.mailingAddress.addressLocality =
+        this.organization.billingInfo.address.addressLocality;
+      this.organizations.users.mailingAddress.houseNumber =
+        this.organization.billingInfo.address.houseNumber;
+      this.organizations.users.mailingAddress.address1 =
+        this.organization.billingInfo.address.address1;
+      this.organizations.users.mailingAddress.address2 =
+        this.organization.billingInfo.address.address2;
+      this.organizations.users.mailingAddress.postalCode =
+        this.organization.billingInfo.address.postalCode;
     }
   }
 };

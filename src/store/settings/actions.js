@@ -1,9 +1,8 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 
-// function is used for getting the list of Inspection Type, this function is called both in online and offline mode.
-
-export async function getInspectionTypes(
+//function used to get all configuration table data
+export async function getAllConfigurationTableData(
   {
     rootState: {
       common: { isOnline }
@@ -13,12 +12,49 @@ export async function getInspectionTypes(
   },
   params
 ) {
-  params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
+  params.loaders == 'hideLoader' ? ' ' : dispatch('setLoading', true);
   if (isOnline) {
     try {
-      const { data } = await request.get('/inspections');
-      commit('setInspectionTypes', data);
-      dispatch('setLoading', false);
+      const { data } = await request.get(
+        `/config-data?viewAll=true&type=${params.name}`
+      );
+      if (params.name == 'inspections') {
+        commit('setInspectionTypes', data);
+        dispatch('setLoading', false);
+      } else if (params.name == 'honorifics') {
+        commit('setTitles', data);
+        dispatch('setLoading', false);
+      } else if (params.name == 'industries') {
+        commit('setvendorsIndustries', data);
+        dispatch('setLoading', false);
+      } else if (params.name == 'phone_types') {
+        commit('setContactTypes', data);
+        dispatch('setLoading', false);
+      } else if (params.name == 'client_types') {
+        commit('setClientTypes', data);
+        dispatch('setLoading', false);
+      } else if (params.name == 'policy_types') {
+        commit('setPolicyTypes', data);
+        dispatch('setLoading', false);
+      } else if (params.name == 'policy_categories') {
+        commit('setPolicyCategories', data);
+        dispatch('setLoading', false);
+      } else if (params.name == 'property_types') {
+        commit('setPropertyTypes', data);
+        dispatch('setLoading', false);
+      } else if (params.name == 'claim_reasons') {
+        commit('setClaimReasons', data);
+        dispatch('setLoading', false);
+      } else if (params.name == 'loss_causes') {
+        commit('setLossCause', data);
+        dispatch('setLoading', false);
+      } else if (params.name == 'claim_severities') {
+        commit('setClaimSeverities', data);
+        dispatch('setLoading', false);
+      } else if (params.name == 'template_types') {
+        commit('setTemplateTypes', data);
+        dispatch('setLoading', false);
+      }
     } catch (e) {
       console.log(e);
       dispatch('setLoading', false);
@@ -26,72 +62,46 @@ export async function getInspectionTypes(
         type: 'negative',
         message: e.response[0].title
       });
+      return false;
     }
   } else {
-    // for offline mode we fetch the inspection details from the local storage.
-    commit('setOfflineInspectionTypes');
-    dispatch('setLoading', false);
-  }
-}
-
-//function used to get all configuration table data
-export async function getAllConfigurationTableData(
-  { commit, dispatch },
-  params
-) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get(
-      `/config-data?viewAll=true&type=${params}`
-    );
-    if (params == 'inspections') {
-      commit('setInspectionTypes', data);
+    if (params.name == 'inspections') {
+      commit('setOfflineInspectionTypes');
       dispatch('setLoading', false);
-    } else if (params == 'honorifics') {
-      commit('setTitles', data);
+    } else if (params.name == 'honorifics') {
+      commit('setOfflineTitles');
       dispatch('setLoading', false);
-    } else if (params == 'honorifics') {
-      commit('setTitles', data);
+    } else if (params.name == 'industries') {
+      commit('setOfflineVendorIndustries');
       dispatch('setLoading', false);
-    } else if (params == 'industries') {
-      commit('setvendorsIndustries', data);
+    } else if (params.name == 'phone_types') {
+      commit('setOfflineContactTypes');
       dispatch('setLoading', false);
-    } else if (params == 'phone_types') {
-      commit('setContactTypes', data);
+    } else if (params.name == 'client_types') {
+      commit('setOfflineClientTypes');
       dispatch('setLoading', false);
-    } else if (params == 'client_types') {
-      commit('setClientTypes', data);
+    } else if (params.name == 'policy_types') {
+      commit('setOfflinePolicyTypes');
       dispatch('setLoading', false);
-    } else if (params == 'policyType') {
-      commit('setPolicyTypes', data);
+    } else if (params.name == 'policy_categories') {
+      commit('setOfflinePolicyCategories');
       dispatch('setLoading', false);
-    } else if (params == 'policy_categories') {
-      commit('setPolicyCategories', data);
+    } else if (params.name == 'property_types') {
+      commit('setOfflinePropertyTypes');
       dispatch('setLoading', false);
-    } else if (params == 'property_types') {
-      commit('setPropertyTypes', data);
+    } else if (params.name == 'claim_reasons') {
+      commit('setOfflineClaimReasons');
       dispatch('setLoading', false);
-    } else if (params == 'claim_reasons') {
-      commit('setClaimReasons', data);
+    } else if (params.name == 'loss_causes') {
+      commit('setOfflineLossCauses');
       dispatch('setLoading', false);
-    } else if (params == 'loss_causes') {
-      commit('setLossCause', data);
+    } else if (params.name == 'claim_severities') {
+      commit('setOfflineClaimSeverities');
       dispatch('setLoading', false);
-    } else if (params == 'claim_severities') {
-      commit('setClaimSeverities', data);
-      dispatch('setLoading', false);
-    } else if (params == 'template_types') {
-      commit('setTemplateTypes', data);
+    } else if (params.name == 'template_types') {
+      commit('setOfflineTemplatesTypes');
       dispatch('setLoading', false);
     }
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
-    return false;
   }
 }
 

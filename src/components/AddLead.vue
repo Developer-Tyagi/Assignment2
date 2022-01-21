@@ -877,16 +877,12 @@ export default {
       'getArchivedLeadsList',
       'getVendorDetails',
       'getVendors',
-      'getVendorIndustries',
       'getClients',
       'addLeads',
-      'getInspectionTypes',
       'addVendor',
-      'getContactTypes',
-      'getTitles',
+      'getAllConfigurationTableData',
       'getClients',
       'getVendors',
-      'getLossCauses',
       'editLeadDetails',
       'getActiveLeadsList'
     ]),
@@ -1148,13 +1144,13 @@ export default {
         this.step++;
         switch (this.stepArr[this.step].ref) {
           case 'loss':
-            this.getLossCauses();
+            this.getAllConfigurationTableData({ name: 'loss_causes' });
             break;
           case 'schedule':
-            this.getInspectionTypes();
+            this.getAllConfigurationTableData({ name: 'inspections' });
             break;
           case 'source':
-            this.getVendorIndustries();
+            this.getAllConfigurationTableData({ name: 'industries' });
             this.getVendors(this.params);
         }
         if (this.stepClickValidTill < this.step) {
@@ -1251,8 +1247,8 @@ export default {
   },
 
   async created() {
-    await this.getContactTypes();
-    await this.getTitles();
+    await this.getAllConfigurationTableData({ name: 'phone_types' });
+    await this.getAllConfigurationTableData({ name: 'honorifics' });
 
     if (this.isEdit) {
       if (

@@ -152,11 +152,11 @@ export default {
     ...mapGetters(['contactTypes', 'titles'])
   },
   created() {
-    this.getContactTypes();
-    this.getTitles();
+    this.getAllConfigurationTableData({ name: 'phone_types' });
+    this.getAllConfigurationTableData({ name: 'honorifics' });
   },
   methods: {
-    ...mapActions(['getContactTypes', 'getTitles']),
+    ...mapActions(['getAllConfigurationTableData']),
     setTitleName() {
       const title = this.titles.find(obj => {
         return obj.id === this.carrierPersonnel.honorific.id;

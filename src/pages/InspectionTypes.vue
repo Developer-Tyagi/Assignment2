@@ -134,14 +134,14 @@ export default {
   },
 
   created() {
-    this.getInspectionTypes();
+    this.getAllConfigurationTableData({ name: 'inspections' });
   },
   computed: {
     ...mapGetters(['inspectionTypes'])
   },
 
   methods: {
-    ...mapActions(['getInspectionTypes', 'addInspectionTypes']),
+    ...mapActions(['getAllConfigurationTableData', 'addInspectionTypes']),
 
     onAddSubTypeButtonClick() {
       const length = this.inspectionType.subtypes.length;
@@ -169,7 +169,7 @@ export default {
       }
       this.addInspectionTypes(this.inspectionType).then(() => {
         this.closeInspetionDialog();
-        this.getInspectionTypes();
+        this.getAllConfigurationTableData({ name: 'inspections' });
       });
     },
 

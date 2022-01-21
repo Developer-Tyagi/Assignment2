@@ -335,10 +335,7 @@ export default {
   methods: {
     ...mapActions([
       'getLossInfo',
-      'getPropertyTypes',
-      'getClaimReasons',
-      'getLossCauses',
-      'getSeverityClaim',
+      'getAllConfigurationTableData',
       'updateLossInfo',
       'getSingleClaims',
       'getSingleClaimDetails'
@@ -382,10 +379,10 @@ export default {
     },
     onEditIconClick() {
       this.lossInfoDialog = true;
-      this.getPropertyTypes();
-      this.getClaimReasons();
-      this.getLossCauses();
-      this.getSeverityClaim();
+      this.getAllConfigurationTableData({ name: 'property_types' });
+      this.getAllConfigurationTableData({ name: 'claim_reasons' });
+      this.getAllConfigurationTableData({ name: 'loss_causes' });
+      this.getAllConfigurationTableData({ name: 'claim_severities' });
       this.$emit('editLossInoDialog', true);
       //This is For Prefilling Values in Loss Info Form
       if (this.lossInfo.attributes.lossInfo.desc) {

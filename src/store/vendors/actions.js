@@ -198,35 +198,35 @@ export async function deleteVendorPersonnel({ commit, dispatch }, vendor) {
 }
 
 // function is used for getting the list of vendor industries,this function is called both in online and offline mode.
-export async function getVendorIndustries(
-  {
-    rootState: {
-      common: { isOnline }
-    },
-    commit,
-    dispatch
-  },
-  params
-) {
-  params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
-  if (isOnline) {
-    try {
-      const { data } = await request.get('/industries');
-      commit('setvendorsIndustries', data);
-      dispatch('setLoading', false);
-    } catch (e) {
-      console.log(e);
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: e.response[0].title
-      });
-    }
-  } else {
-    commit('setOfflineVendorIndustries');
-    dispatch('setLoading', false);
-  }
-}
+// export async function getVendorIndustries(
+//   {
+//     rootState: {
+//       common: { isOnline }
+//     },
+//     commit,
+//     dispatch
+//   },
+//   params
+// ) {
+//   params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
+//   if (isOnline) {
+//     try {
+//       const { data } = await request.get('/industries');
+//       commit('setvendorsIndustries', data);
+//       dispatch('setLoading', false);
+//     } catch (e) {
+//       console.log(e);
+//       dispatch('setLoading', false);
+//       dispatch('setNotification', {
+//         type: 'negative',
+//         message: e.response[0].title
+//       });
+//     }
+//   } else {
+//     commit('setOfflineVendorIndustries');
+//     dispatch('setLoading', false);
+//   }
+// }
 
 // function is used for deleting the vendor info.
 export async function deleteVendorInfo({ commit, dispatch }, vendor) {

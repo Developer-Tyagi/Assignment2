@@ -337,15 +337,14 @@ export default {
       this.carrier.info.website = this.selectedCarrier.info?.website || '';
       this.carrier.info.notes = this.selectedCarrier.info?.notes || '';
     }
-    this.getTitles();
-    this.getContactTypes();
+    this.getAllConfigurationTableData({ name: 'honorifics' });
+    this.getAllConfigurationTableData({ name: 'phone_types' });
   },
 
   methods: {
     ...mapActions([
       'addCarrier',
-      'getTitles',
-      'getContactTypes',
+      'getAllConfigurationTableData',
       'getCarriers',
       'getCarrierDetails',
       'editCarrierInfo'

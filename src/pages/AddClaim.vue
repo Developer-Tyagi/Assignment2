@@ -166,7 +166,12 @@
                           </div>
                         </div>
                         <div
-                          class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-pr-xs"
+                          class="
+                            text-capitalize
+                            q-pt-xs
+                            text-caption
+                            q-mr-xl q-my-xs q-pr-xs
+                          "
                         >
                           <p>{{ item.desc }}</p>
 
@@ -381,7 +386,12 @@
                           </div>
                         </div>
                         <div
-                          class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs"
+                          class="
+                            text-capitalize
+                            q-pt-xs
+                            text-caption
+                            q-mr-xl q-my-xs q-px-xs
+                          "
                         >
                           <p>{{ item.desc }}</p>
 
@@ -994,7 +1004,7 @@ export default {
 
   created() {
     this.propertyId = this.$route.params.clientId;
-    this.getVendorIndustries();
+    this.getAllConfigurationTableData({ name: 'industries' });
     //TODO
     // this.getSingleClientDetails(this.selectedClientId);
     // this.getSingleClientProperty(this.selectedClientId);
@@ -1007,8 +1017,10 @@ export default {
       this.insuranceDetails.policyExpireDate =
       this.lossInfo.dateOfLoss =
         date.formatDate(Date.now(), 'MM/DD/YYYY');
-    this.getPolicyTypes();
-    this.getPolicyCategory();
+    this.getAllConfigurationTableData({ name: 'policy_types' });
+    this.getAllConfigurationTableData({
+      name: 'policy_categories'
+    });
     if (this.propertyId) {
       const obj = this.setClientProperty.find(item => {
         return item.id === this.propertyId;
@@ -1062,16 +1074,7 @@ export default {
       'getEstimators',
       'addClaim',
       'addEstimator',
-      'getClientTypes',
-      'getPropertyTypes',
-      'getPolicyTypes',
-      'getSeverityClaim',
-      'getLossCauses',
-      'getClaimReasons',
-      'getContactTypes',
-      'getTitles',
-      'getPolicyCategory',
-      'getVendorIndustries',
+      'getAllConfigurationTableData',
       'addIndustry',
       'getSingleClientDetails',
       'getSingleClientProperty',
@@ -1607,12 +1610,12 @@ export default {
       this.step++;
       switch (this.stepArr[this.step].ref) {
         case 'lossInfo':
-          this.getLossCauses();
-          this.getClaimReasons();
-          this.getSeverityClaim();
+          this.getAllConfigurationTableData({ name: 'loss_causes' });
+          this.getAllConfigurationTableData({ name: 'claim_reasons' });
+          this.getAllConfigurationTableData({ name: 'claim_severities' });
           break;
         case 'expertInfo':
-          this.getVendorIndustries();
+          this.getAllConfigurationTableData({ name: 'industries' });
           break;
         case 'personnelInfo':
           this.getClaimRoles();

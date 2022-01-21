@@ -1000,8 +1000,6 @@ export default {
   methods: {
     ...mapActions([
       'getPolicy',
-      'getPolicyTypes',
-      'getPolicyCategory',
       'editInsurancePolicy',
       'getSelectedClaim',
       'getClaimCarrier',
@@ -1014,7 +1012,8 @@ export default {
       'getCarriers',
       'addClaimCarrier',
       'editCarrierPersonnelToClaim',
-      'getClaimRoles'
+      'getClaimRoles',
+      'getAllConfigurationTableData'
     ]),
     sendMap,
     toGetStateShortName,
@@ -1129,8 +1128,10 @@ export default {
 
     onEditPolicyInfo() {
       this.insuranceInfoDialog = true;
-      this.getPolicyCategory();
-      this.getPolicyTypes();
+      this.getAllConfigurationTableData({
+        name: 'policy_categories'
+      });
+      this.getAllConfigurationTableData({ name: 'policy_types' });
       this.$emit('editCarrierDialog', true);
       this.insuranceDetails.isThisIsForcedPlacedPolicyToggle = this.policy
         .policyInfo.isForcedPlaced

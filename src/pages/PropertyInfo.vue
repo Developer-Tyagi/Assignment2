@@ -356,8 +356,8 @@ export default {
   methods: {
     ...mapActions([
       'getSingleClientProperty',
-      'getPropertyTypes',
       'addPropertyAddress',
+      'getAllConfigurationTableData',
       'getSingleClientDetails',
       'editedPropertyAddress',
       'deletedPropertyAddress'
@@ -397,7 +397,7 @@ export default {
     // Editing Property Address
     editPropertyAddress(index) {
       this.isEdit = true;
-      this.getPropertyTypes();
+      this.getAllConfigurationTableData({ name: 'property_types' });
       this.propertyId = this.setClientProperty[index].id
         ? this.setClientProperty[index].id
         : '';
@@ -467,7 +467,7 @@ export default {
         machineValue: ''
       };
       this.addNewPropertyDialog = true;
-      this.getPropertyTypes();
+      this.getAllConfigurationTableData({ name: 'property_types' });
     },
 
     async onSaveButtonClick() {

@@ -749,8 +749,7 @@ export default {
   methods: {
     ...mapActions([
       'getSingleClaimDetails',
-      'getClaimReasons',
-      'getLossCauses',
+      'getAllConfigurationTableData',
       'editClaimInfo',
       'updateClaimTimeline',
       'getAccess'
@@ -759,7 +758,7 @@ export default {
     validateDate,
     onEditLossDetails() {
       this.lossDetailsBox = true;
-      this.getLossCauses();
+      this.getAllConfigurationTableData({ name: 'loss_causes' });
       this.$emit('claimSummaryDialog', true);
       if (this.getSelectedClaim.lossInfo) {
         this.isHabitable = this.getSelectedClaim.lossInfo.isHabitable
@@ -781,8 +780,10 @@ export default {
           : null;
         if (this.getSelectedClaim.lossInfo.cause) {
           this.lossInfo.cause.id = this.getSelectedClaim.lossInfo.cause.id;
-          this.lossInfo.cause.value = this.getSelectedClaim.lossInfo.cause.value;
-          this.lossInfo.cause.machineValue = this.getSelectedClaim.lossInfo.cause.machineValue;
+          this.lossInfo.cause.value =
+            this.getSelectedClaim.lossInfo.cause.value;
+          this.lossInfo.cause.machineValue =
+            this.getSelectedClaim.lossInfo.cause.machineValue;
         }
         if (this.getSelectedClaim.lossInfo.date) {
           this.lossInfo.dateOfLoss = dateToShow(
@@ -817,14 +818,17 @@ export default {
       }
     },
     onEditClaimSummary() {
-      this.getClaimReasons();
-      this.getLossCauses();
+      this.getAllConfigurationTableData({ name: 'claim_reasons' });
+      this.getAllConfigurationTableData({ name: 'loss_causes' });
       this.claimSummary = true;
       this.$emit('claimSummaryDialog', true);
       if (this.getSelectedClaim.lossInfo.claimReason) {
-        this.lossInfo.reasonClaim.id = this.getSelectedClaim.lossInfo.claimReason.id;
-        this.lossInfo.reasonClaim.value = this.getSelectedClaim.lossInfo.claimReason.value;
-        this.lossInfo.reasonClaim.machineValue = this.getSelectedClaim.lossInfo.claimReason.machineValue;
+        this.lossInfo.reasonClaim.id =
+          this.getSelectedClaim.lossInfo.claimReason.id;
+        this.lossInfo.reasonClaim.value =
+          this.getSelectedClaim.lossInfo.claimReason.value;
+        this.lossInfo.reasonClaim.machineValue =
+          this.getSelectedClaim.lossInfo.claimReason.machineValue;
       }
 
       this.policyInfo.dateOfFirstContact = dateToShow(
@@ -834,7 +838,8 @@ export default {
         this.getSelectedClaim.contractInfo.fees &&
         this.getSelectedClaim.contractInfo.fees.rate
       ) {
-        this.contractInfo.fees.rate = this.getSelectedClaim.contractInfo.fees.rate;
+        this.contractInfo.fees.rate =
+          this.getSelectedClaim.contractInfo.fees.rate;
       }
 
       this.contractInfo.fees.type =

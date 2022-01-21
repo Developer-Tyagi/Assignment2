@@ -795,10 +795,8 @@ export default {
 
   methods: {
     ...mapActions([
-      'getClientTypes',
-      'getTitles',
+      'getAllConfigurationTableData',
       'editClient',
-      'getContactTypes',
       'getSingleClientDetails'
     ]),
     toGetStateShortName,
@@ -816,9 +814,9 @@ export default {
     },
     onEditClick() {
       this.editClientInfoDailog = true;
-      this.getClientTypes();
-      this.getTitles();
-      this.getContactTypes();
+      this.getAllConfigurationTableData({ name: 'client_types' });
+      this.getAllConfigurationTableData({ name: 'honorifics' });
+      this.getAllConfigurationTableData({ name: 'phone_types' });
 
       if (this.editSelectedClient.attributes.type) {
         this.client = this.editSelectedClient.attributes.type;

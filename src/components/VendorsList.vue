@@ -32,7 +32,9 @@
         >Clear</q-btn
       >
       <q-separator vertical></q-separator>
-      <q-btn @click="onAddButtonClick" flat><img src="~assets/add.svg"/></q-btn>
+      <q-btn @click="onAddButtonClick" flat
+        ><img src="~assets/add.svg"
+      /></q-btn>
     </div>
     <div class="mobile-container-page" v-if="vendors.length">
       <div
@@ -43,7 +45,7 @@
         style="overflow-y: auto"
       >
         <q-item-section>
-          <span class="form-heading  fit-content">{{
+          <span class="form-heading fit-content">{{
             vendor.companyName ? vendor.companyName : ''
           }}</span>
           <span>{{ vendor.name ? vendor.name : '' }}</span>
@@ -197,7 +199,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getVendors', 'getVendorIndustries']),
+    ...mapActions(['getVendors', 'getAllConfigurationTableData']),
 
     selectFilter(filter) {
       this.selectedFilter = filter.id;
