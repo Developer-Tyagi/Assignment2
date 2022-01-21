@@ -87,9 +87,9 @@ workflows:
       events:
         - tag
       tag_patterns:
-        - pattern: 'android-*'
+        - pattern: 'android-stage-*'
           include: true
-        - pattern: 'all-*'
+        - pattern: 'all-stage-*'
           include: true
       cancel_previous_builds: true
     scripts:
@@ -98,7 +98,7 @@ workflows:
         script: |
           brew install sops
           echo $SERVICE_ACCOUNT > /tmp/svc-acct.json
-      - &setup_env_vars
+      - &setup_env_vars_stage
         name: Setup environment variables
         script: |
           export GOOGLE_APPLICATION_CREDENTIALS=/tmp/svc-acct.json
@@ -108,8 +108,7 @@ workflows:
         script: |
           yarn
           yarn global add @quasar/cli
-      - &copy_web_assets
-        name: Build and Copy web assets to native project
+      - name: Build and Copy web assets to native project
         script: |
           quasar build -m capacitor -T android --skip-pkg
           cd src-capacitor && npx cap sync
@@ -139,7 +138,7 @@ workflows:
       - name: Build Android apk
         script: |
           cd $FCI_BUILD_DIR/src-capacitor/android
-          export GIT_TAG_VERSION=`echo $FCI_TAG | cut -f2 -d'-'`
+          export GIT_TAG_VERSION=`echo $FCI_TAG | cut -f3 -d'-'`
           cp ../build.gradle app/build.gradle
           ./gradlew assembleRelease
     artifacts:
@@ -247,13 +246,13 @@ workflows:
         - tag
       cancel_previous_builds: true
       tag_patterns:
-        - pattern: 'ios-*'
+        - pattern: 'ios-stage-*'
           include: true
-        - pattern: 'all-*'
+        - pattern: 'all-stage-*'
           include: true
     scripts:
       - *setup_sops_and_svc_acct
-      - *setup_env_vars
+      - *setup_env_vars_stage
       - *install_node_modules
       - name: Build and Copy web assets to ios project
         script: |
@@ -276,7 +275,7 @@ workflows:
           #!/bin/sh
           set -e
           set -x
-          export GIT_TAG_VERSION=`echo $FCI_TAG | cut -f2 -d'-'`
+          export GIT_TAG_VERSION=`echo $FCI_TAG | cut -f3 -d'-'`
           cd $FCI_BUILD_DIR/src-capacitor/ios/App
           agvtool new-version -all $BUILD_NUMBER
           agvtool new-marketing-version $GIT_TAG_VERSION
@@ -288,11 +287,168 @@ workflows:
           xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME"
       - name: Rename the artifact
         script: |
-            export GIT_TAG_VERSION=`echo $FCI_TAG | cut -f2 -d'-'`
+            export GIT_TAG_VERSION=`echo $FCI_TAG | cut -f3 -d'-'`
             mv build/ios/ipa/*.ipa  build/ios/ipa/claimguru-ios-stage-$GIT_TAG_VERSION.ipa
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
+      slack:
+        channel: '#p-claimguru'
+        notify:
+          success: true
+          failure: true
+
+  build-android-apk-prod:
+    name: build android apk for prod environment
+    max_build_duration: 120
+    instance_type: mac_mini
+    environment:
+      groups:
+        - android
+      vars:
+        KEYSTORE_PATH: /tmp/.keystore
+        APP_ENV: prod
+      node: 12.22.1
+    triggering:
+      events:
+        - tag
+      tag_patterns:
+        - pattern: 'android-prod-*'
+          include: true
+        - pattern: 'all-prod-*'
+          include: true
+      cancel_previous_builds: true
+    scripts:
+      - *setup_sops_and_svc_acct
+      - &setup_env_vars_prod
+        name: Setup environment variables
+        script: |
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/svc-acct.json
+          sops -d $FCI_BUILD_DIR/docker/env.production > $FCI_BUILD_DIR/.env
+      - *install_node_modules
+      - name: Build and Copy web assets to native project
+        script: |
+          quasar build -m capacitor -T android --skip-pkg
+          cd src-capacitor && npx cap sync
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/src-capacitor/android/local.properties"
+      - name: Set up debug key.properties
+        script: |
+          keytool -genkeypair \
+            -alias androiddebugkey \
+            -keypass android \
+            -keystore ~/.android/debug.keystore \
+            -storepass android \
+            -dname 'CN=Android Debug,O=Android,C=US' \
+            -keyalg 'RSA' \
+            -keysize 2048 \
+            -validity 10000
+      - name: Setup keystore
+        script: |
+          echo $KEYSTORE | base64 --decode > $KEYSTORE_PATH
+          cat > $FCI_BUILD_DIR/src-capacitor/android/key.properties <<EOF
+          storePassword=$KEYSTORE_PASSWORD
+          keyPassword=$KEY_PASSWORD
+          keyAlias=$KEY_ALIAS
+          storeFile=$KEYSTORE_PATH
+          EOF
+      - name: Build Android apk
+        script: |
+          cd $FCI_BUILD_DIR/src-capacitor/android
+          export GIT_TAG_VERSION=`echo $FCI_TAG | cut -f3 -d'-'`
+          cp ../build.gradle app/build.gradle
+          ./gradlew bundleRelease
+    artifacts:
+      - $FCI_BUILD_DIR/src-capacitor/android/app/build/**/outputs/**/*.aab
+    publishing:
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: production
+      email:
+        recipients:
+          -  sajid.qureshi@cilalabs.com
+        notify:
+          success: true
+          failure: true
+      slack:
+        channel: '#p-claimguru'
+        notify:
+          success: true
+          failure: true
+
+  build-ios-ipa-prod:
+    name: build ios ipa for prod environment
+    max_build_duration: 120
+    instance_type: mac_mini
+    environment:
+      groups:
+        - ios-appstore
+        - android
+      vars:
+        # Ionic Xcode worskspace and scheme
+        XCODE_WORKSPACE: 'src-capacitor/ios/App/App.xcworkspace'
+        XCODE_SCHEME: 'App'
+        APP_ENV: prod
+      node: 12.22.1
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - tag
+      cancel_previous_builds: true
+      tag_patterns:
+        - pattern: 'ios-prod-*'
+          include: true
+        - pattern: 'all-prod-*'
+          include: true
+    scripts:
+      - *setup_sops_and_svc_acct
+      - *setup_env_vars_prod
+      - *install_node_modules
+      - name: Build and Copy web assets to ios project
+        script: |
+          quasar build -m capacitor -T ios --skip-pkg
+          cd src-capacitor && npx cap sync
+      - name: Cocoapods installation
+        script: |
+          cd $FCI_BUILD_DIR/src-capacitor/ios/App && pod install
+      - name: Set up keychain to be used for codesigning
+        script: |
+          keychain initialize
+      - name: Fetch signing files
+        script: |
+          app-store-connect fetch-signing-files com.claimguru.appclaimguru --type IOS_APP_STORE --create
+      - name: Add certificates to keychain
+        script: |
+          keychain add-certificates
+      - name: Increment build number
+        script: |
+          #!/bin/sh
+          set -e
+          set -x
+          export GIT_TAG_VERSION=`echo $FCI_TAG | cut -f3 -d'-'`
+          cd $FCI_BUILD_DIR/src-capacitor/ios/App
+          agvtool new-version -all $BUILD_NUMBER
+          agvtool new-marketing-version $GIT_TAG_VERSION
+      - name: Set up code signing settings on Xcode project
+        script: |
+          xcode-project use-profiles
+      - name: Build ipa for distribution
+        script: |
+          xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME"
+      - name: Rename the artifact
+        script: |
+            export GIT_TAG_VERSION=`echo $FCI_TAG | cut -f3 -d'-'`
+            mv build/ios/ipa/*.ipa  build/ios/ipa/claimguru-ios-prod-$GIT_TAG_VERSION.ipa
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_app_store: true
       slack:
         channel: '#p-claimguru'
         notify:
