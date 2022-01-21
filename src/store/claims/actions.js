@@ -574,7 +574,9 @@ export async function getSettlements({ commit, dispatch }, id) {
 export async function getSettlementTypes({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/settlementtypes');
+    const { data } = await request.get(
+      '/config-data?viewAll=true&type=settlement_types'
+    );
     commit('setSettlementTypes', data);
     dispatch('setLoading', false);
   } catch (e) {
