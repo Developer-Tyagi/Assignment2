@@ -66,14 +66,14 @@ export async function assignedTOSearchData(state, data) {
   var combinedData = [];
   if (data.attributes.users && data.attributes.roles) {
     this.combinedData1 = data.attributes.roles.map(item => ({
-      name: item.value + '[Roles]',
+      name: item.value + '[Role]',
       id: item.machineValue,
-      type: 'roles'
+      type: 'role'
     }));
     this.combinedData2 = data.attributes.users.map(item => ({
       name: item.name + '[User]',
       id: item.id,
-      type: 'users'
+      type: 'user'
     }));
     this.combinedData = this.combinedData1.concat(this.combinedData2);
     state.assignedToData = this.combinedData;
@@ -81,12 +81,12 @@ export async function assignedTOSearchData(state, data) {
     state.assignedToData = data.attributes.users.map(item => ({
       name: item.name + '[User]',
       id: item.id,
-      type: 'users'
+      type: 'user'
     }));
   } else if (data.attributes.roles && data.attributes.roles.length > 0)
     state.assignedToData = data.attributes.roles.map(item => ({
-      name: item.value + '[Roles]',
+      name: item.value + '[Role]',
       id: item.machineValue,
-      type: 'roles'
+      type: 'role'
     }));
 }

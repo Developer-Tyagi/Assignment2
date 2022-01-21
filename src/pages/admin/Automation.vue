@@ -143,7 +143,7 @@
                     class="q-ml-xs"
                     v-if="
                       actions.triggerEvent.type.value &&
-                      actionReason[indexOfActionReason].additionalReasons
+                        actionReason[indexOfActionReason].additionalReasons
                     "
                   >
                     <q-select
@@ -233,9 +233,9 @@
                         class="q-ml-md col-1"
                         v-if="
                           actions.actions.completionRule[index].type &&
-                          actionCompletion[
-                            actions.actions.completionRule[index].typeVal
-                          ].hasAdditionalActions
+                            actionCompletion[
+                              actions.actions.completionRule[index].typeVal
+                            ].hasAdditionalActions
                         "
                       >
                         <q-select
@@ -485,7 +485,7 @@
                       class="q-ml-lg"
                       v-if="
                         actions.actions.overdueRule[index].type &&
-                        actionOverDues[indexOfSubType].subOptions
+                          actionOverDues[indexOfSubType].subOptions
                       "
                     >
                       <q-select
@@ -1052,8 +1052,9 @@ export default {
 
       for (let i = 0; i < this.actions.actions.completionRule.length; i++) {
         if (this.actions.actions.completionRule[i].type != '') {
-          this.actionCompletionRuleType[i] =
-            this.actions.actions.completionRule[i].type.value;
+          this.actionCompletionRuleType[
+            i
+          ] = this.actions.actions.completionRule[i].type.value;
           this.setSubTypeOfAction(
             this.actions.actions.completionRule[i].type.machineValue,
             i,
@@ -1061,10 +1062,12 @@ export default {
           );
         }
         if (this.actions.actions.completionRule[i].task.length != 0) {
-          (this.actionCompletionRuleSubType =
-            this.actions.actions.completionRule[i].task[0].value),
-            (this.actionCompletionRuleSubValueType =
-              this.actions.actions.completionRule[i].task[1].value);
+          (this.actionCompletionRuleSubType = this.actions.actions.completionRule[
+            i
+          ].task[0].value),
+            (this.actionCompletionRuleSubValueType = this.actions.actions.completionRule[
+              i
+            ].task[1].value);
 
           this.setSubTypeForAction(
             this.actions.actions.completionRule[i].task[0].machineValue,
@@ -1085,10 +1088,12 @@ export default {
           );
         }
         if (this.actions.actions.overdueRule[i].task.length != 0) {
-          this.overDueSubTaskTypeVal =
-            this.actions.actions.overdueRule[i].task[0].value;
-          this.overDueSubTaskSubVal =
-            this.actions.actions.overdueRule[i].task[1].value;
+          this.overDueSubTaskTypeVal = this.actions.actions.overdueRule[
+            i
+          ].task[0].value;
+          this.overDueSubTaskSubVal = this.actions.actions.overdueRule[
+            i
+          ].task[1].value;
           this.setSubOfSubType(
             this.actions.actions.overdueRule[i].task[0].machineValue,
             this.indexOfSubType,
@@ -1108,7 +1113,7 @@ export default {
 
     async setAssignTo(val) {
       if (val) {
-        if (val.type == 'users') {
+        if (val.type == 'user') {
           await this.getAllUsers();
           const obj = this.allUsers.find(item => {
             return item.id === val.id;
@@ -1156,8 +1161,8 @@ export default {
       // this.actions.triggerEvent.task=[];
       let subTaskData = {
         value: this.actionReason[pValue].additionalReasons[index].value,
-        machineValue:
-          this.actionReason[pValue].additionalReasons[index].machineValue
+        machineValue: this.actionReason[pValue].additionalReasons[index]
+          .machineValue
       };
       this.actions.triggerEvent.task[0] = subTaskData;
     },
@@ -1216,12 +1221,12 @@ export default {
         ].subTypes.findIndex(std => std.id === subValue);
 
         var overdueObj = {
-          value:
-            this.actionOverDues[indexOfSubType].subOptions[indexOfSubOfSubType]
-              .subTypes[ind].value,
-          machineValue:
-            this.actionOverDues[indexOfSubType].subOptions[indexOfSubOfSubType]
-              .subTypes[ind].id
+          value: this.actionOverDues[indexOfSubType].subOptions[
+            indexOfSubOfSubType
+          ].subTypes[ind].value,
+          machineValue: this.actionOverDues[indexOfSubType].subOptions[
+            indexOfSubOfSubType
+          ].subTypes[ind].id
         };
       } else {
         // For subtype role
@@ -1230,12 +1235,12 @@ export default {
         ].subTypes.findIndex(std => std.machineValue === subValue);
 
         var overdueObj = {
-          value:
-            this.actionOverDues[indexOfSubType].subOptions[indexOfSubOfSubType]
-              .subTypes[ind].value,
-          machineValue:
-            this.actionOverDues[indexOfSubType].subOptions[indexOfSubOfSubType]
-              .subTypes[ind].machineValue
+          value: this.actionOverDues[indexOfSubType].subOptions[
+            indexOfSubOfSubType
+          ].subTypes[ind].value,
+          machineValue: this.actionOverDues[indexOfSubType].subOptions[
+            indexOfSubOfSubType
+          ].subTypes[ind].machineValue
         };
       }
       this.actions.actions.overdueRule[index].task[1] = overdueObj;
@@ -1259,8 +1264,8 @@ export default {
         );
         let valObj = {
           value: this.actionOverDues[indexOfSubType].subOptions[obj].value,
-          machineValue:
-            this.actionOverDues[indexOfSubType].subOptions[obj].machineValue
+          machineValue: this.actionOverDues[indexOfSubType].subOptions[obj]
+            .machineValue
         };
         this.actions.actions.overdueRule[index].task[0] = valObj;
         this.indexOfSubOfSubType = obj;
@@ -1282,11 +1287,10 @@ export default {
         });
 
         var valObj = {
-          value:
-            this.actionCompletion[sValue].subOptions[sTValue].subTypes[ob]
-              .value,
-          machineValue:
-            this.actionCompletion[sValue].subOptions[sTValue].subTypes[ob].id
+          value: this.actionCompletion[sValue].subOptions[sTValue].subTypes[ob]
+            .value,
+          machineValue: this.actionCompletion[sValue].subOptions[sTValue]
+            .subTypes[ob].id
         };
       } else {
         var ob = this.actionCompletion[sValue].subOptions[
@@ -1296,12 +1300,10 @@ export default {
         });
 
         var valObj = {
-          value:
-            this.actionCompletion[sValue].subOptions[sTValue].subTypes[ob]
-              .value,
-          machineValue:
-            this.actionCompletion[sValue].subOptions[sTValue].subTypes[ob]
-              .machineValue
+          value: this.actionCompletion[sValue].subOptions[sTValue].subTypes[ob]
+            .value,
+          machineValue: this.actionCompletion[sValue].subOptions[sTValue]
+            .subTypes[ob].machineValue
         };
       }
       this.actions.actions.completionRule[index].task[1] = valObj;
@@ -1324,8 +1326,8 @@ export default {
         });
         let valObj = {
           value: this.actionCompletion[sValue].subOptions[ob].value,
-          machineValue:
-            this.actionCompletion[sValue].subOptions[ob].machineValue
+          machineValue: this.actionCompletion[sValue].subOptions[ob]
+            .machineValue
         };
         this.actions.actions.completionRule[index].task[0] = valObj;
         this.actions.actions.completionRule[index].subTypeVal = ob;
@@ -1342,19 +1344,19 @@ export default {
       const success = await this.$refs.automationRuleForm.validate();
       if (success) {
         this.actions.actions.completionRule.forEach(val => {
-          val.task = val.task.filter(function (el) {
+          val.task = val.task.filter(function(el) {
             return el != '';
           });
         });
 
         this.actions.actions.overdueRule.forEach(val => {
-          val.task = val.task.filter(function (el) {
+          val.task = val.task.filter(function(el) {
             return el != '';
           });
         });
 
         this.actions.triggerEvent.task = this.actions.triggerEvent.task.filter(
-          function (el) {
+          function(el) {
             return el != '';
           }
         );
@@ -1565,12 +1567,13 @@ export default {
         );
         let actionCompletionObj = {
           value: this.actionCompletion[indexOfCompletionAction].value,
-          machineValue:
-            this.actionCompletion[indexOfCompletionAction].machineValue
+          machineValue: this.actionCompletion[indexOfCompletionAction]
+            .machineValue
         };
         this.actions.actions.completionRule[index].type = actionCompletionObj;
-        this.actions.actions.completionRule[index].typeVal =
-          indexOfCompletionAction;
+        this.actions.actions.completionRule[
+          index
+        ].typeVal = indexOfCompletionAction;
         //this.indexOfSubTypeOfCompletion = indexOfCompletionAction;
       }
     }
