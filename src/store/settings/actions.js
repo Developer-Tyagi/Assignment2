@@ -57,6 +57,9 @@ export async function getAllConfigurationTableData(
       } else if (params.name == 'template_types') {
         commit('setTemplateTypes', data);
         dispatch('setLoading', false);
+      } else if (params.name == 'claim_phases') {
+        commit('setPhases', data);
+        dispatch('setLoading', false);
       }
     } catch (e) {
       console.log(e);
