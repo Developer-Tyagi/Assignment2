@@ -67,7 +67,7 @@
           v-model="item.industry"
           use-input
           input-debounce="0"
-          option-label="name"
+          option-label="value"
           label="Industry"
           :options="vendorIndustries"
           option-value="machineValue"
@@ -144,7 +144,7 @@
             <div
               v-if="
                 item.vendor.mailingAddress &&
-                item.vendor.mailingAddress.address1
+                  item.vendor.mailingAddress.address1
               "
             >
               <div>
@@ -162,7 +162,7 @@
               <div
                 v-if="
                   item.vendor.mailingAddress &&
-                  item.vendor.mailingAddress.address2
+                    item.vendor.mailingAddress.address2
                 "
               >
                 {{ item.vendor.mailingAddress.address2 }}
@@ -299,7 +299,7 @@
             <div
               v-if="
                 item.vendor.mailingAddress &&
-                item.vendor.mailingAddress.address1
+                  item.vendor.mailingAddress.address1
               "
             >
               <div>
@@ -317,7 +317,7 @@
               <div
                 v-if="
                   item.vendor.mailingAddress &&
-                  item.vendor.mailingAddress.address2
+                    item.vendor.mailingAddress.address2
                 "
               >
                 {{ item.vendor.mailingAddress.address2 }}
