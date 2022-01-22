@@ -1289,7 +1289,10 @@ export default {
       else byteString = unescape(dataURI.split(',')[1]);
 
       // separate out the mime component
-      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+      var mimeString = dataURI
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0];
 
       // write the bytes of the string to a typed array
       var ia = new Uint8Array(byteString.length);
@@ -1408,7 +1411,7 @@ export default {
     },
     async setTypes(value) {
       const obj = this.templateOptions.find(item => {
-        return item.name === value;
+        return item.value === value;
       });
       this.templatetype.machineValue = obj.machineValue;
 
