@@ -358,7 +358,11 @@ export default {
     //estimator  have no permission to these APIs
     const userRole = getCurrentUser().attributes.roles[0].machineValue;
 
-    if (userRole != 'estimator' && userRole != 'vendor') {
+    if (
+      userRole != 'estimator' &&
+      userRole != 'vendor' &&
+      userRole != 'sales'
+    ) {
       this.getVendors('hideLoader');
       this.getMortgages('hideLoader');
       let params = {
