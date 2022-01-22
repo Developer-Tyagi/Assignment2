@@ -254,7 +254,7 @@
           v-model="item.industry"
           use-input
           input-debounce="0"
-          option-label="name"
+          option-label="value"
           label="Industry"
           :options="vendorIndustries"
           option-value="machineValue"
