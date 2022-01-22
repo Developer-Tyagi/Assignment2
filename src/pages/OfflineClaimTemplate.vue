@@ -7,7 +7,7 @@
         dense
         v-model="templatetype.value"
         option-value="name"
-        option-label="name"
+        option-label="value"
         map-options
         options-dense
         behavior="menu"

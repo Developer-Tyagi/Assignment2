@@ -898,6 +898,9 @@ export default {
         case 'Creator Signature':
           formData.append('type', 'creator');
           break;
+        case 'Owner Signature':
+          formData.append('type', 'owner');
+          break;
         case 'Co-Insured Signature':
           formData.append('type', 'coinsured_signature');
           break;

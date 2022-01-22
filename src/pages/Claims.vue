@@ -182,7 +182,11 @@
                       <div class="col-3">Claim No.</div>
 
                       <div>
-                        {{ claim.number ? claim.number : '-' }}
+                        {{
+                          claim.policyInfo.claimNumber
+                            ? claim.policyInfo.claimNumber
+                            : '-'
+                        }}
                       </div>
                     </div>
 

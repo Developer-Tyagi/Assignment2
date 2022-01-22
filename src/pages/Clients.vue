@@ -30,100 +30,93 @@
           @click="onSearchBackButtonClick"
         />
         <q-separator vertical></q-separator>
-        <q-btn @click="addClient" flat><img src="~assets/add.svg" /></q-btn>
+        <q-btn @click="addClient" flat><img src="~assets/add.svg"/></q-btn>
       </div>
       <div class="">
         <div class="clients-list" v-if="clients.length">
-          <div v-if="!loading">
-            <q-scroll-area class="scroll-area">
-              <q-infinite-scroll
-                @load="onLoad"
-                :offset="250"
-                ref="infiniteScroll"
+          <q-scroll-area class="scroll-area">
+            <q-infinite-scroll
+              @load="onLoad"
+              :offset="250"
+              ref="infiniteScroll"
+            >
+              <template v-slot:loading>
+                <div class="row justify-center q-my-md">
+                  <q-spinner-dots color="primary" size="md" />
+                </div>
+              </template>
+              <div
+                class="clients-list"
+                v-for="client in clients"
+                :key="client.id"
               >
-                <template v-slot:loading>
-                  <div class="row justify-center q-my-md">
-                    <q-spinner-dots color="primary" size="md" />
-                  </div>
-                </template>
-                <div
-                  class="clients-list"
-                  v-for="client in clients"
-                  :key="client.id"
-                >
-                  <q-item-section @click="onClientsListClick(client)">
-                    <div class="client-list-item">
-                      <div class="row form-heading q-pb-md">
-                        <span>
-                          {{ client['insuredInfo']['primary']['fname'] }}
+                <q-item-section @click="onClientsListClick(client)">
+                  <div class="client-list-item">
+                    <div class="row form-heading q-pb-md">
+                      <span>
+                        {{ client['insuredInfo']['primary']['fname'] }}
 
-                          {{ client['insuredInfo']['primary']['lname'] }}
-                        </span>
-                      </div>
-                      <div class="row">
-                        <span>
-                          {{
-                            client['meta'] ? client['meta']['totalClaims'] : 0
-                          }}
-                          Total Claims /
-                          {{
-                            client['meta'] ? client['meta']['openClaims'] : 0
-                          }}
-                          Open Claim
-                        </span>
-                      </div>
-                      <div class="row">
-                        <div
-                          class="row"
-                          v-if="client.insuredInfo.primary.phoneNumber"
-                        >
+                        {{ client['insuredInfo']['primary']['lname'] }}
+                      </span>
+                    </div>
+                    <div class="row">
+                      <span>
+                        {{ client['meta'] ? client['meta']['totalClaims'] : 0 }}
+                        Total Claims /
+                        {{ client['meta'] ? client['meta']['openClaims'] : 0 }}
+                        Open Claim
+                      </span>
+                    </div>
+                    <div class="row">
+                      <div
+                        class="row"
+                        v-if="client.insuredInfo.primary.phoneNumber"
+                      >
+                        <span
+                          >Mob:
                           <span
-                            >Mob:
-                            <span
-                              class="clickLink"
-                              @click="
-                                onPhoneNumberClick(
-                                  client.insuredInfo.primary.phoneNumber[0]
-                                    .number,
-                                  $event
-                                )
-                              "
-                            >
-                              {{
-                                showPhoneNumber(
-                                  client.insuredInfo.primary.phoneNumber[0]
-                                    .number
-                                )
-                              }}
-                            </span>
+                            class="clickLink"
+                            @click="
+                              onPhoneNumberClick(
+                                client.insuredInfo.primary.phoneNumber[0]
+                                  .number,
+                                $event
+                              )
+                            "
+                          >
+                            {{
+                              showPhoneNumber(
+                                client.insuredInfo.primary.phoneNumber[0].number
+                              )
+                            }}
                           </span>
-                        </div>
-                      </div>
-                      <div><span>File No. 12345678</span></div>
-                      <div class="row justify-between">
-                        <div>
-                          Status: {{ client.status ? client.status : '-' }}
-                        </div>
-                        <div>
-                          {{ dateWithTime(client.created) }}
-                        </div>
+                        </span>
                       </div>
                     </div>
-                  </q-item-section>
-                </div>
-                <div
-                  class="
+                    <div><span>File No. 12345678</span></div>
+                    <div class="row justify-between">
+                      <div>
+                        Status: {{ client.status ? client.status : '-' }}
+                      </div>
+                      <div>
+                        {{ dateWithTime(client.created) }}
+                      </div>
+                    </div>
+                  </div>
+                </q-item-section>
+              </div>
+              <div
+                class="
                     no-more-results-msg
                     border-bottom-secondary
                     text-body1 text-h5 text-center text-manatee
                   "
-                  v-if="noMoreResults"
-                >
-                  <span class="bg-whiteSmoke q-px-sm">No more results</span>
-                </div>
-              </q-infinite-scroll>
-            </q-scroll-area>
-          </div>
+                v-if="noMoreResults"
+              >
+                <span class="bg-whiteSmoke q-px-sm">No more results</span>
+              </div>
+            </q-infinite-scroll>
+          </q-scroll-area>
         </div>
         <div v-else class="full-height full-width column">
           <div style="color: #666666" class="text-center q-mt-auto">
