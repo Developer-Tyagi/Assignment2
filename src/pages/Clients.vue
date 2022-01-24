@@ -168,12 +168,12 @@ export default {
   },
 
   async created() {
+    this.getClientListData();
     //only owner have the permission to view the organization info
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
     if (this.userRole == 'owner') {
       await this.getOrganization();
     }
-    this.getClientListData();
   },
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails', 'getOrganization']),
