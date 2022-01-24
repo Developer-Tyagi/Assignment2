@@ -44,7 +44,7 @@
         <span class="q-pl-md cursor-pointer">
           <a @click="showSignedDocument()">
             {{ this.claim.client.fname }}_claim_{{
-              templatetype.value
+              templatetype.value.value
             }}_signed</a
           >
         </span>
@@ -877,7 +877,7 @@ export default {
     dateToShow,
     async setTypes(value) {
       const obj = this.templateOptions.find(item => {
-        return item.name === value;
+        return item.value === value.value;
       });
 
       this.templatetype.machineValue = obj.machineValue;
