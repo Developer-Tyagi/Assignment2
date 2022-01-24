@@ -48,6 +48,7 @@
                       </q-tooltip>
                     </q-icon>
                   </div>
+
                   <div @click="onClickingOnClaim(claim)">
                     <div class="row">
                       <div class="col-3">Carrier</div>
@@ -167,13 +168,10 @@
                   <div @click="onClickingOnClaim(claim)">
                     <div class="row">
                       <div class="col-3">Carrier</div>
-
                       <div>
                         {{
-                          claim.carrier
-                            ? claim.carrier.value
-                              ? claim.carrier.value
-                              : ''
+                          claim.policyInfo.carrier
+                            ? claim.policyInfo.carrier.value
                             : '-'
                         }}
                       </div>
