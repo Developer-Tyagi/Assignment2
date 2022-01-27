@@ -206,7 +206,6 @@ export async function addInspectionType({ dispatch, state }, payload) {
 // This is Post Api for Honorific
 
 export async function addHonorifics({ dispatch, state }, payload) {
-  console.log(payload, 'hon');
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
