@@ -776,7 +776,6 @@ export default {
     getBase64,
     //function is used to update configuration data with subtype information
     toUpdateConfigurationDataWithSubtype(list, index) {
-      console.log(list, index);
       this.inspectionPayload.editedDataMachineValue = list.machineValue;
       this.inspectionTypeEditedValue = list.value;
       this.inspectionEditedType = this.updatedEditConfigurationDataIndex =

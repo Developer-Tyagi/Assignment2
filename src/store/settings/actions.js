@@ -115,7 +115,6 @@ export async function getAllConfigurationTableData(
 export async function editConfigurationData({ dispatch }, payload) {
   dispatch('setLoading', true);
   try {
-    console.log(payload, 'payload');
     const { data } = await request.patch(
       `config-data?type=${payload.attributes.type.machineValue}&machineValue=${payload.editedDataMachineValue}`,
       buildApiData('config-data', payload.attributes)
