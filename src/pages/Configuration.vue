@@ -78,6 +78,7 @@
                       updatedEditConfigurationDataIndex == index
                     "
                   ></q-input>
+
                   <span v-else>{{ list.value || list.name }}</span>
                 </td>
                 <td class="table-td">
@@ -94,10 +95,11 @@
                     >
                       <q-tooltip>Cancel</q-tooltip>
                     </q-icon>
+
                     <q-icon
                       name="edit"
                       size="sm"
-                      @click="toEditConfiguration(list, index, newTab)"
+                      @click="toEditConfiguration(list, index)"
                       v-else
                       class="q-pr-md cursor-pointer"
                     >
@@ -188,6 +190,7 @@
                         v-model="item.duration"
                         borderless
                         class="input-style"
+                        type="num"
                       ></q-input>
                     </div>
                   </div>
@@ -618,6 +621,7 @@ export default {
 
   data() {
     return {
+      tabVal: '',
       toEditConfigurationData: false,
       updatedEditConfigurationDataIndex: '',
       newTab: '',
@@ -626,6 +630,23 @@ export default {
       indexValue: '',
       isEdit: false,
       alert: false,
+      postPayloadWithoutSubType: {
+        value: '',
+        type: {
+          value: '',
+          machineValue: ''
+        }
+      },
+      postPayloadWithSubType: {
+        data: {
+          value: '',
+          subtypes: '',
+          type: {
+            value: '',
+            machineValue: ''
+          }
+        }
+      },
       addTemplateDialogBox: false,
       tokenDialogBox: false,
       templateTokens: [],
@@ -671,7 +692,7 @@ export default {
       },
       inspectionType: {
         value: '',
-        subtypes: [{ value: '', duration: 0.5, unit: 'hour' }]
+        subtypes: [{ value: '' }]
       },
       payload: {
         value: ''
@@ -793,32 +814,43 @@ export default {
     async toSaveConfigurationEdit() {
       this.toEditConfigurationData = false;
       this.updatedEditConfigurationDataIndex = '';
-      if (this.tab != 'inspections')
+      if (this.tab != 'inspections') {
         await this.editConfigurationData(
           this.toEditConfigurationWithoutSubtype
         );
-      else {
+      } else {
         this.inspectionPayload.attributes.value = this.inspectionType.value;
         this.inspectionPayload.attributes.subtypes =
           this.inspectionType.subtypes;
+        for (
+          let i = 0;
+          i < this.inspectionPayload.attributes.subtypes.length;
+          i++
+        ) {
+          this.inspectionPayload.attributes.subtypes[i].duration = parseFloat(
+            this.inspectionPayload.attributes.subtypes[i].duration
+          );
+        }
         this.inspectionPayload.attributes.type.value = this.newTab;
         this.inspectionPayload.attributes.type.machineValue = this.tab;
         await this.editConfigurationData(this.inspectionPayload);
       }
       this.setSelectedTabs(this.configuration.dataType, 'true');
     },
-    //funvtion is used to edit the configurationData
-    toEditConfiguration(data, index, newTab) {
+    //function is used to edit the configurationData
+    toEditConfiguration(data, index) {
       this.toEditConfigurationData = true;
       this.updatedEditConfigurationDataIndex = index;
+      this.toEditConfigurationWithoutSubtype.attributes.type.machineValue =
+        this.tabVal;
       this.toEditConfigurationWithoutSubtype.editedDataMachineValue =
         data.machineValue;
       this.toEditConfigurationWithoutSubtype.attributes.value = data.value
         ? data.value
         : data.name;
-      this.toEditConfigurationWithoutSubtype.attributes.type.machineValue =
-        this.tab;
-      this.toEditConfigurationWithoutSubtype.attributes.type.value = newTab;
+
+      this.toEditConfigurationWithoutSubtype.attributes.type.value =
+        this.newTab;
     },
     async onFileInputClick(event) {
       document.getElementById('uploadFile').click();
@@ -1007,7 +1039,8 @@ export default {
       this.toEditConfigurationData = false;
       this.updatedEditConfigurationDataIndex = '';
       this.newTab = value == 'true' ? e.dataTypeValue : '';
-      this.tab = value == 'true' ? e.dataTypeMachineValue : e;
+      this.tab = value == 'true' ? e.dataTypeMachineValue : '';
+      this.tabVal = this.tab;
       this.setSelectedTab(e, value);
     },
     async setSelectedTab(e, status) {
@@ -1088,71 +1121,158 @@ export default {
                   this.inspectionType.value;
               }
             }
-            var response = await this.addInspectionType(this.inspectionType);
+
+            (this.postPayloadWithSubType.data.value =
+              this.inspectionType.value),
+              (this.postPayloadWithSubType.data.subtypes =
+                this.inspectionType.subtypes),
+              (this.postPayloadWithSubType.data.type.value = this.newTab),
+              (this.postPayloadWithSubType.data.type.machineValue =
+                this.tabVal);
+            var response = await this.addInspectionType(
+              this.postPayloadWithSubType.data
+            );
             await this.getAllConfigurationTableData({ name: 'inspections' });
             this.table = this.inspectionTypes;
             break;
           case 'honorifics':
-            var response = await this.addHonorifics(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+            var response = await this.addHonorifics(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({ name: 'honorifics' });
             this.table = this.titles;
             break;
           case 'industries':
-            var response = await this.addIndustry(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addIndustry(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({ name: 'industries' });
             this.table = this.vendorIndustries;
             break;
           case 'phone_types':
-            var response = await this.addPhone(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addPhone(this.postPayloadWithoutSubType);
             await this.getAllConfigurationTableData({ name: 'phone_types' });
             this.table = this.contactTypes;
             break;
           case 'client_types':
-            var response = await this.addClientType(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addClientType(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({ name: 'client_types' });
             this.table = this.clientTypes;
             break;
           case 'policy_types':
-            var response = await this.addPolicy(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addPolicy(this.postPayloadWithoutSubType);
             await this.getAllConfigurationTableData({ name: 'policy_types' });
             this.table = this.policyTypes;
             break;
           case 'policy_categories':
-            var response = await this.addPolicyCategories(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addPolicyCategories(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({
               name: 'policy_categories'
             });
             this.table = this.policyCategories;
             break;
           case 'property_types':
-            var response = await this.addProperty(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addProperty(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({ name: 'property_types' });
             this.table = this.propertyTypes;
             break;
           case 'claim_reasons':
-            var response = await this.addClaimReason(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addClaimReason(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({ name: 'claim_reasons' });
             this.table = this.claimReasons;
             break;
           case 'loss_causes':
-            var response = await this.addLoss(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addLoss(this.postPayloadWithoutSubType);
             await this.getAllConfigurationTableData({ name: 'loss_causes' });
             this.table = this.lossCauses;
             break;
           case 'claim_severities':
-            var response = await this.addClaimSeverity(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addClaimSeverity(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({
               name: 'claim_severities'
             });
             this.table = this.claimSeverity;
             break;
           case 'template_types':
-            var response = await this.addTemplateType(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addTemplateType(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({ name: 'template_types' });
             this.table = this.templateOptions;
             break;
         }
         if (response) {
+          (this.postPayloadWithSubType = {
+            data: {
+              value: '',
+              subtypes: '',
+              type: {
+                value: '',
+                machineValue: ''
+              }
+            }
+          }),
+            (this.postPayloadWithoutSubType = {
+              value: '',
+              type: {
+                value: '',
+                machineValue: ''
+              }
+            });
+
           this.clear();
           this.dialogBox = false;
         }
@@ -1182,7 +1302,7 @@ export default {
         this.inspectionType = {
           value: '',
 
-          subtypes: [{ value: '', duration: 0.5, unit: 'hour' }]
+          subtypes: [{ value: '', duration: 0.5 }]
         };
       } else {
         this.payload.value = '';
@@ -1197,9 +1317,7 @@ export default {
         this.inspection = {
           value: '',
 
-          subtypes: [
-            { value: ' ', duration: 0.5, unit: 'hour', machineValue: '' }
-          ]
+          subtypes: [{ value: ' ', duration: 0.5, machineValue: '' }]
         };
       } else {
         this.$q.notify({
