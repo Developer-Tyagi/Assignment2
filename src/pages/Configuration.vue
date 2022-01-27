@@ -69,81 +69,174 @@
                 v-if="tab !== 'inspections'"
               >
                 <td class="table-td">
-                  <span v-if="!toEditConfigurationData">{{
-                    list.value || list.name
-                  }}</span>
-                  <span class="row justify-center text-center">
-                    <q-input
-                      v-model="
-                        toEditConfigurationWithoutSubtype.attributes[index]
-                          .value
-                      "
-                      v-if="toEditConfigurationData"
-                    ></q-input
-                  ></span>
+                  <q-input
+                    v-model="toEditConfigurationWithoutSubtype.attributes.value"
+                    class="input-style text-center"
+                    borderless
+                    v-if="
+                      toEditConfigurationData == true &&
+                      updatedEditConfigurationDataIndex == index
+                    "
+                  ></q-input>
+                  <span v-else>{{ list.value || list.name }}</span>
                 </td>
                 <td class="table-td">
-                  <!-- <div class="justify-between">
-                    <q-icon
-                      name="edit"
-                      size="sm"
-                      v-if="!toEditConfigurationData"
-                      class="q-pr-md cursor-pointer"
-                    ></q-icon>
+                  <div class="justify-between">
                     <q-icon
                       name="block"
                       size="sm"
-                      v-if="toEditConfigurationData"
+                      @click="toCancelConfigurationEdit()"
+                      v-if="
+                        toEditConfigurationData &&
+                        updatedEditConfigurationDataIndex == index
+                      "
                       class="q-pr-md cursor-pointer"
-                    ></q-icon>
+                    >
+                      <q-tooltip>Cancel</q-tooltip>
+                    </q-icon>
                     <q-icon
-                      name="visibility"
+                      name="edit"
                       size="sm"
-                      v-if="!toEditConfigurationData"
-                      class="q-pl-md cursor-pointer"
-                    ></q-icon>
+                      @click="toEditConfiguration(list, index, newTab)"
+                      v-else
+                      class="q-pr-md cursor-pointer"
+                    >
+                      <q-tooltip>Edit</q-tooltip>
+                    </q-icon>
+
                     <q-icon
                       name="save"
                       size="sm"
-                      v-if="toEditConfigurationData"
+                      @click="toSaveConfigurationEdit()"
+                      v-if="
+                        toEditConfigurationData &&
+                        updatedEditConfigurationDataIndex == index
+                      "
                       class="q-pl-md cursor-pointer"
-                    ></q-icon>
-                  </div> -->
+                    >
+                      <q-tooltip>Save</q-tooltip>
+                    </q-icon>
+                    <q-icon
+                      name="visibility"
+                      size="sm"
+                      v-else
+                      class="q-pl-md cursor-pointer"
+                    >
+                    </q-icon>
+                  </div>
                 </td>
               </tr>
-
               <tr
                 class="table-tr"
-                v-for="list in table"
+                v-for="(list, index) in table"
                 v-if="tab === 'inspections'"
               >
                 <td class="table-td">
-                  <div class="text-bold">{{ list.value }}</div>
+                  <div
+                    v-if="
+                      toEditConfigurationData &&
+                      updatedEditConfigurationDataIndex == index
+                    "
+                  >
+                    <q-input
+                      borderless
+                      class="input-style"
+                      type="text"
+                      v-model="inspectionType.value"
+                    ></q-input>
+                  </div>
+                  <div class="text-bold" v-else>{{ list.value }}</div>
                 </td>
                 <td class="table-td">
-                  <div v-for="type in list.subtypes">
+                  <div
+                    v-if="
+                      toEditConfigurationData &&
+                      updatedEditConfigurationDataIndex == index
+                    "
+                  >
+                    <div
+                      v-for="(item, index) in inspectionType.subtypes"
+                      :key="index"
+                    >
+                      <q-input
+                        v-model="item.value"
+                        borderless
+                        class="input-style"
+                      ></q-input>
+                    </div>
+                  </div>
+                  <div
+                    v-else
+                    v-for="(type, index) in list.subtypes"
+                    :key="index"
+                  >
                     <div>{{ type.value }}</div>
                   </div>
                 </td>
                 <td class="table-td">
-                  <div>&nbsp;</div>
-                  <div v-for="type in list.subtypes">
+                  <div
+                    v-if="
+                      toEditConfigurationData &&
+                      updatedEditConfigurationDataIndex == index
+                    "
+                  >
+                    <div
+                      v-for="(item, index) in inspectionType.subtypes"
+                      :key="index"
+                    >
+                      <q-input
+                        v-model="item.duration"
+                        borderless
+                        class="input-style"
+                      ></q-input>
+                    </div>
+                  </div>
+                  <div
+                    v-else
+                    v-for="(type, index) in list.subtypes"
+                    :key="index"
+                  >
                     <div>{{ type.duration }}</div>
                   </div>
                 </td>
                 <td class="table-td">
-                  <!-- <div class="justify-between">
+                  <div class="justify-between">
+                    <q-icon
+                      name="block"
+                      size="sm"
+                      @click="toCancelConfigurationEdit()"
+                      v-if="
+                        toEditConfigurationData &&
+                        updatedEditConfigurationDataIndex == index
+                      "
+                      class="q-pr-md cursor-pointer"
+                    />
                     <q-icon
                       name="edit"
                       size="sm"
+                      v-else
+                      @click="toUpdateConfigurationDataWithSubtype(list, index)"
                       class="q-pr-md cursor-pointer"
                     ></q-icon>
-                    <q-icon
-                      name="visibility"
-                      size="sm"
-                      class="q-pl-md cursor-pointer"
-                    ></q-icon>
-                  </div> -->
+                    <span>
+                      <q-icon
+                        name="save"
+                        size="sm"
+                        @click="toSaveConfigurationEdit()"
+                        v-if="
+                          toEditConfigurationData &&
+                          updatedEditConfigurationDataIndex == index
+                        "
+                        class="q-pl-md cursor-pointer"
+                      />
+                      <q-icon
+                        name="visibility"
+                        size="sm"
+                        v-else
+                        class="q-pl-md cursor-pointer"
+                      ></q-icon>
+                    </span>
+                  </div>
                 </td>
               </tr>
               <!-- <td>
@@ -526,6 +619,7 @@ export default {
   data() {
     return {
       toEditConfigurationData: false,
+      updatedEditConfigurationDataIndex: '',
       newTab: '',
       uploadTemplateDialogBox: false,
       dataURl: '',
@@ -541,13 +635,14 @@ export default {
         dataType: ''
       },
       toEditConfigurationWithoutSubtype: {
-        type: '',
-        attributes: [
-          {
+        editedDataMachineValue: '',
+        attributes: {
+          value: '',
+          type: {
             value: '',
             machineValue: ''
           }
-        ]
+        }
       },
       uploadTemplatetype: { value: '', machineValue: '', id: '' },
       definitions: {
@@ -561,8 +656,19 @@ export default {
       post: { body: '' },
       dialogBox: false,
       dialogBoxName: '',
-      tab: { name: 'Inspection Type', key: 'inspectionType' },
+      tab: '',
       table: [],
+      inspectionPayload: {
+        editedDataMachineValue: '',
+        attributes: {
+          value: '',
+          subtypes: [],
+          type: {
+            value: '',
+            machineValue: ''
+          }
+        }
+      },
       inspectionType: {
         value: '',
         subtypes: [{ value: '', duration: 0.5, unit: 'hour' }]
@@ -621,6 +727,7 @@ export default {
 
   methods: {
     ...mapActions([
+      'editConfigurationData',
       'getAllConfigurationTableData',
       'getAllConfigurationData',
       'addUser',
@@ -667,22 +774,52 @@ export default {
     },
 
     getBase64,
+    //function is used to update configuration data with subtype information
+    toUpdateConfigurationDataWithSubtype(list, index) {
+      console.log(list, index);
+      this.inspectionPayload.editedDataMachineValue = list.machineValue;
+      this.inspectionTypeEditedValue = list.value;
+      this.inspectionEditedType = this.updatedEditConfigurationDataIndex =
+        index;
+      this.toEditConfigurationData = true;
+      this.inspectionType.value = list.value;
+      this.inspectionType.subtypes = list.subtypes;
+    },
     //function is used to cancel the edit configuration data
     toCancelConfigurationEdit() {
       this.toEditConfigurationData = false;
+      this.updatedEditConfigurationDataIndex = '';
     },
     //function is used to save the configuration edit data
-    toSaveConfigurationEdit() {
+    async toSaveConfigurationEdit() {
       this.toEditConfigurationData = false;
+      this.updatedEditConfigurationDataIndex = '';
+      if (this.tab != 'inspections')
+        await this.editConfigurationData(
+          this.toEditConfigurationWithoutSubtype
+        );
+      else {
+        this.inspectionPayload.attributes.value = this.inspectionType.value;
+        this.inspectionPayload.attributes.subtypes =
+          this.inspectionType.subtypes;
+        this.inspectionPayload.attributes.type.value = this.newTab;
+        this.inspectionPayload.attributes.type.machineValue = this.tab;
+        await this.editConfigurationData(this.inspectionPayload);
+      }
+      this.setSelectedTabs(this.configuration.dataType, 'true');
     },
     //funvtion is used to edit the configurationData
-    toEditConfiguration(data, index) {
+    toEditConfiguration(data, index, newTab) {
       this.toEditConfigurationData = true;
-      this.toEditConfigurationWithoutSubtype.type = data.type;
-      this.toEditConfigurationWithoutSubtype.attributes[index].value =
-        data.value;
-      this.toEditConfigurationWithoutSubtype.attributes[index].machineValue =
+      this.updatedEditConfigurationDataIndex = index;
+      this.toEditConfigurationWithoutSubtype.editedDataMachineValue =
         data.machineValue;
+      this.toEditConfigurationWithoutSubtype.attributes.value = data.value
+        ? data.value
+        : data.name;
+      this.toEditConfigurationWithoutSubtype.attributes.type.machineValue =
+        this.tab;
+      this.toEditConfigurationWithoutSubtype.attributes.type.value = newTab;
     },
     async onFileInputClick(event) {
       document.getElementById('uploadFile').click();
@@ -868,6 +1005,8 @@ export default {
       this.tokenDialogBox = false;
     },
     setSelectedTabs(e, value) {
+      this.toEditConfigurationData = false;
+      this.updatedEditConfigurationDataIndex = '';
       this.newTab = value == 'true' ? e.dataTypeValue : '';
       this.tab = value == 'true' ? e.dataTypeMachineValue : e;
       this.setSelectedTab(e, value);

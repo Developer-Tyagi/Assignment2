@@ -123,7 +123,8 @@ export function setPhases(state, phases) {
   state.phases = phases.map(type => ({
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
-    id: type.id
+    id: type.id,
+    attributes: type.attributes
   }));
 }
 export async function setTemplateTypes(state, types) {

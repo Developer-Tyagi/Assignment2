@@ -49,7 +49,8 @@ export async function setvendorsIndustries(state, vendorIndustriesData) {
     machineValue: vendorIndustry.attributes.machineValue,
     value: vendorIndustry.attributes.value,
     id: vendorIndustry.id,
-    type: vendorIndustry.type
+    type: vendorIndustry.type,
+    attributes: vendorIndustry.attributes
   }));
   state.vendorIndustries = vendorIndustries;
   if ((await vendorIndusrtyCollection.count()) > 0) {
