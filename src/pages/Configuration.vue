@@ -37,13 +37,8 @@
       <div class="q-mx-md" flat bordered v-if="tab != 'template'">
         <div class="row full-width justify-between">
           <span class="text-bold" style="line-height: 36px">{{ newTab }}</span>
-          <div class="row">
-            <q-icon
-              name="add_box"
-              size="lg"
-              @click="onClickingAddButton(tab)"
-              class="q-ml-md cursor-pointer"
-            ></q-icon>
+          <div class="row cursor-pointer" @click="onClickingAddButton(tabVal)">
+            <q-icon name="add_box" size="lg" class="q-ml-md"></q-icon>
             <span class="q-my-sm">Add Item</span>
           </div>
         </div>
@@ -246,6 +241,7 @@
                 <q-icon
                   name="add_box"
                   size="md"
+                  @click="toAddNewRowInTable()"
                   class="q-ml-md cursor-pointer"
                 ></q-icon>
               </td>
@@ -327,8 +323,8 @@
     <q-dialog v-model="dialogBox">
       <q-card
         :class="{
-          'inspection-dialog-box': tab === 'inspections',
-          'other-dialog-box': tab !== 'inspections'
+          'inspection-dialog-box': tabVal === 'inspections',
+          'other-dialog-box': tabVal !== 'inspections'
         }"
       >
         <q-bar
@@ -343,12 +339,12 @@
 
         <q-card-section
           :class="{
-            'dialog-box-content': tab === 'inspections',
-            'other-dialog-box-content': tab !== 'inspections'
+            'dialog-box-content': tabVal === 'inspections',
+            'other-dialog-box-content': tabVal !== 'inspections'
           }"
         >
           <div class="column">
-            <q-form ref="form" v-if="tab !== 'inspections'">
+            <q-form ref="form" v-if="tabVal !== 'inspections'">
               <div class="q-pl-xs">
                 <q-input
                   dense
@@ -362,7 +358,7 @@
                 />
               </div>
             </q-form>
-            <q-form ref="form" v-if="tab == 'inspections'">
+            <q-form ref="form" v-if="tabVal == 'inspections'">
               <q-card
                 class="q-ma-md q-pa-md"
                 v-for="(subtype, index) in inspectionType.subtypes"
@@ -399,7 +395,7 @@
           </div>
           <div
             class="row justify-between text-primary"
-            v-if="tab == 'inspections'"
+            v-if="tabVal == 'inspections'"
           >
             <div class="q-ml-xl" @click="addAnotherSubType">
               + Another Sub Type Of Inspection
@@ -425,7 +421,7 @@
               padding="md"
               label="Save"
               class="next-button-style"
-              @click="onSubmit(tab)"
+              @click="onSubmit(tabVal)"
             />
           </div>
         </div>
@@ -795,6 +791,11 @@ export default {
     },
 
     getBase64,
+    //function used to add new row in a tables
+    // toAddNewRowInTable(){
+    //   this.table.push(this.inspectionType);
+
+    // },
     //function is used to update configuration data with subtype information
     toUpdateConfigurationDataWithSubtype(list, index) {
       this.inspectionPayload.editedDataMachineValue = list.machineValue;
@@ -1281,7 +1282,7 @@ export default {
 
     // This is Secondary Dialog Box
     onClickingAddButton(key) {
-      this.dialogBoxName = key;
+      this.dialogBoxName = this.newTab;
       this.dialogBox = true;
     },
 
