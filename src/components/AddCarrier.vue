@@ -81,7 +81,6 @@
             <div class="">
               <div class="form-heading">Carrier's Address</div>
               <div class="q-mt-xs">
-                {{ carrier.address }}
                 <AutoCompleteAddress
                   :id="'CarrierAddress'"
                   :readOnly="isDisabled()"
@@ -128,9 +127,6 @@
                     label="Last Name"
                   />
                   <div class="row justify-between">
-                    {{ carrier.contact.phoneNumber[0].type }}
-                    {{ carrier.contact.phoneNumber[0].number }}
-
                     <q-select
                       borderless
                       class="input-style input-overlay col-5"
