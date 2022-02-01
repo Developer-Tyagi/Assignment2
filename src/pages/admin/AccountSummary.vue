@@ -80,7 +80,7 @@
                   Address<span class="text-red">*</span>
                 </div>
 
-                <div v-if="user.mailingAddress">
+                <div>
                   <AutoCompleteAddress
                     :id="'AddVendor'"
                     :address="users.mailingAddress"
@@ -590,19 +590,21 @@ export default {
     cancelAccountSummaryUpdate() {
       this.users.fname = this.user.contact.fname;
       this.users.lname = this.user.contact.lname;
-      this.users.contact.type = this.user.phoneNumber.type;
-      this.users.contact.number = this.user.phoneNumber.number;
+      if (this.user.phoneNumber) {
+        this.users.contact.type = this.user.phoneNumber.type;
+        this.users.contact.number = this.user.phoneNumber.number;
+      }
+
       this.users.email = this.user.email;
-      this.users.mailingAddress.addressRegion =
-        this.user.mailingAddress.addressRegion;
-      this.users.mailingAddress.addressLocality =
-        this.user.mailingAddress.addressLocality;
-      this.users.mailingAddress.houseNumber =
-        this.user.mailingAddress.houseNumber;
-      this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
-      this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-      this.users.mailingAddress.postalCode =
-        this.user.mailingAddress.postalCode;
+      if (this.user.mailingAddress) {
+        this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
+        this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
+        this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+        this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
+        this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
+        this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
+      }
+
       this.editAccountSummary = false;
     },
     cancelCompanyDetailsUpdate() {
@@ -612,18 +614,14 @@ export default {
 
       // this.organizations.users.contact.number = this.organization.website;
       //this.organizations.users.email = this.organization.photoIDEmail;
-      this.organizations.users.mailingAddress.addressRegion =
-        this.organization.billingInfo.address.addressRegion;
-      this.organizations.users.mailingAddress.addressLocality =
-        this.organization.billingInfo.address.addressLocality;
-      this.organizations.users.mailingAddress.houseNumber =
-        this.organization.billingInfo.address.houseNumber;
-      this.organizations.users.mailingAddress.address1 =
-        this.organization.billingInfo.address.address1;
-      this.organizations.users.mailingAddress.address2 =
-        this.organization.billingInfo.address.address2;
-      this.organizations.users.mailingAddress.postalCode =
-        this.organization.billingInfo.address.postalCode;
+      if (this.organization.billingInfo) {
+        this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
+        this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
+        this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
+        this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
+        this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
+        this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+      }
     },
     cancelPhotoIDUpdate() {
       this.editPhotoIDDetails = false;
@@ -649,19 +647,19 @@ export default {
     if (this.user) {
       this.users.fname = this.user.contact.fname;
       this.users.lname = this.user.contact.lname;
-      this.users.contact.type = this.user.phoneNumber.type;
-      this.users.contact.number = this.user.phoneNumber.number;
+      if (this.user.phoneNumber) {
+        this.users.contact.type = this.user.phoneNumber.type;
+        this.users.contact.number = this.user.phoneNumber.number;
+      }
+      if (this.user.mailingAddress) {
+        this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
+        this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
+        this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+        this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
+        this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
+        this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
+      }
       this.users.email = this.user.email;
-      this.users.mailingAddress.addressRegion =
-        this.user.mailingAddress.addressRegion;
-      this.users.mailingAddress.addressLocality =
-        this.user.mailingAddress.addressLocality;
-      this.users.mailingAddress.houseNumber =
-        this.user.mailingAddress.houseNumber;
-      this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
-      this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-      this.users.mailingAddress.postalCode =
-        this.user.mailingAddress.postalCode;
     }
     await this.getOrganization();
 
@@ -671,18 +669,14 @@ export default {
 
       // this.organizations.users.contact.number = this.organization.website;
       this.organizations.users.email = this.organization.photoIDEmail;
-      this.organizations.users.mailingAddress.addressRegion =
-        this.organization.billingInfo.address.addressRegion;
-      this.organizations.users.mailingAddress.addressLocality =
-        this.organization.billingInfo.address.addressLocality;
-      this.organizations.users.mailingAddress.houseNumber =
-        this.organization.billingInfo.address.houseNumber;
-      this.organizations.users.mailingAddress.address1 =
-        this.organization.billingInfo.address.address1;
-      this.organizations.users.mailingAddress.address2 =
-        this.organization.billingInfo.address.address2;
-      this.organizations.users.mailingAddress.postalCode =
-        this.organization.billingInfo.address.postalCode;
+      if (this.organization.billingInfo) {
+        this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
+        this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
+        this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
+        this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
+        this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
+        this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+      }
     }
   }
 };
