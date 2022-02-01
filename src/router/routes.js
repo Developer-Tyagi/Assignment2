@@ -16,7 +16,7 @@ const routes = [
         path: 'signup',
         name: 'signup',
         caseSensitive: true,
-        component: () => import('pages/Signup.vue')
+        component: () => import('pages/SignupNew.vue')
       },
 
       {
@@ -36,6 +36,12 @@ const routes = [
         name: 'info',
         caseSensitive: true,
         component: () => import('pages/Information.vue')
+      },
+      {
+        path: 'notify',
+        name: 'notify',
+        caseSensitive: true,
+        component: () => import('pages/Notification.vue')
       },
       {
         path: 'access-denied',

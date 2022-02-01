@@ -58,10 +58,34 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       '/organizations',
-      buildApiData('organization', payload)
+      buildApiData('users', payload)
     );
     dispatch('setLoading', false);
     this.$router.push('/info');
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message:
+        e.response[0].detail == 'stripe token is missing'
+          ? 'Please ask admin to add you as a beta user'
+          : e.response[0].detail
+    });
+    return false;
+  }
+}
+
+export async function checkExistingEmail({ dispatch }, email) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/users/email?email=${email}`);
+    dispatch('setLoading', false);
+    if (data.attributes.exists) {
+      return false;
+    } else {
+      return true;
+    }
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);

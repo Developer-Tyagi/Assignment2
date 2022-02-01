@@ -251,7 +251,7 @@ export default {
             if (isMobile()) {
               this.$router.push('/dashboard');
             } else {
-              this.$router.push('/admin');
+              this.$router.push('/notify');
             }
           }
         }
