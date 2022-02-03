@@ -348,10 +348,8 @@ workflows:
           #!/bin/sh
           set -e
           set -x
-          export GIT_TAG_VERSION=`echo $FCI_TAG | cut -f3 -d'-'`
           cd $FCI_BUILD_DIR/src-capacitor/ios/App
-          agvtool new-version -all $BUILD_NUMBER
-          agvtool new-marketing-version $GIT_TAG_VERSION
+          agvtool new-version -all $(($BUILD_NUMBER +20))
       - name: Set up code signing settings on Xcode project
         script: |
           xcode-project use-profiles
