@@ -1,5 +1,6 @@
 <template>
   <q-page :class="isMobile() ? 'bg-login-mobile' : 'bg-login'">
+    {{ envValue }}
     <div class="q-pa-lg">
       <div class="flex column" style="height: 50vh">
         <img
@@ -123,8 +124,9 @@ import { Screen } from 'quasar';
 import { constants } from '@utils/constant';
 import { notification } from 'src/store/common/getters';
 import { appVersion } from '../Version';
-const isPushNotificationsAvailable =
-  Capacitor.isPluginAvailable('PushNotifications');
+const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
+  'PushNotifications'
+);
 const { PushNotifications } = Plugins;
 
 export default {
@@ -135,7 +137,8 @@ export default {
       isPasswordVisible: false,
       login: {
         email: '',
-        password: ''
+        password: '',
+        envValue: ''
       }
     };
   },
@@ -214,6 +217,8 @@ export default {
   },
 
   created() {
+    // console.log("process",  process.env.API)
+    this.envValue = process.env.API;
     if (getToken() && getCurrentUser()) {
       if (isMobile()) {
         this.$router.push('/dashboard');
