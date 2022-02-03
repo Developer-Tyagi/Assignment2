@@ -298,6 +298,80 @@ workflows:
           success: true
           failure: true
 
+  build-ios-ipa-stage-2:
+    name: build ios ipa for stage environment to push for testflight
+    max_build_duration: 120
+    instance_type: mac_mini
+    environment:
+      groups:
+        - ios-appstore
+        - android
+      vars:
+        # Ionic Xcode worskspace and scheme
+        XCODE_WORKSPACE: 'src-capacitor/ios/App/App.xcworkspace'
+        XCODE_SCHEME: 'App'
+        APP_ENV: stage
+      node: 12.22.1
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - tag
+      cancel_previous_builds: true
+      tag_patterns:
+        - pattern: 'ios-stage-*'
+          include: true
+        - pattern: 'all-stage-*'
+          include: true
+    scripts:
+      - *setup_sops_and_svc_acct
+      - *setup_env_vars_stage
+      - *install_node_modules
+      - name: Build and Copy web assets to ios project
+        script: |
+          quasar build -m capacitor -T ios --skip-pkg
+          cd src-capacitor && npx cap sync
+      - name: Cocoapods installation
+        script: |
+          cd $FCI_BUILD_DIR/src-capacitor/ios/App && pod install
+      - name: Set up keychain to be used for codesigning
+        script: |
+          keychain initialize
+      - name: Fetch signing files
+        script: |
+          app-store-connect fetch-signing-files com.claimguru.appclaimguru --type IOS_APP_STORE --create
+      - name: Add certificates to keychain
+        script: |
+          keychain add-certificates
+      - name: Increment build number
+        script: |
+          #!/bin/sh
+          set -e
+          set -x
+          export GIT_TAG_VERSION=`echo $FCI_TAG | cut -f3 -d'-'`
+          cd $FCI_BUILD_DIR/src-capacitor/ios/App
+          agvtool new-version -all $BUILD_NUMBER
+          agvtool new-marketing-version $GIT_TAG_VERSION
+      - name: Set up code signing settings on Xcode project
+        script: |
+          xcode-project use-profiles
+      - name: Build ipa for distribution
+        script: |
+          xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true
+      slack:
+        channel: '#p-claimguru'
+        notify:
+          success: true
+          failure: true
+
   build-android-apk-prod:
     name: build android apk for prod environment
     max_build_duration: 120
