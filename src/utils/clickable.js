@@ -26,6 +26,7 @@ export function sendPhoneNumber(value) {
 
 export function showPhoneNumber(value) {
   if (value) {
+    value = this.sendPhoneNumber(value);
     var number = '';
     for (let i = 0; i < value.length; i++) {
       if (i === 0) {

@@ -104,12 +104,6 @@
         <div class="text-capitalize text-weight-bold text-black text-subtitle1">
           {{ user.name }}
         </div>
-        <q-icon
-          class="q-ml-sm"
-          color="primary"
-          size="md"
-          name="expand_more"
-        ></q-icon>
       </div>
       <q-separator class="q-my-lg" v-if="!isMobile()" />
 
@@ -570,15 +564,16 @@ export default {
           link: '/reports',
           icon: 'reports_menu.svg',
           description: 'Download files.'
-        },
-
-        {
-          title: 'Profile',
-          key: 'profile',
-          link: '/edit-profile',
-          icon: 'profile_big.svg',
-          description: 'Edit profile '
         }
+
+        // Hiding Profile for now , if we need this in future we can unhide it.
+        // {
+        //   title: 'Profile',
+        //   key: 'profile',
+        //   link: '/edit-profile',
+        //   icon: 'profile_big.svg',
+        //   description: 'Edit profile '
+        // }
       ],
 
       sidebarItems: []

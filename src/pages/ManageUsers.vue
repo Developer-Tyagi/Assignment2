@@ -32,6 +32,7 @@
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
             <tr v-for="user in allUsers">
               <td class="text-center">
@@ -602,7 +603,7 @@ export default {
           children: []
         },
         {
-          label: 'Un-paid',
+          label: 'Unpaid',
           children: []
         }
       ],
