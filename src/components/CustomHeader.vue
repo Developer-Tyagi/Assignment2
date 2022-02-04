@@ -658,6 +658,7 @@ export default {
       if (route != menuItem.link.slice(1)) {
         this.$router.push(menuItem.link);
       }
+      this.webMenuSubOptionTab('');
     },
     // this function is used to hide the back button for the pages which are there in the humberger menubar
     toBackButtonVisibility() {
