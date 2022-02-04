@@ -96,7 +96,11 @@
                           <q-item-label>View/Edit</q-item-label>
                         </q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="onItemClick">
+                      <q-item
+                        clickable
+                        v-close-popup
+                        @click="onItemClick(user.attributes.email)"
+                      >
                         <q-item-section>
                           <q-item-label>Reset Password</q-item-label>
                         </q-item-section>
@@ -549,6 +553,12 @@ import {
   sendPhoneNumber,
   showPhoneNumber
 } from '@utils/clickable';
+import 'firebase/auth';
+import firebase from 'firebase/app';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { successMessage } from '@utils/validation';
+import { errorMessage } from '@utils/validation';
+import { constants } from '@utils/constant';
 
 export default {
   name: 'Manage-User',
@@ -634,7 +644,8 @@ export default {
       date: '20/02/1998',
       roles: 'Super Admin',
       lastAccess: '20/01/2020 ',
-      status: 'Active'
+      status: 'Active',
+      constants: constants
     };
   },
   computed: {
@@ -688,6 +699,8 @@ export default {
       'setSingleRole'
     ]),
 
+    successMessage,
+    errorMessage,
     onEmailClick,
     toGetStateShortName,
     showPhoneNumber,
@@ -825,7 +838,17 @@ export default {
       this.editUserInfoDialog = true;
     },
     //this is important dont remove this function
-    onItemClick() {},
+    onItemClick(email) {
+      const auth = firebase.auth();
+      auth
+        .sendPasswordResetEmail(email)
+        .then(() => {
+          this.successMessage(constants.successMessages.FORGOT_PASSWORD);
+        })
+        .catch(error => {
+          this.errorMessage(error.message);
+        });
+    },
 
     async onSubmit() {
       const success = await this.$refs.addUserForm.validate();
