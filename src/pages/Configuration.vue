@@ -713,11 +713,14 @@ export default {
   },
   watch: {
     webSubOptionMenuTab() {
-      (this.tab = this.webSubOptionMenuTab.key),
-        this.setSelectedTab(this.tab, 'false');
+      (this.tab = this.webSubOptionMenuTab.key), (this.table = []);
+      this.newTab = '';
+      this.configuration.dataType = '';
+      this.setSelectedTab(this.tab, 'false');
     }
   },
-  async created() {
+  created() {
+    this.table = [];
     this.getAllConfigurationData();
   },
 
