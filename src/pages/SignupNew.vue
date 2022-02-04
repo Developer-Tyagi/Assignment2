@@ -3,14 +3,14 @@
     <div class="row" style="height: calc(100vh - 1px);">
       <div class="col-6  q-pt-xl" style="background-color: #f9e7d8">
         <div class=" row justify-center q-mt-xl ">
-          <div class="col-3 bg-white q-pa-md">
+          <div class="col-3  q-pa-md">
             <q-img
               class="web-menu-claim-guru-logo"
               :src="getImage('claimguru_new_logo.png')"
             />
           </div>
         </div>
-        <div class="row justify-center q-mt-xl text-h2">
+        <div class="row justify-center q-mt-xl text-h3">
           Start a free 30 day trial Today!
         </div>
         <div class="q-mt-xl text text-h5 q-px-xl">
@@ -79,6 +79,7 @@
               />
             </div>
           </div>
+
           <div class="row q-mb-lg">
             <q-input
               v-model="user.email"
@@ -97,6 +98,27 @@
           </div>
           <div class="row q-mb-lg">
             <q-input
+              color="primary"
+              class="required full-width"
+              label="password"
+              v-model="user.password"
+              outlined
+              :type="isPwd ? 'password' : 'text'"
+              :rules="[
+                val => (val && val.length > 0) || 'Please fill password'
+              ]"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd = !isPwd"
+                />
+              </template>
+            </q-input>
+          </div>
+          <div class="row q-mb-lg">
+            <q-input
               v-model="user.name"
               name="businessName"
               color="primary"
@@ -109,18 +131,7 @@
               ]"
             />
           </div>
-          <div class="row q-mb-lg text-h6">
-            <div class="col-1 q-pt-sm text-bold">Role *</div>
-            <div class="col">
-              <q-option-group
-                v-model="group"
-                :options="options"
-                color="primary"
-                type="radio"
-                class=""
-              />
-            </div>
-          </div>
+
           <div class="row q-mb-xl text-h6">
             <div class="row full-width q-mb-lg text-bold">
               How did you hear about ClaimGuru?
@@ -181,6 +192,7 @@ import { validateEmail } from '@utils/validation';
 export default {
   data() {
     return {
+      isPwd: true,
       errorMSG: '',
       user: {
         type: constants.ORGANIZATION,
@@ -196,27 +208,9 @@ export default {
           machineValue: 'beta'
         },
         heardCGFrom: [],
-        roles: []
+        password: ''
       },
-      group: {},
-      options: [
-        {
-          label: 'Private Adjuster',
-          value: {
-            value: 'Private Adjuster',
-            machineValue: 'private_adjuster',
-            isPaid: true
-          }
-        },
-        {
-          label: 'Owner of Adjusting Firm',
-          value: {
-            value: 'Owner',
-            machineValue: 'owner',
-            isPaid: true
-          }
-        }
-      ],
+
       hearOptions: [
         {
           label: 'Online Ad',
@@ -266,14 +260,15 @@ export default {
       return res;
     },
 
-    onSubmit() {
+    async onSubmit() {
       this.user.contact.email = this.user.email;
-
-      this.user.roles.push(this.group);
       if (this.user.heardCGFrom.length < 1) {
         this.user.heardCGFrom[0] = 'not-specified';
       }
-      this.createUserForOrganization(this.user);
+      const res = await this.createUserForOrganization(this.user);
+      if (res) {
+        this.$router.push('/admin');
+      }
     },
     validateEmail
   },
@@ -284,29 +279,6 @@ export default {
 
   async created() {
     await this.getAllPlans();
-  },
-
-  mounted() {
-    // if (this.isValidPlan) {
-    //   this.user.mailingAddress.addressCountry = 'United States';
-    //   this.user.billingInfo.address.addressCountry = 'United States';
-    //   this.states = addressService.getStates(
-    //     this.user.mailingAddress.addressCountry
-    //   );
-    //   this.autocomplete1 = new google.maps.places.Autocomplete(
-    //     document.getElementById('autocomplete1'),
-    //     { types: ['geocode'], componentRestrictions: { country: 'us' } }
-    //   );
-    //   this.autocomplete1.addListener('place_changed', this.fillInAddress);
-    // }
-  },
-
-  watch: {
-    // step(newValue, oldValue) {
-    //   if (newValue === 2) {
-    //     this.user.billingInfo.address = { ...this.user.mailingAddress };
-    //   }
-    // }
   }
 };
 </script>

@@ -60,8 +60,23 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
       '/organizations',
       buildApiData('users', payload)
     );
+    var userdata = data;
+    if (data) {
+      const firebaseRes = await firebaseAuthorization.signInWithEmailAndPassword(
+        userdata.attributes.email,
+        userdata.attributes.password
+      );
+      if (firebaseRes && firebaseRes.user) {
+        const token = await firebaseRes.user.getIdToken();
+        if (token) {
+          await setToken(token);
+          await dispatch('getUserInfo');
+          dispatch('setLoading', false);
+          return true;
+        }
+      }
+    }
     dispatch('setLoading', false);
-    this.$router.push('/info');
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
@@ -73,6 +88,8 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
           : e.response[0].detail
     });
     return false;
+  } finally {
+    dispatch('setLoading', false);
   }
 }
 
@@ -151,7 +168,7 @@ export async function addUser({ dispatch, state }, payload) {
 export async function verifyOobCode({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const response = await request.get('/users/verifyOOBCode', {
+    const response = await request.post('/users/verifyOOBCode', {
       ...params
     });
     dispatch('setLoading', false);
