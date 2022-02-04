@@ -532,7 +532,7 @@ export async function editUserInfo({ dispatch, state }, user) {
 }
 
 // function is used for updating the user profile.
-export async function editUserProfile({ dispatch, state }, user) {
+export async function editUserProfile({ commit, dispatch, state }, user) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
@@ -544,6 +544,8 @@ export async function editUserProfile({ dispatch, state }, user) {
       type: 'positive',
       message: 'User info  Updated !'
     });
+    let dt = user.data.contact.fname + ' ' + user.data.contact.lname;
+    commit('setUserNameInProfilePart', dt);
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);

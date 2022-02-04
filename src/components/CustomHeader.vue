@@ -102,7 +102,7 @@
         </q-avatar>
 
         <div class="text-capitalize text-weight-bold text-black text-subtitle1">
-          {{ user.name }}
+          {{ userName ? userName : user.name }}
         </div>
       </div>
       <q-separator class="q-my-lg" v-if="!isMobile()" />
@@ -154,13 +154,7 @@
             />
           </div>
           <div
-            class="
-              col
-              column
-              text-weight-bold text-white
-              q-pa-sm q-ml-md
-              text-h6
-            "
+            class="col column text-weight-bold text-white q-pa-sm q-ml-md text-h6"
             style="width: calc(100% - 54px)"
           >
             <div
@@ -779,10 +773,10 @@ export default {
       'pageAccess',
       'isOnline',
       'editSelectedClient',
-      'isOfflineClientEdit'
+      'isOfflineClientEdit',
+      'userName'
     ])
   },
-
   async created() {
     if (window.innerWidth * 0.9 < 300) {
       this.intViewportWidth = window.innerWidth * 0.9;
