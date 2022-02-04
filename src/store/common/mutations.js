@@ -11,7 +11,8 @@ export async function setClientTypes(state, typesData) {
     name: types.attributes.value,
     id: types.id,
     type: types.type,
-    machineValue: types.attributes.machineValue
+    machineValue: types.attributes.machineValue,
+    attributes: types.attributes
   }));
   state.clientTypes = types;
   if ((await clientTypesCollection.count()) > 0) {
@@ -41,7 +42,8 @@ export async function setTitles(state, titleData) {
     value: title.attributes.value,
     id: title.id,
     type: title.type,
-    machineValue: title.attributes.machineValue
+    machineValue: title.attributes.machineValue,
+    attributes: title.attributes
   }));
   state.titles = titles;
   if ((await titlesCollection.count()) > 0) {
@@ -60,7 +62,8 @@ export async function setContactTypes(state, types) {
     id: type.id,
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
-    type: type.type
+    type: type.type,
+    attributes: type.attributes
   }));
   state.contactTypes = contactTypes;
   if ((await contactTypesCollection.count()) > 0) {
@@ -86,7 +89,8 @@ export async function setLossCause(state, causes) {
     name: cause.attributes.value,
     machineValue: cause.attributes.machineValue,
     id: cause.id,
-    type: cause.type
+    type: cause.type,
+    attributes: cause.attributes
   }));
   state.lossCauses = lossCauses;
   if ((await lossCausesCollection.count()) > 0) {
@@ -106,7 +110,8 @@ export async function setRoles(state, roles) {
     machineValue: type.attributes.machineValue,
     id: type.id,
     permission: type.attributes.permissions,
-    isPaid: type.attributes.isPaid
+    isPaid: type.attributes.isPaid,
+    attribute: type.attributes
   }));
   state.roleTypes = roleTypes;
   if ((await rolesCollection.count()) > 0) {

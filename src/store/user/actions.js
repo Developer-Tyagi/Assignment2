@@ -208,11 +208,12 @@ export async function resetPassword({ dispatch, state }, payload) {
 // Post Api for Inspection Type
 
 export async function addInspectionType({ dispatch, state }, payload) {
+  console.log(payload, 444);
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/inspections',
-      buildApiData('inspections', payload)
+      '/config-data',
+      buildApiData('config-data', payload)
     );
     dispatch('setLoading', false);
     return true;
@@ -232,8 +233,8 @@ export async function addHonorifics({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/honorifics',
-      buildApiData('honorifics', payload)
+      '/config-data',
+      buildApiData('config-data', payload)
     );
     dispatch('setLoading', false);
     return true;
@@ -253,8 +254,8 @@ export async function addIndustry({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/industries',
-      buildApiData('industries', payload)
+      '/config-data',
+      buildApiData('config-data', payload)
     );
     dispatch('setLoading', false);
     return true;
@@ -274,8 +275,8 @@ export async function addPhone({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/phonetypes',
-      buildApiData('phonetypes', payload)
+      '/config-data',
+      buildApiData('config-data', payload)
     );
     dispatch('setLoading', false);
     return true;
@@ -294,8 +295,8 @@ export async function addClientType({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/ctypes',
-      buildApiData('ctypes', payload)
+      '/config-data',
+      buildApiData('config-data', payload)
     );
     dispatch('setLoading', false);
     return true;
@@ -316,8 +317,28 @@ export async function addPolicyCategories({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/pcategories',
-      buildApiData('pcategories', payload)
+      '/config-data',
+      buildApiData('config-data', payload)
+    );
+    dispatch('setLoading', false);
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+//add policy
+export async function addPolicy({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      '/config-data',
+      buildApiData('config-data', payload)
     );
     dispatch('setLoading', false);
     return true;
@@ -336,8 +357,8 @@ export async function addProperty({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/prtypes',
-      buildApiData('prtypes', payload)
+      '/config-data',
+      buildApiData('config-data', payload)
     );
     dispatch('setLoading', false);
     return true;
@@ -356,8 +377,8 @@ export async function addClaimReason({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/claimreasons',
-      buildApiData('claimreasons', payload)
+      '/config-data',
+      buildApiData('config-data', payload)
     );
     dispatch('setLoading', false);
     return true;
@@ -377,8 +398,8 @@ export async function addLoss({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/losscauses',
-      buildApiData('losscauses', payload)
+      '/config-data',
+      buildApiData('config-data', payload)
     );
     dispatch('setLoading', false);
     return true;
@@ -398,8 +419,8 @@ export async function addClaimSeverity({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/severities',
-      buildApiData('severities', payload)
+      '/config-data',
+      buildApiData('config-data', payload)
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {

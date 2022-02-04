@@ -111,6 +111,29 @@ export async function getAllConfigurationTableData(
   }
 }
 
+//function is used to update the configuration data
+export async function editConfigurationData({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `config-data?type=${payload.attributes.type.machineValue}&machineValue=${payload.editedDataMachineValue}`,
+      buildApiData('config-data', payload.attributes)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Configuration Data  Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update Configuration Data'
+    });
+  }
+}
+
 //function used to get all configuration data
 export async function getAllConfigurationData({ commit, dispatch }) {
   dispatch('setLoading', true);

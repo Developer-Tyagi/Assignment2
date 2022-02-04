@@ -444,8 +444,8 @@ export async function addTemplateRemote({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/templatetypes',
-      buildApiData('templatetypes', payload)
+      '/config-data',
+      buildApiData('config-data', payload)
     );
 
     dispatch('setLoading', false);

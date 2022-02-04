@@ -98,7 +98,8 @@ export async function setPropertyTypes(state, types) {
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
     id: type.id,
-    type: type.type
+    type: type.type,
+    attributes: type.attributes
   }));
   state.propertyTypes = propertyTypes;
   if ((await propertyTypesCollection.count()) > 0) {
@@ -117,7 +118,8 @@ export async function setPolicyTypes(state, types) {
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
     id: type.id,
-    type: type.type
+    type: type.type,
+    attributes: type.attributes
   }));
   state.policyTypes = policyTypes;
   if ((await policyTypesCollection.count()) > 0) {
@@ -136,7 +138,8 @@ export async function setClaimReasons(state, reasons) {
     id: reason.id,
     name: reason.attributes.value,
     machineValue: reason.attributes.machineValue,
-    type: reason.type
+    type: reason.type,
+    attributes: reason.attributes
   }));
   state.claimReasons = claimReasons;
   if ((await claimReasonsCollection.count()) > 0) {
@@ -155,7 +158,8 @@ export async function setClaimSeverities(state, types) {
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
     id: type.id,
-    type: type.type
+    type: type.type,
+    attributes: type.attributes
   }));
   state.claimSeverity = claimSeverity;
   if ((await claimSeveritiesCollection.count()) > 0) {
@@ -174,7 +178,8 @@ export async function setPolicyCategories(state, types) {
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
     id: type.id,
-    type: type.type
+    type: type.type,
+    attributes: type.attributes
   }));
   state.policyCategories = policyCategories;
   if ((await policyCategoriesCollection.count()) > 0) {

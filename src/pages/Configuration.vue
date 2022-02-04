@@ -37,13 +37,8 @@
       <div class="q-mx-md" flat bordered v-if="tab != 'template'">
         <div class="row full-width justify-between">
           <span class="text-bold" style="line-height: 36px">{{ newTab }}</span>
-          <div class="row">
-            <q-icon
-              name="add_box"
-              size="lg"
-              @click="onClickingAddButton(tab)"
-              class="q-ml-md cursor-pointer"
-            ></q-icon>
+          <div class="row cursor-pointer" @click="onClickingAddButton(tabVal)">
+            <q-icon name="add_box" size="lg" class="q-ml-md"></q-icon>
             <span class="q-my-sm">Add Item</span>
           </div>
         </div>
@@ -69,87 +64,184 @@
                 v-if="tab !== 'inspections'"
               >
                 <td class="table-td">
-                  <span v-if="!toEditConfigurationData">{{
-                    list.value || list.name
-                  }}</span>
-                  <span class="row justify-center text-center">
-                    <q-input
-                      v-model="
-                        toEditConfigurationWithoutSubtype.attributes[index]
-                          .value
-                      "
-                      v-if="toEditConfigurationData"
-                    ></q-input
-                  ></span>
+                  <q-input
+                    v-model="toEditConfigurationWithoutSubtype.attributes.value"
+                    class="input-style text-center"
+                    borderless
+                    v-if="
+                      toEditConfigurationData == true &&
+                      updatedEditConfigurationDataIndex == index
+                    "
+                  ></q-input>
+
+                  <span v-else>{{ list.value || list.name }}</span>
                 </td>
                 <td class="table-td">
-                  <!-- <div class="justify-between">
-                    <q-icon
-                      name="edit"
-                      size="sm"
-                      v-if="!toEditConfigurationData"
-                      class="q-pr-md cursor-pointer"
-                    ></q-icon>
+                  <div class="justify-between">
                     <q-icon
                       name="block"
                       size="sm"
-                      v-if="toEditConfigurationData"
+                      @click="toCancelConfigurationEdit()"
+                      v-if="
+                        toEditConfigurationData &&
+                        updatedEditConfigurationDataIndex == index
+                      "
                       class="q-pr-md cursor-pointer"
-                    ></q-icon>
+                    >
+                      <q-tooltip>Cancel</q-tooltip>
+                    </q-icon>
+
                     <q-icon
-                      name="visibility"
+                      name="edit"
                       size="sm"
-                      v-if="!toEditConfigurationData"
-                      class="q-pl-md cursor-pointer"
-                    ></q-icon>
+                      @click="toEditConfiguration(list, index)"
+                      v-else
+                      class="q-pr-md cursor-pointer"
+                    >
+                      <q-tooltip>Edit</q-tooltip>
+                    </q-icon>
+
                     <q-icon
                       name="save"
                       size="sm"
-                      v-if="toEditConfigurationData"
+                      @click="toSaveConfigurationEdit()"
+                      v-if="
+                        toEditConfigurationData &&
+                        updatedEditConfigurationDataIndex == index
+                      "
                       class="q-pl-md cursor-pointer"
-                    ></q-icon>
-                  </div> -->
+                    >
+                      <q-tooltip>Save</q-tooltip>
+                    </q-icon>
+                    <q-icon
+                      name="visibility"
+                      size="sm"
+                      v-else
+                      class="q-pl-md cursor-pointer"
+                    >
+                    </q-icon>
+                  </div>
                 </td>
               </tr>
-
               <tr
                 class="table-tr"
-                v-for="list in table"
+                v-for="(list, index) in table"
                 v-if="tab === 'inspections'"
               >
                 <td class="table-td">
-                  <div class="text-bold">{{ list.value }}</div>
+                  <div
+                    v-if="
+                      toEditConfigurationData &&
+                      updatedEditConfigurationDataIndex == index
+                    "
+                  >
+                    <q-input
+                      borderless
+                      class="input-style"
+                      type="text"
+                      v-model="inspectionType.value"
+                    ></q-input>
+                  </div>
+                  <div class="text-bold" v-else>{{ list.value }}</div>
                 </td>
                 <td class="table-td">
-                  <div v-for="type in list.subtypes">
+                  <div
+                    v-if="
+                      toEditConfigurationData &&
+                      updatedEditConfigurationDataIndex == index
+                    "
+                  >
+                    <div
+                      v-for="(item, index) in inspectionType.subtypes"
+                      :key="index"
+                    >
+                      <q-input
+                        v-model="item.value"
+                        borderless
+                        class="input-style"
+                      ></q-input>
+                    </div>
+                  </div>
+                  <div
+                    v-else
+                    v-for="(type, index) in list.subtypes"
+                    :key="index"
+                  >
                     <div>{{ type.value }}</div>
                   </div>
                 </td>
                 <td class="table-td">
-                  <div>&nbsp;</div>
-                  <div v-for="type in list.subtypes">
+                  <div
+                    v-if="
+                      toEditConfigurationData &&
+                      updatedEditConfigurationDataIndex == index
+                    "
+                  >
+                    <div
+                      v-for="(item, index) in inspectionType.subtypes"
+                      :key="index"
+                    >
+                      <q-input
+                        v-model="item.duration"
+                        borderless
+                        class="input-style"
+                        type="num"
+                      ></q-input>
+                    </div>
+                  </div>
+                  <div
+                    v-else
+                    v-for="(type, index) in list.subtypes"
+                    :key="index"
+                  >
                     <div>{{ type.duration }}</div>
                   </div>
                 </td>
                 <td class="table-td">
-                  <!-- <div class="justify-between">
+                  <div class="justify-between">
+                    <q-icon
+                      name="block"
+                      size="sm"
+                      @click="toCancelConfigurationEdit()"
+                      v-if="
+                        toEditConfigurationData &&
+                        updatedEditConfigurationDataIndex == index
+                      "
+                      class="q-pr-md cursor-pointer"
+                    />
                     <q-icon
                       name="edit"
                       size="sm"
+                      v-else
+                      @click="toUpdateConfigurationDataWithSubtype(list, index)"
                       class="q-pr-md cursor-pointer"
                     ></q-icon>
-                    <q-icon
-                      name="visibility"
-                      size="sm"
-                      class="q-pl-md cursor-pointer"
-                    ></q-icon>
-                  </div> -->
+                    <span>
+                      <q-icon
+                        name="save"
+                        size="sm"
+                        @click="toSaveConfigurationEdit()"
+                        v-if="
+                          toEditConfigurationData &&
+                          updatedEditConfigurationDataIndex == index
+                        "
+                        class="q-pl-md cursor-pointer"
+                      />
+                      <q-icon
+                        name="visibility"
+                        size="sm"
+                        v-else
+                        class="q-pl-md cursor-pointer"
+                      ></q-icon>
+                    </span>
+                  </div>
                 </td>
               </tr>
               <!-- <td>
                 <q-icon
                   name="add_box"
                   size="md"
+                  @click="toAddNewRowInTable()"
                   class="q-ml-md cursor-pointer"
                 ></q-icon>
               </td>
@@ -231,8 +323,8 @@
     <q-dialog v-model="dialogBox">
       <q-card
         :class="{
-          'inspection-dialog-box': tab === 'inspections',
-          'other-dialog-box': tab !== 'inspections'
+          'inspection-dialog-box': tabVal === 'inspections',
+          'other-dialog-box': tabVal !== 'inspections'
         }"
       >
         <q-bar
@@ -247,12 +339,12 @@
 
         <q-card-section
           :class="{
-            'dialog-box-content': tab === 'inspections',
-            'other-dialog-box-content': tab !== 'inspections'
+            'dialog-box-content': tabVal === 'inspections',
+            'other-dialog-box-content': tabVal !== 'inspections'
           }"
         >
           <div class="column">
-            <q-form ref="form" v-if="tab !== 'inspections'">
+            <q-form ref="form" v-if="tabVal !== 'inspections'">
               <div class="q-pl-xs">
                 <q-input
                   dense
@@ -266,7 +358,7 @@
                 />
               </div>
             </q-form>
-            <q-form ref="form" v-if="tab == 'inspections'">
+            <q-form ref="form" v-if="tabVal == 'inspections'">
               <q-card
                 class="q-ma-md q-pa-md"
                 v-for="(subtype, index) in inspectionType.subtypes"
@@ -303,7 +395,7 @@
           </div>
           <div
             class="row justify-between text-primary"
-            v-if="tab == 'inspections'"
+            v-if="tabVal == 'inspections'"
           >
             <div class="q-ml-xl" @click="addAnotherSubType">
               + Another Sub Type Of Inspection
@@ -329,7 +421,7 @@
               padding="md"
               label="Save"
               class="next-button-style"
-              @click="onSubmit(tab)"
+              @click="onSubmit(tabVal)"
             />
           </div>
         </div>
@@ -525,13 +617,32 @@ export default {
 
   data() {
     return {
+      tabVal: '',
       toEditConfigurationData: false,
+      updatedEditConfigurationDataIndex: '',
       newTab: '',
       uploadTemplateDialogBox: false,
       dataURl: '',
       indexValue: '',
       isEdit: false,
       alert: false,
+      postPayloadWithoutSubType: {
+        value: '',
+        type: {
+          value: '',
+          machineValue: ''
+        }
+      },
+      postPayloadWithSubType: {
+        data: {
+          value: '',
+          subtypes: '',
+          type: {
+            value: '',
+            machineValue: ''
+          }
+        }
+      },
       addTemplateDialogBox: false,
       tokenDialogBox: false,
       templateTokens: [],
@@ -541,13 +652,14 @@ export default {
         dataType: ''
       },
       toEditConfigurationWithoutSubtype: {
-        type: '',
-        attributes: [
-          {
+        editedDataMachineValue: '',
+        attributes: {
+          value: '',
+          type: {
             value: '',
             machineValue: ''
           }
-        ]
+        }
       },
       uploadTemplatetype: { value: '', machineValue: '', id: '' },
       definitions: {
@@ -561,11 +673,22 @@ export default {
       post: { body: '' },
       dialogBox: false,
       dialogBoxName: '',
-      tab: { name: 'Inspection Type', key: 'inspectionType' },
+      tab: '',
       table: [],
+      inspectionPayload: {
+        editedDataMachineValue: '',
+        attributes: {
+          value: '',
+          subtypes: [],
+          type: {
+            value: '',
+            machineValue: ''
+          }
+        }
+      },
       inspectionType: {
         value: '',
-        subtypes: [{ value: '', duration: 0.5, unit: 'hour' }]
+        subtypes: [{ value: '' }]
       },
       payload: {
         value: ''
@@ -621,6 +744,7 @@ export default {
 
   methods: {
     ...mapActions([
+      'editConfigurationData',
       'getAllConfigurationTableData',
       'getAllConfigurationData',
       'addUser',
@@ -667,22 +791,67 @@ export default {
     },
 
     getBase64,
+    //function used to add new row in a tables
+    // toAddNewRowInTable(){
+    //   this.table.push(this.inspectionType);
+
+    // },
+    //function is used to update configuration data with subtype information
+    toUpdateConfigurationDataWithSubtype(list, index) {
+      this.inspectionPayload.editedDataMachineValue = list.machineValue;
+      this.inspectionTypeEditedValue = list.value;
+      this.inspectionEditedType = this.updatedEditConfigurationDataIndex =
+        index;
+      this.toEditConfigurationData = true;
+      this.inspectionType.value = list.value;
+      this.inspectionType.subtypes = list.subtypes;
+    },
     //function is used to cancel the edit configuration data
     toCancelConfigurationEdit() {
       this.toEditConfigurationData = false;
+      this.updatedEditConfigurationDataIndex = '';
     },
     //function is used to save the configuration edit data
-    toSaveConfigurationEdit() {
+    async toSaveConfigurationEdit() {
       this.toEditConfigurationData = false;
+      this.updatedEditConfigurationDataIndex = '';
+      if (this.tab != 'inspections') {
+        await this.editConfigurationData(
+          this.toEditConfigurationWithoutSubtype
+        );
+      } else {
+        this.inspectionPayload.attributes.value = this.inspectionType.value;
+        this.inspectionPayload.attributes.subtypes =
+          this.inspectionType.subtypes;
+        for (
+          let i = 0;
+          i < this.inspectionPayload.attributes.subtypes.length;
+          i++
+        ) {
+          this.inspectionPayload.attributes.subtypes[i].duration = parseFloat(
+            this.inspectionPayload.attributes.subtypes[i].duration
+          );
+        }
+        this.inspectionPayload.attributes.type.value = this.newTab;
+        this.inspectionPayload.attributes.type.machineValue = this.tab;
+        await this.editConfigurationData(this.inspectionPayload);
+      }
+      this.setSelectedTabs(this.configuration.dataType, 'true');
     },
-    //funvtion is used to edit the configurationData
+    //function is used to edit the configurationData
     toEditConfiguration(data, index) {
       this.toEditConfigurationData = true;
-      this.toEditConfigurationWithoutSubtype.type = data.type;
-      this.toEditConfigurationWithoutSubtype.attributes[index].value =
-        data.value;
-      this.toEditConfigurationWithoutSubtype.attributes[index].machineValue =
+      this.updatedEditConfigurationDataIndex = index;
+      this.toEditConfigurationWithoutSubtype.attributes.type.machineValue =
+        this.tabVal;
+      this.toEditConfigurationWithoutSubtype.editedDataMachineValue =
         data.machineValue;
+      this.toEditConfigurationWithoutSubtype.attributes.value = data.value
+        ? data.value
+        : data.name;
+
+      this.toEditConfigurationWithoutSubtype.attributes.type.value =
+        this.newTab;
     },
     async onFileInputClick(event) {
       document.getElementById('uploadFile').click();
@@ -868,8 +1037,11 @@ export default {
       this.tokenDialogBox = false;
     },
     setSelectedTabs(e, value) {
+      this.toEditConfigurationData = false;
+      this.updatedEditConfigurationDataIndex = '';
       this.newTab = value == 'true' ? e.dataTypeValue : '';
-      this.tab = value == 'true' ? e.dataTypeMachineValue : e;
+      this.tab = value == 'true' ? e.dataTypeMachineValue : '';
+      this.tabVal = this.tab;
       this.setSelectedTab(e, value);
     },
     async setSelectedTab(e, status) {
@@ -950,71 +1122,158 @@ export default {
                   this.inspectionType.value;
               }
             }
-            var response = await this.addInspectionType(this.inspectionType);
+
+            (this.postPayloadWithSubType.data.value =
+              this.inspectionType.value),
+              (this.postPayloadWithSubType.data.subtypes =
+                this.inspectionType.subtypes),
+              (this.postPayloadWithSubType.data.type.value = this.newTab),
+              (this.postPayloadWithSubType.data.type.machineValue =
+                this.tabVal);
+            var response = await this.addInspectionType(
+              this.postPayloadWithSubType.data
+            );
             await this.getAllConfigurationTableData({ name: 'inspections' });
             this.table = this.inspectionTypes;
             break;
           case 'honorifics':
-            var response = await this.addHonorifics(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+            var response = await this.addHonorifics(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({ name: 'honorifics' });
             this.table = this.titles;
             break;
           case 'industries':
-            var response = await this.addIndustry(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addIndustry(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({ name: 'industries' });
             this.table = this.vendorIndustries;
             break;
           case 'phone_types':
-            var response = await this.addPhone(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addPhone(this.postPayloadWithoutSubType);
             await this.getAllConfigurationTableData({ name: 'phone_types' });
             this.table = this.contactTypes;
             break;
           case 'client_types':
-            var response = await this.addClientType(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addClientType(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({ name: 'client_types' });
             this.table = this.clientTypes;
             break;
           case 'policy_types':
-            var response = await this.addPolicy(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addPolicy(this.postPayloadWithoutSubType);
             await this.getAllConfigurationTableData({ name: 'policy_types' });
             this.table = this.policyTypes;
             break;
           case 'policy_categories':
-            var response = await this.addPolicyCategories(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addPolicyCategories(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({
               name: 'policy_categories'
             });
             this.table = this.policyCategories;
             break;
           case 'property_types':
-            var response = await this.addProperty(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addProperty(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({ name: 'property_types' });
             this.table = this.propertyTypes;
             break;
           case 'claim_reasons':
-            var response = await this.addClaimReason(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addClaimReason(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({ name: 'claim_reasons' });
             this.table = this.claimReasons;
             break;
           case 'loss_causes':
-            var response = await this.addLoss(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addLoss(this.postPayloadWithoutSubType);
             await this.getAllConfigurationTableData({ name: 'loss_causes' });
             this.table = this.lossCauses;
             break;
           case 'claim_severities':
-            var response = await this.addClaimSeverity(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addClaimSeverity(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({
               name: 'claim_severities'
             });
             this.table = this.claimSeverity;
             break;
           case 'template_types':
-            var response = await this.addTemplateType(this.payload);
+            this.postPayloadWithoutSubType.value = this.payload.value;
+            this.postPayloadWithoutSubType.type.value = this.newTab;
+            this.postPayloadWithoutSubType.type.machineValue = this.tabVal;
+
+            var response = await this.addTemplateType(
+              this.postPayloadWithoutSubType
+            );
             await this.getAllConfigurationTableData({ name: 'template_types' });
             this.table = this.templateOptions;
             break;
         }
         if (response) {
+          (this.postPayloadWithSubType = {
+            data: {
+              value: '',
+              subtypes: '',
+              type: {
+                value: '',
+                machineValue: ''
+              }
+            }
+          }),
+            (this.postPayloadWithoutSubType = {
+              value: '',
+              type: {
+                value: '',
+                machineValue: ''
+              }
+            });
+
           this.clear();
           this.dialogBox = false;
         }
@@ -1023,7 +1282,7 @@ export default {
 
     // This is Secondary Dialog Box
     onClickingAddButton(key) {
-      this.dialogBoxName = key;
+      this.dialogBoxName = this.newTab;
       this.dialogBox = true;
     },
 
@@ -1044,7 +1303,7 @@ export default {
         this.inspectionType = {
           value: '',
 
-          subtypes: [{ value: '', duration: 0.5, unit: 'hour' }]
+          subtypes: [{ value: '', duration: 0.5 }]
         };
       } else {
         this.payload.value = '';
@@ -1059,9 +1318,7 @@ export default {
         this.inspection = {
           value: '',
 
-          subtypes: [
-            { value: ' ', duration: 0.5, unit: 'hour', machineValue: '' }
-          ]
+          subtypes: [{ value: ' ', duration: 0.5, machineValue: '' }]
         };
       } else {
         this.$q.notify({
