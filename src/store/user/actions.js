@@ -168,9 +168,9 @@ export async function addUser({ dispatch, state }, payload) {
 export async function verifyOobCode({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const response = await request.post('/users/verifyOOBCode', {
-      ...params
-    });
+    const response = await request.post(
+      `/users/verifyOOBCode?mode=${params.mode}&oobCode=${params.oobCode}&apiKey=${params.apiKey}&lang=${params.lang}`
+    );
     dispatch('setLoading', false);
     return response;
   } catch (e) {
