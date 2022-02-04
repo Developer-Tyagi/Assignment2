@@ -123,8 +123,9 @@ import { Screen } from 'quasar';
 import { constants } from '@utils/constant';
 import { notification } from 'src/store/common/getters';
 import { appVersion } from '../Version';
-const isPushNotificationsAvailable =
-  Capacitor.isPluginAvailable('PushNotifications');
+const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
+  'PushNotifications'
+);
 const { PushNotifications } = Plugins;
 
 export default {
@@ -209,7 +210,7 @@ export default {
       }
     },
     onClickSignupButton() {
-      window.location = process.env.LP_APP_URL;
+      this.$router.push('/signup');
     }
   },
 
