@@ -14,7 +14,7 @@
         </p>
       </div>
 
-      <div class="row q-ml-md">
+      <div v-if="tab != 'template'" class="row q-ml-md">
         <div class="col-1 q-mt-sm">Data Type</div>
 
         <div class="col-4">
@@ -33,9 +33,9 @@
           />
         </div>
       </div>
-      <q-separator class="q-my-md" />
+      <q-separator v-if="tab != 'template'" class="q-my-md" />
       <div class="q-mx-md" flat bordered v-if="tab != 'template'">
-        <div class="row full-width justify-between">
+        <div v-if="newTab != ''" class="row full-width justify-between">
           <span class="text-bold" style="line-height: 36px">{{ newTab }}</span>
           <div class="row cursor-pointer" @click="onClickingAddButton(tabVal)">
             <q-icon name="add_box" size="lg" class="q-ml-md"></q-icon>
@@ -713,11 +713,14 @@ export default {
   },
   watch: {
     webSubOptionMenuTab() {
-      (this.tab = this.webSubOptionMenuTab.key),
-        this.setSelectedTab(this.tab, 'false');
+      (this.tab = this.webSubOptionMenuTab.key), (this.table = []);
+      this.newTab = '';
+      this.configuration.dataType = '';
+      this.setSelectedTab(this.tab, 'false');
     }
   },
-  async created() {
+  created() {
+    this.table = [];
     this.getAllConfigurationData();
   },
 

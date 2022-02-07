@@ -575,11 +575,24 @@ export default {
   },
   mounted() {
     this.webMenuSubOptionTab(this.linksDataForWebDrawer[0].subOption[0]);
-    this.breadcrumbsData.menuItemTitle = this.linksDataForWebDrawer[0].title;
-    this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[0].link;
-    this.breadcrumbsData.subItemTitle =
-      this.linksDataForWebDrawer[0].subOption[0].name;
-    this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[0];
+    const route = this.$router.currentRoute.fullPath.split('/')[1];
+    for (let i = 0; i < this.linksDataForWebDrawer.length; i++) {
+      if (this.linksDataForWebDrawer[i].link === '/' + route) {
+        this.parentColorMenuItem = this.linksDataForWebDrawer[i].title;
+        this.breadcrumbsData.menuItemTitle =
+          this.linksDataForWebDrawer[i].title;
+        this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[i].link;
+        if (
+          this.linksDataForWebDrawer[i].subOption &&
+          this.webSubOptionMenuTab ==
+            this.linksDataForWebDrawer[i].subOption.name
+        ) {
+          this.breadcrumbsData.subItemTitle =
+            this.linksDataForWebDrawer[i].subOption[0].name;
+          this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[i];
+        }
+      }
+    }
   },
 
   methods: {
@@ -650,8 +663,12 @@ export default {
       this.breadcrumbsData.menuItemLink = menuItem.link;
       const route = this.$router.currentRoute.fullPath.split('/')[1];
       if (route != menuItem.link.slice(1)) {
-        this.$router.push(menuItem.link);
+        if (menuItem.link.slice(1) == 'admin') {
+          this.$router.push(menuItem.link);
+          this.webMenuSubOptionTab(menuItem.subOption[0].key);
+        } else this.$router.push(menuItem.link);
       }
+      this.webMenuSubOptionTab('');
     },
     // this function is used to hide the back button for the pages which are there in the humberger menubar
     toBackButtonVisibility() {
