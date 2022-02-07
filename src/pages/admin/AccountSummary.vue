@@ -13,12 +13,7 @@
           <div>
             <a
               @click="onEditClick"
-              class="
-                text-primary
-                cursor-pointer
-                text-subtitle1 text-weight-bold
-                q-mr-xs
-              "
+              class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
             >
               Edit
               <i class="text-primary fas fa-edit"></i>
@@ -176,12 +171,7 @@
           <div>
             <a
               @click="onEditClickOrganization"
-              class="
-                text-primary
-                cursor-pointer
-                text-subtitle1 text-weight-bold
-                q-mr-xs
-              "
+              class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
             >
               Edit
               <i class="text-primary fas fa-edit"></i>
@@ -332,12 +322,7 @@
           <div>
             <a
               @click="onEditClickOrganization('PHOTOIDFORM')"
-              class="
-                text-primary
-                cursor-pointer
-                text-subtitle1 text-weight-bold
-                q-mr-xs
-              "
+              class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
               >Edit
               <i class="text-primary fas fa-edit"></i>
             </a>
@@ -561,6 +546,7 @@ export default {
             }
           }
         };
+        this.editAccountSummary = false;
         await this.updateAccessToken(this.users.email);
         await this.editUserProfile(payload);
         await this.getUserInfo();
@@ -573,7 +559,6 @@ export default {
         );
         this.users.email = this.user.email;
         this.users.mailingAddress = this.user.mailingAddress;
-        this.editAccountSummary = false;
       }
     },
 
@@ -597,12 +582,16 @@ export default {
 
       this.users.email = this.user.email;
       if (this.user.mailingAddress) {
-        this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
-        this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
-        this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+        this.users.mailingAddress.addressRegion =
+          this.user.mailingAddress.addressRegion;
+        this.users.mailingAddress.addressLocality =
+          this.user.mailingAddress.addressLocality;
+        this.users.mailingAddress.houseNumber =
+          this.user.mailingAddress.houseNumber;
         this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
         this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-        this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
+        this.users.mailingAddress.postalCode =
+          this.user.mailingAddress.postalCode;
       }
 
       this.editAccountSummary = false;
@@ -615,12 +604,18 @@ export default {
       // this.organizations.users.contact.number = this.organization.website;
       //this.organizations.users.email = this.organization.photoIDEmail;
       if (this.organization.billingInfo) {
-        this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
-        this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
-        this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
-        this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
-        this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
-        this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+        this.organizations.users.mailingAddress.addressRegion =
+          this.organization.billingInfo.address.addressRegion;
+        this.organizations.users.mailingAddress.addressLocality =
+          this.organization.billingInfo.address.addressLocality;
+        this.organizations.users.mailingAddress.houseNumber =
+          this.organization.billingInfo.address.houseNumber;
+        this.organizations.users.mailingAddress.address1 =
+          this.organization.billingInfo.address.address1;
+        this.organizations.users.mailingAddress.address2 =
+          this.organization.billingInfo.address.address2;
+        this.organizations.users.mailingAddress.postalCode =
+          this.organization.billingInfo.address.postalCode;
       }
     },
     cancelPhotoIDUpdate() {
@@ -652,12 +647,16 @@ export default {
         this.users.contact.number = this.user.phoneNumber.number;
       }
       if (this.user.mailingAddress) {
-        this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
-        this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
-        this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+        this.users.mailingAddress.addressRegion =
+          this.user.mailingAddress.addressRegion;
+        this.users.mailingAddress.addressLocality =
+          this.user.mailingAddress.addressLocality;
+        this.users.mailingAddress.houseNumber =
+          this.user.mailingAddress.houseNumber;
         this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
         this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-        this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
+        this.users.mailingAddress.postalCode =
+          this.user.mailingAddress.postalCode;
       }
       this.users.email = this.user.email;
     }
@@ -670,12 +669,18 @@ export default {
       // this.organizations.users.contact.number = this.organization.website;
       this.organizations.users.email = this.organization.photoIDEmail;
       if (this.organization.billingInfo) {
-        this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
-        this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
-        this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
-        this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
-        this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
-        this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+        this.organizations.users.mailingAddress.addressRegion =
+          this.organization.billingInfo.address.addressRegion;
+        this.organizations.users.mailingAddress.addressLocality =
+          this.organization.billingInfo.address.addressLocality;
+        this.organizations.users.mailingAddress.houseNumber =
+          this.organization.billingInfo.address.houseNumber;
+        this.organizations.users.mailingAddress.address1 =
+          this.organization.billingInfo.address.address1;
+        this.organizations.users.mailingAddress.address2 =
+          this.organization.billingInfo.address.address2;
+        this.organizations.users.mailingAddress.postalCode =
+          this.organization.billingInfo.address.postalCode;
       }
     }
   }

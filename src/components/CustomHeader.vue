@@ -102,7 +102,7 @@
         </q-avatar>
 
         <div class="text-capitalize text-weight-bold text-black text-subtitle1">
-          {{ userName ? userName : user.name }}
+          {{ userName ? userName : user }}
         </div>
       </div>
       <q-separator class="q-my-lg" v-if="!isMobile()" />
@@ -801,7 +801,10 @@ export default {
       this.intViewportWidth = 300;
     }
     if (this.getCurrentUser().attributes) {
-      this.user = getCurrentUser().attributes;
+      let currentUser = getCurrentUser().attributes.contact;
+      const firstName = currentUser.fname;
+      const lastName = currentUser.lname;
+      this.user = firstName + ' ' + lastName;
       await this.getAccess();
       this.createSidebarMenuItems();
     }
