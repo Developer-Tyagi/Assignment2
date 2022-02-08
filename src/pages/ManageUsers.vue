@@ -4,12 +4,28 @@
       <div class="row justify-between">
         <div class="row justify-between text-bold q-ml-auto">
           <q-card flat bordered class="q-pa-sm q-ml-md q-mt-sm"
-            >Licenses available- {{ '5' }}</q-card
+            >Licenses available-
+            {{
+              CurrentPlan.paidUsers == -1 ? 'Unlimited' : CurrentPlan.paidUsers
+            }}</q-card
           >
           <q-card flat bordered class="q-pa-sm q-ml-md q-mt-sm"
             >Total Users - {{ allUsers.length }}</q-card
           >
+
           <q-btn
+            v-if="
+              CurrentPlan.paidUsers > -1 &&
+                CurrentPlan.paidUsers < organization.paidUsers
+            "
+            color="primary"
+            class="q-ml-md q-mt-sm"
+            disable
+          >
+            Add New User
+          </q-btn>
+          <q-btn
+            v-else
             color="primary"
             class="q-ml-md q-mt-sm"
             @click="addUserDialogBox = true"
@@ -56,7 +72,7 @@
                   class="clickable"
                   v-if="
                     user.attributes.contact.phoneNumber &&
-                    user.attributes.contact.phoneNumber[0].number
+                      user.attributes.contact.phoneNumber[0].number
                   "
                   @click="
                     onPhoneNumberClick(
@@ -325,7 +341,7 @@
                 <div
                   v-if="
                     singleUserData.mailingAddress &&
-                    singleUserData.mailingAddress.address2
+                      singleUserData.mailingAddress.address2
                   "
                 >
                   {{ singleUserData.mailingAddress.address2 }}
@@ -354,7 +370,7 @@
               class="col clickLink"
               v-if="
                 singleUserData.contact.phoneNumber &&
-                singleUserData.contact.phoneNumber.length
+                  singleUserData.contact.phoneNumber.length
               "
               @click="
                 onPhoneNumberClick(
@@ -495,7 +511,7 @@
                   <div
                     v-if="
                       singleUserData.roles &&
-                      singleUserData.roles[0].value == 'Estimator'
+                        singleUserData.roles[0].value == 'Estimator'
                     "
                   >
                     <q-input
@@ -566,6 +582,7 @@ export default {
 
   data() {
     return {
+      CurrentPlan: [],
       currentRoles: [],
       selected_roles: [],
       editUserInfoDialog: false,
@@ -649,10 +666,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['contactTypes', 'allUsers', 'roleTypes'])
+    ...mapGetters(['contactTypes', 'allUsers', 'roleTypes', 'organization'])
   },
 
-  created() {
+  async created() {
     this.getAllUsers();
 
     this.getRoles().then(async () => {
@@ -673,6 +690,8 @@ export default {
       });
     });
     this.getAllConfigurationTableData({ name: 'phone_types' });
+    await this.getOrganization();
+    this.CurrentPlan = this.organization.plan;
   },
 
   watch: {
@@ -696,7 +715,8 @@ export default {
       'getRoles',
       'getAllConfigurationTableData',
       'editUserInfo',
-      'setSingleRole'
+      'setSingleRole',
+      'getOrganization'
     ]),
 
     successMessage,
