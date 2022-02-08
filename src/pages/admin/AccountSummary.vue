@@ -13,7 +13,12 @@
           <div>
             <a
               @click="onEditClick"
-              class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
+              class="
+                text-primary
+                cursor-pointer
+                text-subtitle1 text-weight-bold
+                q-mr-xs
+              "
             >
               Edit
               <i class="text-primary fas fa-edit"></i>
@@ -171,7 +176,12 @@
           <div>
             <a
               @click="onEditClickOrganization"
-              class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
+              class="
+                text-primary
+                cursor-pointer
+                text-subtitle1 text-weight-bold
+                q-mr-xs
+              "
             >
               Edit
               <i class="text-primary fas fa-edit"></i>
@@ -322,7 +332,12 @@
           <div>
             <a
               @click="onEditClickOrganization('PHOTOIDFORM')"
-              class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
+              class="
+                text-primary
+                cursor-pointer
+                text-subtitle1 text-weight-bold
+                q-mr-xs
+              "
               >Edit
               <i class="text-primary fas fa-edit"></i>
             </a>
@@ -483,6 +498,7 @@ export default {
     onPhoneNumberClick,
     onEmailClick,
     showPhoneNumber,
+    sendPhoneNumber,
     toUpperCase(plan) {
       return plan[0].toUpperCase() + plan.slice(1);
     },
