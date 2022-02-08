@@ -102,7 +102,7 @@
         </q-avatar>
 
         <div class="text-capitalize text-weight-bold text-black text-subtitle1">
-          {{ userName ? userName : user }}
+          {{ userName ? userName : updatedUserName }}
         </div>
       </div>
       <q-separator class="q-my-lg" v-if="!isMobile()" />
@@ -154,7 +154,13 @@
             />
           </div>
           <div
-            class="col column text-weight-bold text-white q-pa-sm q-ml-md text-h6"
+            class="
+              col
+              column
+              text-weight-bold text-white
+              q-pa-sm q-ml-md
+              text-h6
+            "
             style="width: calc(100% - 54px)"
           >
             <div
@@ -442,6 +448,7 @@ export default {
       version: appVersion,
       webDrawer: true,
       miniState: false,
+      updatedUserName: '',
       user: {
         name: ''
       },
@@ -577,19 +584,25 @@ export default {
     this.webMenuSubOptionTab(this.linksDataForWebDrawer[0].subOption[0]);
     const route = this.$router.currentRoute.fullPath.split('/')[1];
     for (let i = 0; i < this.linksDataForWebDrawer.length; i++) {
-      if (this.linksDataForWebDrawer[i].link === '/' + route) {
+      if (this.linksDataForWebDrawer[i].link.slice(1) == route) {
         this.parentColorMenuItem = this.linksDataForWebDrawer[i].title;
         this.breadcrumbsData.menuItemTitle =
           this.linksDataForWebDrawer[i].title;
+        this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[i];
         this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[i].link;
-        if (
-          this.linksDataForWebDrawer[i].subOption &&
-          this.webSubOptionMenuTab ==
-            this.linksDataForWebDrawer[i].subOption.name
-        ) {
-          this.breadcrumbsData.subItemTitle =
-            this.linksDataForWebDrawer[i].subOption[0].name;
-          this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[i];
+        if (this.linksDataForWebDrawer[i].subOption) {
+          for (
+            let j = 0;
+            j < this.linksDataForWebDrawer[i].subOption.length;
+            j++
+          ) {
+            if (
+              this.linksDataForWebDrawer[i].subOption[j].name ==
+              this.webSubOptionMenuTab.name
+            )
+              this.breadcrumbsData.subItemTitle =
+                this.linksDataForWebDrawer[i].subOption[j].name;
+          }
         }
       }
     }
@@ -664,11 +677,28 @@ export default {
       const route = this.$router.currentRoute.fullPath.split('/')[1];
       if (route != menuItem.link.slice(1)) {
         if (menuItem.link.slice(1) == 'admin') {
+          this.openSubOptionMenuItem(
+            menuItem.subOption[0],
+            menuItem.link,
+            menuItem
+          );
+        } else if (menuItem.link.slice(1) == 'configuration') {
           this.$router.push(menuItem.link);
-          this.webMenuSubOptionTab(menuItem.subOption[0].key);
-        } else this.$router.push(menuItem.link);
+          this.webMenuSubOptionTab('');
+        } else {
+          this.$router.push(menuItem.link);
+        }
+      } else {
+        if (menuItem.link.slice(1) == 'admin') {
+          this.openSubOptionMenuItem(
+            this.webSubOptionMenuTab,
+            menuItem.link,
+            menuItem
+          );
+        } else if (menuItem.link.slice(1) == 'configuration') {
+          this.webMenuSubOptionTab('');
+        }
       }
-      this.webMenuSubOptionTab('');
     },
     // this function is used to hide the back button for the pages which are there in the humberger menubar
     toBackButtonVisibility() {
@@ -804,7 +834,8 @@ export default {
       let currentUser = getCurrentUser().attributes.contact;
       const firstName = currentUser.fname;
       const lastName = currentUser.lname;
-      this.user = firstName + ' ' + lastName;
+      this.user = getCurrentUser().attributes;
+      this.updatedUserName = firstName + ' ' + lastName;
       await this.getAccess();
       this.createSidebarMenuItems();
     }
