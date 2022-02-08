@@ -70,7 +70,7 @@
                     borderless
                     v-if="
                       toEditConfigurationData == true &&
-                      updatedEditConfigurationDataIndex == index
+                        updatedEditConfigurationDataIndex == index
                     "
                   ></q-input>
 
@@ -84,7 +84,7 @@
                       @click="toCancelConfigurationEdit()"
                       v-if="
                         toEditConfigurationData &&
-                        updatedEditConfigurationDataIndex == index
+                          updatedEditConfigurationDataIndex == index
                       "
                       class="q-pr-md cursor-pointer"
                     >
@@ -107,7 +107,7 @@
                       @click="toSaveConfigurationEdit()"
                       v-if="
                         toEditConfigurationData &&
-                        updatedEditConfigurationDataIndex == index
+                          updatedEditConfigurationDataIndex == index
                       "
                       class="q-pl-md cursor-pointer"
                     >
@@ -132,7 +132,7 @@
                   <div
                     v-if="
                       toEditConfigurationData &&
-                      updatedEditConfigurationDataIndex == index
+                        updatedEditConfigurationDataIndex == index
                     "
                   >
                     <q-input
@@ -148,7 +148,7 @@
                   <div
                     v-if="
                       toEditConfigurationData &&
-                      updatedEditConfigurationDataIndex == index
+                        updatedEditConfigurationDataIndex == index
                     "
                   >
                     <div
@@ -174,7 +174,7 @@
                   <div
                     v-if="
                       toEditConfigurationData &&
-                      updatedEditConfigurationDataIndex == index
+                        updatedEditConfigurationDataIndex == index
                     "
                   >
                     <div
@@ -205,7 +205,7 @@
                       @click="toCancelConfigurationEdit()"
                       v-if="
                         toEditConfigurationData &&
-                        updatedEditConfigurationDataIndex == index
+                          updatedEditConfigurationDataIndex == index
                       "
                       class="q-pr-md cursor-pointer"
                     />
@@ -223,7 +223,7 @@
                         @click="toSaveConfigurationEdit()"
                         v-if="
                           toEditConfigurationData &&
-                          updatedEditConfigurationDataIndex == index
+                            updatedEditConfigurationDataIndex == index
                         "
                         class="q-pl-md cursor-pointer"
                       />
@@ -256,8 +256,8 @@
       </div>
       <div v-else>
         <div class="q-mx-md">
-          <div class="row full-width justify-between">
-            <span class="text-bold" style="line-height: 36px">{{ tab }}</span>
+          <div class="row full-width justify-end">
+            <!-- <span class="text-bold" style="line-height: 36px">{{ tab }}</span> -->
 
             <div class="row">
               <q-btn @click="openAddTemplateBox" color="primary">
@@ -782,7 +782,10 @@ export default {
       else byteString = unescape(dataURI.split(',')[1]);
 
       // separate out the mime component
-      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+      var mimeString = dataURI
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0];
 
       // write the bytes of the string to a typed array
       var ia = new Uint8Array(byteString.length);
@@ -803,8 +806,7 @@ export default {
     toUpdateConfigurationDataWithSubtype(list, index) {
       this.inspectionPayload.editedDataMachineValue = list.machineValue;
       this.inspectionTypeEditedValue = list.value;
-      this.inspectionEditedType = this.updatedEditConfigurationDataIndex =
-        index;
+      this.inspectionEditedType = this.updatedEditConfigurationDataIndex = index;
       this.toEditConfigurationData = true;
       this.inspectionType.value = list.value;
       this.inspectionType.subtypes = list.subtypes;
@@ -824,8 +826,7 @@ export default {
         );
       } else {
         this.inspectionPayload.attributes.value = this.inspectionType.value;
-        this.inspectionPayload.attributes.subtypes =
-          this.inspectionType.subtypes;
+        this.inspectionPayload.attributes.subtypes = this.inspectionType.subtypes;
         for (
           let i = 0;
           i < this.inspectionPayload.attributes.subtypes.length;
@@ -845,16 +846,14 @@ export default {
     toEditConfiguration(data, index) {
       this.toEditConfigurationData = true;
       this.updatedEditConfigurationDataIndex = index;
-      this.toEditConfigurationWithoutSubtype.attributes.type.machineValue =
-        this.tabVal;
+      this.toEditConfigurationWithoutSubtype.attributes.type.machineValue = this.tabVal;
       this.toEditConfigurationWithoutSubtype.editedDataMachineValue =
         data.machineValue;
       this.toEditConfigurationWithoutSubtype.attributes.value = data.value
         ? data.value
         : data.name;
 
-      this.toEditConfigurationWithoutSubtype.attributes.type.value =
-        this.newTab;
+      this.toEditConfigurationWithoutSubtype.attributes.type.value = this.newTab;
     },
     async onFileInputClick(event) {
       document.getElementById('uploadFile').click();
@@ -1121,18 +1120,16 @@ export default {
           case 'inspections':
             for (var i = 0; i <= this.inspectionType.subtypes.length - 1; i++) {
               if (this.inspectionType.subtypes[i].value == '') {
-                this.inspectionType.subtypes[i].value =
-                  this.inspectionType.value;
+                this.inspectionType.subtypes[
+                  i
+                ].value = this.inspectionType.value;
               }
             }
 
-            (this.postPayloadWithSubType.data.value =
-              this.inspectionType.value),
-              (this.postPayloadWithSubType.data.subtypes =
-                this.inspectionType.subtypes),
+            (this.postPayloadWithSubType.data.value = this.inspectionType.value),
+              (this.postPayloadWithSubType.data.subtypes = this.inspectionType.subtypes),
               (this.postPayloadWithSubType.data.type.value = this.newTab),
-              (this.postPayloadWithSubType.data.type.machineValue =
-                this.tabVal);
+              (this.postPayloadWithSubType.data.type.machineValue = this.tabVal);
             var response = await this.addInspectionType(
               this.postPayloadWithSubType.data
             );

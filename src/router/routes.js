@@ -1,4 +1,5 @@
 import { guardMyroute } from '@utils/auth.js';
+import { isMobile } from 'src/utils/common';
 
 const routes = [
   {
@@ -61,7 +62,14 @@ const routes = [
         path: 'dashboard',
         name: 'dashboard',
         caseSensitive: true,
-        component: () => import('pages/Dashboard.vue')
+        component: () => import('pages/Dashboard.vue'),
+        beforeEnter: (to, from, next) => {
+          if (isMobile()) {
+            next();
+          } else {
+            next('admin');
+          }
+        }
       },
       {
         path: 'document-upload',

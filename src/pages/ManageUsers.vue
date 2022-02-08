@@ -16,7 +16,7 @@
           <q-btn
             v-if="
               CurrentPlan.paidUsers > -1 &&
-                CurrentPlan.paidUsers < organization.paidUsers
+                CurrentPlan.paidUsers <= organization.paidUsers
             "
             color="primary"
             class="q-ml-md q-mt-sm"

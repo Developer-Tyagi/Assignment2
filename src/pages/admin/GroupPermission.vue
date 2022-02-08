@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="col-3">
-        <q-checkbox v-model="paid">Paid</q-checkbox>
+        <q-checkbox v-model="paid" disable>Paid</q-checkbox>
       </div>
     </div>
     <q-scroll-area class="claim-list-scrollable">
