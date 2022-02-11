@@ -63,8 +63,8 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
     var userdata = data;
     if (data) {
       const firebaseRes = await firebaseAuthorization.signInWithEmailAndPassword(
-        userdata.attributes.email,
-        userdata.attributes.password
+        payload.user.email,
+        payload.user.password
       );
       if (firebaseRes && firebaseRes.user) {
         const token = await firebaseRes.user.getIdToken();

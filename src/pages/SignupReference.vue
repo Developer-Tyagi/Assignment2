@@ -630,8 +630,10 @@ export default {
       }
       this.data.stripeToken = token;
       const res = await this.createUserForOrganization(this.data);
-      this.setLoading(false);
-      this.$router.push('/setup');
+      if (res) {
+        this.$router.push('/setup');
+      }
+      //this.setLoading(false);
     },
     createToken() {
       // Gather additional customer data we may have collected in our form.
