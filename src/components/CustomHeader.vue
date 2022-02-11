@@ -56,9 +56,9 @@
             <q-icon
               v-if="
                 $route.name == 'create client' &&
-                !isOnline &&
-                editSelectedClient.id &&
-                isOfflineClientEdit
+                  !isOnline &&
+                  editSelectedClient.id &&
+                  isOfflineClientEdit
               "
               name="edit"
               @click="onClickEditIcon"
@@ -91,23 +91,39 @@
         </div>
       </q-header>
     </div>
-    <q-header v-if="!isMobile()" class="bg-white q-py-lg">
-      <div class="justify-end row items-center q-mr-lg q-px-xl">
-        <q-avatar
-          size="4em"
-          font-size="2.5rem"
-          icon="person"
-          class="text-white bg-grey q-mr-md"
+    <q-header v-if="!isMobile()" class="bg-white">
+      <div class="row">
+        <div
+          class="col-3 q-px-xl q-pt-md q-pb-md"
+          v-if="!isMobile() && $route.name == 'setup'"
+          style="background-color: #f9e7d8"
         >
-        </q-avatar>
+          <q-img src="~assets/Logo.svg" width="50%" />
+        </div>
+        <div class="col bg-white  q-pt-md">
+          <div class="row justify-end q-pr-xl">
+            <q-avatar
+              size="4em"
+              font-size="2.5rem"
+              icon="person"
+              class="text-white bg-grey q-mr-md"
+            >
+            </q-avatar>
 
-        <div class="text-capitalize text-weight-bold text-black text-subtitle1">
-          {{ userName ? userName : updatedUserName }}
+            <div
+              class="q-pt-md text-capitalize text-weight-bold text-black text-subtitle1"
+            >
+              {{ userName ? userName : updatedUserName }}
+            </div>
+          </div>
+          <q-separator class="q-mt-md" />
         </div>
       </div>
-      <q-separator class="q-my-lg" v-if="!isMobile()" />
 
-      <div v-if="!isMobile()" class="q-px-xl q-ml-lg q-mt-sm q-pt-xs">
+      <div
+        v-if="!isMobile() && $route.name !== 'setup'"
+        class="q-px-xl q-ml-lg q-mt-sm q-pt-xs"
+      >
         <q-breadcrumbs style="color: #667085" active-color="#667085">
           <template v-slot:separator>
             <q-icon size="sm" name="chevron_right" color="#D0D5DD" />
@@ -132,298 +148,304 @@
         </q-breadcrumbs>
       </div>
     </q-header>
-
-    <!-- Menu Drawer for Mobile application-->
-    <q-drawer
-      v-if="isMobile()"
-      v-model="isLeftSidePanelOpen"
-      :width="intViewportWidth"
-      :breakpoint="992"
-      content-class="bg-side-panel"
-      @hide="onMenuHide()"
-    >
-      <div class="q-px-sm q-pt-lg menu-bar-style q-pb-sm">
-        <div class="row q-pl-lg q-pr-md">
-          <div class="q-pt-sm col-3">
-            <q-avatar
-              size="4.5em"
-              color="white"
-              text-color="primary"
-              font-size="2.5rem"
-              icon="person"
-            />
-          </div>
-          <div
-            class="
+    <div v-if="$route.name !== 'setup'">
+      <!-- Menu Drawer for Mobile application-->
+      <q-drawer
+        v-if="isMobile()"
+        v-model="isLeftSidePanelOpen"
+        :width="intViewportWidth"
+        :breakpoint="992"
+        content-class="bg-side-panel"
+        @hide="onMenuHide()"
+      >
+        <div class="q-px-sm q-pt-lg menu-bar-style q-pb-sm">
+          <div class="row q-pl-lg q-pr-md">
+            <div class="q-pt-sm col-3">
+              <q-avatar
+                size="4.5em"
+                color="white"
+                text-color="primary"
+                font-size="2.5rem"
+                icon="person"
+              />
+            </div>
+            <div
+              class="
               col
               column
               text-weight-bold text-white
               q-pa-sm q-ml-md
               text-h6
             "
-            style="width: calc(100% - 54px)"
-          >
-            <div
-              class="text-capitalize ellipsis-2-lines"
-              style="width: 100%; line-height: 1.2"
+              style="width: calc(100% - 54px)"
             >
-              {{
-                user.roles[0].machineValue == 'vendor'
-                  ? user.companyName
-                  : user.name
-              }}
-            </div>
+              <div
+                class="text-capitalize ellipsis-2-lines"
+                style="width: 100%; line-height: 1.2"
+              >
+                {{
+                  user.roles[0].machineValue == 'vendor'
+                    ? user.companyName
+                    : user.name
+                }}
+              </div>
 
-            <div class="text-weight-medium text-subtitle2">
-              {{ user.contact.fname ? user.contact.fname : '' }}
+              <div class="text-weight-medium text-subtitle2">
+                {{ user.contact.fname ? user.contact.fname : '' }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <q-scroll-area style="height: calc(100% - 265px)">
-        <div class="q-pr-sm">
-          <q-list separator dark>
-            <q-item
-              clickable
-              v-ripple
-              v-for="link in sidebarItems"
-              :key="link.title"
-              @click="routeTo(link)"
-              v-bind="link"
-              class="q-mt-lg bg-white rounded-sidebar q-pa-none q-pb-xs"
-              v-if="
-                (link.title != 'Dashboard' || isMobile()) &&
-                (link.title != 'Claims' || isMobile()) &&
-                (link.title != 'Clients' || isMobile()) &&
-                (link.title != 'Leads' || isMobile()) &&
-                (link.title != 'Vendors' || isMobile()) &&
-                (link.title != 'Carriers' || isMobile()) &&
-                (link.title != 'Mortgages' || isMobile()) &&
-                (link.title != 'Vendors' || isMobile()) &&
-                (link.title != 'Carriers' || isMobile()) &&
-                (link.title != 'Mortgages' || isMobile()) &&
-                (link.title != 'Manage Users' || !isMobile()) &&
-                (link.title != 'Configuration' || !isMobile()) &&
-                (link.title != 'Admin' || !isMobile())
-              "
-            >
-              <q-item-section @click="onClickMenuItem(link.title)">
-                <div class="row text-primary q-mb-sm" style="max-height: 68px">
-                  <div class="q-ml-lg col-2 q-mr-sm q-pt-xs">
-                    <q-icon
-                      :size="link.title == 'Reports' ? '2rem' : '2.5rem'"
-                      :style="link.title == 'Reports' ? 'padding-top:10px' : ''"
-                      class="q-mt-sm q-mb-sm"
-                    >
-                      <q-img :src="getImage(link.icon)" color="primary" />
-                    </q-icon>
-                  </div>
-                  <div class="col-8">
-                    <div class="text-subtitle1 text-bold q-pt-sm">
-                      {{ link.title }}
+        <q-scroll-area style="height: calc(100% - 265px)">
+          <div class="q-pr-sm">
+            <q-list separator dark>
+              <q-item
+                clickable
+                v-ripple
+                v-for="link in sidebarItems"
+                :key="link.title"
+                @click="routeTo(link)"
+                v-bind="link"
+                class="q-mt-lg bg-white rounded-sidebar q-pa-none q-pb-xs"
+                v-if="
+                  (link.title != 'Dashboard' || isMobile()) &&
+                    (link.title != 'Claims' || isMobile()) &&
+                    (link.title != 'Clients' || isMobile()) &&
+                    (link.title != 'Leads' || isMobile()) &&
+                    (link.title != 'Vendors' || isMobile()) &&
+                    (link.title != 'Carriers' || isMobile()) &&
+                    (link.title != 'Mortgages' || isMobile()) &&
+                    (link.title != 'Vendors' || isMobile()) &&
+                    (link.title != 'Carriers' || isMobile()) &&
+                    (link.title != 'Mortgages' || isMobile()) &&
+                    (link.title != 'Manage Users' || !isMobile()) &&
+                    (link.title != 'Configuration' || !isMobile()) &&
+                    (link.title != 'Admin' || !isMobile())
+                "
+              >
+                <q-item-section @click="onClickMenuItem(link.title)">
+                  <div
+                    class="row text-primary q-mb-sm"
+                    style="max-height: 68px"
+                  >
+                    <div class="q-ml-lg col-2 q-mr-sm q-pt-xs">
+                      <q-icon
+                        :size="link.title == 'Reports' ? '2rem' : '2.5rem'"
+                        :style="
+                          link.title == 'Reports' ? 'padding-top:10px' : ''
+                        "
+                        class="q-mt-sm q-mb-sm"
+                      >
+                        <q-img :src="getImage(link.icon)" color="primary" />
+                      </q-icon>
                     </div>
+                    <div class="col-8">
+                      <div class="text-subtitle1 text-bold q-pt-sm">
+                        {{ link.title }}
+                      </div>
 
-                    <div style="font-size: 10px">
-                      {{ link.description }}
+                      <div style="font-size: 10px">
+                        {{ link.description }}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-      </q-scroll-area>
-      <div class="q-px-lg q-mt-sm">
-        <q-btn
-          class="full-width q-mt-md menu-bar-style text-subtitle1 text-bold"
-          label="LOGOUT"
-          style="border-radius: 25px; width: 100%; height: 50px"
-          @click="logout()"
-        />
-      </div>
-      <q-separator class="q-mt-md q-mb-sm bg-primary" style="padding: none" />
-      <p class="text-black q-ml-md" style="opacity: 50%; font-size: 12px">
-        Claimguru Version {{ this.version }}
-      </p>
-    </q-drawer>
-
-    <!--Menu Drawer for Web Applicaiton-->
-    <q-drawer
-      v-model="webDrawer"
-      :mini="!webDrawer || miniState"
-      show-if-above
-      :width="290"
-      :breakpoint="400"
-      bordered
-      v-else
-    >
-      <div class="full-height" style="background-color: #f9e7d8">
-        <div class="col-2 q-mb-lg">
-          <div v-if="miniState" class="row items-center">
-            <div class="col q-ml-md q-py-md">
-              <q-btn
-                dense
-                round
-                unelevated
-                color="primary"
-                icon="chevron_right"
-                @click="webDrawerCollapse()"
-              />
-            </div>
-          </div>
-          <div class="row items-center" v-else>
-            <div v-if="!miniState" class="col-2 q-ml-md">
-              <q-btn
-                dense
-                round
-                unelevated
-                color="primary"
-                icon="chevron_left"
-                @click="webDrawerCollapse()"
-              />
-            </div>
-            <div class="col">
-              <q-img
-                class="web-menu-claim-guru-logo"
-                :src="getImage('claimguru_new_logo.png')"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div v-if="miniState">
-            <div
-              class="column items-center"
-              v-for="(menuItem, index) in linksDataForWebDrawer"
-              :key="index"
-            >
-              <q-item>
-                <q-item-section avatar>
-                  <q-tooltip>
-                    {{ menuItem.title }}
-                  </q-tooltip>
-                  <q-icon size="sm" class="q-mt-sm q-mb-sm">
-                    <q-img :src="getImage(menuItem.icon)" color="grey-4" />
-                  </q-icon>
                 </q-item-section>
               </q-item>
+            </q-list>
+          </div>
+        </q-scroll-area>
+        <div class="q-px-lg q-mt-sm">
+          <q-btn
+            class="full-width q-mt-md menu-bar-style text-subtitle1 text-bold"
+            label="LOGOUT"
+            style="border-radius: 25px; width: 100%; height: 50px"
+            @click="logout()"
+          />
+        </div>
+        <q-separator class="q-mt-md q-mb-sm bg-primary" style="padding: none" />
+        <p class="text-black q-ml-md" style="opacity: 50%; font-size: 12px">
+          Claimguru Version {{ this.version }}
+        </p>
+      </q-drawer>
+
+      <!--Menu Drawer for Web Applicaiton-->
+      <q-drawer
+        v-model="webDrawer"
+        :mini="!webDrawer || miniState"
+        show-if-above
+        :width="290"
+        :breakpoint="400"
+        bordered
+        v-else
+      >
+        <div class="full-height" style="background-color: #f9e7d8">
+          <div class="col-2 q-mb-lg">
+            <div v-if="miniState" class="row items-center">
+              <div class="col q-ml-md q-py-md">
+                <q-btn
+                  dense
+                  round
+                  unelevated
+                  color="primary"
+                  icon="chevron_right"
+                  @click="webDrawerCollapse()"
+                />
+              </div>
+            </div>
+            <div class="row items-center" v-else>
+              <div v-if="!miniState" class="col-2 q-ml-md">
+                <q-btn
+                  dense
+                  round
+                  unelevated
+                  color="primary"
+                  icon="chevron_left"
+                  @click="webDrawerCollapse()"
+                />
+              </div>
+              <div class="col">
+                <q-img
+                  class="web-menu-claim-guru-logo"
+                  :src="getImage('claimguru_new_logo.png')"
+                />
+              </div>
             </div>
           </div>
-          <div v-else>
-            <q-scroll-area style="height: 80vh">
-              <q-list>
-                <q-item
-                  v-for="(menuItem, index) in linksDataForWebDrawer"
-                  :key="index"
-                >
-                  <q-item-section
-                    v-if="menuItem.subOption"
-                    @click="changeParentColor(menuItem.title)"
+          <div class="col">
+            <div v-if="miniState">
+              <div
+                class="column items-center"
+                v-for="(menuItem, index) in linksDataForWebDrawer"
+                :key="index"
+              >
+                <q-item>
+                  <q-item-section avatar>
+                    <q-tooltip>
+                      {{ menuItem.title }}
+                    </q-tooltip>
+                    <q-icon size="sm" class="q-mt-sm q-mb-sm">
+                      <q-img :src="getImage(menuItem.icon)" color="grey-4" />
+                    </q-icon>
+                  </q-item-section>
+                </q-item>
+              </div>
+            </div>
+            <div v-else>
+              <q-scroll-area style="height: 80vh">
+                <q-list>
+                  <q-item
+                    v-for="(menuItem, index) in linksDataForWebDrawer"
+                    :key="index"
                   >
-                    <q-expansion-item
-                      group="somegroup"
-                      @click="toRouteMenuBarPage(menuItem)"
+                    <q-item-section
+                      v-if="menuItem.subOption"
+                      @click="changeParentColor(menuItem.title)"
                     >
-                      <template v-slot:header>
+                      <q-expansion-item
+                        group="somegroup"
+                        @click="toRouteMenuBarPage(menuItem)"
+                      >
+                        <template v-slot:header>
+                          <q-item
+                            :class="
+                              parentColorMenuItem == menuItem.title
+                                ? 'menu-item-styling'
+                                : null
+                            "
+                          >
+                            <q-item-section avatar>
+                              <q-icon size="sm" class="q-my-sm">
+                                <q-img
+                                  :src="getImage(menuItem.icon)"
+                                  color="primary"
+                                />
+                              </q-icon>
+                            </q-item-section>
+                            <q-item-section class="text-subtitle2">
+                              {{ menuItem.title }}
+                            </q-item-section>
+                          </q-item>
+                        </template>
+
                         <q-item
-                          :class="
-                            parentColorMenuItem == menuItem.title
-                              ? 'menu-item-styling'
-                              : null
-                          "
+                          class="q-ml-sm"
+                          v-for="(subMenuOption, index) in menuItem.subOption"
+                          :key="index"
                         >
+                          <q-item-section
+                            class="q-ml-xl col-11 cursor-pointer text-subtitle2"
+                            clickable
+                            @click="
+                              openSubOptionMenuItem(
+                                subMenuOption,
+                                menuItem.link,
+                                menuItem
+                              )
+                            "
+                          >
+                            {{ subMenuOption.name }}
+                            <div
+                              class="q-mr-xl q-pr-lg"
+                              v-if="
+                                subOptionSelected.key == subMenuOption.key &&
+                                  webSubOptionMenuTab != ''
+                              "
+                            >
+                              <q-separator style="background: #ef5926" />
+                            </div>
+                          </q-item-section>
+                        </q-item>
+                      </q-expansion-item>
+                    </q-item-section>
+
+                    <q-item-section
+                      @click="changeParentColor(menuItem.title)"
+                      :class="
+                        parentColorMenuItem == menuItem.title
+                          ? 'menu-item-styling-non-component'
+                          : null
+                      "
+                      v-else
+                      class="col-12 q-ml-md"
+                      clickable
+                    >
+                      <q-expansion-item
+                        group="somegroup"
+                        expand-icon="disabled"
+                        @click="toRouteMenuBarPage(menuItem)"
+                      >
+                        <template v-slot:header>
                           <q-item-section avatar>
-                            <q-icon size="sm" class="q-my-sm">
+                            <q-icon size="sm" class="q-mt-sm q-mb-sm">
                               <q-img
                                 :src="getImage(menuItem.icon)"
-                                color="primary"
+                                color="grey-4"
                               />
                             </q-icon>
                           </q-item-section>
                           <q-item-section class="text-subtitle2">
                             {{ menuItem.title }}
                           </q-item-section>
-                        </q-item>
-                      </template>
+                        </template>
+                      </q-expansion-item>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
 
-                      <q-item
-                        class="q-ml-sm"
-                        v-for="(subMenuOption, index) in menuItem.subOption"
-                        :key="index"
-                      >
-                        <q-item-section
-                          class="q-ml-xl col-11 cursor-pointer text-subtitle2"
-                          clickable
-                          @click="
-                            openSubOptionMenuItem(
-                              subMenuOption,
-                              menuItem.link,
-                              menuItem
-                            )
-                          "
-                        >
-                          {{ subMenuOption.name }}
-                          <div
-                            class="q-mr-xl q-pr-lg"
-                            v-if="
-                              subOptionSelected.key == subMenuOption.key &&
-                              webSubOptionMenuTab != ''
-                            "
-                          >
-                            <q-separator style="background: #ef5926" />
-                          </div>
-                        </q-item-section>
-                      </q-item>
-                    </q-expansion-item>
-                  </q-item-section>
-
-                  <q-item-section
-                    @click="changeParentColor(menuItem.title)"
-                    :class="
-                      parentColorMenuItem == menuItem.title
-                        ? 'menu-item-styling-non-component'
-                        : null
-                    "
-                    v-else
-                    class="col-12 q-ml-md"
-                    clickable
-                  >
-                    <q-expansion-item
-                      group="somegroup"
-                      expand-icon="disabled"
-                      @click="toRouteMenuBarPage(menuItem)"
-                    >
-                      <template v-slot:header>
-                        <q-item-section avatar>
-                          <q-icon size="sm" class="q-mt-sm q-mb-sm">
-                            <q-img
-                              :src="getImage(menuItem.icon)"
-                              color="grey-4"
-                            />
-                          </q-icon>
-                        </q-item-section>
-                        <q-item-section class="text-subtitle2">
-                          {{ menuItem.title }}
-                        </q-item-section>
-                      </template>
-                    </q-expansion-item>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-
-              <div class="q-mt-xl q-ml-xl q-pt-xl">
-                <div class="row cursor-pointer" @click="logout()">
-                  <div class="q-mt-xs text-subtitle2">Logout</div>
-                  <q-icon size="sm" class="q-ml-xl">
-                    <q-img :src="getImage('log_out.svg')" color="grey-4" />
-                  </q-icon>
+                <div class="q-mt-xl q-ml-xl q-pt-xl">
+                  <div class="row cursor-pointer" @click="logout()">
+                    <div class="q-mt-xs text-subtitle2">Logout</div>
+                    <q-icon size="sm" class="q-ml-xl">
+                      <q-img :src="getImage('log_out.svg')" color="grey-4" />
+                    </q-icon>
+                  </div>
                 </div>
-              </div>
-            </q-scroll-area>
+              </q-scroll-area>
+            </div>
           </div>
         </div>
-      </div>
-    </q-drawer>
+      </q-drawer>
+    </div>
   </div>
 </template>
 <script>
@@ -586,8 +608,9 @@ export default {
     for (let i = 0; i < this.linksDataForWebDrawer.length; i++) {
       if (this.linksDataForWebDrawer[i].link.slice(1) == route) {
         this.parentColorMenuItem = this.linksDataForWebDrawer[i].title;
-        this.breadcrumbsData.menuItemTitle =
-          this.linksDataForWebDrawer[i].title;
+        this.breadcrumbsData.menuItemTitle = this.linksDataForWebDrawer[
+          i
+        ].title;
         this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[i];
         this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[i].link;
         if (this.linksDataForWebDrawer[i].subOption) {
@@ -600,8 +623,9 @@ export default {
               this.linksDataForWebDrawer[i].subOption[j].name ==
               this.webSubOptionMenuTab.name
             )
-              this.breadcrumbsData.subItemTitle =
-                this.linksDataForWebDrawer[i].subOption[j].name;
+              this.breadcrumbsData.subItemTitle = this.linksDataForWebDrawer[
+                i
+              ].subOption[j].name;
           }
         }
       }
@@ -631,8 +655,7 @@ export default {
     onClickBreadcrumbsHome() {
       this.breadcrumbsData.menuItemTitle = this.linksDataForWebDrawer[0].title;
       this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[0].link;
-      this.breadcrumbsData.subItemTitle =
-        this.linksDataForWebDrawer[0].subOption[0].name;
+      this.breadcrumbsData.subItemTitle = this.linksDataForWebDrawer[0].subOption[0].name;
       this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[0];
       const route = this.$router.currentRoute.fullPath.split('/')[1];
       if (route != this.breadcrumbsData.menuItemLink.slice(1)) {

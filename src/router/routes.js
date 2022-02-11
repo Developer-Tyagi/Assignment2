@@ -44,12 +44,14 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/Notification.vue')
       },
+
       {
         path: 'access-denied',
         name: 'access-denied',
         caseSensitive: true,
         component: () => import('pages/AccessDenied.vue')
       },
+
       { path: '', redirect: 'login' }
     ]
   },
@@ -58,6 +60,12 @@ const routes = [
     component: () => import('src/layouts/MainLayout.vue'),
     beforeEnter: guardMyroute,
     children: [
+      {
+        path: 'setup',
+        name: 'setup',
+        caseSensitive: true,
+        component: () => import('pages/OnBoard.vue')
+      },
       {
         path: 'dashboard',
         name: 'dashboard',
