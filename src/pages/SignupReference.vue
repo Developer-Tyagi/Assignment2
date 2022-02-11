@@ -331,18 +331,18 @@
             <div class="q-mt-xs">Step 2. Payment</div>
             <q-form class="q-mt-xl" @submit="onPaymentClick()" ref="orgInfo">
               <div>{{ displayErrors }}</div>
-              <div class="text-h3 text-weight-bolder">Pay with card for</div>
+              <div class="text-h4 text-weight-bolder">Pay with card for</div>
               <div
                 v-if="isPackageSelected.id1 === true"
-                class="text-h3 text-weight-bolder"
+                class="text-h4 text-weight-bolder"
               >
                 Firm Package
               </div>
-              <div v-else class="text-h3 text-weight-bolder">
+              <div v-else class="text-h4 text-weight-bolder">
                 Individual Package
               </div>
               <div class="q-mt-lg"></div>
-              <label class="text-h6 text-weight-bold">Card Number</label>
+              <label class="text-subtitle1 text-weight-bold">Card Number</label>
               <div
                 id="card-number"
                 class="cardInfo f-w-500 text-body1 border-top-left-right q-mt-xs q-mb-lg"
@@ -350,7 +350,9 @@
                 <!-- a Stripe Element will be inserted. -->
               </div>
 
-              <label class="text-h6 text-weight-bold">Name on Card</label>
+              <label class="text-subtitle1 text-weight-bold"
+                >Name on Card</label
+              >
               <q-input
                 borderless
                 class="bg-white cardInfo text-body1 q-mt-xs q-mb-lg"
@@ -368,7 +370,9 @@
 
               <div class="row">
                 <div class="col q-pr-md">
-                  <label class="text-h6 text-weight-bold">Expiry Date</label>
+                  <label class="text-subtitle1 text-weight-bold"
+                    >Expiry Date</label
+                  >
                   <div
                     id="card-expiry"
                     class="cardInfo text-body1 border-bottom-right q-mt-xs"
@@ -377,7 +381,7 @@
                   </div>
                 </div>
                 <div class="col q-pl-xs">
-                  <label class="text-h6 text-weight-bold">CVC</label>
+                  <label class="text-subtitle1 text-weight-bold">CVC</label>
                   <div
                     id="card-cvc"
                     class="cardInfo text-body1 border-bottom-right q-mt-xs"
@@ -389,14 +393,15 @@
 
               <div class="q-mt-md"></div>
               <div class="row">
+                <label class="column text-h5 text-weight-bolder"
+                  >30 days free</label
+                >
+              </div>
+              <div class="row">
                 <div class="col-6">
-                  <label class="column text-h5 text-weight-bolder"
-                    >30 days free</label
-                  >
                   <label class="text-h6 text-weight-bold">After 30 days</label>
                 </div>
                 <div class="col-6">
-                  <div class="column"></div>
                   <div
                     v-if="isPackageSelected.id1 === true"
                     class="text-subtitle1 text-grey-white"
