@@ -17,7 +17,7 @@ const routes = [
         path: 'signup',
         name: 'signup',
         caseSensitive: true,
-        component: () => import('pages/SignupNew.vue')
+        component: () => import('pages/SignupReference.vue')
       },
 
       {
