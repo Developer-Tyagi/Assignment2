@@ -489,11 +489,8 @@ export default {
         id1: '',
         id2: ''
       },
-      DisplayError: ''
+      displayErrors: ''
     };
-  },
-  mounted() {
-    this.setPaymentPage();
   },
   methods: {
     ...mapActions([
@@ -542,7 +539,10 @@ export default {
       } else {
         //const res = await this.createUserForOrganization(this.data);
         this.continueClick = true;
-        //this.setPaymentPage();
+        let interval = setTimeout(() => {
+          this.setPaymentPage();
+          clearTimeout(interval);
+        }, 0);
       }
     },
     onPackageSelection(id) {
@@ -624,7 +624,7 @@ export default {
         this.setLoading(false);
         return;
       }
-
+      this.data.stripeToken = token;
       const res = await this.createUserForOrganization(this.data);
       this.setLoading(false);
     },
