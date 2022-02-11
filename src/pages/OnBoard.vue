@@ -645,7 +645,10 @@ export default {
       this.$router.push('/admin');
     },
     async NextStepperValue() {
-      if (this.step == 1 || this.step == 3) {
+      if (
+        this.step == 1 ||
+        (this.step == 3 && this.companyDetails.photoIdEmail)
+      ) {
         if (this.step == 1) {
           var payload = {
             data: {
