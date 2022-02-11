@@ -4,9 +4,9 @@
     <CustomHeader @backButton="onBackButtonClick" />
 
     <q-page-container
-      :style="`${
-        $route.name === 'dashboard' ? 'background-color: #8f8f8f;' : ''
-      }`"
+      :style="
+        `${$route.name === 'dashboard' ? 'background-color: #8f8f8f;' : ''}`
+      "
     >
       <router-view />
       <div id="navbar">
@@ -15,28 +15,29 @@
           :offset="[30, 18]"
           v-if="
             $route.name != 'add new leads' &&
-            $route.name != 'create client' &&
-            $route.name != 'edit  lead' &&
-            $route.name != 'vendors' &&
-            $route.name != 'configuration' &&
-            $route.name != 'manage users' &&
-            $route.name != 'admin' &&
-            $route.name != 'reports' &&
-            $route.name != 'signup' &&
-            $route.name != 'set-password' &&
-            $route.name != 'payment' &&
-            $route.name != 'loss info' &&
-            $route.name != 'Documents' &&
-            $route.name != 'properties and claims ' &&
-            $route.name != 'notes' &&
-            $route.name != 'Company Personnel' &&
-            $route.name != 'add new lead' &&
-            $route.name != 'lead details' &&
-            $route.name != 'Leads' &&
-            $route.name != 'claim details' &&
-            $route.name != 'dashboard' &&
-            $route.name != 'Add Claim' &&
-            $route.name != 'offline-claim'
+              $route.name != 'create client' &&
+              $route.name != 'edit  lead' &&
+              $route.name != 'vendors' &&
+              $route.name != 'configuration' &&
+              $route.name != 'manage users' &&
+              $route.name != 'admin' &&
+              $route.name != 'setup' &&
+              $route.name != 'reports' &&
+              $route.name != 'signup' &&
+              $route.name != 'set-password' &&
+              $route.name != 'payment' &&
+              $route.name != 'loss info' &&
+              $route.name != 'Documents' &&
+              $route.name != 'properties and claims ' &&
+              $route.name != 'notes' &&
+              $route.name != 'Company Personnel' &&
+              $route.name != 'add new lead' &&
+              $route.name != 'lead details' &&
+              $route.name != 'Leads' &&
+              $route.name != 'claim details' &&
+              $route.name != 'dashboard' &&
+              $route.name != 'Add Claim' &&
+              $route.name != 'offline-claim'
           "
         >
           <q-btn
@@ -60,6 +61,15 @@
         <AddOptions />
       </q-dialog>
     </q-page-container>
+    <q-footer class="row" v-if="!isMobile() && $route.name == 'setup'">
+      <div
+        class="col-3 text-black text-subtitle1 q-pb-sm q-pl-xl"
+        style="background-color: #f9e7d8"
+      >
+        © ClaimGuru 2022
+      </div>
+      <div class="col bg-white"></div>
+    </q-footer>
   </q-layout>
 </template>
 <script>

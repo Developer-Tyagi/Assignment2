@@ -207,7 +207,7 @@
     </div>
     <q-input
       dense
-      v-if="address.dropBox.isPresent && isDropBoxEnable"
+      v-if="isDropBoxEnable && address.dropBox.isPresent"
       v-model="address.dropBox.info"
       class="required"
       label="Gate/ Dropbox"
