@@ -1,440 +1,946 @@
 <template>
-  <q-page class="custom-font full-height">
-    <div class="row" style="height: calc(100vh - 1px)">
-      <div
-        class="col-md-6 col-sm-12 col-xs-12"
-        :style="$q.screen.gt.sm ? 'background: #f9e7d8' : 'background:#fff'"
-      >
-        <div class="row justify-start q-mt-sm">
-          <div class="col-3 q-pa-md">
+  <q-page class="full-height">
+    <div v-if="!isMobile()">
+      <div class="row">
+        <div
+          class="col-6 q-px-xl q-pt-md q-pb-md"
+          :style="$q.screen.gt.sm ? 'background: #f9e7d8' : 'background:#fff'"
+        >
+          <div>
             <q-img
               class="web-menu-claim-guru-logo"
               :src="getImage('Logo.svg')"
+              width="20%"
             />
           </div>
         </div>
-        <div class="column justify-center text-h5 text-weight-bolder">
-          <div class="q-px-xl q-mx-xl" style="text-align: center ">
-            The First and Only Catastrophe -Proof Claim management System for
-            Public Adjusters
-          </div>
-        </div>
-        <div class="row q-ml-xl q-mt-xl">
-          <div class="text-h5 text-weight-bolder">
-            <span
-              v-if="
-                isPackageSelected.id1 === '' && isPackageSelected.id2 === ''
-              "
-              >Pick Your Package</span
-            >
-            <span v-if="isPackageSelected.id1 === true"
-              >Firm Package Selected</span
-            >
-            <span v-if="isPackageSelected.id2 === true"
-              >Individual Package Selected</span
-            >
-          </div>
-        </div>
-        <div class="row justify-between q-mt-md q-px-xl q-mx-xl">
-          <div class="col-5">
-            <q-card
-              class="my-card col-md-4 col-sm-12 col-xs-12"
-              @click="onPackageSelection('Firm')"
-              :class="{ 'card-highlighter': isPackageSelected.id1 }"
-            >
-              <div
-                class="fit row wrap justify-around items-start content-start"
-              >
-                <q-btn
-                  round
-                  dense
-                  flat
-                  color="primary"
-                  icon="business"
-                  size="22px"
-                />
-              </div>
-
-              <div
-                class="text-h6 text-weight-bolder"
-                style="text-align: center"
-              >
-                Firm Package
-              </div>
-              <div
-                class="text-h6 text-weight-bolder"
-                style="text-align: center"
-              >
-                $200/month
-              </div>
-              <div
-                class="text-subtitle1 text-weight-bolder q-mb-sm"
-                style="text-align: center; color: #ef5926"
-              >
-                Start your 30 day free trial
-              </div>
-
-              <div
-                class=" row text-subtitle1 q-pl-xl col-md-4 col-xs-12 col-sm-12"
-                style="text-align: justify"
-                v-for="firmPackage in firmPackages"
-                :key="firmPackage"
-              >
-                <q-btn round dense flat color="primary" icon="check_circle" />
-                {{ firmPackage }}
-              </div>
-
-              <div class="q-ml-lg q-mt-sm text-blue-grey text-subtitle1">
-                Additional licenses at $50/month
-              </div>
-
-              <div class="q-ml-lg q-mb-lg text-blue-grey text-caption">
-                * Vendor roles are limited
-              </div>
-            </q-card>
-          </div>
-          <div class="col-5">
-            <q-card
-              id="IndividualPackage"
-              class="my-card col-md-4 col-sm-12 col-xs-12"
-              @click="onPackageSelection('Individual')"
-              :class="{ 'card-highlighter': isPackageSelected.id2 }"
-            >
-              <div
-                class="fit row wrap justify-around items-start content-start"
-              >
-                <q-btn
-                  round
-                  dense
-                  flat
-                  icon="portrait"
-                  color="primary"
-                  size="22px"
-                />
-              </div>
-
-              <div
-                class="text-h6 text-weight-bolder"
-                style="text-align: center"
-              >
-                Individual Package
-              </div>
-              <div
-                class="text-h6 text-weight-bolder"
-                style="text-align: center"
-              >
-                $99/month
-              </div>
-
-              <div
-                class="text-subtitle1 text-weight-bold"
-                style="text-align: center; color: #ef5926"
-              >
-                Start your 30 day free trial
-              </div>
-
-              <q-card-section style="min-height: 180px">
-                <div
-                  class="q-ml-lg text-subtitle1 col-md-4 col-xs-12 col-sm-12"
-                  v-for="individualPackage in individualPackages"
-                  :key="individualPackage"
-                >
-                  <q-btn round dense flat color="primary" icon="check_circle" />
-                  {{ individualPackage }}
-                </div>
-              </q-card-section>
-
-              <q-card-section></q-card-section>
-            </q-card>
-          </div>
-        </div>
-        <div class="row q-pt-md q-mt-md q-px-xl q-mx-xl full-width">
-          <div class="col-1"></div>
-          <div class="col-10">
-            <q-card style="border-radius: 20px" class="row">
-              <q-card-section class="col-2">
-                <q-btn
-                  round
-                  dense
-                  flat
-                  color="primary"
-                  icon="business"
-                  size="22px"
-                />
-              </q-card-section>
-              <q-card-section class="text-h5 q-mt-md col-8 text-weight-bolder"
-                >Enterprise Subscription</q-card-section
-              >
-              <q-card-section class="q-mt-md q-ml-auto text-subtitle1 col-2">
-                <a class="text-deep-orange" href="">Contact us</a>
-              </q-card-section>
-              <q-card-section>
-                <q-btn round dense flat color="primary" icon="check_circle" />
-                Custom setup for large firms with more than 8 paid roles custom
-                pricing
-              </q-card-section>
-            </q-card>
-          </div>
-          <div class="col-1"></div>
-        </div>
       </div>
-
-      <!-- signup form -->
-      <div
-        v-if="continueClick === false"
-        class="col-md-6 col-sm-12 col-xs-12 bg-white q-pt-lg content-center bg-white"
-      >
-        <div class="column full-height q-px-xl q-pt-xl">
-          <div class="col">
-            <q-linear-progress size="10px" :value="progress" />
-            <div class="q-mt-xs">Step 1. Create an account</div>
-            <q-form class="q-mt-lg" @submit="onContinue()" ref="orgInfo">
-              <div class="text-h4 text-weight-bolder">Subscribe Now</div>
-              <div class="q-mt-md"></div>
-              <label class="text-subtitle1 text-weight-bolder"
-                >First Name</label
-              >
-              <q-input
-                dense
-                name="firstName"
-                v-model="data.user.contact.fname"
-                color="primary"
-                placeholder="Enter your First Name"
-                outlined
-                class="required"
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val && val.length > 0) || 'Please fill your first name'
-                ]"
-              />
-
-              <label class="text-subtitle1 text-weight-bolder">Last Name</label>
-              <q-input
-                v-model="data.user.contact.lname"
-                name="lastName"
-                dense
-                color="primary"
-                placeholder="Enter your Last Name"
-                outlined
-                class="required"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill your last name'
-                ]"
-              />
-
-              <label class="text-subtitle1 text-weight-bolder"
-                >Email Address</label
-              >
-              <q-input
-                v-model="data.user.email"
-                name="email"
-                dense
-                color="primary"
-                placeholder="Enter Email Address"
-                outlined
-                class="required"
-                lazy-rules
-                :rules="[
-                  val => validateEmail(val) || 'Please fill your email',
-                  val => checkEmailExist(val) || 'This email is already in use'
-                ]"
-              />
-              <span class="text-red text-caption">{{ errorMSG }}</span>
-
-              <label class="text-subtitle1 text-weight-bolder">Password</label>
-              <q-input
-                color="primary"
-                dense
-                class="required full-width"
-                placeholder="Enter your Password"
-                v-model="data.user.password"
-                outlined
-                :type="isPwd ? 'password' : 'text'"
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill password'
-                ]"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    :name="isPwd ? 'visibility_off' : 'visibility'"
-                    class="cursor-pointer"
-                    @click="isPwd = !isPwd"
-                  />
-                </template>
-              </q-input>
-
-              <label class="text-subtitle1 text-weight-bolder"
-                >Company Name</label
-              >
-              <q-input
-                v-model="data.company.name"
-                name="businessName"
-                dense
-                color="primary"
-                placeholder="Enter your Company Name"
-                outlined
-                class="required"
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val && val.length > 0) || 'Please fill your company name'
-                ]"
-              />
-              <div class="q-mt-sm row justify-start">
-                <q-checkbox v-model="terms" lazy />
-                <label class="q-mt-sm">I agree to Claimguru's</label>
-                <a class="q-mt-sm q-ml-sm text-deep-orange" href=""
-                  >Terms of use</a
-                >
-                <label class="q-mt-sm q-ml-sm q-mr-sm"> and</label>
-                <a class="q-mt-sm text-deep-orange" href="">Privacy Policy</a>
-              </div>
-
-              <div class="row justify-center q-mt-lg">
-                <q-btn
-                  label="Continue"
-                  no-caps
-                  type="submit"
-                  color="deep-orange"
-                  size="22px"
-                  class="full-width"
-                  :disable="!terms"
-                />
-              </div>
-              <div class="row justify-center q-mt-md">
-                <div class="col-2"></div>
-                <div class="col-8 q-ml-md">
-                  <label class="text-h6 q-ml-xl"
-                    >Already have an account?</label
-                  >
-                  <a href="/login" class="q-ml-sm text-deep-orange text-h6"
-                    >Login</a
-                  >
-                </div>
-                <div class="col-2"></div>
-              </div>
-            </q-form>
+      <div class="row" style="height: calc(100vh - 150px)">
+        <div
+          class="col-md-6 col-sm-12 col-xs-12 q-pt-md"
+          :style="$q.screen.gt.sm ? 'background: #f9e7d8' : 'background:#fff'"
+        >
+          <div class="row text-h5 text-bold q-px-xl">
+            <div class="col-md-10 offset-md-1" style="font-size:28px;">
+              The First and Only Catastrophe-Proof Claim Management System For
+              Public Adjusters
+            </div>
           </div>
-          <div class="col-2"></div>
-        </div>
-      </div>
-      <div
-        v-else
-        class="col-md-6 col-sm-12 col-xs-12 bg-white q-pt-lg content-center bg-white"
-      >
-        <div class="row">
-          <div class="col-2"></div>
-          <div class="col-8">
-            <q-linear-progress size="10px" :value="progress1" />
-            <div class="q-mt-xs">Step 2. Payment</div>
-            <q-form class="q-mt-xl" @submit="onPaymentClick()" ref="orgInfo">
-              <div>{{ displayErrors }}</div>
-              <div class="text-h4 text-weight-bolder">Pay with card for</div>
-              <div
-                v-if="isPackageSelected.id1 === true"
-                class="text-h4 text-weight-bolder"
-              >
-                Firm Package
-              </div>
-              <div v-else class="text-h4 text-weight-bolder">
-                Individual Package
-              </div>
-              <div class="q-mt-lg"></div>
-              <label class="text-subtitle1 text-weight-bold">Card Number</label>
-              <div
-                id="card-number"
-                class="cardInfo f-w-500 text-body1 border-top-left-right q-mt-xs q-mb-lg"
-              >
-                <!-- a Stripe Element will be inserted. -->
-              </div>
-
-              <label class="text-subtitle1 text-weight-bold"
-                >Name on Card</label
-              >
-              <q-input
-                borderless
-                class="bg-white cardInfo text-body1 q-mt-xs q-mb-lg"
-                :class="
-                  cardName == '' ? 'input-placeholder' : 'input-text-style'
+          <div class="row q-mt-lg q-px-xl">
+            <div class="text-h6 text-bold col-md-10 offset-md-1">
+              <span
+                v-if="
+                  isPackageSelected.id1 === '' && isPackageSelected.id2 === ''
                 "
-                ref="cardName"
-                name="name"
-                v-model="cardName"
-                maxlength="50"
-                id="card-name"
-                autocomplete="cc-name"
-                placeholder="Enter Name on Card"
-              />
-
-              <div class="row">
-                <div class="col q-pr-md">
-                  <label class="text-subtitle1 text-weight-bold"
-                    >Expiry Date</label
-                  >
-                  <div
-                    id="card-expiry"
-                    class="cardInfo text-body1 border-bottom-right q-mt-xs"
-                  >
-                    <!-- a Stripe Element will be inserted. -->
-                  </div>
-                </div>
-                <div class="col q-pl-xs">
-                  <label class="text-subtitle1 text-weight-bold">CVC</label>
-                  <div
-                    id="card-cvc"
-                    class="cardInfo text-body1 border-bottom-right q-mt-xs"
-                  >
-                    <!-- a Stripe Element will be inserted. -->
-                  </div>
-                </div>
-              </div>
-
-              <div class="q-mt-md"></div>
-              <div class="row">
-                <label class="column text-h5 text-weight-bolder"
-                  >30 days free</label
-                >
-              </div>
-              <div class="row">
-                <div class="col-6">
-                  <label class="text-h6 text-weight-bold">After 30 days</label>
-                </div>
-                <div class="col-6">
-                  <div
-                    v-if="isPackageSelected.id1 === true"
-                    class="text-subtitle1 text-grey-white"
-                  >
-                    $200/month *
-                  </div>
-                  <div v-else class="text-subtitle1 text-grey-white">
-                    $99/month *
-                  </div>
-                </div>
-              </div>
-              <div class="q-mt-md"></div>
-              <div class="row justify-center">
-                <q-btn
-                  label="Subscribe"
-                  no-caps
-                  type="submit"
-                  color="deep-orange"
-                  size="22px"
-                  class="full-width"
-                />
-              </div>
-              <div class="q-mt-md"></div>
-              <div>
-                By clicking the ‘Subscribe’ button, you allow ClaimGuru to
-                charge your card for this payment, and you agree to ClaimGuru’s
-                <a href="" class="text-deep-orange">Terms of Use</a> and
-                <a href="" class="text-deep-orange">Privacy Policy.</a>
-              </div>
-            </q-form>
+                >Pick Your Package</span
+              >
+              <span v-if="isPackageSelected.id1 === true"
+                >Firm Package Selected</span
+              >
+              <span v-if="isPackageSelected.id2 === true"
+                >Individual Package Selected</span
+              >
+            </div>
           </div>
-          <div class="col-2"></div>
+          <!-- cards section -->
+          <div class="row justify-around q-mt-md q-px-xl">
+            <div class="">
+              <div
+                class="card-border col-md-4 col-sm-12 col-xs-12 bg-white"
+                @click="onPackageSelection('Firm')"
+                :class="{ 'card-highlighter': isPackageSelected.id1 }"
+              >
+                <div
+                  v-if="isPackageSelected.id1"
+                  class="text-center q-py-sm text-bold text-subtitle1"
+                  style="border-bottom: 1px solid #ef5926 !important; color:#ef5926 ; border-radius:10px 10px 0 0;background-color: #F9DFC8; "
+                >
+                  Selected Package
+                </div>
+                <div class=" q-px-lg">
+                  <div class="row justify-center q-py-md">
+                    <div
+                      style="border-radius:50%;box-shadow: 0 0 0 7px #FCF3EC;background-color: #F9DFC8;"
+                    >
+                      <q-btn
+                        round
+                        dense
+                        flat
+                        style="color:#EF5926"
+                        icon="business"
+                        size="lg"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="text-h6 text-bold text-center">
+                    Firm Package
+                  </div>
+                  <div class="text-h6 text-bold text-center">
+                    $250 <span class="text-grey text-subtitle2">/month</span>
+                  </div>
+                  <div
+                    class="text-h6 text-bold q-my-sm"
+                    style="font-family:Poppins; color: #ef5926 ;"
+                  >
+                    Start your 30 day free trial
+                  </div>
+                  <div
+                    class=" row text-subtitle1 col-md-4 col-xs-12 col-sm-12 "
+                    v-for="firmPackage in firmPackages"
+                    :key="firmPackage"
+                  >
+                    <q-img
+                      class="q-mt-xs"
+                      :src="getImage('check.svg')"
+                      width="8%"
+                      height="8%"
+                    />
+                    <span class=" q-ml-sm"> {{ firmPackage }} </span>
+                  </div>
+
+                  <div class="q-pt-md text-blue-grey  text-subtitle1">
+                    Additional licenses at $50/month
+                  </div>
+
+                  <div class="q-mt-lg q-mb-lg  text-blue-grey text-caption">
+                    * Vendor roles are limited
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="">
+              <div
+                class="column full-height card-border col-md-4 col-sm-12 col-xs-12 bg-white"
+                @click="onPackageSelection('Individual')"
+                :class="{ 'card-highlighter': isPackageSelected.id2 }"
+              >
+                <div
+                  v-if="isPackageSelected.id2"
+                  class="text-center q-py-sm text-bold text-subtitle1"
+                  style="border-bottom: 1px solid #ef5926 !important; color:#ef5926 ; border-radius:10px 10px 0 0;background-color: #F9DFC8; "
+                >
+                  Selected Package
+                </div>
+                <div class=" q-px-lg">
+                  <div class="row justify-center q-py-md">
+                    <div
+                      style="border-radius:50%;box-shadow: 0 0 0 7px #FCF3EC;background-color: #F9DFC8;"
+                    >
+                      <q-btn
+                        round
+                        dense
+                        flat
+                        style="color:#EF5926"
+                        icon="account_circle"
+                        size="lg"
+                      />
+                    </div>
+                  </div>
+                  <div class="text-h6 text-bold text-center">
+                    Individual Package
+                  </div>
+                  <div class="text-h6 text-bold text-center">
+                    $125 <span class="text-grey text-subtitle2">/month</span>
+                  </div>
+                  <div
+                    class="text-h6 text-bold q-my-sm"
+                    style="font-family:Poppins; color: #ef5926 ;"
+                  >
+                    Start your 30 day free trial
+                  </div>
+                  <div
+                    class=" row text-subtitle1"
+                    v-for="individualPackage in individualPackages"
+                    :key="individualPackage"
+                  >
+                    <q-img
+                      class="q-mt-xs"
+                      :src="getImage('check.svg')"
+                      width="8%"
+                      height="40%"
+                    />
+                    <span class=" q-ml-sm"> {{ individualPackage }} </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row q-pt-md q-mt-md q-px-xl q-mx-xl full-width">
+            <div class="card-border col-md-10 offset-md-1 bg-white">
+              <div class="row q-px-xl q-mt-lg">
+                <div class="col-2 ">
+                  <q-img :src="getImage('Featured icon.svg')" width="50%" />
+                </div>
+                <div class="col-7 text-h6 text-bold text-left q-pt-sm">
+                  Enterprise Subscription
+                </div>
+                <div class=" text-subtitle1 col-3 q-pt-sm text-right">
+                  <a class="text-deep-orange" href="">Contact us</a>
+                </div>
+              </div>
+
+              <div class="row q-px-xl q-my-lg q-ml-sm">
+                <q-img :src="getImage('check.svg')" width="4%" height="4%" />
+                <span class=" q-ml-md text-subtitle1"
+                  >Custom setup for large firms with more than 8 paid roles
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- signup form -->
+        <div
+          v-if="continueClick === false"
+          class="col-md-6 col-sm-12 col-xs-12 q-pt-md q-px-xl bg-white content-center bg-white"
+        >
+          <div class="column full-height q-px-xl">
+            <div class="col q-px-xl q-mx-xl">
+              <q-linear-progress
+                size="10px"
+                :value="progress"
+                style="border-radius:10px;"
+              />
+              <div class="q-mt-sm text-subtitle1 text-bold text-grey">
+                Step 1. Create an account
+              </div>
+
+              <div class="q-mt-xl text-h4 text-weight-bolder">
+                Subscribe Now
+              </div>
+              <q-form class="q-mt-lg" @submit="onContinue()" ref="orgInfo">
+                <label class="text-subtitle1 text-weight-bolder"
+                  >First Name</label
+                >
+                <q-input
+                  name="firstName"
+                  v-model="data.user.contact.fname"
+                  color="primary"
+                  placeholder="Enter your First Name"
+                  outlined
+                  class="required"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill your first name'
+                  ]"
+                />
+
+                <label class="text-subtitle1 text-weight-bolder"
+                  >Last Name</label
+                >
+                <q-input
+                  v-model="data.user.contact.lname"
+                  name="lastName"
+                  color="primary"
+                  placeholder="Enter your Last Name"
+                  outlined
+                  class="required"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill your last name'
+                  ]"
+                />
+
+                <label class="text-subtitle1 text-weight-bolder"
+                  >Email Address</label
+                >
+                <q-input
+                  v-model="data.user.email"
+                  name="email"
+                  color="primary"
+                  placeholder="Enter Email Address"
+                  outlined
+                  class="required"
+                  lazy-rules
+                  :rules="[
+                    val => validateEmail(val) || 'Please fill your email',
+                    val =>
+                      checkEmailExist(val) || 'This email is already in use'
+                  ]"
+                />
+                <span class="text-red text-caption">{{ errorMSG }}</span>
+
+                <label class="text-subtitle1 text-weight-bolder"
+                  >Password</label
+                >
+                <q-input
+                  color="primary"
+                  class="required full-width"
+                  placeholder="Enter your Password"
+                  v-model="data.user.password"
+                  outlined
+                  :type="isPwd ? 'password' : 'text'"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please fill password'
+                  ]"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      :name="isPwd ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwd = !isPwd"
+                    />
+                  </template>
+                </q-input>
+
+                <label class="text-subtitle1 text-weight-bolder"
+                  >Company Name</label
+                >
+                <q-input
+                  v-model="data.company.name"
+                  name="businessName"
+                  color="primary"
+                  placeholder="Enter your Company Name"
+                  outlined
+                  class="required"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill your company name'
+                  ]"
+                />
+                <div class="q-mt-sm row justify-start">
+                  <q-checkbox v-model="terms" lazy />
+                  <label class="q-mt-sm">I agree to Claimguru's</label>
+                  <a class="q-mt-sm q-ml-sm text-deep-orange" href=""
+                    >Terms of use</a
+                  >
+                  <label class="q-mt-sm q-ml-sm q-mr-sm"> and</label>
+                  <a class="q-mt-sm text-deep-orange" href="">Privacy Policy</a>
+                </div>
+
+                <div class="row justify-center q-mt-lg">
+                  <q-btn
+                    label="Continue"
+                    no-caps
+                    type="submit"
+                    color="deep-orange"
+                    size="22px"
+                    class="full-width"
+                    :disable="!terms"
+                  />
+                </div>
+                <div class="row justify-center q-mt-md">
+                  <div class="col-2"></div>
+                  <div class="col-8 q-ml-md">
+                    <label class="text-h6 ">Already have an account?</label>
+                    <a href="/login" class="text-deep-orange text-h6">Login</a>
+                  </div>
+                  <div class="col-2"></div>
+                </div>
+              </q-form>
+            </div>
+            <div class="col-2"></div>
+          </div>
+        </div>
+        <div
+          v-else
+          class="col-md-6 col-sm-12 col-xs-12 bg-white q-pt-lg content-center bg-white"
+        >
+          <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+              <q-linear-progress size="10px" :value="progress1" />
+              <div class="q-mt-sm text-subtitle1 text-bold text-grey">
+                Step 2. Payment
+              </div>
+              <q-form class="q-mt-xl" @submit="onPaymentClick()" ref="orgInfo">
+                <div>{{ displayErrors }}</div>
+                <div class="text-h4 text-weight-bolder">Pay with card for</div>
+                <div
+                  v-if="isPackageSelected.id1 === true"
+                  class="text-h4 text-weight-bolder"
+                >
+                  Firm Package
+                </div>
+                <div v-else class="text-h4 text-weight-bolder">
+                  Individual Package
+                </div>
+                <div class="q-mt-lg"></div>
+                <label class="text-subtitle1 text-weight-bold"
+                  >Card Number</label
+                >
+                <div
+                  id="card-number"
+                  class="cardInfo f-w-500 text-body1 border-top-left-right q-mt-xs q-mb-lg"
+                >
+                  <!-- a Stripe Element will be inserted. -->
+                </div>
+
+                <label class="text-subtitle1 text-weight-bold"
+                  >Name on Card</label
+                >
+                <q-input
+                  borderless
+                  class="bg-white cardInfo text-body1 q-mt-xs q-mb-lg"
+                  :class="
+                    cardName == '' ? 'input-placeholder' : 'input-text-style'
+                  "
+                  ref="cardName"
+                  name="name"
+                  v-model="cardName"
+                  maxlength="50"
+                  id="card-name"
+                  autocomplete="cc-name"
+                  placeholder="Enter Name on Card"
+                />
+
+                <div class="row">
+                  <div class="col q-pr-md">
+                    <label class="text-subtitle1 text-weight-bold"
+                      >Expiry Date</label
+                    >
+                    <div
+                      id="card-expiry"
+                      class="cardInfo text-body1 border-bottom-right q-mt-xs"
+                    >
+                      <!-- a Stripe Element will be inserted. -->
+                    </div>
+                  </div>
+                  <div class="col q-pl-xs">
+                    <label class="text-subtitle1 text-weight-bold">CVC</label>
+                    <div
+                      id="card-cvc"
+                      class="cardInfo text-body1 border-bottom-right q-mt-xs"
+                    >
+                      <!-- a Stripe Element will be inserted. -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="q-mt-xl"></div>
+                <div class="row">
+                  <label class="column text-h5 text-weight-bolder"
+                    >30 days free</label
+                  >
+                </div>
+                <div class="row q-mt-sm">
+                  <div class="col-6">
+                    <label class="text-h6 text-weight-bold"
+                      >After 30 days</label
+                    >
+                  </div>
+                  <div class="col-6 q-mt-xs">
+                    <div
+                      v-if="isPackageSelected.id1 === true"
+                      class="text-subtitle1 text-grey-white"
+                    >
+                      $250/month *
+                    </div>
+                    <div v-else class="text-subtitle1 text-grey-white">
+                      $125/month *
+                    </div>
+                  </div>
+                </div>
+                <div class="q-mt-md"></div>
+                <div class="row justify-center">
+                  <q-btn
+                    label="Subscribe"
+                    no-caps
+                    type="submit"
+                    color="deep-orange"
+                    size="22px"
+                    class="full-width"
+                  />
+                </div>
+                <div class="q-mt-md"></div>
+                <div>
+                  By clicking the ‘Subscribe’ button, you allow ClaimGuru to
+                  charge your card for this payment, and you agree to
+                  ClaimGuru’s
+                  <a href="" class="text-deep-orange">Terms of Use</a> and
+                  <a href="" class="text-deep-orange">Privacy Policy.</a>
+                </div>
+              </q-form>
+              <div class="row justify-center q-my-md">
+                <q-img :src="getImage('secure.svg')" width="20%" />
+              </div>
+            </div>
+            <div class="col-2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div
+          class="col-6 q-px-xl q-pt-md q-pb-md"
+          :style="$q.screen.gt.sm ? 'background: #f9e7d8' : 'background:#fff'"
+        >
+          <footer class="text-start q-mb-md">
+            <span> © ClaimGuru 2022</span>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <div class="q-px-lg" v-if="isMobile()">
+      <div class="row">
+        <div
+          class="col-6  q-pt-md q-pb-md"
+          :style="$q.screen.gt.sm ? 'background: #f9e7d8' : 'background:#fff'"
+        >
+          <div>
+            <q-img
+              class="web-menu-claim-guru-logo"
+              :src="getImage('Logo.svg')"
+              width="80%"
+            />
+          </div>
+        </div>
+      </div>
+      <div v-if="continueClick === false" class="row">
+        <q-linear-progress
+          size="5px"
+          :value="progress"
+          style="border-radius:10px;"
+        />
+        <div class="q-mt-sm text-subtitle1 text-bold text-grey">
+          Step 1. Create an account
+        </div>
+      </div>
+      <div v-else class="row">
+        <q-linear-progress
+          size="5px"
+          :value="progress1"
+          style="border-radius:10px;"
+        />
+        <div class="q-mt-sm text-subtitle1 text-bold text-grey">
+          Step 2. Payment
+        </div>
+      </div>
+      <div class="row" style="">
+        <div
+          class="col-md-6 col-sm-12 col-xs-12 q-pt-md"
+          :style="$q.screen.gt.sm ? 'background: #f9e7d8' : 'background:#fff'"
+        >
+          <div class="row text-h6 text-bold text-center q-mt-md">
+            <div class="col-md-10 offset-md-1" style="font-size:28px;">
+              The First and Only Catastrophe-Proof Claim Management System For
+              Public Adjusters
+            </div>
+          </div>
+          <div class="row q-mt-lg ">
+            <div class="text-h6 text-bold col-md-10 offset-md-1">
+              <span
+                v-if="
+                  isPackageSelected.id1 === '' && isPackageSelected.id2 === ''
+                "
+                >Pick Your Package</span
+              >
+              <span v-if="isPackageSelected.id1 === true"
+                >Firm Package Selected</span
+              >
+              <span v-if="isPackageSelected.id2 === true"
+                >Individual Package Selected</span
+              >
+            </div>
+          </div>
+          <!-- cards section -->
+          <div class="q-mt-md">
+            <div class="">
+              <div
+                class="card-border col-md-4 col-sm-12 col-xs-12 bg-white"
+                @click="onPackageSelection('Firm')"
+                :class="{ 'card-highlighter': isPackageSelected.id1 }"
+              >
+                <div
+                  v-if="isPackageSelected.id1"
+                  class="text-center q-py-sm text-bold text-subtitle1"
+                  style="border-bottom: 1px solid #ef5926 !important; color:#ef5926 ; border-radius:10px 10px 0 0;background-color: #F9DFC8; "
+                >
+                  Selected Package
+                </div>
+                <div class=" q-px-lg">
+                  <div class="row justify-center q-py-md">
+                    <div class=" row justify-center">
+                      <q-icon class="" size="5em">
+                        <q-img :src="getImage('Featured icon (1).svg')" />
+                      </q-icon>
+                    </div>
+                  </div>
+
+                  <div class="text-h6 text-bold text-center">
+                    Firm Package
+                  </div>
+                  <div class="text-h6 text-bold text-center">
+                    $250 <span class="text-grey text-subtitle2">/month</span>
+                  </div>
+                  <div
+                    class="text-h6 text-bold q-my-sm text-center"
+                    style="font-family:Poppins; color: #ef5926 ;"
+                  >
+                    Start your 30 day free trial
+                  </div>
+                  <div class="column items-center">
+                    <div
+                      class=" q-my-sm cardItems"
+                      v-for="firmPackage in firmPackages"
+                      :key="firmPackage"
+                    >
+                      <div class="row justify-start ">
+                        <q-icon size="sm">
+                          <q-img :src="getImage('check.svg')" />
+                        </q-icon>
+                        <span class="text-center q-ml-sm ">
+                          {{ firmPackage }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div></div>
+                  <div
+                    class="q-pt-md q-pl-md text-blue-grey  text-subtitle1 text-center"
+                  >
+                    Additional licenses at $50/month
+                  </div>
+
+                  <div
+                    class="q-mt-lg q-mb-lg q-ml-lg  text-blue-grey text-caption text-start"
+                  >
+                    * Vendor roles are limited
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="q-mt-md ">
+              <div
+                class=" full-height card-border  bg-white"
+                @click="onPackageSelection('Individual')"
+                :class="{ 'card-highlighter': isPackageSelected.id2 }"
+              >
+                <div
+                  v-if="isPackageSelected.id2"
+                  class="text-center q-py-sm text-bold text-subtitle1 "
+                  style="border-bottom: 1px solid #ef5926 !important; color:#ef5926 ; border-radius:10px 10px 0 0;background-color: #F9DFC8; "
+                >
+                  Selected Package
+                </div>
+                <div class=" q-px-lg q-pb-lg">
+                  <div class="row justify-center q-py-md">
+                    <div class=" row justify-center">
+                      <q-icon class="" size="5em">
+                        <q-img :src="getImage('Featured icon (2).svg')" />
+                      </q-icon>
+                    </div>
+                  </div>
+                  <div class="text-h6 text-bold text-center">
+                    Individual Package
+                  </div>
+                  <div class="text-h6 text-bold text-center">
+                    $125 <span class="text-grey text-subtitle2">/month</span>
+                  </div>
+                  <div
+                    class="text-h6 text-bold q-my-sm text-center"
+                    style="font-family:Poppins; color: #ef5926 ;"
+                  >
+                    Start your 30 day free trial
+                  </div>
+                  <div
+                    class=" q-px-xl q-my-md text-center"
+                    v-for="individualPackage in individualPackages"
+                    :key="individualPackage"
+                  >
+                    <q-icon class="" size="sm">
+                      <q-img class="" :src="getImage('check.svg')" />
+                    </q-icon>
+                    <span class=" q-ml-sm "> {{ individualPackage }} </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="q-pt-md">
+            <div class="card-border  bg-white">
+              <div class="q-px-md q-mt-lg">
+                <div class=" row justify-center">
+                  <!-- <q-img :src="getImage('Featured icon.svg')" width="15%" /> -->
+                  <q-icon class="" size="5em">
+                    <q-img :src="getImage('Featured icon.svg')" />
+                  </q-icon>
+                </div>
+
+                <div class="text-h6 text-bold text-center q-pt-sm">
+                  Enterprise Subscription
+                </div>
+                <div class=" text-h6 col-3 q-pt-sm text-center">
+                  <a class="text-deep-orange" href="">Contact us</a>
+                </div>
+              </div>
+
+              <div class=" q-px-xl q-my-md text-center">
+                <q-icon class="col self-center" size="sm">
+                  <q-img class="col-3" :src="getImage('check.svg')" />
+                </q-icon>
+
+                <span class="col q-ml-md text-subtitle1"
+                  >Custom setup for large firms with more than 8 paid roles
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- signup form -->
+        <div
+          v-if="continueClick === false"
+          class="col-md-6 col-sm-12 col-xs-12 q-pt-md  bg-white  bg-white"
+        >
+          <div class="column full-height">
+            <div class="col ">
+              <div class="q-mt-lg text-h4 text-weight-bolder">
+                Subscribe Now
+              </div>
+              <q-form class="q-my-lg" @submit="onContinue()" ref="orgInfo">
+                <label class="text-subtitle1 text-weight-bolder"
+                  >First Name</label
+                >
+                <q-input
+                  name="firstName"
+                  v-model="data.user.contact.fname"
+                  color="primary"
+                  placeholder="Enter your First Name"
+                  outlined
+                  class="required"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill your first name'
+                  ]"
+                />
+
+                <label class="text-subtitle1 text-weight-bolder"
+                  >Last Name</label
+                >
+                <q-input
+                  v-model="data.user.contact.lname"
+                  name="lastName"
+                  color="primary"
+                  placeholder="Enter your Last Name"
+                  outlined
+                  class="required"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill your last name'
+                  ]"
+                />
+
+                <label class="text-subtitle1 text-weight-bolder"
+                  >Email Address</label
+                >
+                <q-input
+                  v-model="data.user.email"
+                  name="email"
+                  color="primary"
+                  placeholder="Enter Email Address"
+                  outlined
+                  class="required"
+                  lazy-rules
+                  :rules="[
+                    val => validateEmail(val) || 'Please fill your email',
+                    val =>
+                      checkEmailExist(val) || 'This email is already in use'
+                  ]"
+                />
+                <span class="text-red text-caption ">{{ errorMSG }}</span>
+                <br v-if="errorMSG" />
+
+                <label class="text-subtitle1 text-weight-bolder q-mt-xs"
+                  >Password</label
+                >
+                <q-input
+                  color="primary"
+                  class="required full-width"
+                  placeholder="Enter your Password"
+                  v-model="data.user.password"
+                  outlined
+                  :type="isPwd ? 'password' : 'text'"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please fill password'
+                  ]"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      :name="isPwd ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwd = !isPwd"
+                    />
+                  </template>
+                </q-input>
+
+                <label class="text-subtitle1 text-weight-bolder"
+                  >Company Name</label
+                >
+                <q-input
+                  v-model="data.company.name"
+                  name="businessName"
+                  color="primary"
+                  placeholder="Enter your Company Name"
+                  outlined
+                  class="required"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill your company name'
+                  ]"
+                />
+                <div class="q-mt-sm row justify-start">
+                  <q-checkbox v-model="terms" lazy />
+                  <label class="q-mt-sm">I agree to Claimguru's</label>
+                  <a class="q-mt-sm q-ml-sm text-deep-orange" href=""
+                    >Terms of use</a
+                  >
+                  <label class="q-mt-sm q-ml-sm q-mr-sm"> and</label>
+                  <a class="q-mt-sm text-deep-orange" href="">Privacy Policy</a>
+                </div>
+
+                <div class="row justify-center q-mt-lg">
+                  <q-btn
+                    label="Continue"
+                    no-caps
+                    type="submit"
+                    color="deep-orange"
+                    size="md"
+                    class="full-width"
+                    :disable="!terms"
+                  />
+                </div>
+                <div class="row justify-center q-mt-md">
+                  <div class="text-subtitle1 text-center q-mb-xl">
+                    Already have an account?
+                    <a href="/login" class="text-deep-orange"> Login</a>
+                  </div>
+                </div>
+              </q-form>
+            </div>
+            <div class="col-2"></div>
+          </div>
+        </div>
+        <div
+          v-else
+          class="col-md-6 col-sm-12 col-xs-12 bg-white q-pt-lg content-center bg-white"
+        >
+          <div class="row">
+            <div>
+              <q-form class="q-mt-lg" @submit="onPaymentClick()" ref="orgInfo">
+                <div>{{ displayErrors }}</div>
+                <div class="text-h4 text-weight-bolder">Pay with card for</div>
+                <div
+                  v-if="isPackageSelected.id1 === true"
+                  class="text-h4 text-weight-bolder"
+                >
+                  Firm Package
+                </div>
+                <div v-else class="text-h4 text-weight-bolder">
+                  Individual Package
+                </div>
+                <div class="q-mt-lg"></div>
+                <label class="text-subtitle1 text-weight-bold"
+                  >Card Number</label
+                >
+                <div
+                  id="card-number"
+                  class="cardInfo f-w-500 text-body1 border-top-left-right q-mt-xs q-mb-lg"
+                >
+                  <!-- a Stripe Element will be inserted. -->
+                </div>
+
+                <label class="text-subtitle1 text-weight-bold"
+                  >Name on Card</label
+                >
+                <q-input
+                  borderless
+                  class="bg-white cardInfo text-body1 q-mt-xs q-mb-lg"
+                  :class="
+                    cardName == '' ? 'input-placeholder' : 'input-text-style'
+                  "
+                  ref="cardName"
+                  name="name"
+                  v-model="cardName"
+                  maxlength="50"
+                  id="card-name"
+                  autocomplete="cc-name"
+                  placeholder="Enter Name on Card"
+                />
+
+                <div class="row">
+                  <div class="col q-pr-md">
+                    <label class="text-subtitle1 text-weight-bold"
+                      >Expiry Date</label
+                    >
+                    <div
+                      id="card-expiry"
+                      class="cardInfo text-body1 border-bottom-right q-mt-xs"
+                    >
+                      <!-- a Stripe Element will be inserted. -->
+                    </div>
+                  </div>
+                  <div class="col q-pl-xs">
+                    <label class="text-subtitle1 text-weight-bold">CVC</label>
+                    <div
+                      id="card-cvc"
+                      class="cardInfo text-body1 border-bottom-right q-mt-xs"
+                    >
+                      <!-- a Stripe Element will be inserted. -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="q-mt-xl"></div>
+                <div class="row">
+                  <label class="column text-h5 text-weight-bolder"
+                    >30 days free</label
+                  >
+                </div>
+                <div class="row q-mt-sm">
+                  <div class="col-6">
+                    <label class="text-h6 text-weight-bold"
+                      >After 30 days</label
+                    >
+                  </div>
+                  <div class="col-6 q-mt-xs text-right">
+                    <div
+                      v-if="isPackageSelected.id1 === true"
+                      class="text-subtitle1 text-grey-white"
+                    >
+                      $250/month *
+                    </div>
+                    <div v-else class="text-subtitle1 text-grey-white">
+                      $125/month *
+                    </div>
+                  </div>
+                </div>
+                <div class="q-mt-md"></div>
+                <div class="row justify-center">
+                  <q-btn
+                    label="Subscribe"
+                    no-caps
+                    type="submit"
+                    color="deep-orange"
+                    size="md"
+                    class="full-width"
+                  />
+                </div>
+                <div class="q-mt-md"></div>
+                <div>
+                  By clicking the ‘Subscribe’ button, you allow ClaimGuru to
+                  charge your card for this payment, and you agree to
+                  ClaimGuru’s
+                  <a href="" class="text-deep-orange">Terms of Use</a> and
+                  <a href="" class="text-deep-orange">Privacy Policy.</a>
+                </div>
+              </q-form>
+              <div class="row justify-center q-my-lg">
+                <q-img :src="getImage('secure.svg')" width="40%" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center q-my-md">
+        <q-separator class="q-mt-md q-mb-md" />
+        <span> © ClaimGuru 2022</span>
       </div>
     </div>
   </q-page>
@@ -444,7 +950,7 @@ const stripe = Stripe(`${process.env.STRIPE_API_KEY}`);
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { constants } from '@utils/constant';
 import { validateEmail } from '@utils/validation';
-
+import { isMobile } from '@utils/common';
 import { event } from 'quasar';
 
 export default {
@@ -484,7 +990,7 @@ export default {
       progress: 0.5,
       progress1: 1,
       terms: false,
-      continueClick: false,
+      continueClick: true,
       cardName: '',
       cardNumber: '',
       cardExpiry: '',
@@ -502,6 +1008,7 @@ export default {
       'createUserForOrganization',
       'checkExistingEmail'
     ]),
+    isMobile,
     ...mapMutations(['setLoading', 'setNotifications']),
     getImage(icon) {
       return require('../assets/' + icon);
@@ -550,7 +1057,6 @@ export default {
       }
     },
     onPackageSelection(id) {
-      console.log(id);
       if (id === 'Firm') {
         this.isPackageSelected.id1 = true;
         this.isPackageSelected.id2 = false;
@@ -672,11 +1178,20 @@ export default {
   }
 }
 .card-highlighter {
-  border: 2px solid #ef5926;
+  border-radius: 10px;
+  border: 1px solid #ef5926 !important;
 }
-.custom-font {
-  font-family: Poppins;
+.cardItems {
+  width: 30%;
+  @media only screen and (max-width: $breakpoint-xs-max) {
+    width: 60%;
+  }
 }
+.card-border {
+  border-radius: 10px;
+  border: 1px solid #b9bcc6;
+}
+
 #card-errors {
   color: red;
   margin-top: 10px;
@@ -704,7 +1219,7 @@ export default {
     padding: 12.5px 14px;
     border: 1px solid;
     border-radius: 8px;
-    height: 44px;
+    height: 50px;
     .q-field__native {
       font-weight: 500 !important;
       font-size: 16px !important;
