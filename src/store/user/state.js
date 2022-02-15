@@ -3,6 +3,7 @@ export default function () {
     photoIdKey: [],
     user: {
       name: ''
-    }
+    },
+    checkConnection: false
   };
 }
