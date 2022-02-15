@@ -973,7 +973,8 @@ export default {
             lname: ''
           }
         },
-        stripeToken: ''
+        stripeToken: '',
+        isTermsAccepted: false
       },
       firmPackages: [
         '3 Claims Manager',
@@ -1033,6 +1034,7 @@ export default {
         });
       } else {
         this.continueClick = true;
+        this.data.isTermsAccepted = true;
         let interval = setTimeout(() => {
           this.setPaymentPage();
           clearTimeout(interval);
