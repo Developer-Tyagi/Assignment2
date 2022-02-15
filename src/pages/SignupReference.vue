@@ -15,7 +15,7 @@
           </div>
         </div>
       </div>
-      <div class="row" style="height: calc(100vh - 150px)">
+      <div class="row">
         <div
           class="col-md-6 col-sm-12 col-xs-12 q-pt-md"
           :style="$q.screen.gt.sm ? 'background: #f9e7d8' : 'background:#fff'"
@@ -423,7 +423,7 @@
                       >After 30 days</label
                     >
                   </div>
-                  <div class="col-6 q-mt-xs">
+                  <div class="col-6 q-mt-xs text-right">
                     <div
                       v-if="isPackageSelected.id1 === true"
                       class="text-subtitle1 text-grey-white"
@@ -938,6 +938,7 @@
           </div>
         </div>
       </div>
+
       <div class="text-center q-my-md">
         <q-separator class="q-mt-md q-mb-md" />
         <span> © ClaimGuru 2022</span>
@@ -962,13 +963,7 @@ export default {
         type: constants.ORGANIZATION,
         company: {
           name: '',
-          plan: {
-            value: 'Firm Package',
-            machineValue: 'firm_package',
-            stripePriceID: 'price_1KRblCEK8DUf1aFSJIkhcVoG',
-            stripeProductID: 'prod_L7rU5fIcFUNOPr',
-            trialPeriodDays: 5
-          }
+          plan: {}
         },
         user: {
           email: '',
@@ -978,7 +973,8 @@ export default {
             lname: ''
           }
         },
-        stripeToken: ''
+        stripeToken: '',
+        isTermsAccepted: false
       },
       firmPackages: [
         '3 Claims Manager',
@@ -990,7 +986,7 @@ export default {
       progress: 0.5,
       progress1: 1,
       terms: false,
-      continueClick: true,
+      continueClick: false,
       cardName: '',
       cardNumber: '',
       cardExpiry: '',
@@ -1024,17 +1020,6 @@ export default {
       }
       return res;
     },
-
-    // async onSubmit() {
-    //   this.user.contact.email = this.user.email;
-    //   if (this.user.heardCGFrom.length < 1) {
-    //     this.user.heardCGFrom[0] = 'not-specified';
-    //   }
-    //   const res = await this.createUserForOrganization(this.user);
-    //   if (res) {
-    //     this.$router.push('/admin');
-    //   }
-    // },
     validateEmail,
     async onContinue() {
       if (
@@ -1048,8 +1033,8 @@ export default {
           position: 'center'
         });
       } else {
-        //const res = await this.createUserForOrganization(this.data);
         this.continueClick = true;
+        this.data.isTermsAccepted = true;
         let interval = setTimeout(() => {
           this.setPaymentPage();
           clearTimeout(interval);
@@ -1060,9 +1045,23 @@ export default {
       if (id === 'Firm') {
         this.isPackageSelected.id1 = true;
         this.isPackageSelected.id2 = false;
+        this.data.company.plan = {
+          value: 'Firm Package',
+          machineValue: 'firm_package',
+          stripePriceID: 'price_1KRbkoEK8DUf1aFSK6zeWcfk',
+          stripeProductID: 'prod_L7rTDXkekxbZsk',
+          trialPeriodDays: 30
+        };
       } else {
         this.isPackageSelected.id1 = false;
         this.isPackageSelected.id2 = true;
+        this.data.company.plan = {
+          value: 'Individual Package',
+          machineValue: 'individual_package',
+          stripePriceID: 'price_1KRblCEK8DUf1aFSJIkhcVoG',
+          stripeProductID: 'prod_L7rU5fIcFUNOPr',
+          trialPeriodDays: 30
+        };
       }
     },
     setPaymentPage() {
