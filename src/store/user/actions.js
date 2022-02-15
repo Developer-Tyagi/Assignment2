@@ -62,11 +62,10 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
     );
     var userdata = data;
     if (data) {
-      const firebaseRes =
-        await firebaseAuthorization.signInWithEmailAndPassword(
-          userdata.attributes.email,
-          userdata.attributes.password
-        );
+      const firebaseRes = await firebaseAuthorization.signInWithEmailAndPassword(
+        payload.user.email,
+        payload.user.password
+      );
       if (firebaseRes && firebaseRes.user) {
         const token = await firebaseRes.user.getIdToken();
         if (token) {
@@ -629,21 +628,6 @@ export async function toRedirectGoogleAuth({ commit, dispatch }) {
   try {
     const result = await request.get('users/google-oauth2');
     window.location = result.oauth2URL;
-    dispatch('setLoading', false);
-  } catch (e) {
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response
-    });
-  }
-}
-export async function toRedirectGoogleAuth1({ commit, dispatch }) {
-  dispatch('setLoading', true);
-  try {
-    const result = await request.get('users/google-oauth2');
-    window.location = result.oauth2URL;
-    commit('setCheckGoogleDriveConnect', true);
     dispatch('setLoading', false);
   } catch (e) {
     dispatch('setLoading', false);
