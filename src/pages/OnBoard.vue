@@ -1,8 +1,8 @@
 <template>
   <q-page>
-    <div v-if="!isMobile()" class="row" style="height: calc(100vh - 125px)">
+    <div v-if="!isMobile()" class="row" style="height: calc(100vh - 125px);">
       <div class="col-3 q-px-xl q-pt-lg" style="background-color: #f9e7d8">
-        <div class="text-bold text-h5 q-pt-sm">Account Setup</div>
+        <div class="text-bold text-h5  q-pt-sm">Account Setup</div>
         <div>
           <q-stepper
             class="no-shadow text-bold"
@@ -13,7 +13,7 @@
             inactive-icon="adjust"
             active-icon="circle"
             animated
-            style="background-color: #f9e7d8"
+            style="background-color: #f9e7d8;"
           >
             <q-step
               :name="1"
@@ -39,7 +39,7 @@
           </q-stepper>
         </div>
       </div>
-      <div class="col-9 q-px-xl">
+      <div class="col-9  q-px-xl">
         <div v-if="step == 0">
           <div class="column justify-center q-mt-xl">
             <q-img
@@ -54,7 +54,7 @@
           </div>
           <div
             class="text-center text-subtitle1 q-mx-xl q-px-xl q-mt-lg"
-            style="color: #667085"
+            style="color:#667085; "
           >
             Congratulations, you have successfully created your account! Next,
             we will collect some pertinent information to complete your account,
@@ -63,7 +63,7 @@
           <div class="row justify-center q-mt-lg rounded">
             <q-btn
               class=""
-              style="border-radius: 10px"
+              style="border-radius:10px"
               color="primary"
               name=""
               label="Get Started"
@@ -72,10 +72,10 @@
           </div>
         </div>
         <div v-if="step == 1">
-          <div class="q-pt-lg q-px-xl" style="border-radius: 20px">
+          <div class="q-pt-lg q-px-xl" style="border-radius: 20px;">
             <div class="q-mt-sm justify-between">
               <div class="text-h5 text-weight-bold">Company Details</div>
-              <div class="text-subtitle2 q-mt-sm" style="color: #667085">
+              <div class="text-subtitle2 q-mt-sm" style="color:#667085">
                 Fill out the form below with the information about your company.
               </div>
             </div>
@@ -122,12 +122,6 @@
                         input-class="text-subtitle1"
                         outlined
                         v-model="companyDetails.email"
-                        :rules="[
-                          val => val.length > 0 || 'Please add email address',
-                          val =>
-                            validateEmail(val) ||
-                            'You have entered an invalid email address!'
-                        ]"
                       />
                     </div>
                   </div>
@@ -140,7 +134,7 @@
                     <div v-if="companyDetails">
                       <AutoCompleteAddress
                         :id="'AddVendor1'"
-                        :address="companyDetails.address"
+                        :address="companyDetails"
                         :isDropBoxEnable="false"
                         :isChecksEnable="false"
                         :value="true"
@@ -166,10 +160,10 @@
         </div>
         <div v-if="step == 2" class="column full-height">
           <div class="col-2 q-mt-lg">
-            <div class="text-h5 text-weight-bold">
+            <div class="text-h5 text-weight-bold ">
               Connect With Google Drive
             </div>
-            <div class="q-mt-lg subtitle2 q-pr-xl" style="color: #667085">
+            <div class=" q-mt-lg subtitle2 q-pr-xl " style="color:#667085">
               In order to provide full access to ClaimGuru, we need permission
               to connect to your Google account. We synchronize your ClaimGuru
               files with your Google Drive so you will retain full ownership
@@ -181,35 +175,19 @@
             <div class="q-mt-lg">
               <q-btn
                 @click="onRedirectToGoogleAuth()"
-                :flat="checkConnection === false"
-                :style="checkConnection === true ? 'background: #D1FADF' : ''"
+                flat
                 class="row q-py-sm q-px-xl"
-                style="
-                  width: 410px;
-                  border: 2px solid black;
-                  border-radius: 10px;
-                "
+                style="width:400px; border:2px solid black; border-radius:10px"
               >
-                <q-avatar v-if="checkConnection === false">
+                <q-avatar>
                   <q-img
                     class="col"
                     :src="getImage('logos_google-drive.svg')"
                   />
                 </q-avatar>
-                <span
-                  v-if="checkConnection === false"
-                  class="col q-ml-xs text-subtitle1"
+                <span class="col q-ml-xs text-subtitle1"
                   >Connect Google Drive</span
                 >
-                <span
-                  v-else
-                  class="col text-subtitle1 text-weight-bold"
-                  style="color: #039855"
-                  >Connected to Google Drive</span
-                >
-                <span v-if="checkConnection === true">
-                  <q-btn round flat icon="task_alt" color="teal" size="14px" />
-                </span>
               </q-btn>
             </div>
           </div>
@@ -219,7 +197,7 @@
               <q-btn
                 color="primary"
                 size="1.2em"
-                style="border-radius: 10px"
+                style="border-radius:10px;"
                 outline
                 @click="navigatePreviousStepper"
                 >Back</q-btn
@@ -229,9 +207,8 @@
               <q-btn
                 color="primary"
                 size="1.2em"
-                style="border-radius: 10px"
+                style="border-radius:10px;"
                 @click="NextStepperValue"
-                :disable="!checkConnection"
                 >Next</q-btn
               >
             </div>
@@ -242,8 +219,8 @@
             <div class="text-h5 text-weight-bold q-mt-lg">
               PhotoID Account Details
             </div>
-            <div class="q-mt-lg text-h6 text-grey">
-              <div class="q-mt-lg subtitle2 q-pr-xl" style="color: #667085">
+            <div class=" q-mt-lg text-h6 text-grey">
+              <div class=" q-mt-lg subtitle2 q-pr-xl " style="color:#667085">
                 If you are currently a PhotoID user, please complete your
                 information below. If not, please consider signing up by
                 <a class="text-orange" href="">clicking here</a>. Our
@@ -251,10 +228,10 @@
               </div>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-6 ">
             <div class="q-mt-lg">
               <q-form ref="editPhotoIDForm">
-                <div class="q-mt-lg">
+                <div class=" q-mt-lg ">
                   <div class="col q-pr-xl">
                     <div class="text-subtitle1 text-weight-bold q-mb-sm">
                       Account Email
@@ -289,19 +266,19 @@
               <q-btn
                 color="primary"
                 size="1.2em"
-                style="border-radius: 10px"
+                style="border-radius:10px;"
                 outline
                 @click="navigatePreviousStepper"
                 >Back</q-btn
               >
             </div>
-            <div class="col-3">
+            <div class="col-2">
               <q-btn
                 color="primary"
                 size="1.2em"
-                style="border-radius: 10px"
+                style="border-radius:10px;"
                 @click="NextStepperValue"
-                >Complete Setup</q-btn
+                >Next</q-btn
               >
             </div>
           </div>
@@ -325,7 +302,7 @@
           <div class="row justify-center q-mt-lg rounded">
             <q-btn
               class="q-py-sm"
-              style="border-radius: 10px"
+              style="border-radius:10px"
               no-caps
               color="primary"
               name=""
@@ -339,7 +316,7 @@
     </div>
     <div v-else class="column">
       <div class="col q-pt-lg" style="background-color: #f9e7d8">
-        <div class="text-bold text-h5 q-pl-md">Account Setup</div>
+        <div class="text-bold text-h5 q-pl-md ">Account Setup</div>
         <div class="">
           <q-stepper
             class="no-shadow text-bold text-h3 q-pl-md"
@@ -347,7 +324,7 @@
             vertical
             color="primary"
             animated
-            style="background-color: #f9e7d8"
+            style="background-color: #f9e7d8;"
           >
             <q-step
               :name="1"
@@ -378,7 +355,7 @@
       </div>
       <div class="col q-px-xl">
         <div v-if="step == 0">
-          <div class="justify-center">
+          <div class=" justify-center ">
             <q-img
               class="col self-center q-mt-xl"
               height="20%"
@@ -386,10 +363,10 @@
               :src="getImage('onBoard-1.svg')"
             />
           </div>
-          <div class="text-h5 text-bold text-center q-px-sm q-mt-lg">
+          <div class="text-h5 text-bold text-center  q-px-sm q-mt-lg">
             Setup Your Account
           </div>
-          <div class="text-center text-subtitle1 q-px-sm q-mt-lg">
+          <div class="text-center text-subtitle1  q-px-sm q-mt-lg">
             Congratulations, you have successfully created your account! Next,
             we will collect some pertinent information to complete your account,
             so you can get the most out of our system.
@@ -405,8 +382,8 @@
           </div>
         </div>
         <div v-if="step == 1">
-          <div class="q-mt-md" style="border-radius: 20px">
-            <div class="justify-between">
+          <div class="q-mt-md " style="border-radius: 20px;">
+            <div class=" justify-between">
               <div class="text-h5 text-weight-bold">Company Details</div>
               <div class="text-subtitle2 q-mt-sm">
                 Fill out the form below with the information about your company.
@@ -470,7 +447,7 @@
                     <div v-if="companyDetails">
                       <AutoCompleteAddress
                         :id="'AddVendor1'"
-                        :address="companyDetails.address"
+                        :address="companyDetails"
                         :isDropBoxEnable="false"
                         :isChecksEnable="false"
                         :value="true"
@@ -495,7 +472,9 @@
           </div>
         </div>
         <div v-if="step == 2">
-          <div class="text-h5 text-bold q-mt-lg">Connect With Google Drive</div>
+          <div class="text-h5 text-bold q-mt-lg">
+            Connect With Google Drive
+          </div>
           <div class="q-mt-lg text-subtitle1 text-grey">
             In order to provide full access to ClaimGuru, we need permission to
             connect to your Google account. We synchronize your ClaimGuru files
@@ -505,36 +484,17 @@
           <div>
             <div class="q-mt-lg">
               <q-btn
-                @click="onRedirectToGoogleAuth()"
-                :flat="checkConnection === false"
-                :style="checkConnection === true ? 'background: #D1FADF' : ''"
-                class="row q-py-sm q-px-xl"
-                style="
-                  width: 410px;
-                  border: 2px solid black;
-                  border-radius: 10px;
-                "
+                flat
+                class="row q-py-sm "
+                style="border:2px solid black; border-radius:10px"
               >
-                <q-avatar v-if="checkConnection === false">
+                <q-avatar>
                   <q-img
                     class="col"
                     :src="getImage('logos_google-drive.svg')"
                   />
                 </q-avatar>
-                <span
-                  v-if="checkConnection === false"
-                  class="col q-ml-xs text-subtitle1"
-                  >Connect Google Drive</span
-                >
-                <span
-                  v-else
-                  class="col text-subtitle1 text-weight-bold"
-                  style="color: #039855"
-                  >Connected to Google Drive</span
-                >
-                <span v-if="checkConnection === true">
-                  <q-btn round flat icon="task_alt" color="teal" size="14px" />
-                </span>
+                <span class="col q-ml-xs text-body1">Connect Google Drive</span>
               </q-btn>
             </div>
           </div>
@@ -546,17 +506,14 @@
               >
             </div>
             <div class="col-2">
-              <q-btn
-                color="primary"
-                @click="NextStepperValue"
-                :disable="!checkConnection"
-                >Next</q-btn
-              >
+              <q-btn color="primary" @click="NextStepperValue">Next</q-btn>
             </div>
           </div>
         </div>
         <div v-if="step == 3">
-          <div class="text-h5 text-bold q-mt-lg">PhotoID Account Details</div>
+          <div class="text-h5 text-bold q-mt-lg">
+            PhotoID Account Details
+          </div>
           <div class="row q-mt-lg text-subtitle1 text-grey">
             <div class="text-justify">
               If you are currently a PhotoID user, please complete your
@@ -566,7 +523,7 @@
             </div>
           </div>
           <q-form ref="editPhotoIDForm">
-            <div class="q-mt-lg">
+            <div class=" q-mt-lg ">
               <div class="col q-pr-xl">
                 <div class="text-subtitle1 text-weight-bold q-mb-sm">
                   Account Email
@@ -615,10 +572,10 @@
               :src="getImage('onBoard-2.svg')"
             />
           </div>
-          <div class="text-h5 text-bold text-center q-mt-lg">
+          <div class="text-h5 text-bold text-center  q-mt-lg">
             Account Setup Successful
           </div>
-          <div class="text-center text-subtitle1 q-mt-lg">
+          <div class="text-center text-subtitle1  q-mt-lg">
             We're excited for you to experience how ClaimGuru works for you!
           </div>
           <div class="row justify-center q-mt-lg rounded">
@@ -646,7 +603,6 @@
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { isMobile } from '@utils/common';
-import { validateEmail } from '@utils/validation';
 export default {
   components: { AutoCompleteAddress },
   data() {
@@ -667,7 +623,6 @@ export default {
         email: ''
       },
       editCompanyDetails: true
-      // checkConnection: true
     };
   },
   methods: {
@@ -676,13 +631,12 @@ export default {
       'updateUserForOrganization',
       'toRedirectGoogleAuth'
     ]),
-    validateEmail,
     isMobile,
     getImage(icon) {
       return require('../assets/' + icon);
     },
     onRedirectToGoogleAuth() {
-      this.toRedirectGoogleAuth1();
+      this.toRedirectGoogleAuth();
     },
     getStarted() {
       this.step = 1;
@@ -692,37 +646,31 @@ export default {
     },
     async NextStepperValue() {
       if (
-        this.step === 1 ||
-        (this.step === 3 && this.companyDetails.photoIdEmail)
+        this.step == 1 ||
+        (this.step == 3 && this.companyDetails.photoIdEmail)
       ) {
-        if (this.step === 1) {
-          const success = await this.$refs.companyDetailsForm.validate();
-          if (success) {
-            var payload = {
-              data: {
-                name: this.organization.name,
-                address: {
-                  addressCountry: 'USA',
-                  address1: this.companyDetails.address.address1,
-                  address2: this.companyDetails.address.address2,
-                  addressLocality: this.companyDetails.address.addressLocality,
-                  addressRegion: this.companyDetails.address.addressRegion,
-                  postalCode: this.companyDetails.address.postalCode
-                },
-                phoneNumber: {
-                  type: 'pager',
-                  code: '+1',
-                  number: this.companyDetails.contactNumber
-                },
-                email: this.companyDetails.email
-              }
-            };
-            this.step = this.step + 1;
-            await this.updateUserForOrganization(payload);
-            await this.getOrganization();
-          }
+        if (this.step == 1) {
+          var payload = {
+            data: {
+              name: this.organization.name,
+              address: {
+                addressCountry: 'USA',
+                address1: this.companyDetails.address1,
+                address2: this.companyDetails.address2,
+                addressLocality: this.companyDetails.addressLocality,
+                addressRegion: this.companyDetails.addressRegion,
+                postalCode: this.companyDetails.postalCode
+              },
+              phoneNumber: {
+                type: 'pager',
+                code: '+1',
+                number: this.companyDetails.contactNumber
+              },
+              email: this.companyDetails.email
+            }
+          };
         }
-        if (this.step === 3) {
+        if (this.step == 3) {
           var payload = {
             data: {
               name: this.organization.name,
@@ -730,38 +678,22 @@ export default {
               photoIDAPIKey: this.companyDetails.photoIdAPIKey
             }
           };
-          this.step = this.step + 1;
-          await this.updateUserForOrganization(payload);
-          await this.getOrganization();
         }
-      } else if (this.step === 2) {
-        this.step = this.step + 1;
+
+        await this.updateUserForOrganization(payload);
+        await this.getOrganization();
       }
+      this.step = this.step + 1;
     },
     navigatePreviousStepper() {
       this.step = this.step - 1;
     }
   },
   computed: {
-    ...mapGetters(['organization', 'checkConnection'])
+    ...mapGetters(['organization'])
   },
   async created() {
     await this.getOrganization();
-    if (this.organization) {
-      this.companyDetails.address.address1 = this.organization.address.address1;
-      this.companyDetails.address.address2 = this.organization.address.address2;
-      this.companyDetails.address.addressLocality =
-        this.organization.address.addressLocality;
-      this.companyDetails.address.addressRegion =
-        this.organization.address.addressRegion;
-      this.companyDetails.address.postalCode =
-        this.organization.address.postalCode;
-      this.companyDetails.contactNumber = this.organization.phoneNumber.number;
-      this.companyDetails.email = this.organization.email;
-      this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
-      this.companyDetails.photoIDAPIKey = this.organization.photoIDAPIKey;
-      this.step = 2;
-    }
   }
 };
 </script>
