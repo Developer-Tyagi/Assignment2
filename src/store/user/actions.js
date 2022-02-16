@@ -643,7 +643,7 @@ export async function toRedirectGoogleAuth1({ commit, dispatch }) {
   try {
     const result = await request.get('users/google-oauth2');
     window.location = result.oauth2URL;
-    commit('setCheckGoogleDriveConnect', true);
+    //commit('setCheckGoogleDriveConnect', true);
     dispatch('setLoading', false);
   } catch (e) {
     dispatch('setLoading', false);
