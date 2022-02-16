@@ -1,10 +1,10 @@
 <template>
   <q-page class="full-height poppinsFont">
     <div v-if="!isMobile()">
-      <div class="row ">
+      <div class="row">
         <div
           class="col-6 column relative-position"
-          style=" height: calc(100vh - 1px);background: #f9e7d8"
+          style="height: calc(100vh - 1px); background: #f9e7d8"
         >
           <div
             class="col-1 q-px-xl q-pt-md q-pb-md"
@@ -18,29 +18,29 @@
               />
             </div>
           </div>
-          <div class="col-1 ">
+          <div class="col-1">
             <div
               class="q-mt-md text-h5 text-center q-px-xl fontWeight600"
-              style="background: #f9e7d8; "
+              style="background: #f9e7d8"
             >
               <div
-                class="q-px-xl "
+                class="q-px-xl"
                 v-if="continueClick === false"
-                style="font-size:28px;background: #f9e7d8"
+                style="font-size: 28px; background: #f9e7d8"
               >
                 The First and Only Catastrophe-Proof Claim Management System For
                 Public Adjusters
               </div>
             </div>
           </div>
-          <div class="col-6 ">
+          <div class="col-6">
             <div class="col-auto">
               <div class="q-pt-lg q-px-xl">
                 <div class="text-h6 fontWeight600 q-px-xl">
                   <span
                     v-if="
                       isPackageSelected.id1 === '' &&
-                        isPackageSelected.id2 === ''
+                      isPackageSelected.id2 === ''
                     "
                     >Pick Your Package</span
                   >
@@ -63,12 +63,17 @@
                 >
                   <div
                     v-if="isPackageSelected.id1"
-                    class="text-center  fontWeight500 text-subtitle1"
-                    style="border-bottom: 1px solid #ef5926 !important; color:#ef5926 ; border-radius:10px 10px 0 0;background-color: #F9DFC8; "
+                    class="text-center fontWeight500 text-subtitle1"
+                    style="
+                      border-bottom: 1px solid #ef5926 !important;
+                      color: #ef5926;
+                      border-radius: 10px 10px 0 0;
+                      background-color: #f9dfc8;
+                    "
                   >
                     Selected Package
                   </div>
-                  <div class=" q-px-lg">
+                  <div class="q-px-lg">
                     <div class="row justify-center q-py-md">
                       <q-img
                         :src="getImage('Featured icon (1).svg')"
@@ -86,13 +91,13 @@
                       >
                     </div>
                     <div
-                      class="text-subtitle1 text-center  fontWeight600 q-my-sm"
-                      style="color: #ef5926 ;"
+                      class="text-subtitle1 text-center fontWeight600 q-my-sm"
+                      style="color: #ef5926"
                     >
                       Start your 30 day free trial
                     </div>
                     <div
-                      class="q-ml-lg row text-subtitle1 fontWeight400 col-md-4 col-xs-12 col-sm-12 "
+                      class="q-ml-lg row text-subtitle1 fontWeight400 col-md-4 col-xs-12 col-sm-12"
                       v-for="firmPackage in firmPackages"
                       :key="firmPackage"
                     >
@@ -102,17 +107,17 @@
                         width="8%"
                         height="8%"
                       />
-                      <span class=" q-ml-sm"> {{ firmPackage }} </span>
+                      <span class="q-ml-sm"> {{ firmPackage }} </span>
                     </div>
 
                     <div
-                      class="q-pt-md text-blue-grey fontWeight400  text-subtitle1"
+                      class="q-pt-md text-blue-grey fontWeight400 text-subtitle1"
                     >
                       Additional licenses at $50/month
                     </div>
 
                     <div
-                      class="q-mt-lg q-mb-sm fontWeight400  text-blue-grey text-caption"
+                      class="q-mt-lg q-mb-sm fontWeight400 text-blue-grey text-caption"
                     >
                       * Vendor roles are limited
                     </div>
@@ -120,20 +125,25 @@
                 </div>
               </div>
               <!-- card 2 -->
-              <div style="min-width:320px;">
+              <div style="min-width: 320px">
                 <div
-                  class="card-border col-5 bg-white full-height "
+                  class="card-border col-5 bg-white full-height"
                   @click="onPackageSelection('Individual')"
                   :class="{ 'card-highlighter': isPackageSelected.id2 }"
                 >
                   <div
                     v-if="isPackageSelected.id2"
-                    class="text-center  fontWeight500 text-subtitle1"
-                    style="border-bottom: 1px solid #ef5926 !important; color:#ef5926 ; border-radius:10px 10px 0 0;background-color: #F9DFC8; "
+                    class="text-center fontWeight500 text-subtitle1"
+                    style="
+                      border-bottom: 1px solid #ef5926 !important;
+                      color: #ef5926;
+                      border-radius: 10px 10px 0 0;
+                      background-color: #f9dfc8;
+                    "
                   >
                     Selected Package
                   </div>
-                  <div class=" q-px-xl">
+                  <div class="q-px-xl">
                     <div class="row justify-center q-py-md">
                       <q-img
                         :src="getImage('Featured icon (2).svg')"
@@ -151,13 +161,13 @@
                       >
                     </div>
                     <div
-                      class="text-subtitle1 text-center  fontWeight600 q-my-sm"
-                      style="color: #ef5926 ;"
+                      class="text-subtitle1 text-center fontWeight600 q-my-sm"
+                      style="color: #ef5926"
                     >
                       Start your 30 day free trial
                     </div>
                     <div
-                      class="row text-subtitle1 fontWeight400 col-md-4 col-xs-12 col-sm-12 "
+                      class="row text-subtitle1 fontWeight400 col-md-4 col-xs-12 col-sm-12"
                       v-for="individualPackage in individualPackages"
                       :key="individualPackage"
                     >
@@ -167,7 +177,7 @@
                         width="8%"
                         height="8%"
                       />
-                      <span class=" q-ml-sm"> {{ individualPackage }} </span>
+                      <span class="q-ml-sm"> {{ individualPackage }} </span>
                     </div>
                   </div>
                 </div>
@@ -175,10 +185,10 @@
             </div>
           </div>
           <!-- third card -->
-          <div class="col-2  q-mt-sm q-pt-md q-px-xl q-mx-xl ">
+          <div class="col-2 q-mt-sm q-pt-md q-px-xl q-mx-xl">
             <div class="card-border bg-white q-mx-sm">
-              <div class="col-auto row q-px-xl q-pt-md ">
-                <div class="col-1 ">
+              <div class="col-auto row q-px-xl q-pt-md">
+                <div class="col-1">
                   <q-img :src="getImage('Featured icon.svg')" width="90%" />
                 </div>
                 <div class="col-7 text-h6 fontWeight500 text-left q-pt-sm">
@@ -190,12 +200,12 @@
                   <a class="text-deep-orange" href="">Contact us</a>
                 </div>
               </div>
-              <div class="col-auto row q-px-xl q-my-lg ">
+              <div class="col-auto row q-px-xl q-my-lg">
                 <div class="col-1 text-center">
                   <q-img :src="getImage('check.svg')" width="40%" />
                 </div>
                 <div class="col">
-                  <span class=" q-ml-xs text-subtitle1 fontWeight400"
+                  <span class="q-ml-xs text-subtitle1 fontWeight400"
                     >Custom setup for large firms with more than 8 paid roles
                   </span>
                 </div>
@@ -217,15 +227,13 @@
               <q-linear-progress
                 size="10px"
                 :value="progress"
-                style="border-radius:10px;"
+                style="border-radius: 10px"
               />
               <div class="q-mt-sm text-subtitle1 fontWeight600 text-grey">
                 Step 1. Create an account
               </div>
 
-              <div class="q-mt-lg text-h4 fontWeight600">
-                Subscribe Now
-              </div>
+              <div class="q-mt-lg text-h4 fontWeight600">Subscribe Now</div>
               <q-form class="q-mt-lg" @submit="onContinue()" ref="orgInfo">
                 <label class="text-subtitle1 fontWeight600">First Name</label>
                 <q-input
@@ -370,27 +378,27 @@
               <q-linear-progress
                 size="10px"
                 :value="progress"
-                style="border-radius:10px;"
+                style="border-radius: 10px"
               />
               <div class="q-mt-sm text-subtitle1 fontWeight600 text-grey">
                 Step 2. Payment
               </div>
               <q-form class="q-mt-xl" @submit="onPaymentClick()" ref="orgInfo">
                 <div>{{ displayErrors }}</div>
-                <div class=" fontWeight600" style="font-size:32px">
+                <div class="fontWeight600" style="font-size: 32px">
                   Pay with card for
                 </div>
                 <div
                   v-if="isPackageSelected.id1 === true"
                   class="text-h4 fontWeight600"
-                  style="font-size:32px"
+                  style="font-size: 32px"
                 >
                   Firm Package
                 </div>
                 <div
                   v-else
                   class="text-h4 fontWeight600"
-                  style="font-size:32px"
+                  style="font-size: 32px"
                 >
                   Individual Package
                 </div>
@@ -501,7 +509,7 @@
     <div class="q-px-lg" v-if="isMobile()">
       <div class="row">
         <div
-          class="col-6  q-pt-md q-pb-md"
+          class="col-6 q-pt-md q-pb-md"
           :style="$q.screen.gt.sm ? 'background: #f9e7d8' : 'background:#fff'"
         >
           <div>
@@ -517,7 +525,7 @@
         <q-linear-progress
           size="5px"
           :value="progress"
-          style="border-radius:10px;"
+          style="border-radius: 10px"
         />
         <div class="q-mt-sm text-subtitle1 text-bold text-grey">
           Step 1. Create an account
@@ -527,7 +535,7 @@
         <q-linear-progress
           size="5px"
           :value="progress1"
-          style="border-radius:10px;"
+          style="border-radius: 10px"
         />
         <div class="q-mt-sm text-subtitle1 text-bold text-grey">
           Step 2. Payment
@@ -539,12 +547,12 @@
           :style="$q.screen.gt.sm ? 'background: #f9e7d8' : 'background:#fff'"
         >
           <div class="row text-h6 text-bold text-center q-mt-md">
-            <div class="col-md-10 offset-md-1" style="font-size:28px;">
+            <div class="col-md-10 offset-md-1" style="font-size: 28px">
               The First and Only Catastrophe-Proof Claim Management System For
               Public Adjusters
             </div>
           </div>
-          <div class="row q-mt-lg ">
+          <div class="row q-mt-lg">
             <div class="text-h6 text-bold col-md-10 offset-md-1">
               <span
                 v-if="
@@ -571,42 +579,45 @@
                 <div
                   v-if="isPackageSelected.id1"
                   class="text-center q-py-sm text-bold text-subtitle1"
-                  style="border-bottom: 1px solid #ef5926 !important; color:#ef5926 ; border-radius:10px 10px 0 0;background-color: #F9DFC8; "
+                  style="
+                    border-bottom: 1px solid #ef5926 !important;
+                    color: #ef5926;
+                    border-radius: 10px 10px 0 0;
+                    background-color: #f9dfc8;
+                  "
                 >
                   Selected Package
                 </div>
-                <div class=" q-px-lg">
+                <div class="q-px-lg">
                   <div class="row justify-center q-py-md">
-                    <div class=" row justify-center">
+                    <div class="row justify-center">
                       <q-icon class="" size="5em">
                         <q-img :src="getImage('Featured icon (1).svg')" />
                       </q-icon>
                     </div>
                   </div>
 
-                  <div class="text-h6 text-bold text-center">
-                    Firm Package
-                  </div>
+                  <div class="text-h6 text-bold text-center">Firm Package</div>
                   <div class="text-h6 text-bold text-center">
                     $250 <span class="text-grey text-subtitle2">/month</span>
                   </div>
                   <div
                     class="text-h6 text-bold q-my-sm text-center"
-                    style="font-family:Poppins; color: #ef5926 ;"
+                    style="font-family: Poppins; color: #ef5926"
                   >
                     Start your 30 day free trial
                   </div>
                   <div class="column items-center">
                     <div
-                      class=" q-my-sm cardItems"
+                      class="q-my-sm cardItems"
                       v-for="firmPackage in firmPackages"
                       :key="firmPackage"
                     >
-                      <div class="row justify-start ">
+                      <div class="row justify-start">
                         <q-icon size="sm">
                           <q-img :src="getImage('check.svg')" />
                         </q-icon>
-                        <span class="text-center q-ml-sm ">
+                        <span class="text-center q-ml-sm">
                           {{ firmPackage }}
                         </span>
                       </div>
@@ -614,35 +625,40 @@
                   </div>
                   <div></div>
                   <div
-                    class="q-pt-md q-pl-md text-blue-grey  text-subtitle1 text-center"
+                    class="q-pt-md q-pl-md text-blue-grey text-subtitle1 text-center"
                   >
                     Additional licenses at $50/month
                   </div>
 
                   <div
-                    class="q-mt-lg q-mb-lg q-ml-lg  text-blue-grey text-caption text-start"
+                    class="q-mt-lg q-mb-lg q-ml-lg text-blue-grey text-caption text-start"
                   >
                     * Vendor roles are limited
                   </div>
                 </div>
               </div>
             </div>
-            <div class="q-mt-md ">
+            <div class="q-mt-md">
               <div
-                class=" full-height card-border  bg-white"
+                class="full-height card-border bg-white"
                 @click="onPackageSelection('Individual')"
                 :class="{ 'card-highlighter': isPackageSelected.id2 }"
               >
                 <div
                   v-if="isPackageSelected.id2"
-                  class="text-center q-py-sm text-bold text-subtitle1 "
-                  style="border-bottom: 1px solid #ef5926 !important; color:#ef5926 ; border-radius:10px 10px 0 0;background-color: #F9DFC8; "
+                  class="text-center q-py-sm text-bold text-subtitle1"
+                  style="
+                    border-bottom: 1px solid #ef5926 !important;
+                    color: #ef5926;
+                    border-radius: 10px 10px 0 0;
+                    background-color: #f9dfc8;
+                  "
                 >
                   Selected Package
                 </div>
-                <div class=" q-px-lg q-pb-lg">
+                <div class="q-px-lg q-pb-lg">
                   <div class="row justify-center q-py-md">
-                    <div class=" row justify-center">
+                    <div class="row justify-center">
                       <q-icon class="" size="5em">
                         <q-img :src="getImage('Featured icon (2).svg')" />
                       </q-icon>
@@ -656,28 +672,28 @@
                   </div>
                   <div
                     class="text-h6 text-bold q-my-sm text-center"
-                    style="font-family:Poppins; color: #ef5926 ;"
+                    style="font-family: Poppins; color: #ef5926"
                   >
                     Start your 30 day free trial
                   </div>
                   <div
-                    class=" q-px-xl q-my-md text-center"
+                    class="q-px-xl q-my-md text-center"
                     v-for="individualPackage in individualPackages"
                     :key="individualPackage"
                   >
                     <q-icon class="" size="sm">
                       <q-img class="" :src="getImage('check.svg')" />
                     </q-icon>
-                    <span class=" q-ml-sm "> {{ individualPackage }} </span>
+                    <span class="q-ml-sm"> {{ individualPackage }} </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="q-pt-md">
-            <div class="card-border  bg-white">
+            <div class="card-border bg-white">
               <div class="q-px-md q-mt-lg">
-                <div class=" row justify-center">
+                <div class="row justify-center">
                   <!-- <q-img :src="getImage('Featured icon.svg')" width="15%" /> -->
                   <q-icon class="" size="5em">
                     <q-img :src="getImage('Featured icon.svg')" />
@@ -687,12 +703,12 @@
                 <div class="text-h6 text-bold text-center q-pt-sm">
                   Enterprise Subscription
                 </div>
-                <div class=" text-h6 col-3 q-pt-sm text-center">
+                <div class="text-h6 col-3 q-pt-sm text-center">
                   <a class="text-deep-orange" href="">Contact us</a>
                 </div>
               </div>
 
-              <div class=" q-px-xl q-my-md text-center">
+              <div class="q-px-xl q-my-md text-center">
                 <q-icon class="col self-center" size="sm">
                   <q-img class="col-3" :src="getImage('check.svg')" />
                 </q-icon>
@@ -708,10 +724,10 @@
         <!-- signup form -->
         <div
           v-if="continueClick === false"
-          class="col-md-6 col-sm-12 col-xs-12 q-pt-md  bg-white  bg-white"
+          class="col-md-6 col-sm-12 col-xs-12 q-pt-md bg-white bg-white"
         >
           <div class="column full-height">
-            <div class="col ">
+            <div class="col">
               <div class="q-mt-lg text-h4 text-weight-bolder">
                 Subscribe Now
               </div>
@@ -767,7 +783,7 @@
                       checkEmailExist(val) || 'This email is already in use'
                   ]"
                 />
-                <span class="text-red text-caption ">{{ errorMSG }}</span>
+                <span class="text-red text-caption">{{ errorMSG }}</span>
                 <br v-if="errorMSG" />
 
                 <label class="text-subtitle1 text-weight-bolder q-mt-xs"
@@ -979,14 +995,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { constants } from '@utils/constant';
 import { validateEmail } from '@utils/validation';
 import { isMobile } from '@utils/common';
-import { event } from 'quasar';
-import {
-  removeToken,
-  removeCurrentUser,
-  removeFCMToken,
-  getFCMToken
-} from '../utils/auth';
-import { removeFirebaseToken } from '@utils/firebase';
+import { getToken, getCurrentUser } from '@utils/auth';
 
 export default {
   data() {
@@ -1038,11 +1047,7 @@ export default {
       'createUserForOrganization',
       'checkExistingEmail'
     ]),
-    removeToken,
-    removeCurrentUser,
-    removeFCMToken,
-    getFCMToken,
-    removeFirebaseToken,
+
     isMobile,
     ...mapMutations(['setLoading', 'setNotifications']),
     getImage(icon) {
@@ -1155,7 +1160,7 @@ export default {
       this.setLoading(true);
       var token = '';
       var displayError;
-      await this.createToken().then(function(result) {
+      await this.createToken().then(function (result) {
         if (result.error) {
           displayError = document.getElementById('card-errors');
           if (result.error) {
@@ -1192,14 +1197,13 @@ export default {
   },
 
   async created() {
-    if (this.getFCMToken()) {
-      await this.deletePushNotificationToken(this.getFCMToken());
-      await this.removeFCMToken();
+    if (getToken() && getCurrentUser()) {
+      if (isMobile()) {
+        this.$router.push('/dashboard');
+      } else {
+        this.$router.push('/admin');
+      }
     }
-    await this.removeFirebaseToken();
-
-    this.removeToken();
-    this.removeCurrentUser();
     await this.getAllPlans();
   }
 };
