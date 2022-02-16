@@ -23,7 +23,11 @@
               class="q-mt-md text-h5 text-center q-px-xl fontWeight600"
               style="background: #f9e7d8; "
             >
-              <div class="q-px-xl " style="font-size:28px;background: #f9e7d8">
+              <div
+                class="q-px-xl "
+                v-if="continueClick === false"
+                style="font-size:28px;background: #f9e7d8"
+              >
                 The First and Only Catastrophe-Proof Claim Management System For
                 Public Adjusters
               </div>
@@ -116,27 +120,27 @@
                 </div>
               </div>
               <!-- card 2 -->
-              <div>
+              <div style="min-width:320px;">
                 <div
-                  class="column  card-border col-5 bg-white"
-                  style="height:100%"
+                  class="card-border col-5 bg-white full-height "
                   @click="onPackageSelection('Individual')"
                   :class="{ 'card-highlighter': isPackageSelected.id2 }"
                 >
                   <div
                     v-if="isPackageSelected.id2"
-                    class="text-center fontWeight600 text-subtitle1"
+                    class="text-center  fontWeight500 text-subtitle1"
                     style="border-bottom: 1px solid #ef5926 !important; color:#ef5926 ; border-radius:10px 10px 0 0;background-color: #F9DFC8; "
                   >
                     Selected Package
                   </div>
-                  <div class=" q-px-lg">
+                  <div class=" q-px-xl">
                     <div class="row justify-center q-py-md">
                       <q-img
                         :src="getImage('Featured icon (2).svg')"
-                        width="20%"
+                        width="25%"
                       />
                     </div>
+
                     <div class="text-h6 fontWeight500 text-center">
                       Individual Package
                     </div>
@@ -147,13 +151,13 @@
                       >
                     </div>
                     <div
-                      class="text-subtitle1 fontWeight600 q-my-sm"
-                      style="font-family:Poppins; color: #ef5926 ;"
+                      class="text-subtitle1 text-center  fontWeight600 q-my-sm"
+                      style="color: #ef5926 ;"
                     >
                       Start your 30 day free trial
                     </div>
                     <div
-                      class=" row text-subtitle1 fontWeight400"
+                      class="row text-subtitle1 fontWeight400 col-md-4 col-xs-12 col-sm-12 "
                       v-for="individualPackage in individualPackages"
                       :key="individualPackage"
                     >
@@ -161,7 +165,7 @@
                         class="q-mt-xs"
                         :src="getImage('check.svg')"
                         width="8%"
-                        height="40%"
+                        height="8%"
                       />
                       <span class=" q-ml-sm"> {{ individualPackage }} </span>
                     </div>
@@ -226,6 +230,8 @@
                 <label class="text-subtitle1 fontWeight600">First Name</label>
                 <q-input
                   name="firstName"
+                  dense
+                  input-style="border-radius:20px"
                   v-model="data.user.contact.fname"
                   color="primary"
                   placeholder="Enter your First Name"
@@ -238,9 +244,12 @@
                   ]"
                 />
 
-                <label class="text-subtitle1 fontWeight600">Last Name</label>
+                <label class="text-subtitle1 fontWeight600 q-mt-sm"
+                  >Last Name</label
+                >
                 <q-input
                   v-model="data.user.contact.lname"
+                  dense
                   name="lastName"
                   color="primary"
                   placeholder="Enter your Last Name"
@@ -253,11 +262,12 @@
                   ]"
                 />
 
-                <label class="text-subtitle1 fontWeight600"
+                <label class="text-subtitle1 fontWeight600 q-mt-sm"
                   >Email Address</label
                 >
                 <q-input
                   v-model="data.user.email"
+                  dense
                   name="email"
                   color="primary"
                   placeholder="Enter Email Address"
@@ -272,8 +282,11 @@
                 />
                 <span class="text-red text-caption">{{ errorMSG }}</span>
                 <br v-if="errorMSG" />
-                <label class="text-subtitle1 fontWeight600">Password</label>
+                <label class="text-subtitle1 fontWeight600 q-mt-sm"
+                  >Password</label
+                >
                 <q-input
+                  dense
                   color="primary"
                   class="required full-width"
                   placeholder="Enter your Password"
@@ -296,8 +309,11 @@
                   </template>
                 </q-input>
 
-                <label class="text-subtitle1 fontWeight600">Company Name</label>
+                <label class="text-subtitle1 fontWeight600 q-mt-sm"
+                  >Company Name</label
+                >
                 <q-input
+                  dense
                   v-model="data.company.name"
                   name="businessName"
                   color="primary"
@@ -348,27 +364,34 @@
             <div class="col-2"></div>
           </div>
         </div>
-        <div
-          v-else
-          class="col-md-6 col-sm-12 col-xs-12 bg-white q-pt-lg content-center bg-white"
-        >
-          <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
-              <q-linear-progress size="10px" :value="progress1" />
+        <div v-else class="col-6 q-pt-xl q-px-xl content-center bg-white">
+          <div class="q-px-xl q-pt-xl">
+            <div class="col q-px-xl q-mx-xl">
+              <q-linear-progress
+                size="10px"
+                :value="progress"
+                style="border-radius:10px;"
+              />
               <div class="q-mt-sm text-subtitle1 fontWeight600 text-grey">
                 Step 2. Payment
               </div>
               <q-form class="q-mt-xl" @submit="onPaymentClick()" ref="orgInfo">
                 <div>{{ displayErrors }}</div>
-                <div class="text-h4 fontWeight600">Pay with card for</div>
+                <div class=" fontWeight600" style="font-size:32px">
+                  Pay with card for
+                </div>
                 <div
                   v-if="isPackageSelected.id1 === true"
                   class="text-h4 fontWeight600"
+                  style="font-size:32px"
                 >
                   Firm Package
                 </div>
-                <div v-else class="text-h4 fontWeight600">
+                <div
+                  v-else
+                  class="text-h4 fontWeight600"
+                  style="font-size:32px"
+                >
                   Individual Package
                 </div>
                 <div class="q-mt-lg"></div>
@@ -448,7 +471,7 @@
                     no-caps
                     type="submit"
                     color="deep-orange"
-                    size="22px"
+                    size="lg"
                     class="full-width"
                   />
                 </div>
