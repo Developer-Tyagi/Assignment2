@@ -25,6 +25,7 @@
     "pdfmake": "^0.2.2",
     "quasar": "^1.15.0",
     "vue-chartjs": "^3.5.1",
+    "vue-country-code-select": "^1.6.7",
     "vue-pdf-app": "^2.1.0",
     "vue-signature-pad": "2.0.4"
   },
