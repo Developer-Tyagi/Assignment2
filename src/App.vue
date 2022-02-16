@@ -7,8 +7,10 @@
 import { mapActions, mapGetters } from 'vuex';
 import Vue from 'vue';
 import VueSignaturePad from 'vue-signature-pad';
+import VueCountryCode from 'vue-country-code-select';
 
 Vue.use(VueSignaturePad);
+Vue.use(VueCountryCode);
 export default {
   name: 'App',
   methods: { ...mapActions(['changeNetworkStatus']) },
