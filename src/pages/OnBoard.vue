@@ -1,8 +1,8 @@
 <template>
-  <q-page>
+  <q-page class="poppinsFont">
     <div v-if="!isMobile()" class="row" style="height: calc(100vh - 125px)">
       <div class="col-3 q-px-xl q-pt-lg" style="background-color: #f9e7d8">
-        <div class="text-bold text-h5 q-pt-sm">Account Setup</div>
+        <div class="fontWeight600 text-h5 q-pt-sm">Account Setup</div>
         <div>
           <q-stepper
             class="no-shadow text-bold"
@@ -49,11 +49,13 @@
               :src="getImage('onBoard-1.svg')"
             />
           </div>
-          <div class="text-h5 text-bold text-center q-mx-xl q-px-xl q-mt-lg">
+          <div
+            class="text-h5 fontWeight600 text-center q-mx-xl q-px-xl q-mt-lg"
+          >
             Setup Your Account
           </div>
           <div
-            class="text-center text-subtitle1 q-mx-xl q-px-xl q-mt-lg"
+            class="text-center fontWeight400 text-subtitle1 q-mx-xl q-px-xl q-mt-lg"
             style="color: #667085"
           >
             Congratulations, you have successfully created your account! Next,
@@ -62,7 +64,7 @@
           </div>
           <div class="row justify-center q-mt-lg rounded">
             <q-btn
-              class=""
+              class="fontWeight600"
               style="border-radius: 10px"
               color="primary"
               name=""
@@ -74,15 +76,18 @@
         <div v-if="step == 1">
           <div class="q-pt-lg q-px-xl" style="border-radius: 20px">
             <div class="q-mt-sm justify-between">
-              <div class="text-h5 text-weight-bold">Company Details</div>
-              <div class="text-subtitle2 q-mt-sm" style="color: #667085">
+              <div class="text-h5 fontWeight600">Company Details</div>
+              <div
+                class="text-subtitle2 fontWeight400 q-mt-sm"
+                style="color: #667085"
+              >
                 Fill out the form below with the information about your company.
               </div>
             </div>
             <div>
               <q-form ref="companyDetailsForm">
                 <div class="q-mt-xl">
-                  <div class="row text-subtitle1 text-weight-bold">
+                  <div class="row text-subtitle1 fontWeight600">
                     Company Name<span class="text-red">*</span>
                   </div>
 
@@ -100,7 +105,7 @@
                   <div class="row q-mt-sm full-width">
                     <div class="col q-mr-md">
                       <!-- company adminstrator changed to contact name -->
-                      <div class="row text-subtitle1 text-weight-bold">
+                      <div class="row text-subtitle1 fontWeight600">
                         Company Contact
                       </div>
                       <q-input
@@ -132,7 +137,7 @@
                     </div>
                     <div class="col">
                       <!-- company adminstrator changed to contact name -->
-                      <div class="row text-subtitle1 text-weight-bold">
+                      <div class="row text-subtitle1 fontWeight600">
                         Company Email
                       </div>
                       <q-input
@@ -152,7 +157,7 @@
                   </div>
                   <div class="col q-mt-md q-mr-md full-width">
                     <div class="row justify-between">
-                      <div class="col text-subtitle1 text-weight-bold">
+                      <div class="col text-subtitle1 fontWeight600">
                         Company Address<span class="text-red">*</span>
                       </div>
                     </div>
@@ -200,8 +205,8 @@
             <div class="q-mt-lg">
               <q-btn
                 @click="onRedirectToGoogleAuth()"
-                :flat="checkConnection === false"
-                :style="checkConnection === true ? 'background: #D1FADF' : ''"
+                :flat="checkConnection == false"
+                :style="checkConnection == true ? 'background: #D1FADF' : ''"
                 class="row q-py-sm q-px-xl"
                 style="
                   width: 410px;
@@ -209,14 +214,14 @@
                   border-radius: 10px;
                 "
               >
-                <q-avatar v-if="checkConnection === false">
+                <q-avatar v-if="checkConnection == false">
                   <q-img
                     class="col"
                     :src="getImage('logos_google-drive.svg')"
                   />
                 </q-avatar>
                 <span
-                  v-if="checkConnection === false"
+                  v-if="checkConnection == false"
                   class="col q-ml-xs text-subtitle1"
                   >Connect Google Drive</span
                 >
@@ -226,7 +231,7 @@
                   style="color: #039855"
                   >Connected to Google Drive</span
                 >
-                <span v-if="checkConnection === true">
+                <span v-if="checkConnection == true">
                   <q-btn round flat icon="task_alt" color="teal" size="14px" />
                 </span>
               </q-btn>
@@ -358,7 +363,7 @@
     </div>
     <div v-else class="column">
       <div class="col q-pt-lg" style="background-color: #f9e7d8">
-        <div class="text-bold text-h5 q-pl-md">Account Setup</div>
+        <div class="fontWeight600 text-h5 q-pl-md">Account Setup</div>
         <div class="">
           <q-stepper
             class="no-shadow text-bold"
@@ -408,17 +413,20 @@
               :src="getImage('onBoard-1.svg')"
             />
           </div>
-          <div class="text-h5 text-bold text-center q-px-sm q-mt-lg">
+          <div class="text-h5 fontWeight600 text-center q-px-sm q-mt-lg">
             Setup Your Account
           </div>
-          <div class="text-center text-subtitle1 q-px-sm q-mt-lg">
+          <div
+            class="text-center fontWeight400 text-subtitle1 q-px-sm q-mt-lg"
+            style="color: #667085"
+          >
             Congratulations, you have successfully created your account! Next,
             we will collect some pertinent information to complete your account,
             so you can get the most out of our system.
           </div>
           <div class="row justify-center q-mt-lg rounded">
             <q-btn
-              class=""
+              class="fontWeight600"
               color="primary"
               name=""
               label="Get Started"
@@ -429,15 +437,18 @@
         <div v-if="step == 1">
           <div class="q-mt-md" style="border-radius: 20px">
             <div class="justify-between">
-              <div class="text-h5 text-weight-bold">Company Details</div>
-              <div class="text-subtitle2 q-mt-sm">
+              <div class="text-h5 fontWeight600">Company Details</div>
+              <div
+                class="text-subtitle2 fontWeight400 q-mt-sm"
+                style="color: #667085"
+              >
                 Fill out the form below with the information about your company.
               </div>
             </div>
             <div>
               <q-form ref="companyDetailsForm">
                 <div class="q-mt-xl">
-                  <div class="row text-subtitle1 text-weight-bold">
+                  <div class="row text-subtitle1 fontWeight600">
                     Company Name<span class="text-red">*</span>
                   </div>
 
@@ -553,19 +564,19 @@
             <div class="q-mt-lg">
               <q-btn
                 @click="onRedirectToGoogleAuth()"
-                :flat="checkConnection === false"
-                :style="checkConnection === true ? 'background: #D1FADF' : ''"
+                :flat="checkConnection == false"
+                :style="checkConnection == true ? 'background: #D1FADF' : ''"
                 class="row q-py-sm q-px-xl"
                 style="border: 2px solid black; border-radius: 10px"
               >
-                <q-avatar v-if="checkConnection === false">
+                <q-avatar v-if="checkConnection == false">
                   <q-img
                     class="col"
                     :src="getImage('logos_google-drive.svg')"
                   />
                 </q-avatar>
                 <span
-                  v-if="checkConnection === false"
+                  v-if="checkConnection == false"
                   class="col q-ml-xs text-subtitle1"
                   >Connect Google Drive</span
                 >
@@ -575,7 +586,7 @@
                   style="color: #039855"
                   >Connected to Google Drive</span
                 >
-                <span v-if="checkConnection === true">
+                <span v-if="checkConnection == true">
                   <q-btn round flat icon="task_alt" color="teal" size="14px" />
                 </span>
               </q-btn>
@@ -710,7 +721,8 @@ export default {
         email: ''
       },
       editCompanyDetails: true,
-      dialCode: ''
+      dialCode: '',
+      checkConnection: ''
     };
   },
   methods: {
@@ -791,7 +803,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['organization', 'checkConnection'])
+    ...mapGetters(['organization'])
   },
   async created() {
     await this.getOrganization();
@@ -810,7 +822,25 @@ export default {
       this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
       this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       this.step = 2;
+      if (this.$route.query.googleConnect == 'true') {
+        console.log(this.$route.query.googleConnect);
+        this.checkConnection = true;
+      }
     }
   }
 };
 </script>
+<style lang="scss" scoped>
+.poppinsFont {
+  font-family: poppins;
+}
+.fontWeight600 {
+  font-weight: 600;
+}
+.fontWeight500 {
+  font-weight: 500;
+}
+.fontWeight400 {
+  font-weight: 400;
+}
+</style>
