@@ -115,6 +115,7 @@
                         outlined
                         v-model="companyDetails.contactNumber"
                         lazy-rules
+                        maxlength="10"
                         :rules="[
                           val => val.length > 0 || 'Please add contact number',
                           val =>
