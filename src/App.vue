@@ -50,3 +50,10 @@ export default {
   }
 };
 </script>
+<style>
+@font-face {
+  font-family: 'Poppins';
+  src: local('Poppins'),
+    url(./fonts/Poppins/Poppins-Regular.ttf) format('truetype');
+}
+</style>
