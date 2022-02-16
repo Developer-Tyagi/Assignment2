@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="isMobile()">
+    <div v-if="isMobile() && $route.name != 'setup'">
       <q-header class="bg-white">
         <q-toolbar
           class="row bg-primary rounded-header"
@@ -56,9 +56,9 @@
             <q-icon
               v-if="
                 $route.name == 'create client' &&
-                  !isOnline &&
-                  editSelectedClient.id &&
-                  isOfflineClientEdit
+                !isOnline &&
+                editSelectedClient.id &&
+                isOfflineClientEdit
               "
               name="edit"
               @click="onClickEditIcon"
@@ -100,7 +100,7 @@
         >
           <q-img src="~assets/Logo.svg" width="50%" />
         </div>
-        <div class="col bg-white  q-pt-md">
+        <div class="col bg-white q-pt-md">
           <div class="row justify-end q-pr-xl">
             <q-avatar
               size="4em"
@@ -170,13 +170,7 @@
               />
             </div>
             <div
-              class="
-              col
-              column
-              text-weight-bold text-white
-              q-pa-sm q-ml-md
-              text-h6
-            "
+              class="col column text-weight-bold text-white q-pa-sm q-ml-md text-h6"
               style="width: calc(100% - 54px)"
             >
               <div
@@ -209,18 +203,18 @@
                 class="q-mt-lg bg-white rounded-sidebar q-pa-none q-pb-xs"
                 v-if="
                   (link.title != 'Dashboard' || isMobile()) &&
-                    (link.title != 'Claims' || isMobile()) &&
-                    (link.title != 'Clients' || isMobile()) &&
-                    (link.title != 'Leads' || isMobile()) &&
-                    (link.title != 'Vendors' || isMobile()) &&
-                    (link.title != 'Carriers' || isMobile()) &&
-                    (link.title != 'Mortgages' || isMobile()) &&
-                    (link.title != 'Vendors' || isMobile()) &&
-                    (link.title != 'Carriers' || isMobile()) &&
-                    (link.title != 'Mortgages' || isMobile()) &&
-                    (link.title != 'Manage Users' || !isMobile()) &&
-                    (link.title != 'Configuration' || !isMobile()) &&
-                    (link.title != 'Admin' || !isMobile())
+                  (link.title != 'Claims' || isMobile()) &&
+                  (link.title != 'Clients' || isMobile()) &&
+                  (link.title != 'Leads' || isMobile()) &&
+                  (link.title != 'Vendors' || isMobile()) &&
+                  (link.title != 'Carriers' || isMobile()) &&
+                  (link.title != 'Mortgages' || isMobile()) &&
+                  (link.title != 'Vendors' || isMobile()) &&
+                  (link.title != 'Carriers' || isMobile()) &&
+                  (link.title != 'Mortgages' || isMobile()) &&
+                  (link.title != 'Manage Users' || !isMobile()) &&
+                  (link.title != 'Configuration' || !isMobile()) &&
+                  (link.title != 'Admin' || !isMobile())
                 "
               >
                 <q-item-section @click="onClickMenuItem(link.title)">
@@ -388,7 +382,7 @@
                               class="q-mr-xl q-pr-lg"
                               v-if="
                                 subOptionSelected.key == subMenuOption.key &&
-                                  webSubOptionMenuTab != ''
+                                webSubOptionMenuTab != ''
                               "
                             >
                               <q-separator style="background: #ef5926" />
@@ -608,9 +602,8 @@ export default {
     for (let i = 0; i < this.linksDataForWebDrawer.length; i++) {
       if (this.linksDataForWebDrawer[i].link.slice(1) == route) {
         this.parentColorMenuItem = this.linksDataForWebDrawer[i].title;
-        this.breadcrumbsData.menuItemTitle = this.linksDataForWebDrawer[
-          i
-        ].title;
+        this.breadcrumbsData.menuItemTitle =
+          this.linksDataForWebDrawer[i].title;
         this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[i];
         this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[i].link;
         if (this.linksDataForWebDrawer[i].subOption) {
@@ -623,9 +616,8 @@ export default {
               this.linksDataForWebDrawer[i].subOption[j].name ==
               this.webSubOptionMenuTab.name
             )
-              this.breadcrumbsData.subItemTitle = this.linksDataForWebDrawer[
-                i
-              ].subOption[j].name;
+              this.breadcrumbsData.subItemTitle =
+                this.linksDataForWebDrawer[i].subOption[j].name;
           }
         }
       }
@@ -655,7 +647,8 @@ export default {
     onClickBreadcrumbsHome() {
       this.breadcrumbsData.menuItemTitle = this.linksDataForWebDrawer[0].title;
       this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[0].link;
-      this.breadcrumbsData.subItemTitle = this.linksDataForWebDrawer[0].subOption[0].name;
+      this.breadcrumbsData.subItemTitle =
+        this.linksDataForWebDrawer[0].subOption[0].name;
       this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[0];
       const route = this.$router.currentRoute.fullPath.split('/')[1];
       if (route != this.breadcrumbsData.menuItemLink.slice(1)) {
