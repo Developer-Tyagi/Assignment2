@@ -96,6 +96,7 @@
                       dense
                       class="full-width"
                       input-class="text-subtitle1"
+                      style="background: #e8edf2"
                       outlined
                       v-model="companyDetails.name"
                       maxlength="128"
@@ -177,7 +178,7 @@
 
                   <div class="q-mt-lg row justify-end">
                     <q-btn
-                      class="col-1"
+                      class="col-1 fontWeight600"
                       size="md"
                       color="primary"
                       label="Next"
@@ -191,10 +192,13 @@
         </div>
         <div v-if="step == 2" class="column full-height">
           <div class="col-2 q-mt-lg">
-            <div class="text-h5 text-weight-bold">
+            <div class="text-h5 fontWeight600 text-weight-bold">
               Connect With Google Drive
             </div>
-            <div class="q-mt-lg subtitle2 q-pr-xl" style="color: #667085">
+            <div
+              class="q-mt-lg fontWeight400 subtitle2 q-pr-xl"
+              style="color: #667085"
+            >
               In order to provide full access to ClaimGuru, we need permission
               to connect to your Google account. We synchronize your ClaimGuru
               files with your Google Drive so you will retain full ownership
@@ -210,7 +214,7 @@
                 :style="checkConnection == true ? 'background: #D1FADF' : ''"
                 class="row q-py-sm q-px-xl"
                 style="
-                  width: 410px;
+                  width: 440px;
                   border: 2px solid black;
                   border-radius: 10px;
                 "
@@ -223,12 +227,12 @@
                 </q-avatar>
                 <span
                   v-if="checkConnection == false"
-                  class="col q-ml-xs text-subtitle1"
+                  class="col q-ml-xs text-subtitle1 fontWeight500"
                   >Connect Google Drive</span
                 >
                 <span
                   v-else
-                  class="col text-subtitle1 text-weight-bold"
+                  class="col text-subtitle1 fontWeight500"
                   style="color: #039855"
                   >Connected to Google Drive</span
                 >
@@ -240,39 +244,52 @@
           </div>
 
           <div class="col row q-mt-sm q-mb-xl items-end justify-between">
-            <div class="col-2">
-              <q-btn
-                color="primary"
-                size="1.2em"
-                style="border-radius: 10px"
-                outline
-                @click="navigatePreviousStepper"
-                >Back</q-btn
-              >
-            </div>
-            <div class="col-2">
-              <q-btn
-                color="primary"
-                size="1.2em"
-                style="border-radius: 10px"
-                @click="NextStepperValue"
-                :disable="!checkConnection"
-                >Next</q-btn
-              >
-            </div>
+            <q-btn
+              color="primary"
+              size="1.2em"
+              style="border-radius: 10px"
+              outline
+              class="fontWeight600"
+              @click="navigatePreviousStepper"
+              >Back</q-btn
+            >
+
+            <q-btn
+              color="primary"
+              size="1.2em"
+              style="border-radius: 10px"
+              class="fontWeight600"
+              @click="NextStepperValue"
+              :disable="!checkConnection"
+              >Next</q-btn
+            >
           </div>
         </div>
         <div v-if="step == 3" class="column full-height">
           <div class="col-3 q-mt-lg">
-            <div class="text-h5 text-weight-bold q-mt-lg">
+            <div class="text-h5 fontWeight600 q-mt-lg">
               PhotoID Account Details
             </div>
-            <div class="q-mt-lg text-h6 text-grey">
-              <div class="q-mt-lg subtitle2 q-pr-xl" style="color: #667085">
-                If you are currently a PhotoID user, please complete your
-                information below. If not, please consider signing up by
-                <a class="text-orange" href="">clicking here</a>. Our
-                partnership with PhotoID will enhance your user experience.
+            <div class="column q-mt-lg fontWeight400 text-subtitle1 text-grey">
+              <div class="text-justify">
+                <li>
+                  If you are currently a PhotoID user, please complete your
+                  information below.
+                </li>
+              </div>
+              <div class="text-justify">
+                <li>
+                  If not, please consider signing up by
+                  <a class="text-orange" href="https://photoidapp.net/"
+                    >clicking here</a
+                  >.
+                </li>
+              </div>
+              <div class="text-justify">
+                <li>
+                  Our partnership with PhotoID will enhance your user
+                  experience.
+                </li>
               </div>
             </div>
           </div>
@@ -281,7 +298,7 @@
               <q-form ref="editPhotoIDForm">
                 <div class="q-mt-lg">
                   <div class="col q-pr-xl">
-                    <div class="text-subtitle1 text-weight-bold q-mb-sm">
+                    <div class="text-subtitle1 fontWeight600 q-mb-sm">
                       Account Email
                     </div>
                     <q-input
@@ -292,9 +309,7 @@
                     />
                   </div>
                   <div class="col q-pr-xl">
-                    <div
-                      class="text-subtitle1 text-weight-bold q-mt-md q-mb-sm"
-                    >
+                    <div class="text-subtitle1 fontWeight600 q-mt-md q-mb-sm">
                       Account Api Key
                     </div>
                     <q-input
@@ -310,25 +325,24 @@
             </div>
           </div>
           <div class="col row q-mt-sm q-mb-xl items-end justify-between">
-            <div class="col-2">
-              <q-btn
-                color="primary"
-                size="1.2em"
-                style="border-radius: 10px"
-                outline
-                @click="navigatePreviousStepper"
-                >Back</q-btn
-              >
-            </div>
-            <div class="col-3">
-              <q-btn
-                color="primary"
-                size="1.2em"
-                style="border-radius: 10px"
-                @click="NextStepperValue"
-                >Complete Setup</q-btn
-              >
-            </div>
+            <q-btn
+              color="primary"
+              size="1.2em"
+              style="border-radius: 10px"
+              class="fontWeight600"
+              outline
+              @click="navigatePreviousStepper"
+              >Back</q-btn
+            >
+
+            <q-btn
+              color="primary"
+              size="1.2em"
+              class="fontWeight600"
+              style="border-radius: 10px"
+              @click="NextStepperValue"
+              >Complete Setup</q-btn
+            >
           </div>
         </div>
 
@@ -341,13 +355,18 @@
               :src="getImage('onBoard-2.svg')"
             />
           </div>
-          <div class="text-h5 text-bold text-center q-mx-xl q-px-xl q-mt-lg">
+          <div
+            class="text-h5 fontWeight600 text-center q-mx-xl q-px-xl q-mt-lg"
+          >
             Account Setup Successful
           </div>
-          <div class="text-center text-subtitle1 q-mx-xl q-px-xl q-mt-lg">
+          <div
+            class="text-center text-subtitle1 q-mx-xl q-px-xl q-mt-lg"
+            style="color: #667085"
+          >
             We're excited for you to experience how ClaimGuru works for you!
           </div>
-          <div class="row justify-center q-mt-lg rounded">
+          <div class="row fontWeight600 justify-center q-mt-lg rounded">
             <q-btn
               class="q-py-sm"
               style="border-radius: 10px"
@@ -460,6 +479,7 @@
                       input-class="text-subtitle1"
                       outlined
                       v-model="companyDetails.name"
+                      style="background: #e8edf2; height: 40px"
                       disable
                       maxlength="128"
                       :rules="[
@@ -541,7 +561,7 @@
 
                   <div class="q-my-lg row justify-end">
                     <q-btn
-                      class="col-4"
+                      class="fontWeight600"
                       size="md"
                       color="primary"
                       label="Next"
@@ -554,8 +574,13 @@
           </div>
         </div>
         <div v-if="step == 2">
-          <div class="text-h5 text-bold q-mt-lg">Connect With Google Drive</div>
-          <div class="q-mt-lg text-subtitle1 text-grey">
+          <div class="text-h5 fontWeight600 text-bold q-mt-lg">
+            Connect With Google Drive
+          </div>
+          <div
+            class="q-mt-lg fontWeight400 text-subtitle1 text-grey"
+            style="color: #667085"
+          >
             In order to provide full access to ClaimGuru, we need permission to
             connect to your Google account. We synchronize your ClaimGuru files
             with your Google Drive so you will retain full ownership over your
@@ -578,12 +603,12 @@
                 </q-avatar>
                 <span
                   v-if="checkConnection == false"
-                  class="col q-ml-xs text-subtitle1"
+                  class="col q-ml-xs fontWeight500 text-subtitle1"
                   >Connect Google Drive</span
                 >
                 <span
                   v-else
-                  class="col text-subtitle1 text-weight-bold"
+                  class="col text-subtitle1 fontWeight500"
                   style="color: #039855"
                   >Connected to Google Drive</span
                 >
@@ -596,13 +621,18 @@
 
           <div class="row q-mt-xl items-end justify-between">
             <div class="col-2">
-              <q-btn color="primary" outline @click="navigatePreviousStepper"
+              <q-btn
+                color="primary"
+                class="fontWeight600"
+                outline
+                @click="navigatePreviousStepper"
                 >Back</q-btn
               >
             </div>
             <div class="col-2">
               <q-btn
                 color="primary"
+                class="fontWeight600"
                 :disable="!checkConnection"
                 @click="NextStepperValue"
                 >Next</q-btn
@@ -611,19 +641,28 @@
           </div>
         </div>
         <div v-if="step == 3">
-          <div class="text-h5 text-bold q-mt-lg">PhotoID Account Details</div>
-          <div class="row q-mt-lg text-subtitle1 text-grey">
+          <div class="text-h5 fontWeight600 q-mt-lg">
+            PhotoID Account Details
+          </div>
+          <div class="column q-mt-lg fontWeight400 text-subtitle1 text-grey">
             <div class="text-justify">
               If you are currently a PhotoID user, please complete your
-              information below. If not, please consider signing up by
-              <a class="text-orange" href="">clicking here</a>. Our partnership
-              with PhotoID will enhance your user experience.
+              information below.
+            </div>
+            <div class="text-justify">
+              If not, please consider signing up by
+              <a class="text-orange" href="https://photoidapp.net/"
+                >clicking here</a
+              >.
+            </div>
+            <div class="text-justify">
+              Our partnership with PhotoID will enhance your user experience.
             </div>
           </div>
           <q-form ref="editPhotoIDForm">
             <div class="q-mt-lg">
               <div class="col q-pr-xl">
-                <div class="text-subtitle1 text-weight-bold q-mb-sm">
+                <div class="text-subtitle1 fontWeight600 q-mb-sm">
                   Account Email
                 </div>
                 <q-input
@@ -634,7 +673,7 @@
                 />
               </div>
               <div class="col q-pr-xl">
-                <div class="text-subtitle1 text-weight-bold q-mt-md q-mb-sm">
+                <div class="text-subtitle1 fontWeight600 q-mt-md q-mb-sm">
                   Account Api Key
                 </div>
                 <q-input
@@ -648,16 +687,19 @@
             </div>
           </q-form>
           <div class="row q-mt-xl justify-between">
-            <div class="col-3">
-              <q-btn color="primary" outline @click="navigatePreviousStepper"
-                >Back</q-btn
-              >
-            </div>
-            <div class="col-7">
-              <q-btn color="primary" @click="NextStepperValue"
-                >Complete Setup</q-btn
-              >
-            </div>
+            <q-btn
+              color="primary"
+              class="fontWeight600"
+              outline
+              @click="navigatePreviousStepper"
+              >Back</q-btn
+            >
+            <q-btn
+              color="primary"
+              class="fontWeight600"
+              @click="NextStepperValue"
+              >Complete Setup</q-btn
+            >
           </div>
         </div>
 
@@ -670,13 +712,16 @@
               :src="getImage('onBoard-2.svg')"
             />
           </div>
-          <div class="text-h5 text-bold text-center q-mt-lg">
+          <div class="text-h5 fontWeight600 text-center q-mt-lg">
             Account Setup Successful
           </div>
-          <div class="text-center text-subtitle1 q-mt-lg">
+          <div
+            class="text-center fontWeight400 text-subtitle1 q-mt-lg"
+            style="color: #667085"
+          >
             We're excited for you to experience how ClaimGuru works for you!
           </div>
-          <div class="row justify-center q-mt-lg rounded">
+          <div class="row fontWeight600 justify-center q-mt-lg rounded">
             <q-btn
               class=""
               no-caps
@@ -723,7 +768,7 @@ export default {
       },
       editCompanyDetails: true,
       dialCode: '',
-      checkConnection: ''
+      checkConnection: false
     };
   },
   methods: {
@@ -750,10 +795,7 @@ export default {
       this.dialCode = dialCode;
     },
     async NextStepperValue() {
-      if (
-        this.step == 1 ||
-        (this.step == 3 && this.companyDetails.photoIdEmail)
-      ) {
+      if (this.step == 1 || this.step == 3) {
         if (this.step == 1) {
           const success = await this.$refs.companyDetailsForm.validate();
           if (success) {
@@ -824,7 +866,6 @@ export default {
       this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       this.step = 2;
       if (this.$route.query.googleConnect == 'true') {
-        console.log(this.$route.query.googleConnect);
         this.checkConnection = true;
       }
     }

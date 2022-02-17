@@ -13,12 +13,7 @@
           <div>
             <a
               @click="onEditClick"
-              class="
-                text-primary
-                cursor-pointer
-                text-subtitle1 text-weight-bold
-                q-mr-xs
-              "
+              class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
             >
               Edit
               <i class="text-primary fas fa-edit"></i>
@@ -176,12 +171,7 @@
           <div>
             <a
               @click="onEditClickOrganization"
-              class="
-                text-primary
-                cursor-pointer
-                text-subtitle1 text-weight-bold
-                q-mr-xs
-              "
+              class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
             >
               Edit
               <i class="text-primary fas fa-edit"></i>
@@ -224,10 +214,10 @@
                   <q-icon color="primary" name="content_copy" />
                 </div>
               </div>
-              <div v-if="organizations.users.mailingAddress">
+              <div v-if="organizations.companyDetails.address">
                 <AutoCompleteAddress
                   :id="'AddVendor1'"
-                  :address="organizations.users.mailingAddress"
+                  :address="organizations.companyDetails.address"
                   :isDropBoxEnable="false"
                   :isChecksEnable="false"
                   :value="true"
@@ -283,6 +273,7 @@
                   class="full-width"
                   input-class="text-subtitle1"
                   outlined
+                  v-model="organizations.companyDetails.contactEmail"
                   :disable="!editCompanyDetails"
                 />
               </div>
@@ -332,12 +323,7 @@
           <div>
             <a
               @click="onEditClickOrganization('PHOTOIDFORM')"
-              class="
-                text-primary
-                cursor-pointer
-                text-subtitle1 text-weight-bold
-                q-mr-xs
-              "
+              class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
               >Edit
               <i class="text-primary fas fa-edit"></i>
             </a>
@@ -354,7 +340,7 @@
                 class="full-width"
                 input-class="text-subtitle1"
                 outlined
-                v-model="organizations.users.email"
+                v-model="organizations.photoIDEmail"
                 :disable="!editPhotoIDDetails"
               />
             </div>
@@ -367,7 +353,7 @@
                 class="full-width"
                 input-class="text-subtitle1"
                 outlined
-                v-model="organizations.users.lname"
+                v-model="organizations.photoIDAPIKey"
                 :disable="!editPhotoIDDetails"
               />
             </div>
@@ -439,6 +425,18 @@ export default {
       selectedRole: '',
       organizations: {
         name: '',
+        companyDetails: {
+          address: {
+            address1: '',
+            address2: '',
+            addressLocality: '',
+            addressRegion: '',
+            postalCode: ''
+          },
+          contactEmail: ''
+        },
+        photoIDAPIKey: '',
+        photoIDEmail: '',
         users: {
           fname: '',
           lname: '',
@@ -523,16 +521,24 @@ export default {
       const success = await this.$refs.companyDetailsForm.validate();
       if (
         success &&
-        this.organizations.users.mailingAddress.address1.length > 0
+        this.organizations.companyDetails.address.address1.length > 0
       ) {
         const payload = {
           data: {
             name: this.organizations.users.fname,
-            photoIDAPIKey: this.organizations.users.lname,
-            photoIDEmail: this.organizations.users.email,
-            billingInfo: {
-              address: this.organizations.users.mailingAddress
-            }
+            photoIDAPIKey: this.organizations.photoIDAPIKey,
+            photoIDEmail: this.organizations.photoIDEmail,
+            address: {
+              addressCountry: 'USA',
+              address1: this.organizations.companyDetails.address.address1,
+              address2: this.organizations.companyDetails.address.address2,
+              addressLocality:
+                this.organizations.companyDetails.address.addressLocality,
+              addressRegion:
+                this.organizations.companyDetails.address.addressRegion,
+              postalCode: this.organizations.companyDetails.address.postalCode
+            },
+            email: this.organizations.companyDetails.email
           }
         };
         await this.updateUserForOrganization(payload);
@@ -680,23 +686,26 @@ export default {
 
     if (this.organization) {
       this.organizations.users.fname = this.organization.name;
-      this.organizations.users.lname = this.organization.photoIDAPIKey;
+      this.organizations.photoIDAPIKey = this.organization.photoIDAPIKey;
+      this.organizations.photoIDEmail = this.organization.photoIDEmail;
 
       // this.organizations.users.contact.number = this.organization.website;
       this.organizations.users.email = this.organization.photoIDEmail;
-      if (this.organization.billingInfo) {
-        this.organizations.users.mailingAddress.addressRegion =
-          this.organization.billingInfo.address.addressRegion;
-        this.organizations.users.mailingAddress.addressLocality =
-          this.organization.billingInfo.address.addressLocality;
-        this.organizations.users.mailingAddress.houseNumber =
-          this.organization.billingInfo.address.houseNumber;
-        this.organizations.users.mailingAddress.address1 =
-          this.organization.billingInfo.address.address1;
-        this.organizations.users.mailingAddress.address2 =
-          this.organization.billingInfo.address.address2;
-        this.organizations.users.mailingAddress.postalCode =
-          this.organization.billingInfo.address.postalCode;
+      if (this.organization.address) {
+        this.organizations.companyDetails.address.address1 =
+          this.organization.address.address1;
+        this.organizations.companyDetails.address.address2 =
+          this.organization.address.address2;
+        this.organizations.companyDetails.address.addressRegion =
+          this.organization.address.addressRegion;
+        this.organizations.companyDetails.address.postalCode =
+          this.organization.address.postalCode;
+        this.organizations.companyDetails.address.addressLocality =
+          this.organization.address.addressLocality;
+      }
+      if (this.organization.email) {
+        this.organizations.companyDetails.contactEmail =
+          this.organization.email;
       }
     }
   }
