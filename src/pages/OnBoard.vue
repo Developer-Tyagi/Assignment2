@@ -94,9 +94,8 @@
               </q-icon>
               <div class="q-ml-sm">
                 <div>Step 3</div>
-                <div class="text-grey">
-                  Add PhotoID Account Details (optional)
-                </div>
+                <div class="text-grey">Add PhotoID Account Details</div>
+                <div class="text-grey">(optional)</div>
               </div>
             </div>
           </div>
@@ -535,9 +534,8 @@
                 </q-icon>
                 <div class="q-ml-sm">
                   <div>Step 3</div>
-                  <div class="text-grey">
-                    Add PhotoID Account Details (optional)
-                  </div>
+                  <div class="text-grey">Add PhotoID Account Details</div>
+                  <div class="text-grey">(optional)</div>
                 </div>
               </div>
             </div>
@@ -908,7 +906,9 @@ export default {
     ...mapActions([
       'getOrganization',
       'updateUserForOrganization',
-      'toRedirectGoogleAuth1'
+      'toRedirectGoogleAuth1',
+      'setOnboard',
+      'getUserInfo'
     ]),
     isMobile,
     validateEmail,
@@ -967,7 +967,12 @@ export default {
             }
           };
           await this.updateUserForOrganization(payload);
+          console.log('get');
           await this.getOrganization();
+          var payload1 = {
+            isCompleted: true
+          };
+          await this.setOnboard(payload1);
           this.step = this.step + 1;
         }
       } else if (this.step === 2) {
@@ -982,6 +987,14 @@ export default {
     ...mapGetters(['organization'])
   },
   async created() {
+    let data = await this.getUserInfo();
+    if (data.attributes.onboard.isCompleted == true) {
+      if (isMobile()) {
+        this.$router.push('/dashboard');
+      } else {
+        this.$router.push('/admin');
+      }
+    }
     this.step = 0;
     await this.getOrganization();
     if (this.organization) {
