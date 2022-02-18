@@ -349,6 +349,7 @@
                   Individual Package
                 </div>
                 <div class="q-mt-lg"></div>
+                <div id="card-errors" class="q-my-lg"></div>
                 <label class="text-subtitle1 text-weight-bold"
                   >Card Number</label
                 >
@@ -375,6 +376,10 @@
                   id="card-name"
                   autocomplete="cc-name"
                   placeholder="Enter Name on Card"
+                  lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) || 'Enter Name on Card'
+                  ]"
                 />
 
                 <div class="row">
@@ -852,6 +857,9 @@
                   id="card-name"
                   autocomplete="cc-name"
                   placeholder="Enter Name on Card"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Enter Name on Card'
+                  ]"
                 />
 
                 <div class="row">
@@ -1120,6 +1128,7 @@ export default {
           token = result.token.id;
         }
       });
+      console.log('TEst', displayError);
       if (displayError !== undefined) {
         this.setLoading(false);
         return;
