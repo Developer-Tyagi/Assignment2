@@ -711,7 +711,7 @@
           <div>
             <div class="q-mt-lg">
               <q-btn
-                v-if="this.checkConnection == true"
+                v-if="this.checkConnection == false"
                 @click="onRedirectToGoogleAuth()"
                 class="row q-py-sm q-px-xl"
                 style="
