@@ -968,14 +968,6 @@ export default {
     ...mapGetters(['organization'])
   },
   async created() {
-    let data = await this.getUserInfo();
-    if (data.attributes.onboard.isCompleted == true) {
-      if (isMobile()) {
-        this.$router.push('/dashboard');
-      } else {
-        this.$router.push('/admin');
-      }
-    }
     this.step = 0;
     await this.getOrganization();
     if (this.organization) {
@@ -995,6 +987,15 @@ export default {
       this.step = 2;
       if (this.$route.query.googleConnect == 'true') {
         this.checkConnection = true;
+      } else {
+        let data = await this.getUserInfo();
+        if (data.attributes.onboard.isCompleted == true) {
+          if (isMobile()) {
+            this.$router.push('/dashboard');
+          } else {
+            this.$router.push('/admin');
+          }
+        }
       }
     }
   }
