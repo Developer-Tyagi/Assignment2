@@ -366,10 +366,6 @@
                   id="card-name"
                   autocomplete="cc-name"
                   placeholder="Enter Name on Card"
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Enter Name on Card'
-                  ]"
                 />
 
                 <div class="row">
@@ -1114,10 +1110,6 @@
                   id="card-name"
                   autocomplete="cc-name"
                   placeholder="Enter Name on Card"
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Enter Name on Card'
-                  ]"
                 />
 
                 <div class="row">
