@@ -272,7 +272,7 @@
           <div class="col-4">
             <div class="q-mt-lg">
               <q-btn
-                v-if="this.checkConnection == true"
+                v-if="this.checkConnection == false"
                 @click="onRedirectToGoogleAuth()"
                 class="row q-py-sm q-px-xl"
                 style="
@@ -901,7 +901,7 @@ export default {
       },
       editCompanyDetails: true,
       dialCode: '',
-      checkConnection: true
+      checkConnection: false
     };
   },
   methods: {
