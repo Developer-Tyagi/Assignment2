@@ -272,9 +272,8 @@
           <div class="col-4">
             <div class="q-mt-lg">
               <q-btn
+                v-if="this.checkConnection == true"
                 @click="onRedirectToGoogleAuth()"
-                :flat="checkConnection == false"
-                :style="checkConnection == true ? 'background: #D1FADF' : ''"
                 class="row q-py-sm q-px-xl"
                 style="
                   width: 440px;
@@ -282,27 +281,35 @@
                   border-radius: 10px;
                 "
               >
-                <q-avatar v-if="checkConnection == false">
+                <q-avatar>
                   <q-img
                     class="col"
                     :src="getImage('logos_google-drive.svg')"
                   />
                 </q-avatar>
-                <span
-                  v-if="checkConnection == false"
-                  class="col q-ml-xs text-subtitle1 fontWeight500"
+                <span class="col q-ml-xs text-subtitle1 fontWeight500"
                   >Connect Google Drive</span
                 >
-                <span
-                  v-else
-                  class="col text-subtitle1 fontWeight500"
-                  style="color: #039855"
-                  >Connected to Google Drive</span
-                >
-                <span v-if="checkConnection == true">
-                  <q-btn round flat icon="task_alt" color="teal" size="14px" />
-                </span>
               </q-btn>
+              <div
+                v-else
+                class="row justify-center"
+                style="
+                  width: 350px;
+                  height: 45px;
+                  border: solid 1px #039855;
+                  background-color: #d1fadf;
+                  border-radius: 10px;
+                "
+              >
+                <span
+                  class="q-pt-sm text-center text-subtitle1 fontWeight500"
+                  style="color: #039855"
+                  >Connected to Google Drive
+                  <span>
+                    <q-icon name="task_alt" color="teal" size="sm" /> </span
+                ></span>
+              </div>
             </div>
           </div>
 
@@ -613,6 +620,7 @@
                         input-class="text-subtitle1"
                         outlined
                         v-model="companyDetails.contactNumber"
+                        maxlength="10"
                         lazy-rules
                         :rules="[
                           val => val.length > 0 || 'Please add contact number',
@@ -703,33 +711,44 @@
           <div>
             <div class="q-mt-lg">
               <q-btn
-                size="md"
+                v-if="this.checkConnection == true"
                 @click="onRedirectToGoogleAuth()"
-                :flat="checkConnection == false"
-                :style="checkConnection == true ? 'background: #D1FADF' : ''"
-                class="q-px-lg q-mb-xl"
-                style="border: 2px solid black; border-radius: 10px"
+                class="row q-py-sm q-px-xl"
+                style="
+                  width: 440px;
+                  border: 2px solid black;
+                  border-radius: 10px;
+                "
               >
-                <q-avatar v-if="checkConnection == false">
-                  <q-icon color="primary" size="sm">
-                    <q-img :src="getImage('logos_google-drive.svg')" />
-                  </q-icon>
+                <q-avatar>
+                  <q-img
+                    class="col"
+                    :src="getImage('logos_google-drive.svg')"
+                  />
                 </q-avatar>
-                <span
-                  v-if="checkConnection == false"
-                  class="q-ml-xs fontWeight500"
+                <span class="col q-ml-xs text-subtitle1 fontWeight500"
                   >Connect Google Drive</span
                 >
-                <span
-                  v-else
-                  class="col text-subtitle1 fontWeight500"
-                  style="color: #039855"
-                  >Connected to Google Drive</span
-                >
-                <span v-if="checkConnection == true">
-                  <q-btn round flat icon="task_alt" color="teal" size="14px" />
-                </span>
               </q-btn>
+              <div
+                v-else
+                class="row justify-center"
+                style="
+                  width: 350px;
+                  height: 45px;
+                  border: solid 1px #039855;
+                  background-color: #d1fadf;
+                  border-radius: 10px;
+                "
+              >
+                <span
+                  class="q-pt-sm text-center text-subtitle1 fontWeight500"
+                  style="color: #039855"
+                  >Connected to Google Drive
+                  <span>
+                    <q-icon name="task_alt" color="teal" size="sm" /> </span
+                ></span>
+              </div>
             </div>
           </div>
 
