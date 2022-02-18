@@ -89,7 +89,10 @@ export default {
   },
   async mounted() {
     let data = await this.getUserInfo();
-    if (data.attributes.onboard.isCompleted == false) {
+    if (
+      data.attributes.onboard.isCompleted == false &&
+      $route.name != 'setup'
+    ) {
       this.$router.push('/setup');
     }
   },
