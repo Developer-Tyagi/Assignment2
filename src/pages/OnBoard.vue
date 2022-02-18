@@ -3,7 +3,7 @@
     <div v-if="!isMobile()" class="row" style="height: calc(100vh - 125px)">
       <div class="col-3 q-px-xl q-pt-lg" style="background-color: #f9e7d8">
         <div class="fontWeight600 text-h5 q-pt-sm">Account Setup</div>
-        <div>
+        <!-- <div>
           <q-stepper
             class="no-shadow text-bold"
             v-model="step"
@@ -37,6 +37,69 @@
             >
             </q-step>
           </q-stepper>
+        </div> -->
+        <!-- custom stepper -->
+        <div class="column q-mt-md">
+          <div class="col">
+            <div class="row">
+              <q-icon
+                v-if="step == 0"
+                name="adjust"
+                color="primary"
+                size="md"
+              />
+              <q-icon v-if="step == 1" color="primary" size="md">
+                <q-img :src="getImage('step_active.svg')" />
+              </q-icon>
+              <q-icon class="q-ml-xs" v-if="step > 1" color="primary" size="sm">
+                <q-img :src="getImage('step_done.svg')" />
+              </q-icon>
+              <div class="q-ml-sm">
+                <div>Step 1</div>
+                <div class="text-grey">Add Your Company Details</div>
+              </div>
+            </div>
+            <div
+              class="q-ml-md"
+              style="border-left: 2px solid #ef5926; height: 40px"
+            ></div>
+          </div>
+          <div class="col q-mt-sm">
+            <div class="row">
+              <q-icon v-if="step < 2" name="adjust" color="primary" size="md" />
+              <q-icon v-if="step == 2" color="primary" size="md">
+                <q-img :src="getImage('step_active.svg')" />
+              </q-icon>
+              <q-icon class="q-ml-xs" v-if="step > 2" color="primary" size="sm">
+                <q-img :src="getImage('step_done.svg')" />
+              </q-icon>
+              <div class="q-ml-sm">
+                <div>Step 2</div>
+                <div class="text-grey">Connect With Google Drive</div>
+              </div>
+            </div>
+            <div
+              class="q-ml-md"
+              style="border-left: 2px solid #ef5926; height: 40px"
+            ></div>
+          </div>
+          <div class="col q-mt-sm">
+            <div class="row">
+              <q-icon v-if="step < 3" name="adjust" color="primary" size="md" />
+              <q-icon v-if="step == 3" color="primary" size="md">
+                <q-img :src="getImage('step_active.svg')" />
+              </q-icon>
+              <q-icon class="q-ml-xs" v-if="step > 3" color="primary" size="sm">
+                <q-img :src="getImage('step_done.svg')" />
+              </q-icon>
+              <div class="q-ml-sm">
+                <div>Step 3</div>
+                <div class="text-grey">
+                  Add PhotoID Account Details (optional)
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-9 q-px-xl">
@@ -385,42 +448,93 @@
       <div class="col q-pt-lg" style="background-color: #f9e7d8">
         <div class="fontWeight600 text-h5 q-pl-md">Account Setup</div>
         <div class="">
-          <q-stepper
-            class="no-shadow text-bold"
-            v-model="step"
-            vertical
-            color="primary"
-            inactive-color="primary"
-            inactive-icon="adjust"
-            active-icon="circle"
-            animated
-            style="background-color: #f9e7d8"
-          >
-            <q-step
-              :name="1"
-              title="Step 1"
-              icon="circle"
-              caption=" Add Your Company Details"
-              :done="step > 1"
-            />
-
-            <q-step
-              :name="2"
-              title="Step 2"
-              caption="Connect With Google Drive"
-              icon="circle"
-              :done="step > 2"
-            />
-
-            <q-step
-              :name="3"
-              title="Step 3"
-              icon="circle"
-              caption="Add PhotoID Account Details (optional)"
-              :done="step > 3"
-            >
-            </q-step>
-          </q-stepper>
+          <div class="column q-mt-md q-pl-md q-pb-lg">
+            <div class="col">
+              <div class="row">
+                <q-icon
+                  v-if="step == 0"
+                  name="adjust"
+                  color="primary"
+                  size="md"
+                />
+                <q-icon v-if="step == 1" color="primary" size="md">
+                  <q-img :src="getImage('step_active.svg')" />
+                </q-icon>
+                <q-icon
+                  class="q-ml-xs"
+                  v-if="step > 1"
+                  color="primary"
+                  size="sm"
+                >
+                  <q-img :src="getImage('step_done.svg')" />
+                </q-icon>
+                <div class="q-ml-sm">
+                  <div>Step 1</div>
+                  <div class="text-grey">Add Your Company Details</div>
+                </div>
+              </div>
+              <div
+                class="q-ml-md"
+                style="border-left: 2px solid #ef5926; height: 40px"
+              ></div>
+            </div>
+            <div class="col q-mt-sm">
+              <div class="row">
+                <q-icon
+                  v-if="step < 2"
+                  name="adjust"
+                  color="primary"
+                  size="md"
+                />
+                <q-icon v-if="step == 2" color="primary" size="md">
+                  <q-img :src="getImage('step_active.svg')" />
+                </q-icon>
+                <q-icon
+                  class="q-ml-xs"
+                  v-if="step > 2"
+                  color="primary"
+                  size="sm"
+                >
+                  <q-img :src="getImage('step_done.svg')" />
+                </q-icon>
+                <div class="q-ml-sm">
+                  <div>Step 2</div>
+                  <div class="text-grey">Connect With Google Drive</div>
+                </div>
+              </div>
+              <div
+                class="q-ml-md"
+                style="border-left: 2px solid #ef5926; height: 40px"
+              ></div>
+            </div>
+            <div class="col q-mt-sm">
+              <div class="row">
+                <q-icon
+                  v-if="step < 3"
+                  name="adjust"
+                  color="primary"
+                  size="md"
+                />
+                <q-icon v-if="step == 3" color="primary" size="md">
+                  <q-img :src="getImage('step_active.svg')" />
+                </q-icon>
+                <q-icon
+                  class="q-ml-xs"
+                  v-if="step > 3"
+                  color="primary"
+                  size="sm"
+                >
+                  <q-img :src="getImage('step_done.svg')" />
+                </q-icon>
+                <div class="q-ml-sm">
+                  <div>Step 3</div>
+                  <div class="text-grey">
+                    Add PhotoID Account Details (optional)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="col q-pa-sm">
@@ -454,7 +568,7 @@
             />
           </div>
         </div>
-        <div v-if="step == 1">
+        <div v-if="step == 1" class="q-px-md">
           <div class="q-mt-md" style="border-radius: 20px">
             <div class="justify-between">
               <div class="text-h5 fontWeight600">Company Details</div>
@@ -573,12 +687,12 @@
             </div>
           </div>
         </div>
-        <div v-if="step == 2">
+        <div v-if="step == 2" class="q-px-md">
           <div class="text-h5 fontWeight600 text-bold q-mt-lg">
             Connect With Google Drive
           </div>
           <div
-            class="q-mt-lg fontWeight400 text-subtitle1 text-grey"
+            class="q-mt-lg fontWeight400 q-mb-md text-grey"
             style="color: #667085"
           >
             In order to provide full access to ClaimGuru, we need permission to
@@ -589,21 +703,21 @@
           <div>
             <div class="q-mt-lg">
               <q-btn
+                size="md"
                 @click="onRedirectToGoogleAuth()"
                 :flat="checkConnection == false"
                 :style="checkConnection == true ? 'background: #D1FADF' : ''"
-                class="row q-py-sm q-px-xl"
+                class="q-px-lg q-mb-xl"
                 style="border: 2px solid black; border-radius: 10px"
               >
                 <q-avatar v-if="checkConnection == false">
-                  <q-img
-                    class="col"
-                    :src="getImage('logos_google-drive.svg')"
-                  />
+                  <q-icon color="primary" size="sm">
+                    <q-img :src="getImage('logos_google-drive.svg')" />
+                  </q-icon>
                 </q-avatar>
                 <span
                   v-if="checkConnection == false"
-                  class="col q-ml-xs fontWeight500 text-subtitle1"
+                  class="q-ml-xs fontWeight500"
                   >Connect Google Drive</span
                 >
                 <span
@@ -640,11 +754,11 @@
             </div>
           </div>
         </div>
-        <div v-if="step == 3">
+        <div v-if="step == 3" class="q-px-md">
           <div class="text-h5 fontWeight600 q-mt-lg">
             PhotoID Account Details
           </div>
-          <div class="column q-mt-lg fontWeight400 text-subtitle1 text-grey">
+          <div class="column q-mt-lg fontWeight400 text-grey">
             <div class="text-justify">
               If you are currently a PhotoID user, please complete your
               information below.
@@ -768,7 +882,7 @@ export default {
       },
       editCompanyDetails: true,
       dialCode: '',
-      checkConnection: false
+      checkConnection: true
     };
   },
   methods: {
@@ -849,6 +963,7 @@ export default {
     ...mapGetters(['organization'])
   },
   async created() {
+    this.step = 0;
     await this.getOrganization();
     if (this.organization) {
       this.companyDetails.name = this.organization.name;
