@@ -104,6 +104,12 @@ const routes = [
         component: () => import('pages/Reports.vue')
       },
       {
+        path: 'billing',
+        name: 'billing',
+        caseSensitive: true,
+        component: () => import('pages/Billing.vue')
+      },
+      {
         path: 'account',
         name: 'account',
         caseSensitive: true,

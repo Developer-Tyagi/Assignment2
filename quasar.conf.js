@@ -5,7 +5,7 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 const path = require('path');
-module.exports = function(/* ctx */) {
+module.exports = function (/* ctx */) {
   return {
     //remove this as per the requirement
     bin: {
@@ -90,7 +90,7 @@ module.exports = function(/* ctx */) {
       // components: [],
       // directives: [],
       // Quasar plugins
-      plugins: ['Loading', 'Notify', 'LocalStorage', 'Dialog']
+      plugins: ['Loading', 'Notify', 'LocalStorage', 'Dialog', 'Screen']
     },
     // animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations
