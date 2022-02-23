@@ -274,7 +274,7 @@
       >
         <div class="full-height" style="background-color: #f9e7d8">
           <div class="col-2 q-mb-lg">
-            <div v-if="miniState" class="row items-center">
+            <!-- <div v-if="miniState" class="row items-center">
               <div class="col q-ml-md q-py-md">
                 <q-btn
                   dense
@@ -285,9 +285,9 @@
                   @click="webDrawerCollapse()"
                 />
               </div>
-            </div>
-            <div class="row items-center" v-else>
-              <div v-if="!miniState" class="col-2 q-ml-md">
+            </div> -->
+            <div class="row justify-center">
+              <!-- <div v-if="!miniState" class="col-2 q-ml-md">
                 <q-btn
                   dense
                   round
@@ -296,8 +296,8 @@
                   icon="chevron_left"
                   @click="webDrawerCollapse()"
                 />
-              </div>
-              <div class="col">
+              </div> -->
+              <div class="col-6">
                 <q-img
                   class="web-menu-claim-guru-logo"
                   :src="getImage('claimguru_new_logo.png')"
@@ -325,7 +325,7 @@
               </div>
             </div>
             <div v-else>
-              <q-scroll-area style="height: 80vh">
+              <q-scroll-area style="height: 65vh">
                 <q-list>
                   <q-item
                     v-for="(menuItem, index) in linksDataForWebDrawer"
@@ -367,8 +367,14 @@
                           :key="index"
                         >
                           <q-item-section
-                            class="q-ml-xl col-11 cursor-pointer text-subtitle2"
+                            class="q-ml-sm col-11 cursor-pointer text-subtitle2"
                             clickable
+                            :class="
+                              subOptionSelected.key == subMenuOption.key &&
+                              webSubOptionMenuTab != ''
+                                ? 'underlineItem'
+                                : ''
+                            "
                             @click="
                               openSubOptionMenuItem(
                                 subMenuOption,
@@ -385,7 +391,7 @@
                                 webSubOptionMenuTab != ''
                               "
                             >
-                              <q-separator style="background: #ef5926" />
+                              <!-- <q-separator style="background: #ef5926" /> -->
                             </div>
                           </q-item-section>
                         </q-item>
@@ -426,17 +432,44 @@
                   </q-item>
                 </q-list>
 
-                <div class="q-mt-xl q-ml-xl q-pt-xl">
+                <!-- <div class="q-mt-xl q-ml-xl q-pt-xl">
                   <div class="row cursor-pointer" @click="logout()">
                     <div class="q-mt-xs text-subtitle2">Logout</div>
                     <q-icon size="sm" class="q-ml-xl">
                       <q-img :src="getImage('log_out.svg')" color="grey-4" />
                     </q-icon>
                   </div>
-                </div>
+                </div> -->
               </q-scroll-area>
             </div>
           </div>
+          <div class="col">
+            <div
+              class="q-mx-md bg-white text-center q-py-sm"
+              style="border-radius: 10px"
+            >
+              Download Mobile App
+
+              <div class="q-px-md">
+                <q-img
+                  class="web-menu-claim-guru-logo"
+                  :src="getImage('Mobile_app_store_badge.svg')"
+                />
+              </div>
+              <div class="q-px-md">
+                <a
+                  target="_blank"
+                  href="https://play.google.com/store/apps/details?id=com.claimguru.app"
+                >
+                  <q-img
+                    class="web-menu-claim-guru-logo"
+                    :src="getImage('Mobile_app_store_badge-1.svg')"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col"></div>
         </div>
       </q-drawer>
     </div>
@@ -554,35 +587,49 @@ export default {
           subOption: [
             { name: 'Account Summary', key: 'accountSummary' },
             { name: 'Group Permission ', key: 'groupPermission' },
-            { name: ' Automation', key: 'actionItems' }
+            // { name: ' Automation', key: 'actionItems' },
+            {
+              name: 'Global Data Management',
+              key: 'global-data-management',
+              link: '/configuration',
+              subOption: [{ name: 'Template', key: 'template' }],
+              icon: 'configuration_big.svg',
+              description: 'View, Add and Manage all types of configuration.'
+            },
+            // Change the path to template later
+            {
+              name: 'Templates',
+              key: 'templates',
+              link: '/manage-users',
+              icon: 'manage_users_big.svg',
+              description: 'View, Add and Manage all types of Vendors.'
+            },
+            {
+              name: 'Manage Users',
+              key: 'manage-users',
+              link: '/manage-users',
+              icon: 'manage_users_big.svg',
+              description: 'View, Add and Manage all types of Vendors.'
+            },
+            {
+              name: 'Reports',
+              key: 'reports',
+              link: '/reports',
+              icon: 'reports_menu.svg',
+              description: 'Download files.'
+            },
+            // Change the path to billing later
+            {
+              name: 'Billing',
+              key: 'billing',
+              link: '/reports',
+              icon: 'reports_menu.svg',
+              description: 'Download files.'
+            }
           ],
           icon: 'admin_big.svg',
           description: 'Setup Company , account, email, actions etc.'
-        },
-        {
-          title: 'Configuration',
-          key: 'configuration',
-          link: '/configuration',
-          subOption: [{ name: 'Template', key: 'template' }],
-          icon: 'configuration_big.svg',
-          description: 'View, Add and Manage all types of configuration.'
-        },
-
-        {
-          title: 'Manage Users',
-          key: 'manage-users',
-          link: '/manage-users',
-          icon: 'manage_users_big.svg',
-          description: 'View, Add and Manage all types of Vendors.'
-        },
-        {
-          title: 'Reports',
-          key: 'reports',
-          link: '/reports',
-          icon: 'reports_menu.svg',
-          description: 'Download files.'
         }
-
         // Hiding Profile for now , if we need this in future we can unhide it.
         // {
         //   title: 'Profile',
@@ -669,8 +716,12 @@ export default {
     },
     // function is used to open the suboption menu item for web.
     openSubOptionMenuItem(key, link, menuItem) {
+      console.log('menuItem', menuItem);
+      console.log('link', link);
+      console.log('key', key);
+
       this.breadcrumbsData.menuItemTitle = menuItem.title;
-      this.breadcrumbsData.menuItemLink = menuItem.link;
+      this.breadcrumbsData.menuItemLink = key.link;
       this.breadcrumbsData.subItemTitle = key.name;
       this.breadcrumbsData.menuItem = menuItem;
       this.subOptionSelected = key;
@@ -934,5 +985,10 @@ export default {
 }
 .q-item__section--avatar {
   min-width: 0px;
+}
+.underlineItem {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #ef5926;
 }
 </style>
