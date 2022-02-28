@@ -712,11 +712,7 @@
                 v-if="this.checkConnection == false"
                 @click="onRedirectToGoogleAuth()"
                 class="row q-py-sm q-px-xl"
-                style="
-                  width: 440px;
-                  border: 2px solid black;
-                  border-radius: 10px;
-                "
+                style="border: 2px solid black; border-radius: 10px"
               >
                 <q-avatar>
                   <q-img
