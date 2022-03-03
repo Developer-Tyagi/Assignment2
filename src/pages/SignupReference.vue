@@ -158,7 +158,12 @@
               <div
                 class="col text-subtitle1 fontWeight500 col-3 q-pt-sm text-right"
               >
-                <a class="text-deep-orange" href="">Contact us</a>
+                <a class="text-deep-orange" style="font-size: 14px"
+                  >Contact us
+                  <q-tooltip
+                    >Email us at subscription@claimguru.com
+                  </q-tooltip></a
+                >
               </div>
             </div>
             <div class="col-auto row q-px-xl q-my-lg">
@@ -861,9 +866,9 @@
                     Enterprise Subscription
                   </div>
                   <div class="text-h6 fontWeight500 col-3 q-pt-sm text-center">
-                    <a class="" href="" style="color: #ef5926; font-size: 14px"
-                      >Contact us</a
-                    >
+                    <a class="" style="color: #ef5926; font-size: 14px" href="">
+                      Contact us
+                    </a>
                   </div>
                 </div>
 
@@ -900,12 +905,9 @@
                     <div
                       class="text-h6 fontWeight500 col-3 q-pt-sm text-center"
                     >
-                      <a
-                        class=""
-                        style="font-size: 14px; color: #ef5926"
-                        href=""
-                        >Contact us</a
-                      >
+                      <a class="" style="font-size: 14px; color: #ef5926"
+                        >Contact us
+                      </a>
                     </div>
                   </div>
 
@@ -1084,6 +1086,7 @@
                   Individual Package
                 </div>
                 <div class="q-mt-lg"></div>
+                <div id="card-errors" class="q-my-lg"></div>
                 <label class="text-subtitle1 text-weight-bold"
                   >Card Number</label
                 >
@@ -1211,7 +1214,13 @@ export default {
         type: constants.ORGANIZATION,
         company: {
           name: '',
-          plan: {}
+          plan: {
+            value: 'Firm Package',
+            machineValue: 'firm_package',
+            stripePriceID: 'price_1KRbkoEK8DUf1aFSK6zeWcfk',
+            stripeProductID: 'prod_L7rTDXkekxbZsk',
+            trialPeriodDays: 30
+          }
         },
         user: {
           email: '',
@@ -1240,7 +1249,7 @@ export default {
       cardExpiry: '',
       cardCvc: '',
       isPackageSelected: {
-        id1: '',
+        id1: true,
         id2: ''
       },
       displayErrors: '',
