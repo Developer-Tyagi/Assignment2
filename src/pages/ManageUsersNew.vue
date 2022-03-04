@@ -2,15 +2,11 @@
   <q-page class="poppinsFont">
     <div class="text-h5 fontWeight600">Manage Users</div>
 
-    <div class="row">
-      <!-- payment method -->
-    </div>
     <!-- additional user -->
     <div
       class="col q-mt-lg q-pt-lg q-px-md"
       style="
         min-width: 345px;
-
         border: 1px solid #e8e9ec;
         border-radius: 10px;
         box-shadow: 0px 2px 4px -2px rgba(16, 24, 40, 0.06);
@@ -24,7 +20,7 @@
           </span>
           <span class="fontWeight600 text-h5 q-mr-xs">4/6</span>
         </div>
-        <div class="col-md-3 col-sm-12 col-xs-12">
+        <div class="col-md-2 col-sm-12 col-xs-12">
           <span class="fontWeight600 text-h5 q-mr-xs" style="color: #667085">
             Office Staff
           </span>
@@ -42,7 +38,7 @@
           </span>
           <span class="fontWeight600 text-h5 q-mr-xs">9</span>
         </div>
-        <div class="col-md-2 col-sm-12 col-xs-12">
+        <div class="col-md-3 col-sm-12 col-xs-12">
           <q-btn
             class="q-mr-md fontWeight600 text-subtitle1"
             no-caps
@@ -94,18 +90,71 @@
               class="col-2 q-mr-md q-pl-md q-py-md fontWeight500 text-grey1"
               >{{ order[2] }}</span
             >
-            <span
+            <!-- <span
               class="col-2 q-mr-md q-pl-md q-py-md fontWeight500 text-grey1 text-caption"
               >{{ order[3] }}</span
-            >
-            <!-- <span class="col-1 q-mr-md q-pl-lg q-py-md fontWeight500">
-              <q-icon size="sm">
-                <q-img
-                  class="q-mb-xs q-mr-sm"
-                  :src="getImage('download_cloud.svg')"
-                />
-              </q-icon>
-            </span> -->
+            > -->
+            <span class="col-1 q-mr-md q-pl-lg q-py-md fontWeight500">
+              <q-btn flat>
+                <q-icon size="12px">
+                  <q-img
+                    class="q-mb-xs q-mr-sm"
+                    :src="getImage('showModalPopup.svg')"
+                  />
+                </q-icon>
+                <q-menu style="border-radius: 10px">
+                  <q-list style="min-width: 120px">
+                    <q-item clickable v-close-popup>
+                      <q-item-section avatar>
+                        <q-icon size="30px">
+                          <q-img
+                            class="q-mb-xs q-mr-sm"
+                            :src="getImage('ViewDetails.svg')"
+                          />
+                        </q-icon>
+                      </q-item-section>
+                      <q-item-section>View Details</q-item-section>
+                    </q-item>
+                    <q-separator />
+                    <q-item clickable v-close-popup>
+                      <q-item-section avatar>
+                        <q-icon size="30px">
+                          <q-img
+                            class="q-mb-xs q-mr-sm"
+                            :src="getImage('EditDetails.svg')"
+                          />
+                        </q-icon>
+                      </q-item-section>
+                      <q-item-section>Edit Details</q-item-section>
+                    </q-item>
+                    <q-separator />
+                    <q-item clickable v-close-popup>
+                      <q-item-section avatar>
+                        <q-icon size="30px">
+                          <q-img
+                            class="q-mb-xs q-mr-sm"
+                            :src="getImage('DisableUser.svg')"
+                          />
+                        </q-icon>
+                      </q-item-section>
+                      <q-item-section>Disable user</q-item-section>
+                    </q-item>
+                    <q-separator />
+                    <q-item clickable v-close-popup>
+                      <q-item-section avatar>
+                        <q-icon size="30px">
+                          <q-img
+                            class="q-mb-xs q-mr-sm"
+                            :src="getImage('ResetPassword.svg')"
+                          />
+                        </q-icon>
+                      </q-item-section>
+                      <q-item-section>Reset Password</q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-menu>
+              </q-btn>
+            </span>
           </div>
         </div>
       </div>
@@ -116,7 +165,74 @@
             <span class="q-mr-md">{{ order[1] }}</span>
             <span class="q-mr-md">{{ order[2] }}</span>
             <span class="q-mr-md">{{ order[3] }}</span>
-            <span>{{ order[4] }}</span>
+            <span class="col-1 q-mr-md q-pl-lg q-py-md fontWeight500">
+              <q-btn flat>
+                <q-icon size="12px">
+                  <q-img
+                    class="q-mb-xs q-mr-sm"
+                    :src="getImage('showModalPopup.svg')"
+                  />
+                </q-icon>
+                <q-menu style="border-radius: 10px">
+                  <q-list style="min-width: 120px">
+                    <q-item clickable v-close-popup>
+                      <q-item-section avatar>
+                        <q-icon size="30px">
+                          <q-img
+                            class="q-mb-xs q-mr-sm"
+                            :src="getImage('ViewDetails.svg')"
+                          />
+                        </q-icon>
+                      </q-item-section>
+                      <q-item-section>View Details</q-item-section>
+                    </q-item>
+                    <q-separator />
+                    <q-item clickable v-close-popup>
+                      <q-item-section avatar>
+                        <q-icon size="30px">
+                          <q-img
+                            class="q-mb-xs q-mr-sm"
+                            :src="getImage('EditDetails.svg')"
+                          />
+                        </q-icon>
+                      </q-item-section>
+                      <q-item-section>Edit Details</q-item-section>
+                    </q-item>
+                    <q-separator />
+                    <q-item clickable v-close-popup>
+                      <q-item-section avatar>
+                        <q-icon size="30px">
+                          <q-img
+                            class="q-mb-xs q-mr-sm"
+                            :src="getImage('DisableUser.svg')"
+                          />
+                        </q-icon>
+                      </q-item-section>
+                      <q-item-section>Disable user</q-item-section>
+                    </q-item>
+                    <q-separator />
+                    <q-item clickable v-close-popup>
+                      <q-item-section avatar>
+                        <q-icon size="30px">
+                          <q-img
+                            class="q-mb-xs q-mr-sm"
+                            :src="getImage('ResetPassword.svg')"
+                          />
+                        </q-icon>
+                      </q-item-section>
+                      <q-item-section>Reset Password</q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-menu>
+              </q-btn>
+              <!-- <q-btn>
+                <img
+                  class="profile"
+                  size="12px"
+                  :src="getImage('showModalPopup.svg')"
+                />
+              </q-btn> -->
+            </span>
           </div>
         </div>
       </div>
@@ -170,7 +286,8 @@ export default {
       cardData: {},
       paginationValue: 1,
       totalPaginationPages: 10,
-      totalRecordsPerPage: 8
+      totalRecordsPerPage: 8,
+      showing: false
     };
   },
   methods: {
