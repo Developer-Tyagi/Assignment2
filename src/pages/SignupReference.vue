@@ -943,7 +943,6 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { constants } from '@utils/constant';
 import { validateEmail } from '@utils/validation';
 import { isMobile } from '@utils/common';
-import { getToken, getCurrentUser } from '@utils/auth';
 
 export default {
   data() {
