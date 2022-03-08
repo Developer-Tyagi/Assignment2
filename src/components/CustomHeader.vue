@@ -169,7 +169,7 @@
         </div>
       </div>
       <q-separator />
-      <!-- general header will be removed once web portal is completed -->
+
       <div
         v-if="!isMobile() && $route.name !== 'setup' && !$q.screen.lt.sm"
         class="q-px-xl q-ml-lg q-mt-sm q-pt-xs"
