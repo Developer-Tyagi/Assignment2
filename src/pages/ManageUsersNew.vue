@@ -65,13 +65,13 @@
           <span class="col-3 q-mr-md q-pl-md q-py-md fontWeight500 text-grey1"
             >Name</span
           >
-          <span class="col-4 q-pl-md q-mr-md q-py-md fontWeight500 text-grey1"
+          <span class="col-3 q-pl-md q-mr-md q-py-md fontWeight500 text-grey1"
             >Email</span
           >
-          <span class="col-3 q-pl-md q-mr-md q-py-md fontWeight500 text-grey1"
+          <span class="col-2 q-pl-md q-mr-md q-py-md fontWeight500 text-grey1"
             >Role</span
           >
-          <span class="col-1 q-pl-md q-mr-md q-py-md fontWeight500 text-grey1"
+          <span class="col-2 q-pl-md q-mr-md q-py-md fontWeight500 text-grey1"
             >Action</span
           >
         </div>
@@ -81,149 +81,42 @@
         v-if="$q.screen.gt.sm"
         style="border-bottom: 1px solid #e4e7ec"
       >
-        <div v-for="user in allUsers">
+        <div v-for="(order, index) in orders" :key="index">
           <div class="row" style="border-bottom: 1px solid #e4e7ec">
-            <span class="col-3 q-mr-md q-mt-md q-pl-md q-py-sm fontWeight500"
-              >{{
-                user.attributes.contact.fname
-                  ? user.attributes.contact.fname
-                  : '-'
-              }}
-              {{ user.attributes.contact.lname }}</span
+            <span class="col-3 q-mr-md q-pl-md q-py-md fontWeight500">{{
+              order[0]
+            }}</span>
+            <span
+              class="col-3 q-mr-md q-pl-md q-py-md fontWeight500 text-grey1"
+              >{{ order[1] }}</span
             >
             <span
-              class="col-4 q-mr-md q-mt-md q-pl-md q-py-sm fontWeight500 text-grey1"
-              >{{ user.attributes.email }}</span
+              class="col-2 q-mr-md q-pl-md q-py-md fontWeight500 text-grey1"
+              >{{ order[2] }}</span
             >
             <span
-              class="col-3 q-mr-md q-mt-md q-pl-md q-py-sm fontWeight500 text-grey1"
-              >{{
-                user.attributes.roles ? user.attributes.roles[0].value : '-'
-              }}</span
+              class="col-2 q-mr-md q-pl-md q-py-md fontWeight500 text-grey1 text-caption"
+              >{{ order[3] }}</span
             >
-            <span class="col-1 q-mr-md q-pl-md q-py-md fontWeight500">
-              <q-btn flat round icon="more_vert">
-                <q-menu>
-                  <q-list
-                    style="min-width: 100px"
-                    class="poppinsFont fontWeight400"
-                  >
-                    <q-item clickable v-close-popup @click="confirm_dia = true">
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('eye.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>View Details</q-item-section>
-                    </q-item>
-                    <q-item clickable v-close-popup>
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('edit-3.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Edit Details</q-item-section>
-                    </q-item>
-                    <q-item clickable v-close-popup>
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('user-x.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Disable User</q-item-section>
-                    </q-item>
-                    <!-- Add vif -->
-                    <q-item clickable v-close-popup>
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('user-check.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Activate User</q-item-section>
-                    </q-item>
-                    <q-item clickable v-close-popup>
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('lock.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Reset Password</q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-menu>
-              </q-btn>
-            </span>
+            <!-- <span class="col-1 q-mr-md q-pl-lg q-py-md fontWeight500">
+              <q-icon size="sm">
+                <q-img
+                  class="q-mb-xs q-mr-sm"
+                  :src="getImage('download_cloud.svg')"
+                />
+              </q-icon>
+            </span> -->
           </div>
         </div>
       </div>
       <div v-else class="col-12">
-        <div v-for="user in allUsers">
-          <div>
-            {{
-              user.attributes.contact.fname
-                ? user.attributes.contact.fname
-                : '-'
-            }}
-            {{ user.attributes.contact.lname }}
-          </div>
+        <div v-for="order in orders" :key="order[0]">
+          <div>{{ order[0] }}</div>
           <div class="q-mt-md" style="border-bottom: 1px solid #e4e7ec">
-            <span class="q-mr-md">{{ user.attributes.email }}</span>
-            <span class="q-mr-md">{{
-              user.attributes.roles ? user.attributes.roles[0].value : '-'
-            }}</span>
+            <span class="q-mr-md">{{ order[1] }}</span>
+            <span class="q-mr-md">{{ order[2] }}</span>
             <span class="q-mr-md">{{ order[3] }}</span>
-            <span class="col-1 q-mr-md q-pl-md q-py-md fontWeight500">
-              <q-btn flat round icon="more_vert">
-                <q-menu>
-                  <q-list
-                    style="min-width: 100px"
-                    class="poppinsFont fontWeight400"
-                  >
-                    <q-item clickable v-close-popup @click="confirm_dia = true">
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('eye.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>View Details</q-item-section>
-                    </q-item>
-                    <q-item clickable v-close-popup>
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('edit-3.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Edit Details</q-item-section>
-                    </q-item>
-                    <q-item clickable v-close-popup>
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('user-x.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Disable User</q-item-section>
-                    </q-item>
-                    <!-- Add vif -->
-                    <q-item clickable v-close-popup>
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('user-check.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Activate User</q-item-section>
-                    </q-item>
-                    <q-item clickable v-close-popup>
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('lock.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Reset Password</q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-menu>
-              </q-btn>
-            </span>
+            <span>{{ order[4] }}</span>
           </div>
         </div>
       </div>
@@ -252,62 +145,6 @@
           </q-icon>
         </div>
       </div>
-      <q-dialog v-model="confirm_dia" persistent>
-        <q-card class="poppinsFont">
-          <q-card-section class="col-2 items-center">
-            <span class="q-ml-sm fontWeight600 fontSize20">User Details</span>
-          </q-card-section>
-          <q-card-section class="row items-center fontSize16 q-pa-sm">
-            <span class="col-4 q-ml-sm fontWeight600">First name</span>
-            <span class="col-7 q-ml-sm fontWeight400">Austin</span>
-          </q-card-section>
-          <q-card-section class="row items-center fontSize16 q-pa-sm">
-            <span class="col-4 q-ml-sm fontWeight600">Last name</span>
-            <span class="col-7 q-ml-sm fontWeight400">McBroom</span>
-          </q-card-section>
-          <q-card-section class="row items-center fontSize16 q-pa-sm">
-            <span class="col-4 q-ml-sm fontWeight600">Contact</span>
-            <span class="col-7 q-ml-sm fontWeight400">+1 (123) 456 7890</span>
-          </q-card-section>
-          <q-card-section class="row items-center fontSize16 q-pa-sm">
-            <span class="col-4 q-ml-sm fontWeight600">Email</span>
-            <span class="col-7 q-ml-sm fontWeight400"
-              >austin@10xincubator.com</span
-            >
-          </q-card-section>
-          <q-card-section class="row items-center fontSize16 q-pa-sm">
-            <span class="col-4 q-ml-sm fontWeight600">User Role</span>
-            <span class="col-7 q-ml-sm fontWeight400">Claim Manager</span>
-          </q-card-section>
-          <q-card-section class="row items-center fontSize16 q-pa-sm">
-            <span class="col-4 q-ml-sm fontWeight600">Role Title</span>
-            <span class="col-7 q-ml-sm fontWeight400">Adjuster</span>
-          </q-card-section>
-          <q-card-section class="row items-center fontSize16 q-pa-sm">
-            <span class="col-4 q-ml-sm fontWeight600">PIA License</span>
-            <span class="col-7 q-ml-sm fontWeight400"
-              >GA-123456, TX-456789, NY-5478956</span
-            >
-          </q-card-section>
-
-          <q-card-actions>
-            <q-btn
-              outline
-              label="Cancel"
-              class="on-left"
-              color="primary"
-              v-close-popup
-            />
-            <q-btn
-              filled
-              label="Edit User Details"
-              class="on-right"
-              color="primary"
-              v-close-popup
-            />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
     </div>
   </q-page>
 </template>
@@ -319,15 +156,25 @@ export default {
   components: {},
   data() {
     return {
+      orders: [
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner']
+      ],
       cardData: {},
       paginationValue: 1,
       totalPaginationPages: 10,
-      totalRecordsPerPage: 7,
-      confirm_dia: false
+      totalRecordsPerPage: 8
     };
   },
   methods: {
-    ...mapActions(['getAllUsers', 'getCardInfo']),
+    ...mapActions(['getCardInfo']),
     isMobile,
     validateEmail,
     getImage(icon) {
@@ -338,14 +185,12 @@ export default {
     },
     decreasePaginationValue() {
       this.paginationValue--;
-    },
-    openMore() {}
+    }
   },
   computed: {
-    ...mapGetters(['allUsers', 'organization'])
+    ...mapGetters(['organization'])
   },
   async created() {
-    this.getAllUsers();
     this.step = 0;
     let cardInfo = await this.getCardInfo();
     this.cardData = cardInfo.attributes.cards[0];
@@ -364,14 +209,5 @@ export default {
 }
 .fontWeight400 {
   font-weight: 400;
-}
-.fontSize14 {
-  font-size: 14px;
-}
-.fontSize16 {
-  font-size: 16px;
-}
-.fontSize20 {
-  font-size: 20px;
 }
 </style>
