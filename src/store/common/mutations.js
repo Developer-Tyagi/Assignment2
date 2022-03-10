@@ -77,7 +77,10 @@ export async function setOfflineContactTypes(state) {
 }
 
 export function setPlans(state, plans) {
-  state.plans = plans.map(plan => ({ ...plan.attributes, id: plan.id }));
+  state.plans = plans.map(plan => ({
+    ...plan.attributes,
+    id: plan.attributes.id
+  }));
 }
 export function setOrganization(state, org) {
   state.organization = org.attributes;
