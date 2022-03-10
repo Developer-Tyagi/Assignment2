@@ -127,6 +127,7 @@
     </div>
     <!-- additional user -->
     <div
+      v-if="organization.plan.value == 'Firm Package'"
       class="col q-mt-lg q-pt-lg q-px-md"
       style="
         min-width: 345px;
@@ -329,6 +330,7 @@
             <div class="row justify-between q-mt-xl">
               <q-btn
                 label="Cancel"
+                v-close-popup
                 no-caps
                 outline
                 color="deep-orange"
@@ -425,8 +427,6 @@
         </div>
       </q-card>
     </q-dialog>
-
-    <!-- Add Additional User -->
   </q-page>
 </template>
 <script>
@@ -484,7 +484,10 @@ export default {
       'getCardInfo',
       'addNewCard',
       'upgradePlan',
-      'getOrgInvoices'
+      'getOrgInvoices',
+      'getRoles',
+      'getAllPlans',
+      'addAdditionalLicense'
     ]),
     ...mapMutations(['setLoading', 'setNotifications']),
     isMobile,
@@ -515,10 +518,17 @@ export default {
       const myTimeout = setTimeout(this.setPaymentPage, 0);
     },
     openAdditionalUserDialog() {
+      if (this.addAdditionalUser == true) {
+        this.addAdditionalUser = false;
+      }
       this.addAdditionalUser = true;
     },
-    CloseDialog() {
-      this.addAdditionalUser = false;
+    CloseDialog(val) {
+      if (val == false) {
+        this.addAdditionalUser = false;
+      } else {
+        this.addAdditionalUser = true;
+      }
     },
     openUpgradePlanDialog() {
       this.upgradePlanDialog = true;
@@ -617,6 +627,7 @@ export default {
         }
       };
       await this.upgradePlan(payload);
+      this.upgradePlanDialog = false;
     },
     async addExtraUser() {
       const success = await this.$refs.userInfo.validate();
@@ -679,6 +690,8 @@ export default {
       endingBefore: ''
     };
     this.getInvoices(payload);
+    await this.getRoles();
+    await this.getAllPlans();
   }
 };
 </script>
