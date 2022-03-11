@@ -143,15 +143,14 @@ export function setNotification({ commit }, notification) {
 
 // function is used for getting the list of all plans .
 export async function getAllPlans({ commit, dispatch }) {
-  dispatch('setLoading', true);
+  // dispatch('setLoading', true);
   try {
     const { data } = await request.get('/plans');
     commit('setPlans', data);
-    dispatch('setLoading', false);
+    // dispatch('setLoading', false);
     return data;
   } catch (e) {
     console.log(e);
-    dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
       message: e.response[0].title
@@ -160,12 +159,12 @@ export async function getAllPlans({ commit, dispatch }) {
 }
 
 export async function getOrgInvoices({ commit, dispatch }, payload) {
-  dispatch('setLoading', true);
+  // dispatch('setLoading', true);
   try {
     const { data, meta } = await request.get(
       `/organizations/invoices?limit=${payload.limit}&startingAfter=${payload.startingAfter}&endingBefore=${payload.endingBefore}`
     );
-    dispatch('setLoading', false);
+    // dispatch('setLoading', false);
     let dataObj = {
       data: data,
       meta: meta

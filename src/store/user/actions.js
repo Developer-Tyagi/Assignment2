@@ -656,13 +656,13 @@ export async function toRedirectGoogleAuth1({ commit, dispatch }) {
 
 // Get card details
 export async function getCardInfo({ dispatch, state }) {
-  dispatch('setLoading', true);
+  // dispatch('setLoading', true);
   try {
     const { data } = await request.get('/organizations/cards');
-    dispatch('setLoading', false);
+    // dispatch('setLoading', false);
     return data;
   } catch (e) {
-    dispatch('setLoading', false);
+    // dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
       message: e.response
