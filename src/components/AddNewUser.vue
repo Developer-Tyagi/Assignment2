@@ -394,6 +394,21 @@ export default {
     },
     passEvent() {
       //this.show = false
+      this.user = {
+        firstName: '',
+        lastName: '',
+        role: '',
+        subRole: '',
+        email: '',
+        license: [{ state: '', number: '' }]
+      };
+      this.selectedRoleObject = {
+        value: '',
+        machineValue: '',
+        isPaid: false
+      };
+      this.selectedRole = [];
+      this.selectedSubRole = [];
       this.$emit('closeUserDialog', false);
     },
     setSelectedRole(selectedRoles) {
@@ -458,6 +473,21 @@ export default {
         };
 
         await this.addUser(userPayload);
+        this.user = {
+          firstName: '',
+          lastName: '',
+          role: '',
+          subRole: '',
+          email: '',
+          license: [{ state: '', number: '' }]
+        };
+        this.selectedRoleObject = {
+          value: '',
+          machineValue: '',
+          isPaid: false
+        };
+        this.selectedRole = [];
+        this.selectedSubRole = [];
         this.$emit('closeUserDialog', false);
         this.successDialog = true;
       }

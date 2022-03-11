@@ -88,9 +88,23 @@
         >
           <div class="row q-pa-sm">
             <q-img
+              v-if="cardData.brand == 'Visa'"
               class="col-2"
               src="~assets/visa_logo.svg"
               style="height: 15%; width: 13%"
+            />
+
+            <q-img
+              v-if="cardData.brand == 'MasterCard'"
+              class="col-2"
+              src="~assets/mc_symbol.svg"
+              style="height: 13%; width: 10%; border: 1px solid #f2f4f7"
+            />
+            <q-img
+              v-if="cardData.brand == 'AmericanExpress	'"
+              class="col-2"
+              src="~assets/American_Express-Logo.wine.svg"
+              style="height: 13%; width: 10%; border: 1px solid #f2f4f7"
             />
             <div class="col-8 q-pl-xl">
               <span class="fontWeight500"
@@ -199,15 +213,26 @@
             <span class="col-4 q-pl-md q-py-md fontWeight500">{{
               '# ' + bill.id
             }}</span>
-            <span class="col-2 q-pl-md q-py-md fontWeight500 text-grey1">{{
-              bill.attributes.amountPaid
-            }}</span>
+            <span class="col-2 q-pl-md q-py-md fontWeight500 text-grey1"
+              >USD ${{ bill.attributes.amountPaid }}</span
+            >
             <span class="col-3 q-pl-md q-py-md fontWeight500 text-grey1">{{
               createDate(bill.attributes.created)
             }}</span>
             <span
-              class="col-2 q-pl-md q-py-md fontWeight500 text-grey1 text-caption"
-              >{{ bill.attributes.status }}</span
+              class="col-2 q-pl-md q-py-md fontWeight500 text-grey1 text-capitalize text-caption"
+              style="color: #027a48"
+              ><span
+                class="q-px-sm"
+                style="
+                  color: #027a48;
+                  background-color: #ecfdf3;
+                  border-radius: 10px;
+                "
+              >
+                <q-icon name="check" size="1em" style="color: #12b76a" />
+                {{ bill.attributes.status }}</span
+              ></span
             >
             <span class="col-1 q-pl-lg q-py-md fontWeight500">
               <a :href="bill.attributes.downloadLink">
@@ -268,8 +293,12 @@
       </div>
     </div>
 
+    <div class="text-grey text-body1 q-mt-sm">
+      *You will be charged a pro-rated for the current month
+    </div>
+
     <!-- Edit payment Dialog -->
-    <q-dialog v-model="icon">
+    <q-dialog v-model="icon" persistent>
       <q-card class="full-width" style="max-width: 600px">
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6 fontWeight600">Edit Payment</div>
@@ -351,7 +380,7 @@
     </q-dialog>
 
     <!-- Upgrade Plan Dialog -->
-    <q-dialog v-model="upgradePlanDialog">
+    <q-dialog v-model="upgradePlanDialog" persistent>
       <q-card class="full-width" style="max-width: 400px">
         <q-card-section class="text-center q-pb-none">
           <div class="text-h6 fontWeight500">
@@ -487,7 +516,8 @@ export default {
       'getOrgInvoices',
       'getRoles',
       'getAllPlans',
-      'addAdditionalLicense'
+      'addAdditionalLicense',
+      'getOrganization'
     ]),
     ...mapMutations(['setLoading', 'setNotifications']),
     isMobile,
@@ -607,7 +637,10 @@ export default {
         stripeToken: this.stripeToken
       };
       const res = await this.addNewCard(payload);
+      let cardInfo = await this.getCardInfo();
+      this.cardData = cardInfo.attributes.cards[0];
       this.setLoading(false);
+
       // show confirmation toast msg
       this.icon = false;
     },
@@ -627,6 +660,7 @@ export default {
         }
       };
       await this.upgradePlan(payload);
+      await this.getOrganization();
       this.upgradePlanDialog = false;
     },
     async addExtraUser() {
@@ -682,6 +716,7 @@ export default {
     ...mapGetters(['organization'])
   },
   async created() {
+    this.setLoading(true);
     let cardInfo = await this.getCardInfo();
     this.cardData = cardInfo.attributes.cards[0];
     const payload = {
@@ -690,8 +725,9 @@ export default {
       endingBefore: ''
     };
     this.getInvoices(payload);
-    await this.getRoles();
+    await this.getRoles('hideLoader');
     await this.getAllPlans();
+    this.setLoading(false);
   }
 };
 </script>
