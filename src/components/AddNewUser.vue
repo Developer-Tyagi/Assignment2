@@ -21,8 +21,9 @@
                 <div class="text-subtitle1 fontWeight600">First name</div>
                 <div>
                   <q-input
-                    outlined
+                    borderless
                     dense
+                    class="input-style1 test q-mt-xs q-pb-none"
                     v-model="user.firstName"
                     label="Enter First Name"
                     :rules="[
@@ -35,8 +36,9 @@
                 <div class="text-subtitle1 fontWeight600">Last name</div>
                 <div>
                   <q-input
-                    outlined
+                    borderless
                     dense
+                    class="input-style1 test q-mt-xs q-pb-none"
                     v-model="user.lastName"
                     label="Enter Last Name"
                     lazy-rules
@@ -51,7 +53,8 @@
               <div class="text-subtitle1 fontWeight600">Email</div>
               <div>
                 <q-input
-                  outlined
+                  borderless
+                  class="input-style1 test q-mt-xs q-pb-none"
                   dense
                   v-model="user.email"
                   label="Enter Email Address"
@@ -69,9 +72,9 @@
               <div>
                 <q-select
                   dense
-                  outlined
+                  borderless
                   options-dense
-                  class="input-extra-padding required"
+                  class="input-style1 test q-mt-xs q-pb-none"
                   v-model="user.role"
                   :options="roleTypes"
                   option-value="id"
@@ -94,9 +97,9 @@
               <div>
                 <q-select
                   dense
-                  outlined
+                  borderless
                   options-dense
-                  class="input-extra-padding required"
+                  class="input-style1 test q-mt-xs q-pb-none"
                   v-model="user.subRole"
                   @input="setSelectedSubRole(user.subRole)"
                   :options="selectedRole"
@@ -133,9 +136,9 @@
                 <div class="col-4 q-mr-md">
                   <q-select
                     dense
-                    outlined
+                    borderless
                     options-dense
-                    class="input-extra-padding"
+                    class="input-style1 test q-mt-xs q-pb-none"
                     v-model="license.state"
                     :options="states"
                     label="State"
@@ -145,8 +148,8 @@
                 </div>
                 <div class="col row full-width">
                   <q-input
-                    outlined
-                    class="col"
+                    borderless
+                    class="col input-style1 test q-mt-xs q-mb-lg q-pb-none"
                     dense
                     v-model="license.number"
                     label="PIA License Number"
@@ -183,6 +186,7 @@
                 outline
                 color="deep-orange"
                 size="1rem"
+                style="border-radius: 10px"
                 @click="passEvent()"
               />
               <q-btn
@@ -191,6 +195,7 @@
                 type="submit"
                 color="deep-orange"
                 size="1rem"
+                style="border-radius: 10px"
               />
             </div>
             <div class="q-mt-md"></div>
@@ -498,3 +503,57 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+::v-deep {
+  .input-style1 {
+    height: 44px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    .q-field__native {
+      color: black;
+      font-weight: 500 !important;
+      font-size: 16px !important;
+      line-height: 24px !important;
+    }
+    .q-field__control,
+    .q-field__marginal {
+      height: 43px;
+    }
+    .q-field__bottom {
+      padding-top: 22px;
+    }
+    .q-field__label {
+      font-weight: 600;
+      color: #8a90a0;
+    }
+  }
+}
+.test {
+  border: 1px solid #b9bcc6 !important;
+  border-radius: 8px;
+}
+.q-field {
+  transition: border 0.5s;
+  caret-color: $primary !important;
+  &:focus,
+  &:active,
+  &:hover {
+    border: 1px solid $primary !important;
+    box-shadow: 0 0 5px $primary;
+    transition: box-shadow 0.2s;
+  }
+}
+.q-field--error,
+.q-field--error:focus,
+.q-field--error:active,
+.q-field--error:hover {
+  border: 1px solid red !important;
+  transition: border 0.5s;
+  box-shadow: 0 0 5px red;
+  transition: box-shadow 0.2s;
+  font-weight: 500;
+  line-height: 12px;
+  caret-color: red !important;
+}
+</style>
