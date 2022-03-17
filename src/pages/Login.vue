@@ -1,117 +1,110 @@
 <template>
-  <q-page :class="isMobile() ? 'bg-login-mobile' : 'bg-login'">
-    <div class="q-pa-lg">
-      <div class="flex column" style="height: 50vh">
-        <img
-          v-if="isMobile()"
-          alt="Claimguru"
-          src="~assets/claimguru_icon.png"
-          class="q-mt-auto q-mx-auto"
-          width="95"
-          height="95"
-        />
-        <img
-          v-else
-          alt="Claimguru"
-          src="~assets/logo.png"
-          class="q-mx-auto q-mt-auto"
-          width="95"
-          height="95"
-        />
-        <img
-          v-if="isMobile()"
-          alt="Claimguru"
-          src="~assets/claimguru_text.png"
-          class="q-mx-auto q-mb-auto"
-          width="190"
-          height="90"
-        />
-        <img
-          v-else
-          alt="Claimguru"
-          src="~assets/cg_text_white.png"
-          class="q-mx-auto q-mb-auto"
-          width="190"
-          height="90"
-        />
+  <q-page class="column poppinsFont">
+    <div class="col row">
+      <div class="col-lg-6 col-md-6 col-sm-12 bgNewPrimary">
+        <div class="q-pl-lg q-py-md">
+          <q-img
+            class="web-menu-claim-guru-logo"
+            :src="getImage('Logo.svg')"
+            width="20%"
+          />
+        </div>
+        <div class="q-mt-md text-h5 text-center q-px-lg fontWeight600">
+          <div class="q-px-lg" style="font-size: 28px; background: #f9e7d8">
+            The First and Only Catastrophe-Proof Claim Management System For
+            Public Adjusters
+          </div>
+        </div>
+        <div class="q-mx-sm q-mb-lg absolute-bottom">
+          <span class=""> © ClaimGuru 2022</span>
+        </div>
       </div>
-      <q-form class="column" autocapitalize="off" @submit="onUserLogin">
-        <q-card class="rounded row">
-          <div class="q-ml-xs column justify-center" style="width: 20px">
-            <q-icon name="person" color="primary" size="sm" />
-          </div>
-          <div class="q-pl-md col-10">
-            <q-input
-              dense
-              class="q-py-xs login-input full-width"
-              v-model="login.email"
-              placeholder="Username"
-              borderless
-            />
-          </div>
-        </q-card>
-        <q-card class="q-mt-sm rounded row">
-          <div class="q-ml-xs column justify-center" style="width: 20px">
-            <q-icon name="lock" color="primary" size="sm" />
-          </div>
-          <div class="q-pl-md col-10">
-            <q-input
-              dense
-              class="q-py-xs login-input full-width"
-              v-model="login.password"
-              placeholder="Password"
-              type="password"
-              borderless
-              :type="isPasswordVisible ? 'text' : 'password'"
-              @keyup.enter="onUserLogin"
-            >
-            </q-input>
-          </div>
-          <div class="col">
-            <q-icon
-              :name="isPasswordVisible ? 'visibility' : 'visibility_off'"
-              class="cursor-pointer q-mt-md"
-              @click="isPasswordVisible = !isPasswordVisible"
-            ></q-icon>
-          </div>
-        </q-card>
-        <div>
-          <q-btn
-            :color="isMobile() ? 'secondary' : 'white'"
-            :outline="!isMobile() ? true : false"
-            label="Login"
-            type="submit"
-            class="rounded full-width q-my-md"
-          ></q-btn>
-        </div>
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <!-- signup form -->
+        <div class="q-my-xl q-px-lg content-center bg-white">
+          <div class="login-up">
+            <div class="col login q-mx-xl">
+              <div class="q-mt-lg text-h4 fontWeight600">Login</div>
+              <q-form class="q-mt-lg" @submit="onUserLogin" ref="orgInfo">
+                <label class="text-subtitle1 fontWeight600"
+                  >Email Address</label
+                >
+                <q-input
+                  v-model="login.email"
+                  name="email"
+                  color="primary"
+                  placeholder="Enter Registered Email Address"
+                  outlined
+                  class="required"
+                  lazy-rules
+                  :rules="[
+                    val => !!val || 'Please type something',
+                    val =>
+                      validateEmail(val) ||
+                      'You have entered an invalid email address!'
+                  ]"
+                />
+                <span class="text-red text-caption">{{ errorMSG }}</span>
+                <br v-if="errorMSG" />
+                <label class="text-subtitle1 fontWeight600">Password</label>
+                <q-input
+                  color="primary"
+                  class="required full-width"
+                  placeholder="Enter your Password"
+                  v-model="login.password"
+                  outlined
+                  :type="isPwd ? 'password' : 'text'"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please fill password',
+                    val =>
+                      (val && val.length > 7) ||
+                      'Minimum password length is 8 character'
+                  ]"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      :name="isPwd ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwd = !isPwd"
+                    />
+                  </template>
+                </q-input>
 
-        <div
-          v-if="!isMobile()"
-          class="row justify-center cursor-pointer"
-          @click="onClickSignupButton"
-        >
-          <a class="text-white" style="text-decoration: none">Sign Up</a>
+                <div class="row justify-center q-mt-lg">
+                  <q-btn
+                    label="Login"
+                    no-caps
+                    type="submit"
+                    color="deep-orange"
+                    size="16px"
+                    class="full-width fontWeight600"
+                  />
+                </div>
+                <div class="row justify-center q-mt-md">
+                  <div class="col-lg-2 col-md-2 col-sm-12"></div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 q-ml-md">
+                    <label class="text-subtitle1"
+                      >Don’t have an account?
+                    </label>
+                    <a href="/signup" class="text-deep-orange text-subtitle1"
+                      >Sign Up</a
+                    >
+                  </div>
+                  <div class="col-2"></div>
+                </div>
+              </q-form>
+            </div>
+            <div class="col-2"></div>
+          </div>
         </div>
-        <div
-          class="row justify-center q-mt-sm cursor-pointer"
-          @click="$router.push('/forget-password')"
-        >
-          <a
-            :class="isMobile() ? 'text-primary' : 'text-white'"
-            style="text-decoration: none"
-            >Forgot Password</a
-          >
-        </div>
-
-        <div class="text-center footer-style">Version {{ this.version }}</div>
-      </q-form>
+      </div>
     </div>
   </q-page>
 </template>
 <script>
-import { mapActions, mapMutations } from 'vuex';
-import { isMobile } from '@utils/common';
-import { getToken, getCurrentUser } from '@utils/auth';
+const stripe = Stripe(`${process.env.STRIPE_API_KEY}`);
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { constants } from '@utils/constant';
 import {
   Capacitor,
   Plugins,
@@ -119,17 +112,17 @@ import {
   PushNotificationToken,
   PushNotificationActionPerformed
 } from '@capacitor/core';
+import { validateEmail, validateNames } from '@utils/validation';
+import { isMobile } from '@utils/common';
 import { Screen } from 'quasar';
-import { constants } from '@utils/constant';
 import { notification } from 'src/store/common/getters';
 import { appVersion } from '../Version';
-const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
-  'PushNotifications'
-);
+import { getToken, getCurrentUser } from '@utils/auth';
+const isPushNotificationsAvailable =
+  Capacitor.isPluginAvailable('PushNotifications');
 const { PushNotifications } = Plugins;
 
 export default {
-  name: 'Login',
   data() {
     return {
       version: appVersion,
@@ -137,12 +130,38 @@ export default {
       login: {
         email: '',
         password: ''
-      }
+      },
+      isPwd: true,
+      errorMSG: '',
+      data: {
+        type: constants.ORGANIZATION,
+        company: {
+          name: '',
+          plan: {}
+        },
+        user: {
+          email: '',
+          password: '',
+          contact: {
+            fname: '',
+            lname: ''
+          }
+        },
+        stripeToken: '',
+        isTermsAccepted: false
+      },
+      terms: false,
+      displayErrors: '',
+      div1: false,
+      div2: false,
+      div3: false,
+      showSeeAllPackages: true
     };
   },
   methods: {
     ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
     ...mapMutations(['setSelectedClaimId', 'setNotificationRouteTo']),
+
     isMobile,
     async onUserLogin() {
       const loginData = {
@@ -211,10 +230,25 @@ export default {
     },
     onClickSignupButton() {
       this.$router.push('/signup');
+    },
+    getImage(icon) {
+      return require('../assets/' + icon);
+    },
+    validateEmail,
+
+    createToken() {
+      // Gather additional customer data we may have collected in our form.
+      var additionalData = { name: this.cardName };
+      // Important: Although we're submitting several fields, use cardNumber here instead of 'elements'.
+      return stripe.createToken(this.cardNumber, additionalData);
     }
   },
 
-  created() {
+  computed: {
+    ...mapGetters([])
+  },
+
+  async created() {
     if (getToken() && getCurrentUser()) {
       if (isMobile()) {
         this.$router.push('/dashboard');
@@ -226,25 +260,121 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.login-input {
-  font-size: 14px;
-  width: 80%;
+.poppinsFont {
+  font-family: poppins;
+}
+.fontWeight600 {
+  font-weight: 600;
+}
+.fontWeight500 {
+  font-weight: 500;
+}
+.fontWeight400 {
+  font-weight: 400;
+}
+.login {
+  @media only screen and (max-width: 1023px) {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  @media only screen and (min-width: 1024px) {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+.login-up {
+  @media only screen and (max-width: 1023px) {
+  }
+  @media only screen and (min-width: 1024px) {
+    margin-top: 50%;
+  }
+}
+.test {
+  @media only screen and (max-width: 1500px) {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+  @media only screen and (min-width: 1500px) {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+.my-card {
+  border-radius: 10px;
+  @media only screen and (max-width: $breakpoint-md-max) {
+    max-width: 450px;
+    box-sizing: border-box;
+    max-height: 530px;
+  }
+  @media only screen and (max-width: $breakpoint-sm-max) {
+    max-width: 350px;
+    box-sizing: border-box;
+    max-height: 530px;
+  }
+  @media only screen and (max-width: $breakpoint-xs-max) {
+    max-width: 300px;
+    box-sizing: border-box;
+    max-height: 530px;
+  }
+}
+.card-highlighter {
+  border-radius: 10px;
+  border: 1px solid #ef5926 !important;
+}
+.cardItems {
+  width: 30%;
+  @media only screen and (max-width: $breakpoint-xs-max) {
+    width: 60%;
+  }
+}
+.card-border {
+  border-radius: 10px;
+  border: 1px solid #b9bcc6;
 }
 
-.bg-login {
-  background: #f05a26;
-  width: 40%;
-  margin-left: auto;
-  margin-right: 10%;
+#card-errors {
+  color: red;
+  margin-top: 10px;
+  max-width: 431px;
+  @media only screen and (max-width: $breakpoint-sm-max) {
+    max-width: 900px;
+  }
+  @media only screen and (max-width: $breakpoint-xs-max) {
+    max-width: 431px;
+  }
 }
-.bg-login-mobile {
-  background-color: #ededed;
-  width: 100%;
-}
-.rounded {
-  border-radius: 15px 15px 15px 15px;
-}
-.footer-style {
-  margin-top: 80px;
+
+::v-deep {
+  .input-placeholder {
+    .q-placeholder {
+      color: grey !important;
+    }
+  }
+  .input-text-style {
+    .q-field__native {
+      color: #525151 !important;
+    }
+  }
+  .cardInfo {
+    padding: 12.5px 14px;
+    border: 1px solid;
+    border-radius: 8px;
+    height: 50px;
+    .q-field__native {
+      font-weight: 500 !important;
+      font-size: 16px !important;
+      line-height: 24px !important;
+    }
+    .q-field__control,
+    .q-field__marginal {
+      height: 26px;
+    }
+    .q-field--auto-height,
+    .q-field__native {
+      min-height: 0px;
+    }
+  }
 }
 </style>
