@@ -143,11 +143,33 @@ export function setNotification({ commit }, notification) {
 
 // function is used for getting the list of all plans .
 export async function getAllPlans({ commit, dispatch }) {
-  dispatch('setLoading', true);
+  // dispatch('setLoading', true);
   try {
     const { data } = await request.get('/plans');
     commit('setPlans', data);
-    dispatch('setLoading', false);
+    // dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+export async function getOrgInvoices({ commit, dispatch }, payload) {
+  // dispatch('setLoading', true);
+  try {
+    const { data, meta } = await request.get(
+      `/organizations/invoices?limit=${payload.limit}&startingAfter=${payload.startingAfter}&endingBefore=${payload.endingBefore}`
+    );
+    // dispatch('setLoading', false);
+    let dataObj = {
+      data: data,
+      meta: meta
+    };
+    return dataObj;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
@@ -159,6 +181,47 @@ export async function getAllPlans({ commit, dispatch }) {
 }
 
 // function is used for getting the list of roles , this function is called both in online and offline mode.
+
+export async function upgradePlan({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      '/organizations/upgrade-plan',
+      buildApiData('organizations', payload)
+    );
+
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
+export async function addAdditionalLicense({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      'organizations/plans',
+      buildApiData('organizations', payload)
+    );
+    dispatch('setLoading', false);
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
 export async function getRoles(
   {
     rootState: {

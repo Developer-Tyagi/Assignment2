@@ -349,7 +349,10 @@
               <div class="text-justify">
                 <li>
                   If not, please consider signing up by
-                  <a class="text-orange" href="https://photoidapp.net/"
+                  <a
+                    class="text-orange"
+                    href="https://photoidapp.net/"
+                    target="”_blank”"
                     >clicking here</a
                   >.
                 </li>
@@ -712,11 +715,7 @@
                 v-if="this.checkConnection == false"
                 @click="onRedirectToGoogleAuth()"
                 class="row q-py-sm q-px-xl"
-                style="
-                  width: 440px;
-                  border: 2px solid black;
-                  border-radius: 10px;
-                "
+                style="border: 2px solid black; border-radius: 10px"
               >
                 <q-avatar>
                   <q-img
@@ -724,9 +723,9 @@
                     :src="getImage('logos_google-drive.svg')"
                   />
                 </q-avatar>
-                <span class="col q-ml-xs text-subtitle1 fontWeight500"
-                  >Connect Google Drive</span
-                >
+                <div class="col q-ml-xs text-subtitle1 fontWeight500">
+                  Connect Google Drive
+                </div>
               </q-btn>
               <div
                 v-else
@@ -782,9 +781,28 @@
             </div>
             <div class="text-justify">
               If not, please consider signing up by
-              <a class="text-orange" href="https://photoidapp.net/"
-                >clicking here</a
-              >.
+              <div v-if="$q.platform.is.android">
+                <a
+                  class="text-orange"
+                  href="https://play.google.com/store/apps/details?id=com.uscope.photoid"
+                  >clicking here</a
+                >.
+              </div>
+              <div v-else-if="$q.platform.is.ios">
+                <a
+                  class="text-orange"
+                  href="https://apps.apple.com/us/app/photo-id/id1277608552?ls=1"
+                  >clicking here</a
+                >.
+              </div>
+              <div v-else>
+                <a
+                  class="text-orange"
+                  href="https://photoidapp.net/"
+                  target="”_blank”"
+                  >clicking here</a
+                >.
+              </div>
             </div>
             <div class="text-justify">
               Our partnership with PhotoID will enhance your user experience.
