@@ -1,7 +1,16 @@
 <template>
-  <div>
+  <div class="poppinsFont">
     <q-dialog v-model="show" persistent>
-      <q-card class="full-width" style="max-width: 600px">
+      <q-card
+        class="full-width poppinsFont"
+        style="
+          max-width: 800px;
+          padding: 8px;
+          border-radius: 8px;
+          box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.1),
+            0px 8px 8px -4px rgba(16, 24, 40, 0.04);
+        "
+      >
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6 fontWeight600">Add an Additional User</div>
           <q-space />
@@ -60,15 +69,30 @@
                   label="Enter Email Address"
                   lazy-rules
                   :rules="[
+                    val => (val && val.length > 0) || 'Email is required',
+                    val => (val && validateEmail(val)) || 'Enter valid Email',
                     val =>
-                      validateEmail(val) ||
-                      'You have entered an invalid email address!'
+                      checkEmailExist(val) || 'This email is already in use'
                   ]"
                 />
+                <span
+                  class=""
+                  style="
+                    color: #c10015;
+                    font-weight: 500;
+                    font-size: 12px;
+                    line-height: 12px;
+                    overflow: visible;
+                    font-family: poppins;
+                  "
+                  >{{ errorMSG }}</span
+                >
+                <br v-if="errorMSG" />
               </div>
             </div>
             <div class="q-mt-md">
               <div class="text-subtitle1 fontWeight600">Select Role</div>
+
               <div>
                 <q-select
                   dense
@@ -79,7 +103,7 @@
                   :options="roleTypes"
                   option-value="id"
                   option-label="name"
-                  label="Role"
+                  label="Select User Role"
                   color="primary"
                   @input="setSelectedRole(user.role)"
                   options-selected-class="text-deep-orange"
@@ -130,6 +154,7 @@
               <div class="text-subtitle1 fontWeight600">PIA License</div>
               <div
                 class="row"
+                :class="index > 0 ? 'q-mt-sm' : ''"
                 v-for="(license, index) in user.license"
                 :key="index"
               >
@@ -138,24 +163,36 @@
                     dense
                     borderless
                     options-dense
-                    class="input-style1 test q-mt-xs q-pb-none"
+                    class="col input-style1 test q-mt-xs q-pb-none"
                     v-model="license.state"
                     :options="states"
+                    option-value="state"
                     label="State"
                     color="primary"
                     options-selected-class="text-deep-orange"
+                    lazy-rules
+                    :rules="[
+                      val => val.length > 0 || 'Please select the state!'
+                    ]"
                   />
+                  <!-- <span v-if="stateError" class="errMessages">{{stateError}}</span> -->
                 </div>
+
                 <div class="col row full-width">
                   <q-input
                     borderless
-                    class="col input-style1 test q-mt-xs q-mb-lg q-pb-none"
+                    class="col input-style1 test q-mt-xs q-mb-sm q-pb-none"
                     dense
                     v-model="license.number"
                     label="PIA License Number"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        val.length > 0 || 'Please enter the license number!'
+                    ]"
                   />
                   <q-icon
-                    class="col-1 q-pb-md"
+                    class="col-1 q-pb-sm cursor-pointer"
                     v-if="index > 0"
                     name="close"
                     size="sm"
@@ -163,20 +200,16 @@
                   />
                 </div>
               </div>
-              <div
-                class="col-12 text-caption text-grey"
-                style="margin-top: -10px"
-              >
+              <div class="col-12 text-caption text-grey q-pt-xs q-mt-xs">
                 Please enter your residential PIA license number.
               </div>
-
-              <div
+              <span
                 class="q-mt-md text-primary cursor-pointer"
                 @click="addAditionalPIALicense()"
               >
                 <q-icon size="xs" name="add_circle_outline" /> Add an additional
                 PIA License
-              </div>
+              </span>
             </div>
             <div class="row justify-between q-mt-xl">
               <q-btn
@@ -186,19 +219,19 @@
                 outline
                 color="deep-orange"
                 size="1rem"
-                style="border-radius: 10px"
+                style="border-radius: 10px; width: 118px; height: 50px"
                 @click="passEvent()"
               />
               <q-btn
-                label="Add User"
+                label="Add user"
                 no-caps
                 type="submit"
                 color="deep-orange"
                 size="1rem"
-                style="border-radius: 10px"
+                style="border-radius: 10px; width: 118px; height: 50px"
               />
             </div>
-            <div class="q-mt-md"></div>
+            <div class=""></div>
           </q-form>
         </q-card-section>
       </q-card>
@@ -206,18 +239,27 @@
 
     <!-- confirmation dialog -->
     <q-dialog v-model="confirmationDialog" persistent>
-      <q-card class="full-width q-px-lg" style="max-width: 400px">
-        <q-card-section class="text-center q-pb-none">
+      <q-card
+        class="full-width poppinsFont"
+        style="
+          padding: 24px;
+          max-width: 400px;
+          border-radius: 12px;
+          box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.1),
+            0px 8px 8px -4px rgba(16, 24, 40, 0.04);
+        "
+      >
+        <div class="text-center q-pb-none">
           <div class="row justify-center">
-            <q-icon class="" size="3em">
+            <q-icon class="" size="3.5em">
               <q-img :src="getImage('Featured icon (3).svg')" />
             </q-icon>
           </div>
-          <div class="text-subtitle1 fontWeight500">
+          <div class="text-subtitle1 fontWeight500" style="margin: 8px 0px">
             Do you wish to upgrade your account?
           </div>
-        </q-card-section>
-        <q-card-section class="" style="border-radius: 8px">
+        </div>
+        <div class="" style="border-radius: 8px">
           <!-- <div class="row justify-center q-pb-md q-pt-sm">
             <div class="row justify-center">
               <q-icon class="" size="3em">
@@ -226,15 +268,16 @@
             </div>
           </div> -->
 
-          <div class="text-h4 fontWeight600 text-bold text-center">
-            $50
+          <div class="text-center">
+            <span><sup class="text-h5 fontWeight600">$</sup></span
+            ><span class="fontWeight600 text-h4 q-pt-sm">50</span>
             <span class="text-grey text-subtitle1 fontWeight400"
               >/month per user*</span
             >
           </div>
-        </q-card-section>
+        </div>
 
-        <div class="q-px-lg q-mb-sm q-mt-lg">
+        <div class="q-mb-sm q-mt-lg">
           <div class="row justify-between">
             <q-btn
               class="col q-mr-lg"
@@ -244,20 +287,23 @@
               outline
               color="deep-orange"
               size="1rem"
-              style="border-radius: 10px"
+              style="border-radius: 10px; width: 164px; height: 50px"
             />
             <q-btn
               class="col"
               label="Confirm"
               no-caps
-              style="border-radius: 10px"
+              style="border-radius: 10px; width: 164px; height: 50px"
               color="deep-orange"
               size="1rem"
               @click="submitUser()"
             />
           </div>
         </div>
-        <div class="q-px-lg q-mb-lg text-grey text-caption">
+        <div
+          class="q-px-lg text-grey text-caption"
+          style="margin: 20px 0px 0px 0px"
+        >
           *You will be charged a pro-rated subscription fee for the current
           month
         </div>
@@ -266,22 +312,34 @@
 
     <!-- success dialog -->
     <q-dialog v-model="successDialog" persistent>
-      <q-card class="full-width q-px-lg" style="max-width: 450px">
+      <q-card
+        class="full-width q-px-lg poppinsFont"
+        style="
+          padding: 24px;
+          max-width: 450px;
+          box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.1),
+            0px 8px 8px -4px rgba(16, 24, 40, 0.04);
+          border-radius: 12px;
+        "
+      >
         <q-card-section class="text-center q-pb-none">
           <div class="row justify-center">
-            <q-icon class="" size="3em">
+            <q-icon class="" size="3.5em">
               <q-img :src="getImage('Featured icon (3).svg')" />
             </q-icon>
           </div>
-          <div class="text-subtitle1 fontWeight500">
+          <div
+            class="fontWeight500 q-mt-md"
+            style="font-size: 18px; line-height: 28px"
+          >
             User successfully created
           </div>
         </q-card-section>
 
-        <div class="text-center text-grey fontWeight400">
+        <div class="text-center text-grey fontWeight400 q-mt-sm">
           Your new user has been added to your account.
         </div>
-        <div class="q-px-lg q-mb-lg q-mt-lg">
+        <div class="" style="margin-top: 32px">
           <div class="row justify-between">
             <q-btn
               class="col q-mr-lg"
@@ -291,14 +349,14 @@
               outline
               color="deep-orange"
               size="1rem"
-              style="border-radius: 10px"
+              style="border-radius: 10px; width: 215px; height: 50px"
             />
             <q-btn
               class="col-4"
               label="Close"
               v-close-popup
               no-caps
-              style="border-radius: 10px"
+              style="border-radius: 10px; width: 125px; height: 50px"
               color="deep-orange"
               size="1rem"
             />
@@ -336,7 +394,9 @@ export default {
       },
       selectedRole: [],
       states: [],
-      selectedSubRole: []
+      selectedSubRole: [],
+      stateError: '',
+      errorMSG: ''
     };
   },
   props: {
@@ -345,7 +405,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['roleTypes']),
+    ...mapGetters(['roleTypes', 'organization']),
     show: {
       get() {
         return this.showDialog;
@@ -354,9 +414,18 @@ export default {
   },
   methods: {
     validateEmail,
-    ...mapActions(['addAdditionalLicense', 'addUser']),
+    ...mapActions(['addAdditionalLicense', 'addUser', 'checkExistingEmail']),
     getImage(icon) {
       return require('../assets/' + icon);
+    },
+    myRule(val) {
+      if (val.length <= 0) {
+        this.stateError = 'Please selcect the state';
+        return false;
+      } else {
+        this.stateError = '';
+        return true;
+      }
     },
     openAddDialog() {
       this.successDialog = false;
@@ -379,26 +448,18 @@ export default {
     },
     async addExtraUser() {
       const success = await this.$refs.userInfo.validate();
-
-      this.confirmationDialog = true;
-      // if (success) {
-      //   await this.addUser(this.users);
-      //   await this.getAllUsers();
-      //   this.addUserDialogBox = false;
-      //   this.users = {
-      //     type: 'user',
-      //     contact: {
-      //       fname: '',
-      //       lname: ''
-      //     },
-      //     email: '',
-      //     roles: [{ value: '', machineValue: '', isPaid: '' }]
-      //   };
-      //   this.selectedRole = '';
-      // }
+      let currentSelectedRole = this.selectedRoleObject.machineValue;
+      let allowedVal =
+        this.organization.allowedRoles[currentSelectedRole].count;
+      let currentUsed =
+        this.organization.currentRoles[currentSelectedRole].count;
+      if (allowedVal - currentUsed > 0) {
+        this.submitUser();
+      } else {
+        this.confirmationDialog = true;
+      }
     },
     passEvent() {
-      //this.show = false
       this.user = {
         firstName: '',
         lastName: '',
@@ -417,15 +478,20 @@ export default {
       this.$emit('closeUserDialog', false);
     },
     setSelectedRole(selectedRoles) {
-      this.selectedRole = selectedRoles.attribute.subRoles;
+      if (selectedRoles.attribute.subRoles) {
+        this.selectedRole = selectedRoles.attribute.subRoles;
+      }
       this.selectedRoleObject.value = selectedRoles.attribute.value;
       this.selectedRoleObject.machineValue =
         selectedRoles.attribute.machineValue;
       this.selectedRoleObject.isPaid = selectedRoles.attribute.isPaid;
       this.user.subRole = '';
+      this.user.license = [{ state: '', number: '' }];
+      this.selectedSubRole = [];
     },
     setSelectedSubRole(selectedSubRoles) {
       this.selectedSubRole = selectedSubRoles;
+      this.user.license = [{ state: '', number: '' }];
     },
     addAditionalPIALicense() {
       let newLicenseData = { state: '', number: '' };
@@ -433,6 +499,16 @@ export default {
     },
     removeLicense(index) {
       this.user.license.splice(index, 1);
+    },
+    async checkEmailExist(val) {
+      let res = await this.checkExistingEmail(val);
+      if (res) {
+        this.errorMSG = '';
+      } else {
+        this.errorMSG =
+          'This email is already in use. Please choose another email!';
+      }
+      return res;
     },
     async submitUser() {
       let payload = {
@@ -451,8 +527,18 @@ export default {
           ]
         }
       };
-      let licenseGrant = await this.addAdditionalLicense(payload);
-      this.confirmationDialog = false;
+      let currentSelectedRole = this.selectedRoleObject.machineValue;
+      let allowedVal =
+        this.organization.allowedRoles[currentSelectedRole].count;
+      let currentUsed =
+        this.organization.currentRoles[currentSelectedRole].count;
+
+      if (allowedVal - currentUsed > 0) {
+        var licenseGrant = true;
+      } else {
+        var licenseGrant = await this.addAdditionalLicense(payload);
+        this.confirmationDialog = false;
+      }
       if (licenseGrant) {
         // call add user
         let userPayload = {
@@ -477,24 +563,29 @@ export default {
           licenses: this.user.license
         };
 
-        await this.addUser(userPayload);
-        this.user = {
-          firstName: '',
-          lastName: '',
-          role: '',
-          subRole: '',
-          email: '',
-          license: [{ state: '', number: '' }]
-        };
-        this.selectedRoleObject = {
-          value: '',
-          machineValue: '',
-          isPaid: false
-        };
-        this.selectedRole = [];
-        this.selectedSubRole = [];
-        this.$emit('closeUserDialog', false);
-        this.successDialog = true;
+        if (this.selectedRoleObject.value == 'Estimator') {
+          delete userPayload.subRole;
+        }
+        let resp = await this.addUser(userPayload);
+        if (resp) {
+          this.user = {
+            firstName: '',
+            lastName: '',
+            role: '',
+            subRole: '',
+            email: '',
+            license: [{ state: '', number: '' }]
+          };
+          this.selectedRoleObject = {
+            value: '',
+            machineValue: '',
+            isPaid: false
+          };
+          this.selectedRole = [];
+          this.selectedSubRole = [];
+          this.$emit('closeUserDialog', false);
+          this.successDialog = true;
+        }
       }
     }
   },
@@ -504,6 +595,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.poppinsFont {
+  font-family: poppins;
+}
 ::v-deep {
   .input-style1 {
     height: 44px;
@@ -515,7 +609,17 @@ export default {
       font-weight: 500 !important;
       font-size: 16px !important;
       line-height: 24px !important;
+      overflow: auto;
     }
+    .q-field__messages {
+      color: #c10015;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 12px;
+      overflow: visible;
+      font-family: poppins;
+    }
+
     .q-field__control,
     .q-field__marginal {
       height: 43px;
@@ -544,6 +648,7 @@ export default {
     transition: box-shadow 0.2s;
   }
 }
+
 .q-field--error,
 .q-field--error:focus,
 .q-field--error:active,
@@ -555,5 +660,11 @@ export default {
   font-weight: 500;
   line-height: 12px;
   caret-color: red !important;
+}
+.errMessages {
+  color: #c10015;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 12px;
 }
 </style>
