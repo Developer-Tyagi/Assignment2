@@ -10,13 +10,21 @@
           />
         </div>
         <div class="q-mt-md text-h5 text-center q-px-lg fontWeight600">
-          <div class="q-px-lg" style="font-size: 28px">
+          <div
+            class="q-px-lg"
+            style="
+              font-size: 28px;
+              color: #101828;
+              line-height: 36px;
+              font-size: 28px;
+            "
+          >
             The First and Only Catastrophe-Proof Claim Management System For
             Public Adjusters
           </div>
         </div>
         <div class="q-pt-lg">
-          <div class="text-h6 fontWeight600 q-px-xl">
+          <div class="text-h6 fontWeight600 q-px-xl q-py-md">
             <span
               v-if="
                 isPackageSelected.id1 === '' && isPackageSelected.id2 === ''
@@ -31,10 +39,10 @@
             >
           </div>
         </div>
-        <div class="col row test">
+        <div class="col row test q-px-xl">
           <!-- card 1 -->
           <div
-            class="col-md-6 col-sm-12 col-xs-12 card-border q-mb-sm q-mr-md col bg-white card-container"
+            class="col-md-5 col-sm-12 col-xs-12 card-border q-mb-md col bg-white card-container"
             @click="onPackageSelection('Firm')"
             :class="{ 'card-highlighter': isPackageSelected.id1 }"
           >
@@ -73,12 +81,12 @@
                 Start your 30 Day Free Trial
               </div>
               <div
-                class="q-ml-lg row text-subtitle1 fontWeight400 col-md-4 col-xs-12 col-sm-12"
+                class="q-ml-md row text-subtitle1 fontWeight400 col-md-4 col-xs-12 col-sm-12"
                 v-for="firmPackage in firmPackages"
                 :key="firmPackage"
               >
                 <q-img
-                  class="q-mt-xs"
+                  class="q-mt-xs check-img"
                   :src="getImage('check.svg')"
                   width="8%"
                   height="8%"
@@ -87,7 +95,7 @@
               </div>
 
               <div class="q-pt-md text-blue-grey fontWeight400 text-subtitle1">
-                Additional licenses at $50/month
+                Additional licenses at $50/mo
               </div>
 
               <div
@@ -97,9 +105,10 @@
               </div>
             </div>
           </div>
+          <div class="col-md-2 col-sm-12 col-xs-12"></div>
           <!-- card 2 -->
           <div
-            class="col-md-6 col-sm-12 col-xs-12 card-border q-mb-sm q-ml-md bg-white card-container"
+            class="col-md-5 col-sm-12 col-xs-12 card-border q-mb-md bg-white card-container"
             @click="onPackageSelection('Individual')"
             :class="{ 'card-highlighter': isPackageSelected.id2 }"
           >
@@ -140,12 +149,12 @@
                 Start your 30 Day Free Trial
               </div>
               <div
-                class="q-ml-lg row text-subtitle1 fontWeight400"
+                class="q-ml-md row text-subtitle1 fontWeight400"
                 v-for="individualPackage in individualPackages"
                 :key="individualPackage"
               >
                 <q-img
-                  class="q-mt-xs"
+                  class="q-mt-xs check-img"
                   :src="getImage('check.svg')"
                   width="8%"
                   height="40%"
@@ -155,7 +164,7 @@
             </div>
           </div>
         </div>
-        <div class="test">
+        <div class="test q-px-xl desktop-footer">
           <div class="card-border bg-white card-container-enterprice">
             <div class="row q-px-xl q-pt-md">
               <div class="col-md-9 col-sm-12 text-h6 text-left row">
@@ -165,27 +174,24 @@
                 <div
                   class="col-md-11 col-sm-12 fontWeight500 text-left q-pl-md q-pt-sm"
                 >
-                  Enterprise Subscription
+                  Enterprise Package
                 </div>
               </div>
               <div
                 class="col text-subtitle1 fontWeight500 col-md-3 col-sm-12 q-pt-sm"
               >
-                <a class="text-deep-orange desktop-only float-right" href=""
-                  >Contact us</a
+                <a
+                  class="text-deep-orange desktop-footer float-right"
+                  href="mailto:subscription@claimguru.com"
+                  target="_blank"
+                  >Contact Us</a
                 >
-                <div
-                  class="mobile-only text-subtitle1 text-center fontWeight600 q-my-sm"
-                  style="font-family: Poppins; color: #ef5926"
-                >
-                  Contact us
-                </div>
               </div>
             </div>
             <div class="col-auto row q-px-xl q-my-lg">
               <div class="col-1 text-center">
                 <q-img
-                  class="q-mt-xs"
+                  class="q-mt-xs check-img"
                   :src="getImage('check.svg')"
                   width="40%"
                 />
@@ -193,13 +199,54 @@
               <div class="col">
                 <span class="q-ml-xs text-subtitle1 fontWeight400"
                   >Custom setup for large firms with more than 8 paid roles
+                  custom pricing
                 </span>
               </div>
             </div>
           </div>
         </div>
-        <div class="q-mx-lg q-mt-xl desktop-only">
-          <span class=""> © ClaimGuru 2022</span>
+        <div class="col row test q-px-xl">
+          <div
+            class="col-md-5 col-sm-12 col-xs-12 card-border q-mb-md col bg-white card-container mobile-footer"
+          >
+            <div class="q-px-lg">
+              <div class="row justify-center q-pt-md">
+                <q-img :src="getImage('enterprice.svg')" width="20%" />
+              </div>
+              <div class="text-h6 fontWeight500 text-center">
+                Enterprise Package
+              </div>
+              <a
+                class="mobile-footer text-subtitle1 text-center fontWeight600 q-my-sm"
+                style="
+                  font-family: Poppins;
+                  color: #ef5926;
+                  text-decoration: none;
+                "
+                href="mailto:subscription@claimguru.com"
+                target="_blank"
+              >
+                Contact Us
+              </a>
+              <div
+                class="q-ml-md row text-subtitle1 fontWeight400 col-md-4 col-xs-12 col-sm-12 q-pb-md"
+              >
+                <q-img
+                  class="q-mt-xs check-img"
+                  :src="getImage('check.svg')"
+                  width="8%"
+                  height="8%"
+                />
+                <span class="q-ml-sm">
+                  Custom setup for large firms with more than 8 paid roles
+                  custom pricing
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="q-mx-lg q-my-xl desktop-footer absolute-bottom">
+          <span class=""> © ClaimGuru {{ new Date().getFullYear() }}</span>
         </div>
       </div>
       <div class="col-md-6 col-sm-12 col-xs-12">
@@ -216,7 +263,7 @@
                 style="border-radius: 10px"
               />
               <div class="q-mt-sm text-subtitle1 fontWeight600 text-grey">
-                Step 1. Create account
+                Step 1. Create Account
               </div>
 
               <div class="q-mt-lg text-h4 fontWeight600">Subscribe Now</div>
@@ -272,7 +319,8 @@
                       validateEmail(val) ||
                       'You have entered an invalid email address!',
                     val =>
-                      checkEmailExist(val) || 'This email is already in use'
+                      checkEmailExist(val) ||
+                      'This email is already in use. Please choose another'
                   ]"
                 />
                 <span class="text-red text-caption">{{ errorMSG }}</span>
@@ -437,7 +485,7 @@
                 <div class="q-mt-xl"></div>
                 <div class="row">
                   <label class="column text-h5 fontWeight600"
-                    >30 days free</label
+                    >30 days Free</label
                   >
                 </div>
                 <div class="row q-mt-sm">
@@ -449,10 +497,10 @@
                       v-if="isPackageSelected.id1 === true"
                       class="text-subtitle1 text-grey-white"
                     >
-                      $250/ month *
+                      $250 / month *
                     </div>
                     <div v-else class="text-subtitle1 text-grey-white">
-                      $125/ month *
+                      $125 / month *
                     </div>
                   </div>
                 </div>
@@ -483,6 +531,14 @@
             <div class="col-2"></div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="mobile-footer">
+      <q-separator />
+      <div class="" style="height: 60px; padding-top: 20px; margin: 0px 32px">
+        <span class="" style="color: #667085">
+          © ClaimGuru {{ new Date().getFullYear() }}</span
+        >
       </div>
     </div>
   </q-page>
@@ -696,7 +752,7 @@ export default {
           token = result.token.id;
         }
       });
-      console.log('TEst', displayError);
+      // console.log('TEst', displayError);
       if (displayError !== undefined) {
         this.setLoading(false);
         return;
@@ -763,14 +819,38 @@ export default {
 .fontWeight400 {
   font-weight: 400;
 }
-.test {
-  @media only screen and (max-width: 1500px) {
-    padding-left: 48px;
-    padding-right: 48px;
+.check-img {
+  @media only screen and (min-width: 450px) and (max-width: 700px) {
+    width: 5% !important;
   }
-  @media only screen and (min-width: 1500px) {
-    padding-left: 80px;
-    padding-right: 80px;
+  @media only screen and (min-width: 701px) and (max-width: 1023px) {
+    width: 3% !important;
+  }
+}
+// .test {
+//   @media only screen and (max-width: 1500px) {
+//     padding-left: 48px;
+//     padding-right: 48px;
+//   }
+//   @media only screen and (min-width: 1500px) {
+//     padding-left: 80px;
+//     padding-right: 80px;
+//   }
+// }
+.mobile-footer {
+  @media only screen and (max-width: 1023px) {
+    display: block;
+  }
+  @media only screen and (min-width: 1024px) {
+    display: none;
+  }
+}
+.desktop-footer {
+  @media only screen and (max-width: 1023px) {
+    display: none;
+  }
+  @media only screen and (min-width: 1024px) {
+    display: block;
   }
 }
 .bgNewPrimary {
@@ -779,9 +859,28 @@ export default {
   }
 }
 .card-container {
-  @media only screen and (min-width: 1024px) {
-    width: 47%;
-  }
+  // // @media only screen and (min-width: 1024px) and (max-width: 2400px) {
+  // //   width: 44%;
+  // // }
+  // // @media only screen and (min-width: 2401px) {
+  // //   width: 46%;
+  // // }
+  // @media only screen and (min-width: 1024px) and (max-width: 1201px){
+  //   width: 44%;
+  // }
+  // @media only screen and (min-width: 1202px) and (max-width: 1600px){
+  //   width: 47%;
+  // }
+  // @media only screen and (min-width: 1601px) and (max-width: 1849px){
+  //   width: 46%;
+  // }
+  // @media only screen and (min-width: 1850px) and (max-width: 2400px){
+  //   width: 46%;
+  // }
+  //  @media only screen and (min-width: 2401px) {
+  //   width: 47%;
+  // }
+
   @media only screen and (max-width: 1023px) {
     margin-left: 0px;
     margin-right: 0px;
@@ -790,9 +889,22 @@ export default {
   }
 }
 .card-container-enterprice {
-  @media only screen and (min-width: 1024px) {
-    width: 98%;
-  }
+  // @media only screen and (min-width: 1024px) and (max-width: 1201px){
+  //   width: 95%;
+  // }
+  // @media only screen and (min-width: 1202px) and (max-width: 1600px){
+  //   width: 94%;
+  // }
+  // @media only screen and (min-width: 1601px) and (max-width: 1849px){
+  //   width: 93%;
+  // }
+  // @media only screen and (min-width: 1850px) and (max-width: 2400px){
+  //   width: 92%;
+  // }
+  //  @media only screen and (min-width: 2401px) {
+  //   width: 95%;
+  // }
+  width: 100%;
 }
 .signup {
   @media only screen and (min-width: 1024px) {
@@ -888,5 +1000,11 @@ export default {
 <style lang="scss">
 .q-checkbox__bg {
   border-radius: 6px !important;
+}
+.q-field--error .q-field__bottom {
+  color: #c10015 !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  line-height: 12px !important;
 }
 </style>

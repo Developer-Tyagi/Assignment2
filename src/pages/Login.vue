@@ -10,18 +10,18 @@
           />
         </div>
         <div class="q-mt-md text-h5 text-center q-px-lg fontWeight600">
-          <div class="q-px-lg" style="font-size: 28px; background: #f9e7d8">
+          <div class="q-px-lg heading-line" style="background: #f9e7d8">
             The First and Only Catastrophe-Proof Claim Management System For
             Public Adjusters
           </div>
         </div>
-        <div class="q-mx-sm q-mb-lg absolute-bottom">
-          <span class=""> © ClaimGuru 2022</span>
+        <div class="q-mx-xl q-mb-lg absolute-bottom desktop-footer">
+          <span class=""> © ClaimGuru {{ new Date().getFullYear() }}</span>
         </div>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12">
-        <!-- signup form -->
-        <div class="q-my-xl q-px-lg content-center bg-white">
+        <!-- login form -->
+        <div class="q-px-lg content-center bg-white">
           <div class="login-up">
             <div class="col login q-mx-xl">
               <div class="q-mt-lg text-h4 fontWeight600">Login</div>
@@ -50,7 +50,7 @@
                 <q-input
                   color="primary"
                   class="required full-width"
-                  placeholder="Enter your Password"
+                  placeholder="Enter Your Password"
                   v-model="login.password"
                   outlined
                   :type="isPwd ? 'password' : 'text'"
@@ -81,22 +81,32 @@
                   />
                 </div>
                 <div class="row justify-center q-mt-md">
-                  <div class="col-lg-2 col-md-2 col-sm-12"></div>
-                  <div class="col-lg-8 col-md-8 col-sm-12 q-ml-md">
-                    <label class="text-subtitle1"
+                  <div class="col-lg-2 col-md-2 col-sm-2"></div>
+                  <div class="col-lg-8 col-md-8 col-sm-8 q-ml-md">
+                    <label class="text-subtitle1 signup-text"
                       >Don’t have an account?
                     </label>
-                    <a href="/signup" class="text-deep-orange text-subtitle1"
+                    <a
+                      href="/signup"
+                      class="text-deep-orange text-subtitle1 signup-text"
                       >Sign Up</a
                     >
                   </div>
-                  <div class="col-2"></div>
+                  <div class="col-lg-2 col-md-2 col-sm-2"></div>
                 </div>
               </q-form>
             </div>
             <div class="col-2"></div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="mobile-footer">
+      <q-separator />
+      <div class="" style="height: 60px; padding-top: 20px; margin: 0px 32px">
+        <span class="" style="color: #667085">
+          © ClaimGuru {{ new Date().getFullYear() }}</span
+        >
       </div>
     </div>
   </q-page>
@@ -272,6 +282,33 @@ export default {
 .fontWeight400 {
   font-weight: 400;
 }
+.signup-text {
+  font-size: 16px !important;
+}
+.heading-line {
+  @media only screen and (max-width: 1023px) {
+    font-size: 24px;
+  }
+  @media only screen and (min-width: 1024px) {
+    font-size: 28px;
+  }
+}
+.mobile-footer {
+  @media only screen and (max-width: 1023px) {
+    display: block;
+  }
+  @media only screen and (min-width: 1024px) {
+    display: none;
+  }
+}
+.desktop-footer {
+  @media only screen and (max-width: 1023px) {
+    display: none;
+  }
+  @media only screen and (min-width: 1024px) {
+    display: block;
+  }
+}
 .login {
   @media only screen and (max-width: 1023px) {
     padding-left: 10px;
@@ -288,7 +325,7 @@ export default {
   @media only screen and (max-width: 1023px) {
   }
   @media only screen and (min-width: 1024px) {
-    margin-top: 50%;
+    margin-top: 35vh;
   }
 }
 .test {
