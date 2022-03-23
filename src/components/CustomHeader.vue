@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div v-if="isMobile() && $route.name != 'setup'">
+    <!-- header -->
+    <div v-if="isMobile() && $route.name != 'setup' && $route.name !== 'admin'">
       <q-header class="bg-white">
         <q-toolbar
           class="row bg-primary rounded-header"
@@ -91,8 +92,10 @@
         </div>
       </q-header>
     </div>
+
     <q-header v-if="!isMobile()" class="bg-white">
-      <div class="row">
+      <!-- setup header -->
+      <div class="row" v-if="$route.name == 'setup'">
         <div
           class="col-3 q-px-xl q-pt-md q-pb-md"
           v-if="!isMobile() && $route.name == 'setup'"
@@ -119,9 +122,56 @@
           <q-separator class="q-mt-md" />
         </div>
       </div>
+      <!-- admin header -->
+      <div
+        class="row"
+        :class="$q.screen.lt.sm ? 'justify-between' : 'justify-end'"
+        v-if="$route.name == 'admin'"
+        :style="$q.screen.lt.sm ? '' : 'background-color:#ffff'"
+        style="background-color: #f9e7d8; max-height: 100px; min-height: 70px"
+      >
+        <!-- menu icon -->
+        <div class="col-3 row items-center" v-if="$q.screen.lt.sm">
+          <q-btn
+            flat
+            dense
+            color="primary"
+            class="col-4 q-pl-sm"
+            icon="menu"
+            aria-label="Menu"
+            @click="onWebMenuButtonClick"
+          ></q-btn>
+        </div>
+        <!-- logo -->
+        <div class="col-5 row justify-center q-py-sm" v-if="$q.screen.lt.sm">
+          <div class="">
+            <img width="100%" height="100%" src="~assets/new_app_logo.svg" />
+          </div>
+        </div>
+        <!-- user name -->
+        <div class="col-4 row items-center justify-end q-pr-lg">
+          <div class="">
+            <q-avatar
+              size="3em"
+              font-size="2.5rem"
+              icon="person"
+              class="text-white bg-grey q-mr-md"
+            >
+            </q-avatar>
+
+            <span
+              v-if="!$q.screen.lt.sm"
+              class="q-pt-md text-capitalize text-weight-bold text-black text-subtitle1"
+            >
+              {{ userName ? userName : updatedUserName }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <q-separator />
 
       <div
-        v-if="!isMobile() && $route.name !== 'setup'"
+        v-if="!isMobile() && $route.name !== 'setup' && !$q.screen.lt.sm"
         class="q-px-xl q-ml-lg q-mt-sm q-pt-xs"
       >
         <q-breadcrumbs style="color: #667085" active-color="#667085">
@@ -148,6 +198,8 @@
         </q-breadcrumbs>
       </div>
     </q-header>
+
+    <!-- menu -->
     <div v-if="$route.name !== 'setup'">
       <!-- Menu Drawer for Mobile application-->
       <q-drawer
@@ -264,16 +316,16 @@
 
       <!--Menu Drawer for Web Applicaiton-->
       <q-drawer
-        v-model="webDrawer"
-        :mini="!webDrawer || miniState"
+        v-model="isLeftWebSidePanelOpen"
         show-if-above
+        :mini="!webDrawer || miniState"
         :width="290"
         :breakpoint="400"
         bordered
         v-else
       >
         <div class="full-height" style="background-color: #f9e7d8">
-          <div class="col-2 q-mb-lg">
+          <div class="col-2 q-mb-lg" v-if="!$q.screen.lt.sm">
             <!-- <div v-if="miniState" class="row items-center">
               <div class="col q-ml-md q-py-md">
                 <q-btn
@@ -325,6 +377,10 @@
               </div>
             </div>
             <div v-else>
+              <div class="q-pl-xl q-pt-sm fontWeight500 text-grey1">
+                <q-icon name="arrow_back" size="xs" class="q-mr-sm" />
+                <span>Back to dashboard</span>
+              </div>
               <q-scroll-area style="height: 65vh">
                 <q-list>
                   <q-item
@@ -451,17 +507,17 @@
               Download Mobile App
 
               <div class="q-px-md">
-                <q-img
+                <img
                   class="web-menu-claim-guru-logo"
                   :src="getImage('Mobile_app_store_badge.svg')"
                 />
               </div>
-              <div class="q-px-md">
+              <div class="q-px-lg">
                 <a
                   target="_blank"
                   href="https://play.google.com/store/apps/details?id=com.claimguru.app"
                 >
-                  <q-img
+                  <img
                     class="web-menu-claim-guru-logo"
                     :src="getImage('Mobile_app_store_badge-1.svg')"
                   />
@@ -488,7 +544,6 @@ import { Capacitor } from '@capacitor/core';
 import { removeFirebaseToken } from '@utils/firebase';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { appVersion } from '../Version';
-
 export default {
   name: 'CustomHeader',
 
@@ -510,6 +565,7 @@ export default {
       subOptionSelected: {},
       parentColorMenuItem: '',
       isLeftSidePanelOpen: false,
+      isLeftWebSidePanelOpen: false,
       intViewportWidth: 0,
       linksDataForMobileDrawer: [
         {
@@ -841,7 +897,13 @@ export default {
     onMenuButtonClick() {
       this.isLeftSidePanelOpen = !this.isLeftSidePanelOpen;
     },
-
+    onWebMenuButtonClick() {
+      if (this.isLeftWebSidePanelOpen == true) {
+        this.isLeftWebSidePanelOpen = false;
+      } else {
+        this.isLeftWebSidePanelOpen = true;
+      }
+    },
     onMenuHide() {
       this.isLeftSidePanelOpen = false;
     },

@@ -1,5 +1,80 @@
 <template>
-  <q-layout :view="!isMobile ? 'lhr lpR lfr' : 'lHh Lpr lFf'">
+  <q-layout
+    v-if="$route.name != 'admin'"
+    :view="!isMobile ? 'lhr lpR lfr' : 'lHh Lpr lFf'"
+  >
+    <!--this is used because the theming of web and mob is different-->
+    <CustomHeader @backButton="onBackButtonClick" />
+
+    <q-page-container
+      :style="`${
+        $route.name === 'dashboard' ? 'background-color: #8f8f8f;' : ''
+      }`"
+    >
+      <router-view />
+      <div id="navbar">
+        <q-page-sticky
+          position="bottom-right"
+          :offset="[30, 18]"
+          v-if="
+            $route.name != 'add new leads' &&
+            $route.name != 'create client' &&
+            $route.name != 'edit  lead' &&
+            $route.name != 'vendors' &&
+            $route.name != 'configuration' &&
+            $route.name != 'manage users' &&
+            $route.name != 'admin' &&
+            $route.name != 'setup' &&
+            $route.name != 'reports' &&
+            $route.name != 'signup' &&
+            $route.name != 'set-password' &&
+            $route.name != 'payment' &&
+            $route.name != 'loss info' &&
+            $route.name != 'Documents' &&
+            $route.name != 'properties and claims ' &&
+            $route.name != 'notes' &&
+            $route.name != 'Company Personnel' &&
+            $route.name != 'add new lead' &&
+            $route.name != 'lead details' &&
+            $route.name != 'Leads' &&
+            $route.name != 'claim details' &&
+            $route.name != 'dashboard' &&
+            $route.name != 'Add Claim' &&
+            $route.name != 'offline-claim'
+          "
+        >
+          <q-btn
+            unelevated
+            round
+            color="primary"
+            icon="add"
+            size="1.2em"
+            v-if="checkUserRoleType() == false"
+            @click="onClickAddUpIcon"
+          />
+        </q-page-sticky>
+      </div>
+      <q-dialog
+        v-model="openDialog"
+        :maximized="true"
+        transition-show="slide-up"
+        transition-hide="slide-down"
+        :position="'bottom'"
+      >
+        <AddOptions />
+      </q-dialog>
+    </q-page-container>
+    <q-footer class="row" v-if="!isMobile() && $route.name == 'setup'">
+      <div
+        class="col-3 text-black text-subtitle1 q-pb-sm q-pl-xl"
+        style="background-color: #f9e7d8"
+      >
+        © ClaimGuru 2022
+      </div>
+      <div class="col bg-white"></div>
+    </q-footer>
+  </q-layout>
+  <q-layout v-else :view="$q.screen.lt.sm ? 'hHh LpR lFf' : 'lHh LpR lFf'">
     <!--this is used because the theming of web and mob is different-->
     <CustomHeader @backButton="onBackButtonClick" />
 
@@ -91,7 +166,7 @@ export default {
     let data = await this.getUserInfo();
     if (
       data.attributes.onboard.isCompleted == false &&
-      $route.name != 'setup'
+      this.$route.name != 'setup'
     ) {
       this.$router.push('/setup');
     }

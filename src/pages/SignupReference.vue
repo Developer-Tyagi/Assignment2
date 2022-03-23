@@ -549,7 +549,6 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { constants } from '@utils/constant';
 import { validateEmail, validateNames } from '@utils/validation';
 import { isMobile } from '@utils/common';
-import { getToken, getCurrentUser } from '@utils/auth';
 
 export default {
   data() {
@@ -560,7 +559,13 @@ export default {
         type: constants.ORGANIZATION,
         company: {
           name: '',
-          plan: {}
+          plan: {
+            value: 'Firm Package',
+            machineValue: 'firm_package',
+            stripePriceID: 'price_1KRbkoEK8DUf1aFSK6zeWcfk',
+            stripeProductID: 'prod_L7rTDXkekxbZsk',
+            trialPeriodDays: 30
+          }
         },
         user: {
           email: '',
@@ -589,7 +594,7 @@ export default {
       cardExpiry: '',
       cardCvc: '',
       isPackageSelected: {
-        id1: '',
+        id1: true,
         id2: ''
       },
       displayErrors: '',
