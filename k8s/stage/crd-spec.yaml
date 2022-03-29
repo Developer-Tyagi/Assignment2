@@ -3,29 +3,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ui
+  name: APP_NAME
   labels:
-    name: ui
-    project: claimguru
-    version: 'IMAGE_TAG'
-    gitlab-job-id: 'CI_JOB_ID'
+    name: APP_NAME
+    project: PROJECT_NAME
+    version: 'APP_VERSION'
+    app_build: "APP_BUILD"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: ui
-      project: claimguru
+      name: APP_NAME
+      project: PROJECT_NAME
   template:
     metadata:
       labels:
-        name: ui
-        project: claimguru
-        version: 'IMAGE_TAG'
-        gitlab-job-id: 'CI_JOB_ID'
+        name: APP_NAME
+        project: PROJECT_NAME
+        version: 'APP_VERSION'
+        app_build: "APP_BUILD"
     spec:
       securityContext: {}
       containers:
-        - name: ui
+        - name: APP_NAME
           securityContext: {}
           image: DOCKER_IMAGE
           imagePullPolicy: Always
@@ -38,17 +38,23 @@ spec:
               port: http
             periodSeconds: 150
             initialDelaySeconds: 2
+      nodeSelector: {"cloud.google.com/gke-nodepool" : "claimguru-stage"}
+      tolerations:
+      - key: "nodegroup"
+        operator: "Equal"
+        value: "claimguru-stage"
+        effect: "NoSchedule"
 ---
 # Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: ui
+  name: APP_NAME
   labels:
-    name: ui
-    project: claimguru
-    version: 'IMAGE_TAG'
-    gitlab-job-id: 'CI_JOB_ID'
+    name: APP_NAME
+    project: PROJECT_NAME
+    version: 'APP_VERSION'
+    app_build: "APP_BUILD"
 spec:
   type: ClusterIP
   ports:
@@ -57,28 +63,28 @@ spec:
       protocol: TCP
       name: http
   selector:
-    name: ui
-    project: claimguru
+    name: APP_NAME
+    project: PROJECT_NAME
 ---
 # Virtual Service
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: ui
+  name: APP_NAME
   labels:
-    name: ui
-    project: claimguru
-    version: 'IMAGE_TAG'
-    gitlab-job-id: 'CI_JOB_ID'
+    name: APP_NAME
+    project: PROJECT_NAME
+    version: 'APP_VERSION'
+    app_build: "APP_BUILD"
 spec:
   hosts:
-    - app.stage.claimguru.com
+    - app.stage.PROJECT_NAME.com
   gateways:
-    - istio-system/claimguru-gateway
+    - istio-system/PROJECT_NAME-stage-gateway
   http:
     - match:
         - uri:
             prefix: '/'
       route:
         - destination:
-            host: ui
+            host: APP_NAME
