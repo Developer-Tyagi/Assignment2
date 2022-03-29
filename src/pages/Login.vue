@@ -1,16 +1,12 @@
 <template>
   <q-page class="column poppinsFont">
     <div class="col row">
-      <div class="col-lg-6 col-md-6 col-sm-12 bgNewPrimary">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary">
         <div class="q-pl-lg q-py-md">
-          <q-img
-            class="web-menu-claim-guru-logo"
-            :src="getImage('Logo.svg')"
-            width="20%"
-          />
+          <q-img src="~assets/Logo.svg" class="web-menu-claim-guru-logo" />
         </div>
         <div class="q-mt-md text-h5 text-center q-px-lg fontWeight600">
-          <div class="q-px-lg heading-line" style="background: #f9e7d8">
+          <div class="heading-line" style="background: #f9e7d8">
             The First and Only Catastrophe-Proof Claim Management System For
             Public Adjusters
           </div>
@@ -19,11 +15,11 @@
           <span class=""> © ClaimGuru {{ new Date().getFullYear() }}</span>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <!-- login form -->
-        <div class="q-px-lg content-center bg-white">
+        <div class="q-px-xl content-center bg-white">
           <div class="login-up">
-            <div class="col login q-mx-xl">
+            <div class="login col">
               <div class="q-mt-lg text-h4 fontWeight600">Login</div>
               <q-form class="q-mt-lg" @submit="onUserLogin" ref="orgInfo">
                 <label class="text-subtitle1 fontWeight600"
@@ -81,8 +77,9 @@
                   />
                 </div>
                 <div class="row justify-center q-mt-md">
-                  <div class="col-lg-2 col-md-2 col-sm-2"></div>
-                  <div class="col-lg-8 col-md-8 col-sm-8 q-ml-md">
+                  <div
+                    class="col-lg-12 col-md-12 col-sm-12 q-ml-md text-center"
+                  >
                     <label class="text-subtitle1 signup-text"
                       >Don’t have an account?
                     </label>
@@ -92,11 +89,9 @@
                       >Sign Up</a
                     >
                   </div>
-                  <div class="col-lg-2 col-md-2 col-sm-2"></div>
                 </div>
               </q-form>
             </div>
-            <div class="col-2"></div>
           </div>
         </div>
       </div>
@@ -133,9 +128,11 @@ const isPushNotificationsAvailable =
 const { PushNotifications } = Plugins;
 
 export default {
+  name: 'Login-claimguru',
   data() {
     return {
       version: appVersion,
+      pagename: 'Login-Claimguru',
       isPasswordVisible: false,
       login: {
         email: '',
@@ -285,12 +282,22 @@ export default {
 .signup-text {
   font-size: 16px !important;
 }
+.web-menu-claim-guru-logo {
+  width: 151px;
+  height: 51px;
+}
 .heading-line {
   @media only screen and (max-width: 1023px) {
     font-size: 24px;
+    line-height: 36px;
+    margin-left: 10px;
+    margin-right: 10px;
   }
   @media only screen and (min-width: 1024px) {
     font-size: 28px;
+    line-height: 36px;
+    margin-left: 55px;
+    margin-right: 54px;
   }
 }
 .mobile-footer {
@@ -309,18 +316,19 @@ export default {
     display: block;
   }
 }
-.login {
-  @media only screen and (max-width: 1023px) {
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-  @media only screen and (min-width: 1024px) {
-    padding-left: 48px;
-    padding-right: 48px;
-  }
-}
+// .login {
+//   @media only screen and (max-width: 400px) {
+//     padding-left: 10px;
+//     padding-right: 10px;
+//     margin-left: 15px;
+//     margin-right: 15px;
+//   }
+
+//   @media only screen and (min-width: 1024px) {
+//     padding-left: 48px;
+//     padding-right: 48px;
+//   }
+// }
 .login-up {
   @media only screen and (max-width: 1023px) {
   }
@@ -413,5 +421,39 @@ export default {
       min-height: 0px;
     }
   }
+}
+</style>
+<style lang="scss">
+.q-checkbox__bg {
+  border-radius: 6px !important;
+}
+.q-field--error .q-field__bottom {
+  color: #c10015 !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  line-height: 12px !important;
+}
+.q-checkbox__inner {
+  font-size: 40px;
+  width: 1em;
+  min-width: 1em;
+  height: 1em;
+  outline: 0;
+  border-radius: 50%;
+  color: #0c0c0c !important;
+}
+.q-btn__wrapper:before {
+  box-shadow: none;
+}
+.q-field__messages {
+  line-height: 12px !important;
+}
+.q-field--outlined .q-field__control {
+  border-radius: 8px;
+  padding: 0 12px;
+}
+.q-page-container {
+  margin: 0 auto;
+  max-width: 120rem;
 }
 </style>

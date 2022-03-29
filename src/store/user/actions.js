@@ -61,6 +61,7 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
       buildApiData('users', payload)
     );
     var userdata = data;
+    var returnmsg = '';
     if (data) {
       const firebaseRes =
         await firebaseAuthorization.signInWithEmailAndPassword(
@@ -81,12 +82,27 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
+    if (e.response[0].detail.includes('generic_decline')) {
+      returnmsg = 'Your Card Has Been Declined due to generic_decline';
+    } else if (e.response[0].detail.includes('insufficient_funds')) {
+      returnmsg = 'Your Card Has Been Declined due to insufficient_funds';
+    } else if (e.response[0].detail.includes('lost_card')) {
+      returnmsg = 'Your Card Has Been Declined due to lost_card';
+    } else if (e.response[0].detail.includes('stolen_card')) {
+      returnmsg =
+        'Your Card Has Been Declined due to generic_dstolen_cardecline';
+    } else if (e.response[0].detail.includes('expired_card')) {
+      returnmsg = 'Your Card Has Been Declined due to expired_card';
+    } else if (e.response[0].detail.includes('incorrect_cvc')) {
+      returnmsg = 'Your Card Has Been Declined due to incorrect_cvc';
+    } else if (e.response[0].detail.includes('processing_error')) {
+      returnmsg = 'Your Card Has Been Declined due to processing_error';
+    } else if (e.response[0].detail.includes('incorrect_number')) {
+      returnmsg = 'Your Card Has Been Declined due to incorrect_number';
+    }
     dispatch('setNotification', {
       type: 'negative',
-      message:
-        e.response[0].detail == 'stripe token is missing'
-          ? 'Please ask admin to add you as a beta user'
-          : e.response[0].detail
+      message: returnmsg
     });
     return false;
   } finally {
@@ -95,10 +111,10 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
 }
 
 export async function checkExistingEmail({ dispatch }, email) {
-  dispatch('setLoading', true);
+  //dispatch('setLoading', true);
   try {
     const { data } = await request.get(`/users/email?email=${email}`);
-    dispatch('setLoading', false);
+    //dispatch('setLoading', false);
     if (data.attributes.exists) {
       return false;
     } else {
@@ -106,7 +122,7 @@ export async function checkExistingEmail({ dispatch }, email) {
     }
   } catch (e) {
     console.log(e);
-    dispatch('setLoading', false);
+    // dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
       message:
