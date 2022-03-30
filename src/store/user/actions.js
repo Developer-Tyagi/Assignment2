@@ -99,6 +99,12 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
       returnmsg = 'Your Card Has Been Declined due to processing_error';
     } else if (e.response[0].detail.includes('incorrect_number')) {
       returnmsg = 'Your Card Has Been Declined due to incorrect_number';
+    } else if (e.response[0].detail.includes('card_declined')) {
+      returnmsg = 'Oops! Payment Failed. Your card was declined.';
+    } else if (e.response[0].detail.includes('stripe token is missing')) {
+      returnmsg = 'Please ask admin to add you as a beta user';
+    } else {
+      returnmsg = e.response[0].detail;
     }
     dispatch('setNotification', {
       type: 'negative',

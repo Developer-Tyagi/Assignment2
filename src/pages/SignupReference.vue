@@ -6,13 +6,13 @@
           <q-img src="~assets/Logo.svg" class="web-menu-claim-guru-logo" />
         </div>
         <div
-          class="mobile-view q-mt-md outer-padding"
+          class="mobile-view q-mt-md outer-padding package-section"
           v-if="continueClick === false"
         >
           <q-linear-progress
             size="5px"
             :value="progress"
-            style="border-radius: 10px"
+            style="border-radius: 5px; margin-top: 9.5px"
           />
           <div class="q-mt-sm text-subtitle1 fontWeight600 text-grey">
             Step 1. Create Account
@@ -21,30 +21,24 @@
         <div class="mobile-view q-mt-md q-px-lg" v-if="continueClick === true">
           <q-linear-progress
             size="5px"
-            style="border-radius: 10px"
+            style="border-radius: 5px; margin-top: 9.5px"
             :value="progress1"
           />
           <div class="q-mt-sm text-subtitle1 text-bold text-grey">
             Step 2. Payment
           </div>
         </div>
-        <div class="q-mt-md text-h5 text-center fontWeight600 outer-padding">
-          <div
-            class=""
-            style="
-              font-size: 28px;
-              color: #101828;
-              line-height: 36px;
-              font-size: 28px;
-            "
-          >
+        <div
+          class="text-h5 text-center claimguru-tagline fontWeight600 outer-padding package-section"
+        >
+          <div class="" style="">
             The First and Only Catastrophe-Proof Claim Management System For
             Public Adjusters
           </div>
         </div>
-        <div class="q-pt-lg">
+        <div class="">
           <div
-            class="text-h6 fontWeight600 outer-padding q-py-md main-pack-heading package-section"
+            class="text-h6 fontWeight600 outer-padding main-pack-heading package-section"
             style="justify-content: left !important"
           >
             <span
@@ -119,7 +113,7 @@
               <div
                 class="q-ml-md text-subtitle1 fontWeight400 col-md-4 col-xs-12 col-sm-12"
                 v-for="key in firmPackages.plandata"
-                :key="key"
+                :key="key.tempkey"
               >
                 <q-img
                   class="q-mt-xs check-img"
@@ -201,8 +195,8 @@
               </div>
               <div
                 class="q-ml-md text-subtitle1 fontWeight400"
-                v-for="key in individualPackages.plandata"
-                :key="key"
+                v-for="key2 in individualPackages.plandata"
+                :key="key2.tempkey2"
               >
                 <q-img
                   class="q-mt-xs check-img"
@@ -211,13 +205,13 @@
                   height="40%"
                 />
                 <span class="q-ml-sm"
-                  >{{ key.tempvalue }} {{ key.tempkey }}</span
+                  >{{ key2.tempvalue2 }} {{ key2.tempkey2 }}</span
                 >
               </div>
             </div>
           </div>
         </div>
-        <div class="test desktop-view outer-padding package-section">
+        <div class="test desktop-view outer-padding package-section q-pt-lg">
           <div class="card-border bg-white card-container-enterprice">
             <div class="row q-px-xl q-pt-md">
               <div class="col-md-9 col-sm-12 text-h6 text-left row">
@@ -326,7 +320,7 @@
                 <q-linear-progress
                   size="5px"
                   :value="progress"
-                  style="border-radius: 10px"
+                  style="border-radius: 5px"
                 />
                 <div class="q-mt-sm text-subtitle1 fontWeight600 text-grey">
                   Step 1. Create Account
@@ -382,12 +376,10 @@
                   lazy-rules
                   :rules="[
                     val => !!val || 'Please fill your email address',
+                    val => checkEmailExist(val) || 'test',
                     val =>
                       validateEmail(val) ||
-                      'You have entered an invalid email address',
-                    val =>
-                      checkEmailExist(val) ||
-                      'This email is already in use. Please choose another'
+                      'You have entered an invalid email address'
                   ]"
                 />
                 <span class="error-msg">{{ errorMSG }}</span>
@@ -436,26 +428,20 @@
                     >I agree to ClaimGuru’s</label
                   >
                   <a
-                    class="q-mt-sm q-ml-sm text-deep-orange fontWeight600"
+                    class="q-mt-sm q-ml-xs q-mr-xs text-deep-orange fontWeight600"
                     href="/terms-conditions"
                     style="margin-top: 10px"
                     target="_blank"
                     >Terms of Use</a
                   >
-                  <label
-                    class="q-mt-sm q-ml-sm q-mr-sm"
-                    style="margin-top: 10px"
-                  >
-                    and</label
-                  >
+                  <label class="q-mt-sm" style="margin-top: 10px"> and</label>
                   <a
-                    class="q-mt-sm text-deep-orange fontWeight600"
+                    class="q-mt-sm q-ml-xs q-mr-xs text-deep-orange fontWeight600"
                     href="privacy-policy"
                     style="margin-top: 10px"
                     target="_blank"
-                    >Privacy Policy</a
+                    >Privacy Policy.</a
                   >
-                  <label class="q-mt-sm q-mr-sm">.</label>
                 </div>
 
                 <div class="row justify-center q-mt-lg">
@@ -479,7 +465,7 @@
                     </label>
                     <a
                       href="/login"
-                      class="text-deep-orange text-subtitle1 fontWeight600"
+                      class="text-deep-orange text-subtitle1 fontWeight500"
                       >Login</a
                     >
                   </div>
@@ -498,7 +484,7 @@
               <div class="desktop-view">
                 <q-linear-progress
                   size="5px"
-                  style="border-radius: 10px"
+                  style="border-radius: 5px"
                   :value="progress1"
                 />
                 <div class="q-mt-sm text-subtitle1 text-bold text-grey">
@@ -764,12 +750,8 @@ export default {
 
     async checkEmailExist(val) {
       let res = await this.checkExistingEmail(val);
-      if (res) {
-        this.errorMSG = '';
-      } else {
-        this.errorMSG = 'This email is already in use. Please choose another';
-      }
       return res;
+      //return true
     },
     validateEmail,
     validateNames,
@@ -890,39 +872,39 @@ export default {
       //this.setLoading(true);
       var token = '';
       var displayError;
-      if (this.cardName != '') {
-        await this.createToken().then(function (result) {
+      // if (this.cardName != '') {
+      await this.createToken().then(function (result) {
+        if (result.error) {
+          displayError = document.getElementById('card-errors');
           if (result.error) {
-            displayError = document.getElementById('card-errors');
-            if (result.error) {
-              displayError.textContent = result.error.message;
-            } else {
-              displayError.textContent = '';
-            }
+            displayError.textContent = result.error.message;
           } else {
-            // Send the token to your server
-            token = result.token.id;
+            displayError.textContent = '';
           }
-        });
-        // console.log('TEst', displayError);
-        if (displayError !== undefined) {
-          //this.setLoading(false);
-          return;
+        } else {
+          // Send the token to your server
+          token = result.token.id;
         }
-        if (token) {
-          this.data.stripeToken = token;
-          const res = await this.createUserForOrganization(this.data);
-          if (res) {
-            this.$router.push('/setup');
-          }
-        }
-      } else {
-        this.$q.notify({
-          type: 'negative',
-          message: 'Please Enter Name on Card',
-          position: 'top'
-        });
+      });
+      // console.log('TEst', displayError);
+      if (displayError !== undefined) {
+        //this.setLoading(false);
+        return;
       }
+      if (token) {
+        this.data.stripeToken = token;
+        const res = await this.createUserForOrganization(this.data);
+        if (res) {
+          this.$router.push('/setup');
+        }
+      }
+      // } else {
+      //   this.$q.notify({
+      //     type: 'negative',
+      //     message: 'Please Enter Name on Card',
+      //     position: 'top'
+      //   });
+      // }
 
       //this.setLoading(false);
     },
@@ -1002,26 +984,26 @@ export default {
         this.individualPackages.metadata = element.metadata;
         Object.keys(this.individualPackages.metadata);
         for (
-          let index = 0;
-          index < Object.keys(this.individualPackages.metadata).length;
-          index++
+          let index2 = 0;
+          index2 < Object.keys(this.individualPackages.metadata).length;
+          index2++
         ) {
-          var tempkey = Object.keys(this.individualPackages.metadata)[index];
-          var tempvalue = Object.values(this.individualPackages.metadata)[
-            index
+          var tempkey2 = Object.keys(this.individualPackages.metadata)[index2];
+          var tempvalue2 = Object.values(this.individualPackages.metadata)[
+            index2
           ];
-          if (tempvalue == '-1') {
-            tempvalue = 'Unlimited';
+          if (tempvalue2 == '-1') {
+            tempvalue2 = 'Unlimited';
           }
-          if (tempkey == 'isRoleBased') {
-            this.individualPackages.isRoleBased = tempvalue;
-          } else if (tempkey == 'trialPeriod') {
-            this.individualPackages.trialPeriodDays = tempvalue;
+          if (tempkey2 == 'isRoleBased') {
+            this.individualPackages.isRoleBased = tempvalue2;
+          } else if (tempkey2 == 'trialPeriod') {
+            this.individualPackages.trialPeriodDays = tempvalue2;
           } else {
-            var finalkey = tempkey.split('|');
-            tempkey = finalkey[0];
-            var temparray = { tempkey, tempvalue };
-            this.individualPackages.plandata.push(temparray);
+            var finalkey2 = tempkey2.split('|');
+            tempkey2 = finalkey2[0];
+            var temparray2 = { tempkey2, tempvalue2 };
+            this.individualPackages.plandata.push(temparray2);
           }
         }
         this.individualPackages.packplan = element.plans;
@@ -1102,6 +1084,23 @@ export default {
     width: 40px !important;
   }
 }
+.claimguru-tagline {
+  @media only screen and (max-width: 1023px) {
+    font-size: 28px;
+    color: #101828;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 36px;
+    margin: 40px 0px 10px 0px;
+  }
+  @media only screen and (min-width: 1024px) {
+    color: #101828;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 36px;
+    margin: 16px 0px;
+  }
+}
 .signup-section {
   @media only screen and (min-width: 700px) {
     display: flex;
@@ -1111,6 +1110,7 @@ export default {
     max-width: 680px;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 90px;
   }
   @media only screen and (max-width: 700px) {
     display: flex;
@@ -1170,7 +1170,7 @@ export default {
   }
 }
 .package-section {
-  @media only screen and (max-width: 1024px) {
+  @media only screen and (max-width: 1023px) {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -1338,11 +1338,13 @@ export default {
     font-weight: 600;
     font-size: 24px;
     line-height: 32px;
+    padding: 16px 48px 16px 0px;
   }
   @media only screen and (max-width: 1023px) {
     font-weight: 600;
     font-size: 24px;
     line-height: 28px;
+    padding: 10px 15px 10px 0px;
   }
 }
 .card-container {
@@ -1464,11 +1466,29 @@ export default {
       color: #525151 !important;
     }
   }
+  .StripeElement--invalid {
+    color: #d64d25;
+    height: 44px;
+    max-width: 100%;
+    outline: none;
+    border-radius: 8px;
+    border: 3px solid !important;
+    padding: 0 12px;
+  }
+  .StripeElement--focus {
+    color: #ef5926;
+    height: 44px;
+    max-width: 100%;
+    border: 3px solid !important;
+    outline: none;
+    border-radius: 8px;
+    padding: 0 12px;
+  }
   .cardInfo {
     padding: 12.5px 14px;
     border: 1px solid;
     border-radius: 8px;
-    height: 50px;
+    height: 44px;
     .q-field__native {
       font-weight: 500 !important;
       font-size: 16px !important;
@@ -1513,6 +1533,12 @@ export default {
 .q-field--outlined .q-field__control {
   border-radius: 8px;
   padding: 0 12px;
+  height: 44px;
+}
+.q-field__marginal {
+  height: 44px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 24px;
 }
 .q-page-container {
   margin: 0 auto;

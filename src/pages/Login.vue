@@ -2,7 +2,7 @@
   <q-page class="column poppinsFont">
     <div class="col row">
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary">
-        <div class="q-pl-lg q-py-md">
+        <div class="">
           <q-img src="~assets/Logo.svg" class="web-menu-claim-guru-logo" />
         </div>
         <div class="q-mt-md text-h5 text-center fontWeight600">
@@ -500,6 +500,12 @@ export default {
 .q-field--outlined .q-field__control {
   border-radius: 8px;
   padding: 0 12px;
+  height: 44px;
+}
+.q-field__marginal {
+  height: 44px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 24px;
 }
 .q-page-container {
   margin: 0 auto;
