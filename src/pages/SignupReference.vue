@@ -1,12 +1,14 @@
-/* eslint-disable vue/require-v-for-key */
 <template>
   <q-page class="column poppinsFont">
     <div class="col row custom-cols">
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary">
-        <div class="q-pl-lg q-py-md">
+        <div class="q-pb-md">
           <q-img src="~assets/Logo.svg" class="web-menu-claim-guru-logo" />
         </div>
-        <div class="mobile-view q-mt-md q-px-lg" v-if="continueClick === false">
+        <div
+          class="mobile-view q-mt-md outer-padding"
+          v-if="continueClick === false"
+        >
           <q-linear-progress
             size="5px"
             :value="progress"
@@ -26,9 +28,9 @@
             Step 2. Payment
           </div>
         </div>
-        <div class="q-mt-md text-h5 text-center q-px-lg fontWeight600">
+        <div class="q-mt-md text-h5 text-center fontWeight600 outer-padding">
           <div
-            class="q-px-lg"
+            class=""
             style="
               font-size: 28px;
               color: #101828;
@@ -41,7 +43,10 @@
           </div>
         </div>
         <div class="q-pt-lg">
-          <div class="text-h6 fontWeight600 q-px-xl q-py-md main-pack-heading">
+          <div
+            class="text-h6 fontWeight600 outer-padding q-py-md main-pack-heading package-section"
+            style="justify-content: left !important"
+          >
             <span
               v-if="
                 isPackageSelected.id1 === '' && isPackageSelected.id2 === ''
@@ -56,7 +61,7 @@
             >
           </div>
         </div>
-        <div class="col row test q-px-xl">
+        <div class="col row test outer-padding package-section">
           <!-- card 1 -->
           <div
             class="col-md-5 col-sm-12 col-xs-12 card-border q-mb-md col bg-white card-container"
@@ -90,7 +95,11 @@
             ></div>
             <div class="q-px-lg">
               <div class="row justify-center q-pt-md">
-                <q-img :src="getImage('Featured icon (1).svg')" width="20%" />
+                <q-img
+                  :src="getImage('Featured icon (1).svg')"
+                  width="20%"
+                  class="package-icon"
+                />
               </div>
               <div class="text-h6 fontWeight500 text-center pack-heading">
                 Firm Package
@@ -168,7 +177,11 @@
             ></div>
             <div class="q-px-lg q-pb-lg">
               <div class="row justify-center q-pt-md">
-                <q-img :src="getImage('Featured icon (2).svg')" width="20%" />
+                <q-img
+                  :src="getImage('Featured icon (2).svg')"
+                  width="20%"
+                  class="package-icon"
+                />
               </div>
               <div class="text-h6 fontWeight500 text-center pack-heading">
                 Individual Package
@@ -204,12 +217,16 @@
             </div>
           </div>
         </div>
-        <div class="test q-px-xl desktop-view">
+        <div class="test desktop-view outer-padding package-section">
           <div class="card-border bg-white card-container-enterprice">
             <div class="row q-px-xl q-pt-md">
               <div class="col-md-9 col-sm-12 text-h6 text-left row">
                 <div class="col-md-1 col-sm-12">
-                  <q-img :src="getImage('enterprice.svg')" width="130%" />
+                  <q-img
+                    :src="getImage('enterprice.svg')"
+                    width="130%"
+                    class="enterprice-img"
+                  />
                 </div>
                 <div
                   class="col-md-11 col-sm-12 fontWeight500 text-left q-pl-md q-pt-sm pack-heading"
@@ -246,7 +263,7 @@
           </div>
         </div>
         <div
-          class="col row test q-px-xl"
+          class="col row test outer-padding package-section"
           :class="{ 'card-disabled': !div3 && continueClick }"
         >
           <div
@@ -254,7 +271,11 @@
           >
             <div class="q-px-lg">
               <div class="row justify-center q-pt-md">
-                <q-img :src="getImage('enterprice.svg')" width="20%" />
+                <q-img
+                  :src="getImage('enterprice.svg')"
+                  width="20%"
+                  class="package-icon"
+                />
               </div>
               <div class="text-h6 fontWeight500 text-center pack-heading">
                 Enterprise Package
@@ -289,17 +310,17 @@
             </div>
           </div>
         </div>
-        <div class="q-mx-lg q-my-xl desktop-view">
+        <div class="q-mx-lg q-my-xl desktop-view fontWeight400">
           <span class=""> © ClaimGuru {{ new Date().getFullYear() }}</span>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 q-pb-lg">
         <!-- signup form -->
         <div
           v-if="continueClick === false"
-          class="q-pt-xl q-px-lg content-center bg-white signup-main"
+          class="q-pt-xl content-center bg-white signup-main signup-section"
         >
-          <div class="q-py-xl signup-sub">
+          <div class="signup-sub">
             <div class="col signup">
               <div class="desktop-view">
                 <q-linear-progress
@@ -312,7 +333,7 @@
                 </div>
               </div>
 
-              <div class="q-mt-lg text-h4 fontWeight600">Subscribe Now</div>
+              <div class="text-h4 fontWeight600 signup-head">Subscribe Now</div>
               <q-form class="q-mt-lg" @submit="onContinue()" ref="orgInfo">
                 <label class="text-subtitle1 fontWeight600">First Name</label>
                 <q-input
@@ -369,7 +390,7 @@
                       'This email is already in use. Please choose another'
                   ]"
                 />
-                <span class="text-red text-caption">{{ errorMSG }}</span>
+                <span class="error-msg">{{ errorMSG }}</span>
                 <br v-if="errorMSG" />
                 <label class="text-subtitle1 fontWeight600">Password</label>
                 <q-input
@@ -411,21 +432,30 @@
                 />
                 <div class="q-mt-sm row justify-start text-caption">
                   <q-checkbox v-model="terms" lazy />
-                  <label class="q-mt-sm login-text"
+                  <label class="q-mt-sm login-text" style="margin-top: 10px"
                     >I agree to ClaimGuru’s</label
                   >
                   <a
                     class="q-mt-sm q-ml-sm text-deep-orange fontWeight600"
                     href="/terms-conditions"
+                    style="margin-top: 10px"
+                    target="_blank"
                     >Terms of Use</a
                   >
-                  <label class="q-mt-sm q-ml-sm q-mr-sm"> and</label>
+                  <label
+                    class="q-mt-sm q-ml-sm q-mr-sm"
+                    style="margin-top: 10px"
+                  >
+                    and</label
+                  >
                   <a
                     class="q-mt-sm text-deep-orange fontWeight600"
                     href="privacy-policy"
+                    style="margin-top: 10px"
+                    target="_blank"
                     >Privacy Policy</a
                   >
-                  <label class="q-mt-sm q-ml-sm q-mr-sm">.</label>
+                  <label class="q-mt-sm q-mr-sm">.</label>
                 </div>
 
                 <div class="row justify-center q-mt-lg">
@@ -437,7 +467,7 @@
                     size="16px"
                     class="full-width fontWeight600"
                     :disable="!terms"
-                    style="border-radius: 5px"
+                    style="border-radius: 10px; height: 50px"
                   />
                 </div>
                 <div class="row justify-center q-my-md">
@@ -459,7 +489,10 @@
             <div class="col-2"></div>
           </div>
         </div>
-        <div v-else class="q-pt-xl q-px-xl content-center bg-white signup-main">
+        <div
+          v-else
+          class="q-pt-xl content-center bg-white signup-main payment-section"
+        >
           <div class="q-pt-xl signup">
             <div class="">
               <div class="desktop-view">
@@ -488,7 +521,7 @@
               </div>
               <q-form class="q-mt-xl" @submit="onPaymentClick()" ref="orgInfo">
                 <div>{{ displayErrors }}</div>
-                <div class="main-pack-heading">
+                <div class="main-pack-heading signup-head">
                   <div class="text-h4 text-weight-bolder">
                     Pay with card for
                   </div>
@@ -568,10 +601,10 @@
                       v-if="isPackageSelected.id1 === true"
                       class="text-subtitle1 text-grey-white"
                     >
-                      $250/month *
+                      $250/month*
                     </div>
                     <div v-else class="text-subtitle1 text-grey-white">
-                      $125/month *
+                      $125/month*
                     </div>
                   </div>
                 </div>
@@ -584,7 +617,7 @@
                     color="deep-orange"
                     size="16px"
                     class="full-width fontWeight600"
-                    style="border-radius: 5px"
+                    style="border-radius: 10px; height: 50px"
                   />
                 </div>
                 <div class="q-mt-md"></div>
@@ -598,17 +631,19 @@
                   <a
                     href="/terms-conditions"
                     class="text-deep-orange fontWeight600"
+                    target="_blank"
                     >Terms of Use</a
                   >
                   and
                   <a
                     href="/privacy-policy"
                     class="text-deep-orange fontWeight600"
+                    target="_blank"
                     >Privacy Policy.</a
                   >
                 </div>
               </q-form>
-              <div class="row justify-center q-my-md">
+              <div class="row justify-center q-my-md" style="margin-top: 30px">
                 <q-img src="~assets/secure.svg" class="secure-logo" />
               </div>
             </div>
@@ -617,9 +652,12 @@
         </div>
       </div>
     </div>
-    <div class="mobile-view" v-if="continueClick === true">
+    <div class="mobile-view">
       <q-separator />
-      <div class="" style="height: 60px; padding-top: 20px; margin: 0px 32px">
+      <div
+        class="fontWeight400"
+        style="height: 60px; padding-top: 20px; margin: 0px 32px"
+      >
         <span class="" style="color: #667085">
           © ClaimGuru {{ new Date().getFullYear() }}</span
         >
@@ -635,11 +673,16 @@ import { validateEmail, validateNames } from '@utils/validation';
 import { isMobile } from '@utils/common';
 
 export default {
-  name: 'Signup-claimguru',
+  meta() {
+    return {
+      title: this.metaTitle
+    };
+  },
   data() {
     return {
       isPwd: true,
       errorMSG: '',
+      metaTitle: 'Signup - claimguru',
       data: {
         type: constants.ORGANIZATION,
         company: {
@@ -703,6 +746,8 @@ export default {
       plans_fetched: []
     };
   },
+  computed: {},
+
   mounted() {},
   methods: {
     ...mapActions([
@@ -722,8 +767,7 @@ export default {
       if (res) {
         this.errorMSG = '';
       } else {
-        this.errorMSG =
-          'This email is already in use. Please choose another or login from your mobile';
+        this.errorMSG = 'This email is already in use. Please choose another';
       }
       return res;
     },
@@ -737,19 +781,22 @@ export default {
         )
       ) {
         this.$q.notify({
+          type: 'negative',
           message: 'Please select a package to continue',
-          position: 'center'
+          position: 'top'
         });
       } else {
         if (this.isPackageSelected.id1 === true) {
           this.div1 = true;
           this.div2 = false;
           this.div3 = false;
+          this.metaTitle = 'Signup - claimguru';
         }
         if (this.isPackageSelected.id2 === true) {
           this.div1 = false;
           this.div2 = true;
           this.div3 = false;
+          this.metaTitle = 'Payment - claimguru';
         }
         this.continueClick = true;
         this.data.isTermsAccepted = true;
@@ -844,30 +891,38 @@ export default {
       //this.setLoading(true);
       var token = '';
       var displayError;
-      await this.createToken().then(function (result) {
-        if (result.error) {
-          displayError = document.getElementById('card-errors');
+      if (this.cardName != '') {
+        await this.createToken().then(function (result) {
           if (result.error) {
-            displayError.textContent = result.error.message;
+            displayError = document.getElementById('card-errors');
+            if (result.error) {
+              displayError.textContent = result.error.message;
+            } else {
+              displayError.textContent = '';
+            }
           } else {
-            displayError.textContent = '';
+            // Send the token to your server
+            token = result.token.id;
           }
-        } else {
-          // Send the token to your server
-          token = result.token.id;
+        });
+        // console.log('TEst', displayError);
+        if (displayError !== undefined) {
+          //this.setLoading(false);
+          return;
         }
-      });
-      // console.log('TEst', displayError);
-      if (displayError !== undefined) {
-        //this.setLoading(false);
-        return;
-      }
-      if (token) {
-        this.data.stripeToken = token;
-        const res = await this.createUserForOrganization(this.data);
-        if (res) {
-          this.$router.push('/setup');
+        if (token) {
+          this.data.stripeToken = token;
+          const res = await this.createUserForOrganization(this.data);
+          if (res) {
+            this.$router.push('/setup');
+          }
         }
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Please Enter Name on Card',
+          position: 'top'
+        });
       }
 
       //this.setLoading(false);
@@ -1013,17 +1068,180 @@ export default {
     margin-top: 16px;
   }
 }
+.error-msg {
+  position: absolute;
+  color: #c10015 !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  line-height: 12px !important;
+  margin-left: 8px;
+  margin-top: -12px;
+}
+.enterprice-img {
+  @media only screen and (min-width: 1475px) {
+    height: 44px !important;
+    width: 44px !important;
+  }
+  @media only screen and (min-width: 1150px) and (max-width: 1250px) {
+    margin-top: 8px;
+  }
+  @media only screen and (min-width: 1024px) and (max-width: 1150px) {
+    margin-top: 10px;
+  }
+  @media only screen and (max-width: 1024px) {
+    height: 36px !important;
+    width: 36px !important;
+  }
+}
+.package-icon {
+  @media only screen and (max-width: 1023px) {
+    height: 36px !important;
+    width: 36px !important;
+  }
+  @media only screen and (min-width: 1024px) {
+    height: 40px !important;
+    width: 40px !important;
+  }
+}
+.signup-section {
+  @media only screen and (min-width: 700px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media only screen and (max-width: 700px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media only screen and (max-width: 500px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 480px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+.payment-section {
+  @media only screen and (min-width: 1024px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media only screen and (max-width: 1024px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media only screen and (max-width: 700px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media only screen and (max-width: 500px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 480px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+.package-section {
+  @media only screen and (max-width: 1024px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media only screen and (max-width: 700px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media only screen and (max-width: 500px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 480px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+.signup-head {
+  @media only screen and (max-width: 1023px) {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    margin-top: 30px;
+  }
+  @media only screen and (min-width: 1024px) {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 36px;
+    margin-top: 70px;
+  }
+}
+.outer-padding {
+  @media only screen and (max-width: 1023px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  @media only screen and (min-width: 1024px) {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
 .secure-logo {
-  width: 112.5px;
-  height: 43px;
+  @media only screen and (max-width: 1023px) {
+    width: 83.72px;
+    height: 32px;
+  }
+  @media only screen and (min-width: 1024px) {
+    width: 112.5px;
+    height: 43px;
+  }
 }
 .check-img {
-  @media only screen and (min-width: 450px) and (max-width: 700px) {
-    width: 5% !important;
-  }
-  @media only screen and (min-width: 701px) and (max-width: 1023px) {
-    width: 3% !important;
-  }
+  // @media only screen and (min-width: 450px) and (max-width: 700px) {
+  //   width: 5% !important;
+  // }
+  // @media only screen and (min-width: 701px) and (max-width: 1023px) {
+  //   width: 3% !important;
+  // }
+  height: 20px !important;
+  width: 20px !important;
 }
 .custom-cols {
   @media only screen and (min-width: 1024px) {

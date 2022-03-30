@@ -5,22 +5,25 @@
         <div class="q-pl-lg q-py-md">
           <q-img src="~assets/Logo.svg" class="web-menu-claim-guru-logo" />
         </div>
-        <div class="q-mt-md text-h5 text-center q-px-lg fontWeight600">
+        <div class="q-mt-md text-h5 text-center fontWeight600">
           <div class="heading-line" style="background: #f9e7d8">
             The First and Only Catastrophe-Proof Claim Management System For
             Public Adjusters
           </div>
         </div>
-        <div class="q-mx-xl q-mb-lg absolute-bottom desktop-footer">
+        <div
+          class="q-mx-lg q-my-xl desktop-footer fontWeight400"
+          style="position: absolute; bottom: 38px"
+        >
           <span class=""> © ClaimGuru {{ new Date().getFullYear() }}</span>
         </div>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <!-- login form -->
-        <div class="q-px-xl content-center bg-white">
+        <div class="content-center bg-white login-section">
           <div class="login-up">
             <div class="login col">
-              <div class="q-mt-lg text-h4 fontWeight600">Login</div>
+              <div class="q-mt-lg text-h4 fontWeight600 login-head">Login</div>
               <q-form class="q-mt-lg" @submit="onUserLogin" ref="orgInfo">
                 <label class="text-subtitle1 fontWeight600"
                   >Email Address</label
@@ -31,13 +34,13 @@
                   color="primary"
                   placeholder="Enter Registered Email Address"
                   outlined
-                  class="required"
+                  class="required input-class"
                   lazy-rules
                   :rules="[
-                    val => !!val || 'Please type something',
+                    val => !!val || 'Please fill your email address',
                     val =>
                       validateEmail(val) ||
-                      'You have entered an invalid email address!'
+                      'You have entered an invalid email address'
                   ]"
                 />
                 <span class="text-red text-caption">{{ errorMSG }}</span>
@@ -45,7 +48,7 @@
                 <label class="text-subtitle1 fontWeight600">Password</label>
                 <q-input
                   color="primary"
-                  class="required full-width"
+                  class="required full-width input-class"
                   placeholder="Enter Your Password"
                   v-model="login.password"
                   outlined
@@ -74,6 +77,7 @@
                     color="deep-orange"
                     size="16px"
                     class="full-width fontWeight600"
+                    style="height: 50px; border-radius: 10px"
                   />
                 </div>
                 <div class="row justify-center q-mt-md">
@@ -98,7 +102,10 @@
     </div>
     <div class="mobile-footer">
       <q-separator />
-      <div class="" style="height: 60px; padding-top: 20px; margin: 0px 32px">
+      <div
+        class="fontWeight400"
+        style="height: 60px; padding-top: 20px; margin: 0px 32px"
+      >
         <span class="" style="color: #667085">
           © ClaimGuru {{ new Date().getFullYear() }}</span
         >
@@ -128,11 +135,15 @@ const isPushNotificationsAvailable =
 const { PushNotifications } = Plugins;
 
 export default {
-  name: 'Login-claimguru',
+  meta() {
+    return {
+      title: this.metaTitle
+    };
+  },
   data() {
     return {
       version: appVersion,
-      pagename: 'Login-Claimguru',
+      metaTitle: 'Login - claimguru',
       isPasswordVisible: false,
       login: {
         email: '',
@@ -282,16 +293,54 @@ export default {
 .signup-text {
   font-size: 16px !important;
 }
+.login-section {
+  @media only screen and (min-width: 600px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media only screen and (max-width: 600px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 480px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+.login-head {
+  @media only screen and (max-width: 1023px) {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+  }
+  @media only screen and (min-width: 1024px) {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 36px;
+  }
+}
 .web-menu-claim-guru-logo {
   width: 151px;
   height: 51px;
+  @media only screen and (max-width: 1023px) {
+    margin-left: 15px;
+    margin-top: 9.5px;
+  }
+  @media only screen and (min-width: 1024px) {
+    margin-left: 32px;
+    margin-top: 16px;
+  }
 }
 .heading-line {
   @media only screen and (max-width: 1023px) {
     font-size: 24px;
     line-height: 36px;
-    margin-left: 10px;
-    margin-right: 10px;
   }
   @media only screen and (min-width: 1024px) {
     font-size: 28px;
@@ -333,7 +382,7 @@ export default {
   @media only screen and (max-width: 1023px) {
   }
   @media only screen and (min-width: 1024px) {
-    margin-top: 35vh;
+    margin-top: 25vh;
   }
 }
 .test {

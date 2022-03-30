@@ -80,7 +80,7 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
     }
     dispatch('setLoading', false);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     if (e.response[0].detail.includes('generic_decline')) {
       returnmsg = 'Your Card Has Been Declined due to generic_decline';
@@ -121,7 +121,7 @@ export async function checkExistingEmail({ dispatch }, email) {
       return true;
     }
   } catch (e) {
-    console.log(e);
+    // //console.log(e);
     // dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -149,7 +149,7 @@ export async function updateUserForOrganization({ dispatch, state }, payload) {
     });
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -207,7 +207,7 @@ export async function setPassword({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -229,7 +229,7 @@ export async function resetPassword({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -242,7 +242,7 @@ export async function resetPassword({ dispatch, state }, payload) {
 // Post Api for Inspection Type
 
 export async function addInspectionType({ dispatch, state }, payload) {
-  console.log(payload, 444);
+  //console.log(payload, 444);
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
@@ -252,7 +252,7 @@ export async function addInspectionType({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -273,7 +273,7 @@ export async function addHonorifics({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -294,7 +294,7 @@ export async function addIndustry({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -315,7 +315,7 @@ export async function addPhone({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -335,7 +335,7 @@ export async function addClientType({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -357,7 +357,7 @@ export async function addPolicyCategories({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -377,7 +377,7 @@ export async function addPolicy({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -397,7 +397,7 @@ export async function addProperty({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -417,7 +417,7 @@ export async function addClaimReason({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -438,7 +438,7 @@ export async function addLoss({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -463,7 +463,7 @@ export async function addClaimSeverity({ dispatch, state }, payload) {
     });
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -482,7 +482,7 @@ export async function addOnboardingStep({ dispatch, state }, payloadData) {
     );
     dispatch('setLoading', false);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -499,7 +499,7 @@ export async function setOnboard({ dispatch, state }, payload) {
     );
     dispatch('setLoading', false);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -522,7 +522,7 @@ export async function sendPushNotificationToken({ dispatch, state }, payload) {
 
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -539,7 +539,7 @@ export async function deletePushNotificationToken({ commit, dispatch }, token) {
     const { data } = await request.del(`/users/pushtokens/${token}`);
     dispatch('setLoading', false);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
   }
 }
@@ -556,7 +556,7 @@ export async function editUserInfo({ dispatch, state }, user) {
       message: 'User info  Updated !'
     });
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -581,7 +581,7 @@ export async function editUserProfile({ commit, dispatch, state }, user) {
     let dt = user.data.contact.fname + ' ' + user.data.contact.lname;
     commit('setUserNameInProfilePart', dt);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -612,7 +612,7 @@ export async function updateAccessToken({ dispatch, state }, email) {
       message: 'User info  Updated !'
     });
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -630,7 +630,7 @@ export async function getPhotoIdKeys({ commit, dispatch }) {
     dispatch('setLoading', false);
     return data;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -695,7 +695,7 @@ export async function addNewCard({ dispatch, state }, payload) {
     );
     dispatch('setLoading', false);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
