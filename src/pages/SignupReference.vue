@@ -797,7 +797,7 @@ export default {
           this.div3 = false;
         }
         this.continueClick = true;
-        this.metaTitle = 'Signup - claimguru';
+        this.metaTitle = 'Payment - claimguru';
         this.data.isTermsAccepted = true;
         let interval = setTimeout(() => {
           this.setPaymentPage();
