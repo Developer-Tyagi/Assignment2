@@ -790,15 +790,14 @@ export default {
           this.div1 = true;
           this.div2 = false;
           this.div3 = false;
-          this.metaTitle = 'Signup - claimguru';
         }
         if (this.isPackageSelected.id2 === true) {
           this.div1 = false;
           this.div2 = true;
           this.div3 = false;
-          this.metaTitle = 'Payment - claimguru';
         }
         this.continueClick = true;
+        this.metaTitle = 'Signup - claimguru';
         this.data.isTermsAccepted = true;
         let interval = setTimeout(() => {
           this.setPaymentPage();
