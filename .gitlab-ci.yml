@@ -1,8 +1,8 @@
-image: alpine:latest
-
 variables:
-  REPO_NAME: gitlab.com/cilalabs/claimguru/claimguru-ui
-  DOCKER_REGISTRY: us-west1-docker.pkg.dev
+  APP_NAME: app
+  PROJECT_NAME: claimguru
+  REPO_NAME: gitlab.com/cilalabs/$PROJECT_NAME/$APP_NAME
+  GCR_REGISTRY_NAME: us-west1-docker.pkg.dev
 
 stages:
   - build
@@ -12,7 +12,7 @@ stages:
 # This task creates image for MR review
 build_review_image:
   stage: build
-  image: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/git-sops
+  image: cilalabs/git-sops
   services:
     - name: docker:18.09.9-dind
       command: ['--mtu=1460']
@@ -21,12 +21,12 @@ build_review_image:
     SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
     APP_ENV: review
     DOCKER_HOST: tcp://127.0.0.1:2375
-    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui:${CI_MERGE_REQUEST_IID}
+    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/$PROJECT_NAME/$APP_NAME:${CI_MERGE_REQUEST_IID}
   script:
     - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
     - sops --kms ${SOPS_KMS} -d docker/env.$APP_ENV > .env
     - docker build -t ${DOCKER_IMAGE} .
-    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
+    - docker login -u _json_key --password-stdin https://${GCR_REGISTRY_NAME} < /tmp/key.json
     - docker push ${DOCKER_IMAGE}
   tags:
     - pre-production
@@ -36,11 +36,10 @@ build_review_image:
 # This task deploys MR review set up on cluster.
 review_deploy:
   stage: deploy
-  image:
-    name: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/kubeninja
+  image: cilalabs/kubeninja:0.0.9
   variables:
-    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui:${CI_MERGE_REQUEST_IID}
-    KUBE_NAMESPACE: claimguru-ui-${CI_MERGE_REQUEST_IID}
+    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/$PROJECT_NAME/$APP_NAME:${CI_MERGE_REQUEST_IID}
+    KUBE_NAMESPACE: $PROJECT_NAME-$APP_NAME-${CI_MERGE_REQUEST_IID}
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
   script:
     - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
@@ -48,14 +47,14 @@ review_deploy:
     - kubectl version
     - kubectl create namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - kubectl label namespace ${KUBE_NAMESPACE} istio-injection=enabled --dry-run -o yaml | kubectl apply -f -
-    - sed -i "s/CI_COMMIT_SHORT_SHA/${CI_COMMIT_SHORT_SHA}/g" k8s/dev/crd-spec.yaml
-    - sed -i "s/CI_MERGE_REQUEST_IID/${CI_MERGE_REQUEST_IID}/g" k8s/dev/crd-spec.yaml
-    - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/dev/crd-spec.yaml
-    - sed -i "s/CI_JOB_ID/${CI_JOB_ID}/g" k8s/dev/crd-spec.yaml
-    - kubectl apply -f k8s/dev/crd-spec.yaml --namespace ${KUBE_NAMESPACE}
+    - sed -i "s/CI_COMMIT_SHORT_SHA/${CI_COMMIT_SHORT_SHA}/g" k8s/review/crd-spec.yaml
+    - sed -i "s/CI_MERGE_REQUEST_IID/${CI_MERGE_REQUEST_IID}/g" k8s/review/crd-spec.yaml
+    - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/review/crd-spec.yaml
+    - sed -i "s/CI_JOB_ID/${CI_JOB_ID}/g" k8s/review/crd-spec.yaml
+    - kubectl apply -f k8s/review/crd-spec.yaml --namespace ${KUBE_NAMESPACE}
   environment:
     name: review/$CI_COMMIT_REF_NAME
-    url: https://app-${CI_MERGE_REQUEST_IID}.claimguru.cilalabs.dev
+    url: https://app-${CI_MERGE_REQUEST_IID}.$PROJECT_NAME.cilalabs.dev
     on_stop: review_cleanup
   tags:
     - pre-production
@@ -67,10 +66,9 @@ review_cleanup:
   stage: cleanup
   needs:
     - review_deploy
-  image:
-    name: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/kubeninja
+  image: cilalabs/kubeninja:0.0.9
   variables:
-    KUBE_NAMESPACE: claimguru-ui-${CI_MERGE_REQUEST_IID}
+    KUBE_NAMESPACE: $PROJECT_NAME-$APP_NAME-${CI_MERGE_REQUEST_IID}
   environment:
     name: review/$CI_COMMIT_REF_NAME
     action: stop
@@ -86,21 +84,21 @@ review_cleanup:
 # This task creates master image.
 build_master_image:
   stage: build
-  image: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/git-sops
+  image: cilalabs/git-sops
   services:
     - name: docker:18.09.9-dind
       command: ['--mtu=1460']
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
     SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
-    APP_ENV: pre-production
+    APP_ENV: dev
     DOCKER_HOST: tcp://127.0.0.1:2375
-    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui
+    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/$PROJECT_NAME/$APP_NAME
   script:
     - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
     - sops --kms ${SOPS_KMS} -d docker/env.$APP_ENV > .env
     - docker build -t ${DOCKER_IMAGE} .
-    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
+    - docker login -u _json_key --password-stdin https://${GCR_REGISTRY_NAME} < /tmp/key.json
     - docker push ${DOCKER_IMAGE}
   tags:
     - pre-production
@@ -108,104 +106,47 @@ build_master_image:
     - master
 
 # This task deploy pre production set up.
-pre_prod_deploy:
+dev_deploy:
   stage: deploy
-  image:
-    name: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/kubeninja
+  image: cilalabs/kubeninja:0.0.9
   variables:
-    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui
-    KUBE_NAMESPACE: claimguru
-    GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
+    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/$PROJECT_NAME/$APP_NAME
+    KUBE_NAMESPACE: $PROJECT_NAME
+    APP_ENVIRONMENT: dev
+    APP_VERSION: $CI_COMMIT_SHORT_SHA
+    APP_BUILD: $CI_JOB_ID
   script:
-    - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
-    - kubectl version
-    - kubectl create namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
-    - kubectl label namespace ${KUBE_NAMESPACE} istio-injection=enabled --dry-run -o yaml | kubectl apply -f -
-    - sed -i "s/CI_COMMIT_SHORT_SHA/${CI_COMMIT_SHORT_SHA}/g" k8s/pre-prod/crd-spec.yaml
-    - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/pre-prod/crd-spec.yaml
-    - sed -i "s/CI_JOB_ID/${CI_JOB_ID}/g" k8s/pre-prod/crd-spec.yaml
-    - kubectl apply -f k8s/pre-prod/crd-spec.yaml --namespace ${KUBE_NAMESPACE}
+    - deploy frontend
+    - kubectl rollout status deployment $APP_NAME --namespace ${KUBE_NAMESPACE} --watch --timeout=10m
   environment:
     name: pre-production
-    url: https://app.claimguru.cilalabs.dev
+    url: https://app.$PROJECT_NAME.cilalabs.dev
   tags:
     - pre-production
   only:
     - master
 
-# This task creates demo image.
-build_demo_image:
+# This task creates image associated with tag for staging env
+build_tag_image_stage:
   stage: build
-  image: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/git-sops
+  image: cilalabs/git-sops
   services:
     - name: docker:18.09.9-dind
       command: ['--mtu=1460']
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
     SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
-    APP_ENV: demo
-    DOCKER_HOST: tcp://127.0.0.1:2375
-    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui:demo
-  script:
-    - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
-    - sops --kms ${SOPS_KMS} -d docker/env.$APP_ENV > .env
-    - docker build -t ${DOCKER_IMAGE} .
-    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
-    - docker push ${DOCKER_IMAGE}
-  tags:
-    - pre-production
-  only:
-    - master
-  when: manual
-
-# This task deploy demo set up.
-demo_deploy:
-  stage: deploy
-  image:
-    name: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/kubeninja
-  variables:
-    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui:demo
-    KUBE_NAMESPACE: demo-claimguru
-    GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
-  script:
-    - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
-    - kubectl version
-    - kubectl create namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
-    - kubectl label namespace ${KUBE_NAMESPACE} istio-injection=enabled --dry-run -o yaml | kubectl apply -f -
-    - sed -i "s/CI_COMMIT_SHORT_SHA/${CI_COMMIT_SHORT_SHA}/g" k8s/demo/crd-spec.yaml
-    - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/demo/crd-spec.yaml
-    - sed -i "s/CI_JOB_ID/${CI_JOB_ID}/g" k8s/demo/crd-spec.yaml
-    - kubectl apply -f k8s/demo/crd-spec.yaml --namespace ${KUBE_NAMESPACE}
-  environment:
-    name: demo
-    url: https://app-demo.claimguru.cilalabs.dev
-  tags:
-    - pre-production
-  only:
-    - master
-  when: manual
-
-# This task creates image associated with tag for staging env
-build_tag_image_stage:
-  stage: build
-  image: us-west1-docker.pkg.dev/claimguru-97138/claimguru/common-utils/git-sops
-  services:
-    - name: docker:18.09.9-dind
-      command: ['--mtu=1460']
-  variables:
-    GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
-    SOPS_KMS: projects/claimguru-97138/locations/global/keyRings/sops/cryptoKeys/sops-key
     APP_ENV: stage
     DOCKER_HOST: tcp://127.0.0.1:2375
-    DOCKER_IMAGE: us-west1-docker.pkg.dev/claimguru-97138/claimguru/claimguru-ui-stage:${CI_COMMIT_TAG}
+    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/$PROJECT_NAME/$APP_NAME-stage:${CI_COMMIT_TAG}
   script:
-    - echo "$PROD_SERVICE_ACCOUNT_KEY"  > /tmp/key.json
+    - echo "$SERVICE_ACCOUNT_KEY"  > /tmp/key.json
     - sops --kms ${SOPS_KMS} -d docker/env.$APP_ENV > .env
     - docker build -t ${DOCKER_IMAGE} .
-    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
+    - docker login -u _json_key --password-stdin https://${GCR_REGISTRY_NAME} < /tmp/key.json
     - docker push ${DOCKER_IMAGE}
   tags:
-    - staging
+    - pre-production
   only:
     - tags
 
@@ -213,48 +154,45 @@ build_tag_image_stage:
 # This task deploy set up to staging env.
 stage_deploy:
   stage: deploy
-  image:
-    name: cilalabs/kubeninja
+  image: cilalabs/kubeninja:0.0.9
   variables:
-    KUBE_NAMESPACE: claimguru
-    DOCKER_IMAGE: us-west1-docker.pkg.dev/claimguru-97138/claimguru/claimguru-ui-stage:${CI_COMMIT_TAG}
+    KUBE_NAMESPACE: $PROJECT_NAME-stage
+    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/$PROJECT_NAME/$APP_NAME-stage:${CI_COMMIT_TAG}
+    APP_ENVIRONMENT: stage
+    APP_VERSION: $CI_COMMIT_TAG
+    APP_BUILD: $CI_JOB_ID
   script:
-    - kubectl version
-    - kubectl create namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
-    - kubectl label --overwrite namespace ${KUBE_NAMESPACE} istio-injection=enabled
-    - sed -i "s/IMAGE_TAG/${CI_COMMIT_TAG}/g" k8s/stage/crd-spec.yaml
-    - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/stage/crd-spec.yaml
-    - sed -i "s/CI_JOB_ID/${CI_JOB_ID}/g" k8s/stage/crd-spec.yaml
-    - kubectl apply -f k8s/stage/crd-spec.yaml --namespace ${KUBE_NAMESPACE}
+    - deploy frontend
+    - kubectl rollout status deployment $APP_NAME --namespace ${KUBE_NAMESPACE} --watch --timeout=10m
   environment:
     name: staging
-    url: https://app.stage.claimguru.com
+    url: https://app.stage.$PROJECT_NAME.com
   tags:
-    - staging
+    - pre-production
   only:
     - tags
 
 # This task creates image associated with tag for prod env
 build_tag_image_prod:
   stage: build
-  image: us-west1-docker.pkg.dev/claimguru-97138/claimguru/common-utils/git-sops
+  image: cilalabs/git-sops
   services:
     - name: docker:18.09.9-dind
       command: ['--mtu=1460']
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
-    SOPS_KMS: projects/claimguru-97138/locations/global/keyRings/sops/cryptoKeys/sops-key
+    SOPS_KMS: projects/prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
     APP_ENV: production
     DOCKER_HOST: tcp://127.0.0.1:2375
-    DOCKER_IMAGE: us-west1-docker.pkg.dev/claimguru-97138/claimguru/claimguru-ui:${CI_COMMIT_TAG}
+    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/$PROJECT_NAME/$APP_NAME:${CI_COMMIT_TAG}
   script:
-    - echo "$PROD_SERVICE_ACCOUNT_KEY"  > /tmp/key.json
+    - echo "$DEPLOY_SA_KEY"  > /tmp/key.json
     - sops --kms ${SOPS_KMS} -d docker/env.$APP_ENV > .env
     - docker build -t ${DOCKER_IMAGE} .
-    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
+    - docker login -u _json_key --password-stdin https://${GCR_REGISTRY_NAME} < /tmp/key.json
     - docker push ${DOCKER_IMAGE}
   tags:
-    - production
+    - prod-shared
   only:
     - tags
   when: manual
@@ -262,24 +200,21 @@ build_tag_image_prod:
 # This task deploy production set up.
 prod_deploy:
   stage: deploy
-  image:
-    name: cilalabs/kubeninja
+  image: cilalabs/kubeninja:0.0.9
   variables:
-    KUBE_NAMESPACE: claimguru
-    DOCKER_IMAGE: us-west1-docker.pkg.dev/claimguru-97138/claimguru/claimguru-ui:${CI_COMMIT_TAG}
+    KUBE_NAMESPACE: $PROJECT_NAME
+    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/$PROJECT_NAME/$APP_NAME:${CI_COMMIT_TAG}
+    APP_ENVIRONMENT: prod
+    APP_VERSION: $CI_COMMIT_TAG
+    APP_BUILD: $CI_JOB_ID
   script:
-    - kubectl version
-    - kubectl create namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
-    - kubectl label --overwrite namespace ${KUBE_NAMESPACE} istio-injection=enabled
-    - sed -i "s/IMAGE_TAG/${CI_COMMIT_TAG}/g" k8s/prod/crd-spec.yaml
-    - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/prod/crd-spec.yaml
-    - sed -i "s/CI_JOB_ID/${CI_JOB_ID}/g" k8s/prod/crd-spec.yaml
-    - kubectl apply -f k8s/prod/crd-spec.yaml --namespace ${KUBE_NAMESPACE}
+    - deploy frontend
+    - kubectl rollout status deployment $APP_NAME --namespace ${KUBE_NAMESPACE} --watch --timeout=5m
   environment:
     name: production
-    url: https://claimguru.com
+    url: https://$PROJECT_NAME.com
   tags:
-    - production
+    - prod-shared
   only:
     - tags
   when: manual
