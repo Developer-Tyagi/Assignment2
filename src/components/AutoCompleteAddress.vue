@@ -126,12 +126,12 @@
         v-bind:disabled="this.readOnly"
         style="border: 1px solid #d3d3d3; border-radius: 4px; height: 40px"
         @keydown="validateAddress(address.address1)"
-        @blur="validateAddress(address.address1)"
+        placeholder="Company Address"
       />
       <span class="q-pl-sm" style="color: #c10015 !important; font-size: 11px">
         {{ errorMSG }}
       </span>
-      <q-input
+      <!-- <q-input
         type="text"
         outlined
         class="q-mt-sm"
@@ -139,18 +139,17 @@
         :disable="this.readOnly"
         style="border-radius: 4px; height: 46px"
         v-model="address.address2"
-      />
+      /> -->
     </div>
     <div class="row q-mt-sm">
-      <div class="col q-mr-md">
-        <div class="row text-subtitle1 text-weight-bold">
-          City<span class="text-red">*</span>
-        </div>
+      <div class="col-12 col-md-6 q-pr-md">
+        <div class="row text-subtitle1 text-weight-bold">City</div>
         <q-input
           dense
           outlined
           :class="{ required: isAsteriskMark }"
           v-model="address.addressLocality"
+          placeholder="Enter City Here"
           :disable="this.readOnly"
           lazy-rules
           :rules="[
@@ -159,10 +158,8 @@
           ]"
         />
       </div>
-      <div class="col q-mr-md">
-        <div class="row text-subtitle1 text-weight-bold">
-          State<span class="text-red">*</span>
-        </div>
+      <div class="col-12 col-md-6">
+        <div class="row text-subtitle1 text-weight-bold">State</div>
         <q-select
           dense
           outlined
@@ -171,18 +168,20 @@
           v-model="address.addressRegion"
           :options="states"
           behavior="menu"
+          label="Select State"
           lazy-rules
           :rules="[val => val.length > 0 || 'Please fill the state']"
         />
       </div>
-      <div class="col q-mr-sm">
-        <div class="row text-subtitle1 text-weight-bold">
-          ZIP Code<span class="text-red">*</span>
-        </div>
+    </div>
+    <div class="row q-mt-sm">
+      <div class="col-12 col-md-6 q-pr-md">
+        <div class="row text-subtitle1 text-weight-bold">ZIP Code</div>
         <q-input
           outlined
           dense
           :disable="this.readOnly"
+          placeholder="Zipcode"
           :class="{ required: isAsteriskMark }"
           v-model="address.postalCode"
           lazy-rules
@@ -191,6 +190,22 @@
             val =>
               validateAlphaNumericText(val) || 'Please enter valid ZIP code'
           ]"
+        />
+      </div>
+      <!-- <div class="col-12 col-md-2">      </div> -->
+      <div class="col-12 col-md-6">
+        <div class="row text-subtitle1 text-weight-bold">Country</div>
+        <q-select
+          dense
+          outlined
+          :disable="this.readOnly"
+          :class="{ required: isAsteriskMark }"
+          v-model="address.country"
+          label="Select Country"
+          :options="country"
+          behavior="menu"
+          lazy-rules
+          :rules="[val => val.length > 0 || 'Please fill the Country']"
         />
       </div>
     </div>
@@ -494,6 +509,7 @@ export default {
       autocomplete2: {},
       countries: [],
       states: [],
+      country: [],
       errorMSG: ''
     };
   },
@@ -592,6 +608,7 @@ export default {
 
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
+      this.country = addressService.getCountries(country);
     }
   }
 };

@@ -129,6 +129,7 @@
               class="fontWeight600"
               style="border-radius: 10px"
               color="primary"
+              no-caps
               name=""
               label="Get Started"
               @click="getStarted"
@@ -146,11 +147,11 @@
                 Fill out the form below with the information about your company.
               </div>
             </div>
-            <div>
+            <div class="formHeight">
               <q-form ref="companyDetailsForm">
                 <div class="q-mt-xl">
                   <div class="row text-subtitle1 fontWeight600">
-                    Company Name<span class="text-red">*</span>
+                    Company Name
                   </div>
 
                   <div class="row">
@@ -208,6 +209,7 @@
                         dense
                         class="full-width"
                         input-class="text-subtitle1"
+                        placeholder="Company Email"
                         outlined
                         v-model="companyDetails.email"
                         :rules="[
@@ -222,7 +224,7 @@
                   <div class="col q-mt-md q-mr-md full-width">
                     <div class="row justify-between">
                       <div class="col text-subtitle1 fontWeight600">
-                        Company Address<span class="text-red">*</span>
+                        Company Address
                       </div>
                     </div>
                     <div v-if="companyDetails">
@@ -244,6 +246,7 @@
                       size="md"
                       color="primary"
                       label="Next"
+                      no-caps
                       @click="NextStepperValue"
                     />
                   </div>
@@ -317,6 +320,7 @@
               color="primary"
               size="1.2em"
               style="border-radius: 10px"
+              no-caps
               outline
               class="fontWeight600"
               @click="navigatePreviousStepper"
@@ -328,6 +332,7 @@
               size="1.2em"
               style="border-radius: 10px"
               class="fontWeight600"
+              no-caps
               @click="NextStepperValue"
               :disable="!checkConnection"
               >Next</q-btn
@@ -376,21 +381,29 @@
                     <q-input
                       dense
                       input-class="text-subtitle1"
+                      placeholder="Company Email Address"
                       outlined
                       v-model="companyDetails.photoIdEmail"
                     />
                   </div>
                   <div class="col q-pr-xl">
                     <div class="text-subtitle1 fontWeight600 q-mt-md q-mb-sm">
-                      Account Api Key
+                      Api Key
                     </div>
                     <q-input
                       dense
                       class=""
                       input-class="text-subtitle1"
                       outlined
+                      placeholder="Account API Key"
                       v-model="companyDetails.photoIdAPIKey"
-                    />
+                    >
+                      <template v-slot:append>
+                        <q-avatar>
+                          <img :src="getImage('IconHelp.svg')" />
+                        </q-avatar>
+                      </template>
+                    </q-input>
                   </div>
                 </div>
               </q-form>
@@ -401,6 +414,7 @@
               color="primary"
               size="1.2em"
               style="border-radius: 10px"
+              no-caps
               class="fontWeight600"
               outline
               @click="navigatePreviousStepper"
@@ -412,6 +426,7 @@
               size="1.2em"
               class="fontWeight600"
               style="border-radius: 10px"
+              no-caps
               @click="NextStepperValue"
               >Complete Setup</q-btn
             >
@@ -436,7 +451,7 @@
             class="text-center text-subtitle1 q-mx-xl q-px-xl q-mt-lg"
             style="color: #667085"
           >
-            We're excited for you to experience how ClaimGuru works for you!
+            We're excited for you to experience all that ClaimGuru has to offer!
           </div>
           <div class="row fontWeight600 justify-center q-mt-lg rounded">
             <q-btn
@@ -587,7 +602,7 @@
                 Fill out the form below with the information about your company.
               </div>
             </div>
-            <div>
+            <div class="form">
               <q-form ref="companyDetailsForm">
                 <div class="q-mt-xl">
                   <div class="row text-subtitle1 fontWeight600">
@@ -681,8 +696,7 @@
                       />
                     </div>
                   </div>
-
-                  <div class="q-my-lg row justify-end">
+                  <div class="row justify-end">
                     <q-btn
                       class="fontWeight600"
                       size="md"
@@ -754,6 +768,7 @@
               <q-btn
                 color="primary"
                 class="fontWeight600"
+                no-caps
                 outline
                 @click="navigatePreviousStepper"
                 >Back</q-btn
@@ -823,7 +838,7 @@
               </div>
               <div class="col q-pr-xl">
                 <div class="text-subtitle1 fontWeight600 q-mt-md q-mb-sm">
-                  Account Api Key
+                  Account Api
                 </div>
                 <q-input
                   dense
@@ -840,6 +855,7 @@
               color="primary"
               class="fontWeight600"
               outline
+              no-caps
               @click="navigatePreviousStepper"
               >Back</q-btn
             >
@@ -907,6 +923,7 @@ export default {
           address2: '',
           addressLocality: '',
           addressRegion: '',
+          country: '',
           postalCode: ''
         },
         isDropBoxEnable: false,
@@ -920,6 +937,9 @@ export default {
       checkConnection: false
     };
   },
+  // computed: {
+  //   isMobile,
+  // },
   methods: {
     ...mapActions([
       'getOrganization',
@@ -955,7 +975,7 @@ export default {
               data: {
                 name: this.organization.name,
                 address: {
-                  addressCountry: 'USA',
+                  addressCountry: this.companyDetails.address.country,
                   address1: this.companyDetails.address.address1,
                   address2: this.companyDetails.address.address2,
                   addressLocality: this.companyDetails.address.addressLocality,
@@ -1050,5 +1070,8 @@ export default {
 }
 .fontWeight400 {
   font-weight: 400;
+}
+.formHeight {
+  height: 580px;
 }
 </style>
