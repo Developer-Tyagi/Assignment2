@@ -185,7 +185,12 @@
       >
         <q-breadcrumbs style="color: #667085" active-color="#667085">
           <template v-slot:separator>
-            <q-icon size="sm" name="chevron_right" color="#D0D5DD" />
+            <q-icon
+              size="sm"
+              name="chevron_right"
+              color="#D0D5DD"
+              style="color: #d0d5dd"
+            />
           </template>
           <q-breadcrumbs-el
             class="cursor-pointer"
@@ -781,10 +786,6 @@ export default {
     },
     // function is used to open the suboption menu item for web.
     openSubOptionMenuItem(key, link, menuItem) {
-      console.log('menuItem', menuItem);
-      console.log('link', link);
-      console.log('key', key);
-
       this.breadcrumbsData.menuItemTitle = menuItem.title;
       this.breadcrumbsData.menuItemLink = key.link;
       this.breadcrumbsData.subItemTitle = key.name;

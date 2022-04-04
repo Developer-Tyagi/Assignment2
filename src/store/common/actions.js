@@ -203,17 +203,17 @@ export async function upgradePlan({ dispatch }, payload) {
 }
 
 export async function addAdditionalLicense({ dispatch }, payload) {
-  dispatch('setLoading', true);
+  //dispatch('setLoading', true);
   try {
     const { data } = await request.post(
       'organizations/plans',
       buildApiData('organizations', payload)
     );
-    dispatch('setLoading', false);
+    // dispatch('setLoading', false);
     return true;
   } catch (e) {
     console.log(e);
-    dispatch('setLoading', false);
+    //dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
       message: e.response[0].title
