@@ -64,12 +64,12 @@
         <AddOptions />
       </q-dialog>
     </q-page-container>
-    <q-footer class="row" v-if="!isMobile() && $route.name == 'setup'">
+    <q-footer class="row" v-if="$route.name == 'setup'">
       <div
-        class="col-3 text-black text-subtitle1 q-pb-sm q-pl-xl"
+        class="col-lg-3 col-md-3 sm-hide xs-hide text-black text-subtitle1 q-pb-sm"
         style="background-color: #f9e7d8"
       >
-        © ClaimGuru 2022
+        <span class="px-32"> © ClaimGuru</span> <span>{{ CurrentYear }}</span>
       </div>
       <div class="col bg-white"></div>
     </q-footer>
@@ -138,10 +138,10 @@
     </q-page-container>
     <q-footer class="row" v-if="!isMobile() && $route.name == 'setup'">
       <div
-        class="col-3 text-black text-subtitle1 q-pb-sm q-pl-xl"
+        class="col-3 text-black text-subtitle1 px-32 q-pb-sm q-pl-xl"
         style="background-color: #f9e7d8"
       >
-        © ClaimGuru 2022
+        © ClaimGuru<span>{{ CurrentYear }}</span>
       </div>
       <div class="col bg-white"></div>
     </q-footer>
@@ -160,7 +160,12 @@ export default {
     return { openDialog: false };
   },
   computed: {
-    ...mapGetters(['isEdit', 'routeFromLeadDashboad'])
+    ...mapGetters(['isEdit', 'routeFromLeadDashboad']),
+    CurrentYear() {
+      const d = new Date();
+      let year = d.getFullYear();
+      return year;
+    }
   },
   async mounted() {
     let data = await this.getUserInfo();
@@ -270,5 +275,8 @@ export default {
   max-width: 100%;
   height: 40px;
   border-radius: 5px;
+}
+.px-32 {
+  margin-left: 32px !important;
 }
 </style>

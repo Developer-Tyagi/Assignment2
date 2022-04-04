@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- header -->
-    <div v-if="isMobile() && $route.name != 'setup' && $route.name !== 'admin'">
-      <q-header class="bg-white">
+    <div v-if="$route.name != 'setup' && $route.name !== 'admin'">
+      <!-- <q-header class="bg-white">
         <q-toolbar
           class="row bg-primary rounded-header"
           v-if="$route.name === 'dashboard'"
@@ -48,8 +48,8 @@
             />
           </div>
           <div class="text-uppercase text-bold q-mx-auto">
-            <!--Here By default the Page should be Active Lead, we change the header name based on the user routing, if user click on converted Lead then we land it to converted lead page and show the converted lead data, if user click on
-          Dead lead then we land on Dead Lead page and show Dead Lead Datamfrom lead Dashboard page-->
+            Here By default the Page should be Active Lead, we change the header name based on the user routing, if user click on converted Lead then we land it to converted lead page and show the converted lead data, if user click on
+          Dead lead then we land on Dead Lead page and show Dead Lead Datamfrom lead Dashboard page
             <span v-if="$route.name == 'Leads'">{{
               converted ? converted : 'Active'
             }}</span>
@@ -90,23 +90,25 @@
             "
           />
         </div>
-      </q-header>
+      </q-header> -->
     </div>
 
-    <q-header v-if="!isMobile()" class="bg-white">
+    <q-header class="bg-white ht-83 sm-hide xs-hide">
       <!-- setup header -->
       <div class="row" v-if="$route.name == 'setup'">
         <div
-          class="col-3 q-px-xl q-pt-md q-pb-md"
-          v-if="!isMobile() && $route.name == 'setup'"
+          class="col-lg-3 col-md-3 q-px-32 q-pt-lg q-pb-md"
+          v-if="$route.name == 'setup'"
           style="background-color: #f9e7d8"
         >
-          <q-img src="~assets/Logo.svg" width="50%" />
+          <q-img size="1em" src="~assets/Logo.svg" class="LogoSize" />
         </div>
-        <div class="col bg-white q-pt-md">
+        <div
+          class="col-lg-9 padding-top-20 col-md-9 bg-white ht-83 justify-end q-pt-md"
+        >
           <div class="row justify-end q-pr-xl">
             <q-avatar
-              size="4em"
+              size="3em"
               font-size="2.5rem"
               icon="person"
               class="text-white bg-grey q-mr-md"
@@ -114,12 +116,19 @@
             </q-avatar>
 
             <div
-              class="q-pt-md text-capitalize text-weight-bold text-black text-subtitle1"
+              class="q-pt-sm text-capitalize text-weight-bold text-black text-subtitle1"
             >
-              {{ userName ? userName : updatedUserName }}
+              <span v-if="isMobile">
+                {{ userName ? userName : updatedUserName }}</span
+              >
+              <q-img
+                size="1em"
+                src="~assets/Icondown.svg"
+                class="dropdownLogo"
+              />
             </div>
           </div>
-          <q-separator class="q-mt-md" />
+          <!-- <q-separator class="q-mt-md" /> -->
         </div>
       </div>
       <!-- admin header -->
@@ -168,7 +177,7 @@
           </div>
         </div>
       </div>
-      <q-separator />
+      <!-- <q-separator /> -->
 
       <div
         v-if="!isMobile() && $route.name !== 'setup' && !$q.screen.lt.sm"
@@ -308,7 +317,7 @@
             @click="logout()"
           />
         </div>
-        <q-separator class="q-mt-md q-mb-sm bg-primary" style="padding: none" />
+        <!-- <q-separator class="q-mt-md q-mb-sm bg-primary" style="padding: none" /> -->
         <p class="text-black q-ml-md" style="opacity: 50%; font-size: 12px">
           Claimguru Version {{ this.version }}
         </p>
@@ -1052,5 +1061,27 @@ export default {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-decoration-color: #ef5926;
+}
+.ht-83 {
+  height: 83px !important;
+}
+.mt-5 {
+  margin-top: 5px;
+}
+.q-px-32 {
+  padding-left: 32px;
+}
+.padding-top-20 {
+  padding-top: 20px;
+}
+.dropdownLogo {
+  width: 12px;
+  height: 6;
+  margin-left: 10px;
+}
+.LogoSize {
+  width: 151px;
+  height: 51px;
+  margin-right: 10px;
 }
 </style>
