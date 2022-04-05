@@ -129,13 +129,13 @@ export async function checkExistingEmail({ dispatch }, email) {
   } catch (e) {
     // //console.log(e);
     // dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message:
-        e.response[0].detail == 'stripe token is missing'
-          ? 'Please ask admin to add you as a beta user'
-          : e.response[0].detail
-    });
+    if (e.response[0].detail == 'stripe token is missing') {
+      dispatch('setNotification', {
+        type: 'negative',
+        message: 'Please ask admin to add you as a beta user'
+      });
+    }
+
     return false;
   }
 }
