@@ -3,18 +3,25 @@
     <div class="col row">
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary">
         <div class="">
-          <q-img src="~assets/Logo.svg" class="web-menu-claim-guru-logo" />
+          <q-img
+            src="~assets/Logo.svg"
+            class="web-menu-claim-guru-logo"
+            @click="goHome"
+          />
         </div>
         <div class="q-mt-md text-h5 text-center fontWeight600">
-          <div class="heading-line" style="background: #f9e7d8">
+          <div class="claimguru-tagline" style="background: #f9e7d8">
             The First and Only Catastrophe-Proof Claim Management System For
             Public Adjusters
           </div>
         </div>
-        <div
-          class="q-mx-lg q-my-xl desktop-footer fontWeight400"
-          style="position: absolute; bottom: 38px"
-        >
+        <div class="desktop-footer">
+          <q-img
+            src="~assets/login_banner.svg"
+            style="margin-top: 84px; margin-right: 184px; width: 75%"
+          />
+        </div>
+        <div class="claimguru-copy desktop-footer fontWeight400" style="">
           <span class=""> © ClaimGuru {{ new Date().getFullYear() }}</span>
         </div>
       </div>
@@ -22,10 +29,10 @@
         <!-- login form -->
         <div class="content-center bg-white login-section">
           <div class="login-up">
-            <div class="login col">
+            <div class="">
               <div class="q-mt-lg text-h4 fontWeight600 login-head">Login</div>
               <q-form class="q-mt-lg" @submit="onUserLogin" ref="orgInfo">
-                <label class="text-subtitle1 fontWeight600"
+                <label class="text-subtitle1 fontWeight600 input-label"
                   >Email Address</label
                 >
                 <q-input
@@ -45,7 +52,9 @@
                 />
                 <span class="text-red text-caption">{{ errorMSG }}</span>
                 <br v-if="errorMSG" />
-                <label class="text-subtitle1 fontWeight600">Password</label>
+                <label class="text-subtitle1 fontWeight600 input-label"
+                  >Password</label
+                >
                 <q-input
                   color="primary"
                   class="required full-width input-class"
@@ -76,8 +85,8 @@
                     type="submit"
                     color="deep-orange"
                     size="16px"
-                    class="full-width fontWeight600"
-                    style="height: 50px; border-radius: 10px"
+                    class="full-width fontWeight600 btn-submit"
+                    style=""
                   />
                 </div>
                 <div class="row justify-center q-mt-md">
@@ -115,6 +124,7 @@
 </template>
 <script>
 const stripe = Stripe(`${process.env.STRIPE_API_KEY}`);
+const home_page = process.env.HOME_PAGE_URL;
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { constants } from '@utils/constant';
 import {
@@ -179,7 +189,9 @@ export default {
   methods: {
     ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
     ...mapMutations(['setSelectedClaimId', 'setNotificationRouteTo']),
-
+    goHome() {
+      window.location.href = home_page;
+    },
     isMobile,
     async onUserLogin() {
       const loginData = {
@@ -313,6 +325,38 @@ export default {
     margin-right: 15px;
   }
 }
+.input-label {
+  @media only screen and (max-width: 1023px) {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 16px;
+  }
+  @media only screen and (min-width: 1024px) {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 24px;
+  }
+}
+
+.claimguru-tagline {
+  @media only screen and (max-width: 1023px) {
+    font-size: 28px;
+    color: #101828;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 36px;
+    margin: 40px 0px 10px 0px;
+  }
+  @media only screen and (min-width: 1024px) {
+    color: #101828;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 36px;
+    margin: 101px 59px 10px 31px;
+  }
+}
 .login-head {
   @media only screen and (max-width: 1023px) {
     font-weight: 600;
@@ -323,6 +367,16 @@ export default {
     font-weight: 600;
     font-size: 32px;
     line-height: 36px;
+  }
+}
+.btn-submit {
+  @media only screen and (max-width: 1023px) {
+    border-radius: 5px;
+    height: 50px;
+  }
+  @media only screen and (min-width: 1024px) {
+    border-radius: 10px;
+    height: 50px;
   }
 }
 .web-menu-claim-guru-logo {
@@ -337,16 +391,20 @@ export default {
     margin-top: 16px;
   }
 }
-.heading-line {
-  @media only screen and (max-width: 1023px) {
-    font-size: 24px;
-    line-height: 36px;
+.claimguru-copy {
+  @media only screen and (max-height: 1023px) {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 62px 0px 38px 32px;
+    position: static;
+    bottom: 0px;
   }
-  @media only screen and (min-width: 1024px) {
-    font-size: 28px;
-    line-height: 36px;
-    margin-left: 55px;
-    margin-right: 54px;
+  @media only screen and (min-height: 1024px) {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 62px 0px 38px 32px;
+    position: absolute;
+    bottom: 0px;
   }
 }
 .mobile-footer {
@@ -506,6 +564,12 @@ export default {
   height: 44px;
   color: rgba(0, 0, 0, 0.54);
   font-size: 24px;
+}
+
+.q-field {
+  @media only screen and (min-width: 1024px) {
+    width: 431px;
+  }
 }
 .q-page-container {
   margin: 0 auto;

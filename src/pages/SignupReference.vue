@@ -3,7 +3,11 @@
     <div class="col row custom-cols">
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary">
         <div class="q-pb-md">
-          <q-img src="~assets/Logo.svg" class="web-menu-claim-guru-logo" />
+          <q-img
+            src="~assets/Logo.svg"
+            class="web-menu-claim-guru-logo"
+            @click="goHome"
+          ></q-img>
         </div>
         <div
           class="mobile-view q-mt-md outer-padding package-section"
@@ -14,7 +18,10 @@
             :value="progress"
             style="border-radius: 5px; margin-top: 9.5px"
           />
-          <div class="q-mt-sm text-subtitle1 fontWeight600 text-grey">
+          <div
+            class="q-mt-sm text-subtitle1 fontWeight600"
+            style="color: #5b647a"
+          >
             Step 1. Create Account
           </div>
         </div>
@@ -24,7 +31,7 @@
             style="border-radius: 5px; margin-top: 9.5px"
             :value="progress1"
           />
-          <div class="q-mt-sm text-subtitle1 text-bold text-grey">
+          <div class="q-mt-sm text-subtitle1 text-bold" style="color: #5b647a">
             Step 2. Payment
           </div>
         </div>
@@ -58,7 +65,7 @@
         <div class="col row test outer-padding package-section">
           <!-- card 1 -->
           <div
-            class="col-md-5 col-sm-12 col-xs-12 card-border q-mb-md col bg-white card-container"
+            class="col-md-5 col-sm-12 col-xs-12 card-border card-bottom col bg-white card-container"
             @click="onPackageSelection('Firm')"
             :class="{
               'card-highlighter': isPackageSelected.id1,
@@ -95,28 +102,28 @@
                   class="package-icon"
                 />
               </div>
-              <div class="text-h6 fontWeight500 text-center pack-heading">
+              <div class="text-h6 fontWeight600 text-center pack-heading">
                 Firm Package
               </div>
-              <div class="text-h6 fontWeight500 text-center">
+              <div class="text-h6 fontWeight600 text-center pack-heading">
                 $250
                 <span class="text-grey fontWeight400 text-subtitle2"
                   >/ month</span
                 >
               </div>
               <div
-                class="text-subtitle1 text-center fontWeight600 q-my-sm period-heading"
+                class="text-subtitle1 text-center q-my-sm period-heading"
                 style="color: #ef5926"
               >
                 Start your {{ firmPackages.trialPeriodDays }} Day Free Trial
               </div>
               <div
-                class="q-ml-md text-subtitle1 fontWeight400 col-md-4 col-xs-12 col-sm-12"
+                class="q-ml-md text-subtitle1 pack-data fontWeight400 col-md-4 col-xs-12 col-sm-12"
                 v-for="key in firmPackages.plandata"
                 :key="key.tempkey"
               >
                 <q-img
-                  class="q-mt-xs check-img"
+                  class="check-img"
                   :src="getImage('check.svg')"
                   width="8%"
                   height="8%"
@@ -126,12 +133,14 @@
                 >
               </div>
 
-              <div class="q-pt-md text-blue-grey fontWeight400 text-subtitle1">
+              <div
+                class="q-ml-md q-pt-md text-blue-grey fontWeight400 text-subtitle1 aditional-licence"
+              >
                 Additional licenses at $50/mo
               </div>
 
               <div
-                class="q-mt-lg q-mb-sm fontWeight400 text-blue-grey text-caption"
+                class="q-ml-md q-mb-md fontWeight400 text-blue-grey text-caption vendor-terms"
               >
                 *Vendor roles are limited
               </div>
@@ -140,7 +149,7 @@
           <div class="col-md-2 col-sm-12 col-xs-12 middle-col"></div>
           <!-- card 2 -->
           <div
-            class="col-md-5 col-sm-12 col-xs-12 card-border q-mb-md bg-white card-container"
+            class="col-md-5 col-sm-12 col-xs-12 card-border card-bottom bg-white card-container"
             @click="onPackageSelection('Individual')"
             :class="{
               'card-highlighter': isPackageSelected.id2,
@@ -177,10 +186,10 @@
                   class="package-icon"
                 />
               </div>
-              <div class="text-h6 fontWeight500 text-center pack-heading">
+              <div class="text-h6 fontWeight600 text-center pack-heading">
                 Individual Package
               </div>
-              <div class="text-h6 fontWeight500 text-center">
+              <div class="text-h6 fontWeight600 text-center pack-heading">
                 $125
                 <span class="text-grey fontWeight400 text-subtitle2"
                   >/ month</span
@@ -194,12 +203,12 @@
                 Trial
               </div>
               <div
-                class="q-ml-md text-subtitle1 fontWeight400"
+                class="q-ml-md text-subtitle1 fontWeight400 pack-data"
                 v-for="key2 in individualPackages.plandata"
                 :key="key2.tempkey2"
               >
                 <q-img
-                  class="q-mt-xs check-img"
+                  class="check-img"
                   :src="getImage('check.svg')"
                   width="8%"
                   height="40%"
@@ -211,7 +220,7 @@
             </div>
           </div>
         </div>
-        <div class="test desktop-view outer-padding package-section q-pt-lg">
+        <div class="test desktop-view outer-padding package-section">
           <div class="card-border bg-white card-container-enterprice">
             <div class="row q-px-xl q-pt-md">
               <div class="col-md-9 col-sm-12 text-h6 text-left row">
@@ -248,7 +257,7 @@
                 />
               </div>
               <div class="col">
-                <span class="q-ml-xs text-subtitle1 fontWeight400"
+                <span class="q-ml-xs text-subtitle1 fontWeight400 pack-data"
                   >Custom setup for large firms with more than 8 paid roles
                   custom pricing
                 </span>
@@ -289,7 +298,9 @@
                   Contact Us
                 </a>
               </div>
-              <div class="q-ml-md text-subtitle1 fontWeight400 q-pb-md">
+              <div
+                class="q-ml-md text-subtitle1 fontWeight400 q-pb-md pack-data"
+              >
                 <q-img
                   class="q-mt-xs check-img"
                   :src="getImage('check.svg')"
@@ -304,7 +315,7 @@
             </div>
           </div>
         </div>
-        <div class="q-mx-lg q-my-xl desktop-view fontWeight400">
+        <div class="desktop-view claimguru-copy fontWeight400">
           <span class=""> © ClaimGuru {{ new Date().getFullYear() }}</span>
         </div>
       </div>
@@ -322,14 +333,19 @@
                   :value="progress"
                   style="border-radius: 5px"
                 />
-                <div class="q-mt-sm text-subtitle1 fontWeight600 text-grey">
+                <div
+                  class="q-mt-sm text-subtitle1 fontWeight600"
+                  style="color: #5b647a"
+                >
                   Step 1. Create Account
                 </div>
               </div>
 
               <div class="text-h4 fontWeight600 signup-head">Subscribe Now</div>
               <q-form class="q-mt-lg" @submit="onContinue()" ref="orgInfo">
-                <label class="text-subtitle1 fontWeight600">First Name</label>
+                <label class="text-subtitle1 fontWeight600 input-label"
+                  >First Name</label
+                >
                 <q-input
                   name="firstName"
                   v-model="data.user.contact.fname"
@@ -346,7 +362,9 @@
                   ]"
                 />
 
-                <label class="text-subtitle1 fontWeight600">Last Name</label>
+                <label class="text-subtitle1 fontWeight600 input-label"
+                  >Last Name</label
+                >
                 <q-input
                   v-model="data.user.contact.lname"
                   name="lastName"
@@ -363,7 +381,7 @@
                   ]"
                 />
 
-                <label class="text-subtitle1 fontWeight600"
+                <label class="text-subtitle1 fontWeight600 input-label"
                   >Email Address</label
                 >
                 <q-input
@@ -374,17 +392,13 @@
                   outlined
                   class="required"
                   lazy-rules
-                  :rules="[
-                    val => !!val || 'Please fill your email address',
-                    val => checkEmailExist(val) || 'test',
-                    val =>
-                      validateEmail(val) ||
-                      'You have entered an invalid email address'
-                  ]"
+                  :rules="[val => validateEmailid(val)]"
                 />
                 <span class="error-msg">{{ errorMSG }}</span>
-                <br v-if="errorMSG" />
-                <label class="text-subtitle1 fontWeight600">Password</label>
+
+                <label class="text-subtitle1 fontWeight600 input-label"
+                  >Password</label
+                >
                 <q-input
                   color="primary"
                   class="required full-width"
@@ -408,7 +422,9 @@
                   </template>
                 </q-input>
 
-                <label class="text-subtitle1 fontWeight600">Company Name</label>
+                <label class="text-subtitle1 fontWeight600 input-label"
+                  >Company Name</label
+                >
                 <q-input
                   v-model="data.company.name"
                   name="businessName"
@@ -451,9 +467,9 @@
                     type="submit"
                     color="deep-orange"
                     size="16px"
-                    class="full-width fontWeight600"
+                    class="full-width fontWeight600 btn-submit"
                     :disable="!terms"
-                    style="border-radius: 10px; height: 50px"
+                    style=""
                   />
                 </div>
                 <div class="row justify-center q-my-md">
@@ -487,7 +503,10 @@
                   style="border-radius: 5px"
                   :value="progress1"
                 />
-                <div class="q-mt-sm text-subtitle1 text-bold text-grey">
+                <div
+                  class="q-mt-sm text-subtitle1 text-bold"
+                  style="color: #5b647a"
+                >
                   Step 2. Payment
                 </div>
               </div>
@@ -523,7 +542,7 @@
                 </div>
                 <div class="q-mt-lg"></div>
                 <div id="card-errors" class="q-my-lg"></div>
-                <label class="text-subtitle1 text-weight-bold"
+                <label class="text-subtitle1 text-weight-bold input-label"
                   >Card Number</label
                 >
                 <div
@@ -533,7 +552,9 @@
                   <!-- a Stripe Element will be inserted. -->
                 </div>
 
-                <label class="text-subtitle1 fontWeight600">Name on Card</label>
+                <label class="text-subtitle1 fontWeight600 input-label"
+                  >Name on Card</label
+                >
                 <q-input
                   borderless
                   class="bg-white cardInfo text-body1 q-mt-xs q-mb-lg"
@@ -551,7 +572,7 @@
 
                 <div class="row">
                   <div class="col q-pr-md">
-                    <label class="text-subtitle1 fontWeight600"
+                    <label class="text-subtitle1 fontWeight600 input-label"
                       >Expiry Date</label
                     >
                     <div
@@ -562,7 +583,9 @@
                     </div>
                   </div>
                   <div class="col q-pl-xs">
-                    <label class="text-subtitle1 fontWeight600">CVC</label>
+                    <label class="text-subtitle1 fontWeight600 input-label"
+                      >CVC</label
+                    >
                     <div
                       id="card-cvc"
                       class="cardInfo text-body1 border-bottom-right q-mt-xs"
@@ -602,8 +625,8 @@
                     type="submit"
                     color="deep-orange"
                     size="16px"
-                    class="full-width fontWeight600"
-                    style="border-radius: 10px; height: 50px"
+                    class="full-width fontWeight600 btn-submit"
+                    style=""
                   />
                 </div>
                 <div class="q-mt-md"></div>
@@ -653,6 +676,7 @@
 </template>
 <script>
 const stripe = Stripe(`${process.env.STRIPE_API_KEY}`);
+const home_page = process.env.HOME_PAGE_URL;
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { constants } from '@utils/constant';
 import { validateEmail, validateNames } from '@utils/validation';
@@ -741,16 +765,49 @@ export default {
       'createUserForOrganization',
       'checkExistingEmail'
     ]),
-
+    goHome() {
+      window.location.href = home_page;
+    },
     isMobile,
     ...mapMutations(['setLoading', 'setNotifications']),
     getImage(icon) {
       return require('../assets/' + icon);
     },
 
-    async checkEmailExist(val) {
-      let res = await this.checkExistingEmail(val);
-      return res;
+    async validateEmailid(val) {
+      let email_exist = await this.checkExistingEmail(val);
+      let email_valid = await this.validateEmail(val);
+      let go_exist = false;
+      let go_valid = false;
+      let go_empty = false;
+      if (val == '') {
+        go_empty = false;
+        this.errorMSG = 'Please fill your email address';
+      } else {
+        go_empty = true;
+      }
+      if (email_valid) {
+        go_valid = true;
+      } else {
+        go_valid = false;
+        this.errorMSG = 'You have entered an invalid email address';
+      }
+
+      if (email_exist) {
+        go_exist = true;
+      } else {
+        go_exist = false;
+        this.errorMSG = 'This email is already in use. Please choose another';
+      }
+
+      console.log('empty:', go_empty, ' valid:', go_valid, ' exist:', go_exist);
+      if (go_exist && go_valid && go_empty) {
+        this.errorMSG = '';
+        return true;
+      } else {
+        return false;
+      }
+
       //return true
     },
     validateEmail,
@@ -946,6 +1003,7 @@ export default {
     //     this.$router.push('/admin');
     //   }
     // }
+
     await this.getAllPlans();
     this.plans_fetched = this.plans;
     this.plans_fetched.forEach(element => {
@@ -1049,6 +1107,86 @@ export default {
     margin-top: 16px;
   }
 }
+.btn-submit {
+  @media only screen and (max-width: 1023px) {
+    border-radius: 5px;
+    height: 50px;
+  }
+  @media only screen and (min-width: 1024px) {
+    border-radius: 10px;
+    height: 50px;
+  }
+}
+.claimguru-copy {
+  @media only screen and (max-height: 1023px) {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 62px 0px 38px 32px;
+    position: static;
+    bottom: 0px;
+  }
+  @media only screen and (min-height: 1024px) {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 62px 0px 38px 32px;
+    position: absolute;
+    bottom: 0px;
+  }
+}
+.input-label {
+  @media only screen and (max-width: 1023px) {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 16px;
+  }
+  @media only screen and (min-width: 1024px) {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 24px;
+  }
+}
+.aditional-licence {
+  @media only screen and (max-width: 1023px) {
+    font-size: 12px;
+    line-height: 14px;
+  }
+  @media only screen and (min-width: 1024px) {
+    font-size: 14px;
+    line-height: 26px;
+  }
+}
+.card-bottom {
+  @media only screen and (max-width: 1023px) {
+    margin-bottom: 8px;
+  }
+  @media only screen and (min-width: 1024px) {
+    margin-bottom: 24px;
+  }
+}
+.vendor-terms {
+  @media only screen and (max-width: 1023px) {
+    font-size: 10px;
+    line-height: 14px;
+    margin-top: 10px;
+  }
+  @media only screen and (min-width: 1024px) {
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 2px;
+  }
+}
+.pack-data {
+  @media only screen and (max-width: 1023px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  @media only screen and (min-width: 1024px) {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}
 .error-msg {
   position: absolute;
   color: #c10015 !important;
@@ -1098,7 +1236,7 @@ export default {
     font-weight: 600;
     font-size: 28px;
     line-height: 36px;
-    margin: 16px 0px;
+    margin: 16px 6px 10px 7px;
   }
 }
 .signup-section {
@@ -1194,8 +1332,6 @@ export default {
     justify-content: center;
     align-items: center;
     max-width: 480px;
-    margin-left: 15px;
-    margin-right: 15px;
   }
 }
 .signup-head {
@@ -1327,10 +1463,12 @@ export default {
   @media only screen and (min-width: 1024px) {
     font-size: 16px;
     line-height: 20px;
+    font-weight: 500;
   }
   @media only screen and (max-width: 1023px) {
     font-size: 14px;
     line-height: 20px;
+    font-weight: 600;
   }
 }
 .main-pack-heading {
@@ -1338,13 +1476,13 @@ export default {
     font-weight: 600;
     font-size: 24px;
     line-height: 32px;
-    padding: 16px 48px 16px 0px;
+    padding: 16px 0px 16px 48px;
   }
   @media only screen and (max-width: 1023px) {
     font-weight: 600;
     font-size: 24px;
     line-height: 28px;
-    padding: 10px 15px 10px 0px;
+    padding: 10px 0px 10px 15px;
   }
 }
 .card-container {
@@ -1395,21 +1533,21 @@ export default {
   // }
   width: 100%;
 }
-.signup {
-  @media only screen and (min-width: 1024px) {
-    margin-left: 48px;
-    margin-right: 48px;
-    padding-left: 48px;
-    padding-right: 48px;
-  }
-  @media only screen and (max-width: 1023px) {
-    margin-left: 0px;
-    margin-right: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
-    padding-top: 0px;
-  }
-}
+// .signup {
+//   @media only screen and (min-width: 1024px) {
+//     margin-left: 48px;
+//     margin-right: 48px;
+//     padding-left: 48px;
+//     padding-right: 48px;
+//   }
+//   @media only screen and (max-width: 1023px) {
+//     margin-left: 0px;
+//     margin-right: 0px;
+//     padding-left: 0px;
+//     padding-right: 0px;
+//     padding-top: 0px;
+//   }
+// }
 .my-card {
   border-radius: 10px;
   @media only screen and (max-width: $breakpoint-md-max) {
