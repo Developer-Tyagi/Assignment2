@@ -780,7 +780,7 @@ export default {
       'checkExistingEmail'
     ]),
     goHome() {
-      window.location.href = home_page;
+      window.open(home_page);
     },
     isMobile,
     ...mapMutations(['setLoading', 'setNotifications']),
