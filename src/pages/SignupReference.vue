@@ -3,11 +3,12 @@
     <div class="col row custom-cols">
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary">
         <div class="q-pb-md">
-          <q-img
-            src="~assets/Logo.svg"
-            class="web-menu-claim-guru-logo"
-            @click="goHome"
-          ></q-img>
+          <a @click="goHome" style="cursor: pointer">
+            <q-img
+              src="~assets/Logo.svg"
+              class="web-menu-claim-guru-logo"
+            ></q-img>
+          </a>
         </div>
         <div
           class="mobile-view q-mt-md outer-padding package-section"
@@ -25,7 +26,10 @@
             Step 1. Create Account
           </div>
         </div>
-        <div class="mobile-view q-mt-md q-px-lg" v-if="continueClick === true">
+        <div
+          class="mobile-view q-mt-md payment-section"
+          v-if="continueClick === true"
+        >
           <q-linear-progress
             size="5px"
             style="border-radius: 5px; margin-top: 9.5px"
@@ -222,7 +226,7 @@
         </div>
         <div class="test desktop-view outer-padding package-section">
           <div class="card-border bg-white card-container-enterprice">
-            <div class="row q-px-xl q-pt-md">
+            <div class="row q-px-md q-pt-md">
               <div class="col-md-9 col-sm-12 text-h6 text-left row">
                 <div class="col-md-1 col-sm-12">
                   <q-img
@@ -256,8 +260,8 @@
                   width="40%"
                 />
               </div>
-              <div class="col">
-                <span class="q-ml-xs text-subtitle1 fontWeight400 pack-data"
+              <div class="col q-ml-xs">
+                <span class="text-subtitle1 fontWeight400 pack-data"
                   >Custom setup for large firms with more than 8 paid roles
                   custom pricing
                 </span>
@@ -444,7 +448,7 @@
                     >I agree to ClaimGuru’s</label
                   >
                   <a
-                    class="q-mt-sm q-ml-xs q-mr-xs text-deep-orange fontWeight600"
+                    class="q-mt-sm q-ml-xs q-mr-xs text-deep-orange fontWeight400"
                     href="/terms-conditions"
                     style="margin-top: 10px"
                     target="_blank"
@@ -452,7 +456,7 @@
                   >
                   <label class="q-mt-sm" style="margin-top: 10px"> and</label>
                   <a
-                    class="q-mt-sm q-ml-xs q-mr-xs text-deep-orange fontWeight600"
+                    class="q-mt-sm q-ml-xs q-mr-xs text-deep-orange fontWeight400"
                     href="privacy-policy"
                     style="margin-top: 10px"
                     target="_blank"
@@ -472,9 +476,9 @@
                     style=""
                   />
                 </div>
-                <div class="row justify-center q-my-md">
+                <div class="row justify-center">
                   <div
-                    class="col-lg-12 col-md-12 col-sm-12 col-xm-12 q-ml-md text-center"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xm-12 q-ml-md text-center signup-text"
                   >
                     <label class="text-subtitle1"
                       >Already have an account?
@@ -495,168 +499,178 @@
           v-else
           class="q-pt-xl content-center bg-white signup-main payment-section"
         >
-          <div class="q-pt-xl signup">
-            <div class="">
-              <div class="desktop-view">
-                <q-linear-progress
-                  size="5px"
-                  style="border-radius: 5px"
-                  :value="progress1"
-                />
-                <div
-                  class="q-mt-sm text-subtitle1 text-bold"
-                  style="color: #5b647a"
-                >
-                  Step 2. Payment
-                </div>
-              </div>
-              <div
-                v-if="showSeeAllPackages"
-                class="text-subtitle1 text-right fontWeight500 q-my-sm period-heading mobile-view"
-                style="
-                  font-family: Poppins;
-                  color: #ef5926;
-                  text-decoration: underline;
-                  font-size: 16px;
-                  line-height: 20px;
-                "
-                @click="showAllPlans"
-              >
-                See all package
-              </div>
-              <q-form class="q-mt-xl" @submit="onPaymentClick()" ref="orgInfo">
-                <div>{{ displayErrors }}</div>
-                <div class="main-pack-heading signup-head">
-                  <div class="text-h4 text-weight-bolder">
-                    Pay with card for
-                  </div>
+          <div class="signup-sub">
+            <div class="signup">
+              <div class="">
+                <div class="desktop-view">
+                  <q-linear-progress
+                    size="5px"
+                    style="border-radius: 5px"
+                    :value="progress1"
+                  />
                   <div
-                    v-if="isPackageSelected.id1 === true"
-                    class="text-h4 text-weight-bolder"
+                    class="q-mt-sm text-subtitle1 text-bold"
+                    style="color: #5b647a"
                   >
-                    Firm Package
-                  </div>
-                  <div v-else class="text-h4 text-weight-bolder">
-                    Individual Package
+                    Step 2. Payment
                   </div>
                 </div>
-                <div class="q-mt-lg"></div>
-                <div id="card-errors" class="q-my-lg"></div>
-                <label class="text-subtitle1 text-weight-bold input-label"
-                  >Card Number</label
-                >
                 <div
-                  id="card-number"
-                  class="cardInfo f-w-500 text-body1 border-top-left-right q-mt-xs q-mb-lg"
-                >
-                  <!-- a Stripe Element will be inserted. -->
-                </div>
-
-                <label class="text-subtitle1 fontWeight600 input-label"
-                  >Name on Card</label
-                >
-                <q-input
-                  borderless
-                  class="bg-white cardInfo text-body1 q-mt-xs q-mb-lg"
-                  :class="
-                    cardName == '' ? 'input-placeholder' : 'input-text-style'
+                  v-if="showSeeAllPackages"
+                  class="text-subtitle1 text-right fontWeight500 q-my-sm mobile-view"
+                  style="
+                    font-family: Poppins;
+                    color: #ef5926;
+                    text-decoration: underline;
+                    font-size: 16px;
+                    line-height: 20px;
                   "
+                  @click="showAllPlans"
+                >
+                  See all package
+                </div>
+                <q-form class="" @submit="onPaymentClick()" ref="orgInfo">
+                  <div>{{ displayErrors }}</div>
+                  <div class="payment-pack-heading fontWeight600 signup-head">
+                    <div class="">Pay with card for</div>
+                    <div v-if="isPackageSelected.id1 === true" class="">
+                      Firm Package
+                    </div>
+                    <div v-else class="">Individual Package</div>
+                  </div>
+                  <div class="q-mt-lg"></div>
+                  <div id="card-errors" class="q-my-lg"></div>
+                  <label class="text-subtitle1 text-weight-bold input-label"
+                    >Card Number</label
+                  >
+                  <div
+                    id="card-number"
+                    class="cardInfo f-w-500 text-body1 border-top-left-right q-mt-xs q-mb-lg"
+                  >
+                    <!-- a Stripe Element will be inserted. -->
+                  </div>
+
+                  <label class="text-subtitle1 fontWeight600 input-label"
+                    >Name on Card</label
+                  >
+                  <q-input
+                    ref="cardName"
+                    name="name"
+                    v-model="cardName"
+                    placeholder="Enter Name on Card"
+                    outlined
+                    class="required"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        validateNames(val) ||
+                        'Only alphabets and $ . - characters allowed!'
+                    ]"
+                  />
+                  <!-- <q-input
+                  borderless
+                  class="bg-white cardInfo text-body1 q-mt-xs q-mb-lg required"
+                  lazy-rules
                   ref="cardName"
                   name="name"
+                  color="primary"
                   v-model="cardName"
                   maxlength="50"
                   id="card-name"
-                  autocomplete="cc-name"
                   placeholder="Enter Name on Card"
-                />
+                /> -->
 
-                <div class="row">
-                  <div class="col q-pr-md">
-                    <label class="text-subtitle1 fontWeight600 input-label"
-                      >Expiry Date</label
-                    >
-                    <div
-                      id="card-expiry"
-                      class="cardInfo text-body1 border-bottom-right q-mt-xs"
-                    >
-                      <!-- a Stripe Element will be inserted. -->
+                  <div class="row">
+                    <div class="col q-pr-md">
+                      <label class="text-subtitle1 fontWeight600 input-label"
+                        >Expiry Date</label
+                      >
+                      <div
+                        id="card-expiry"
+                        class="cardInfo text-body1 border-bottom-right q-mt-xs"
+                      >
+                        <!-- a Stripe Element will be inserted. -->
+                      </div>
+                    </div>
+                    <div class="col q-pl-xs">
+                      <label class="text-subtitle1 fontWeight600 input-label"
+                        >CVC</label
+                      >
+                      <div
+                        id="card-cvc"
+                        class="cardInfo text-body1 border-bottom-right q-mt-xs"
+                      >
+                        <!-- a Stripe Element will be inserted. -->
+                      </div>
                     </div>
                   </div>
-                  <div class="col q-pl-xs">
-                    <label class="text-subtitle1 fontWeight600 input-label"
-                      >CVC</label
+
+                  <div class="duration-text"></div>
+                  <div class="row">
+                    <label class="column text-h5 fontWeight600"
+                      >30 Days Free</label
                     >
-                    <div
-                      id="card-cvc"
-                      class="cardInfo text-body1 border-bottom-right q-mt-xs"
-                    >
-                      <!-- a Stripe Element will be inserted. -->
+                  </div>
+                  <div class="row q-mt-sm">
+                    <div class="col-6">
+                      <label class="text-h6 fontWeight600">After 30 days</label>
+                    </div>
+                    <div class="col-6 q-mt-xs text-right">
+                      <div
+                        v-if="isPackageSelected.id1 === true"
+                        class="text-subtitle1 text-grey-white"
+                      >
+                        $250/month*
+                      </div>
+                      <div v-else class="text-subtitle1 text-grey-white">
+                        $125/month*
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div class="q-mt-xl"></div>
-                <div class="row">
-                  <label class="column text-h5 fontWeight600"
-                    >30 Days Free</label
+                  <div class="q-mt-md"></div>
+                  <div class="row justify-center">
+                    <q-btn
+                      label="Subscribe"
+                      no-caps
+                      type="submit"
+                      color="deep-orange"
+                      size="16px"
+                      class="full-width fontWeight600 btn-submit"
+                      style=""
+                    />
+                  </div>
+                  <div class="q-mt-md"></div>
+                  <div
+                    class="fontWeight400"
+                    style="font-size: 12px; line-height: 18px"
                   >
-                </div>
-                <div class="row q-mt-sm">
-                  <div class="col-6">
-                    <label class="text-h6 fontWeight600">After 30 days</label>
-                  </div>
-                  <div class="col-6 q-mt-xs text-right">
-                    <div
-                      v-if="isPackageSelected.id1 === true"
-                      class="text-subtitle1 text-grey-white"
+                    By clicking the ‘Subscribe’ button, you allow ClaimGuru to
+                    charge your card for this payment, and you agree to
+                    ClaimGuru’s
+                    <a
+                      href="/terms-conditions"
+                      class="text-deep-orange fontWeight600"
+                      target="_blank"
+                      >Terms of Use</a
                     >
-                      $250/month*
-                    </div>
-                    <div v-else class="text-subtitle1 text-grey-white">
-                      $125/month*
-                    </div>
+                    and
+                    <a
+                      href="/privacy-policy"
+                      class="text-deep-orange fontWeight600"
+                      target="_blank"
+                      >Privacy Policy.</a
+                    >
                   </div>
-                </div>
-                <div class="q-mt-md"></div>
-                <div class="row justify-center">
-                  <q-btn
-                    label="Subscribe"
-                    no-caps
-                    type="submit"
-                    color="deep-orange"
-                    size="16px"
-                    class="full-width fontWeight600 btn-submit"
-                    style=""
-                  />
-                </div>
-                <div class="q-mt-md"></div>
+                </q-form>
                 <div
-                  class="fontWeight400"
-                  style="font-size: 12px; line-height: 18px"
+                  class="row justify-center q-my-md"
+                  style="margin-top: 30px"
                 >
-                  By clicking the ‘Subscribe’ button, you allow ClaimGuru to
-                  charge your card for this payment, and you agree to
-                  ClaimGuru’s
-                  <a
-                    href="/terms-conditions"
-                    class="text-deep-orange fontWeight600"
-                    target="_blank"
-                    >Terms of Use</a
-                  >
-                  and
-                  <a
-                    href="/privacy-policy"
-                    class="text-deep-orange fontWeight600"
-                    target="_blank"
-                    >Privacy Policy.</a
-                  >
+                  <q-img src="~assets/secure.svg" class="secure-logo" />
                 </div>
-              </q-form>
-              <div class="row justify-center q-my-md" style="margin-top: 30px">
-                <q-img src="~assets/secure.svg" class="secure-logo" />
               </div>
+              <div class="col-2"></div>
             </div>
-            <div class="col-2"></div>
           </div>
         </div>
       </div>
@@ -1108,7 +1122,7 @@ export default {
 .btn-submit {
   @media only screen and (max-width: 1023px) {
     border-radius: 5px;
-    height: 50px;
+    height: 40px;
   }
   @media only screen and (min-width: 1024px) {
     border-radius: 10px;
@@ -1237,6 +1251,21 @@ export default {
     margin: 16px 6px 10px 7px;
   }
 }
+.signup-text {
+  font-size: 16px !important;
+  line-height: 24px;
+
+  @media only screen and (min-height: 500px) and (max-height: 800px) {
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  @media only screen and (min-height: 1024px) {
+    margin-top: 30px;
+  }
+  @media only screen and (max-height: 1023px) {
+    margin-top: 40px;
+  }
+}
 .signup-section {
   @media only screen and (min-width: 700px) {
     display: flex;
@@ -1276,6 +1305,7 @@ export default {
     max-width: 680px;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 90px;
   }
   @media only screen and (max-width: 1024px) {
     display: flex;
@@ -1483,6 +1513,26 @@ export default {
     padding: 10px 0px 10px 15px;
   }
 }
+.payment-pack-heading {
+  @media only screen and (min-width: 1024px) {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 36px;
+  }
+  @media only screen and (max-width: 1023px) {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+  }
+}
+.duration-text {
+  @media only screen and (min-width: 1024px) {
+    margin-top: 40px;
+  }
+  @media only screen and (max-width: 1023px) {
+    margin-top: 30px;
+  }
+}
 .card-container {
   // // @media only screen and (min-width: 1024px) and (max-width: 2400px) {
   // //   width: 44%;
@@ -1531,21 +1581,21 @@ export default {
   // }
   width: 100%;
 }
-// .signup {
-//   @media only screen and (min-width: 1024px) {
-//     margin-left: 48px;
-//     margin-right: 48px;
-//     padding-left: 48px;
-//     padding-right: 48px;
-//   }
-//   @media only screen and (max-width: 1023px) {
-//     margin-left: 0px;
-//     margin-right: 0px;
-//     padding-left: 0px;
-//     padding-right: 0px;
-//     padding-top: 0px;
-//   }
-// }
+.signup {
+  @media only screen and (min-width: 1024px) {
+    margin-left: 48px;
+    margin-right: 48px;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+  @media only screen and (max-width: 1023px) {
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+  }
+}
 .my-card {
   border-radius: 10px;
   @media only screen and (max-width: $breakpoint-md-max) {
@@ -1603,26 +1653,24 @@ export default {
     }
   }
   .StripeElement--invalid {
-    color: #d64d25;
     height: 44px;
     max-width: 100%;
     outline: none;
     border-radius: 8px;
-    border: 3px solid !important;
+    border: 2px solid #d64d25 !important;
     padding: 0 12px;
   }
   .StripeElement--focus {
-    color: #ef5926;
     height: 44px;
     max-width: 100%;
-    border: 3px solid !important;
+    border: 2px solid #ef5926 !important;
     outline: none;
     border-radius: 8px;
     padding: 0 12px;
   }
   .cardInfo {
     padding: 12.5px 14px;
-    border: 1px solid;
+    border: 1px solid #b9bcc6;
     border-radius: 8px;
     height: 44px;
     .q-field__native {
@@ -1632,7 +1680,7 @@ export default {
     }
     .q-field__control,
     .q-field__marginal {
-      height: 26px;
+      height: 20px;
     }
     .q-field--auto-height,
     .q-field__native {
@@ -1679,5 +1727,10 @@ export default {
 .q-page-container {
   margin: 0 auto;
   max-width: 120rem;
+}
+.q-field {
+  @media only screen and (min-width: 1024px) {
+    //width: 431px;
+  }
 }
 </style>

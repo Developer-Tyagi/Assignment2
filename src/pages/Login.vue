@@ -1,16 +1,19 @@
 <template>
   <q-page class="column poppinsFont">
     <div class="col row">
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary">
+      <div
+        class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary login-mobile-banner"
+      >
         <div class="">
-          <q-img
-            src="~assets/Logo.svg"
-            class="web-menu-claim-guru-logo"
-            @click="goHome"
-          />
+          <a @click="goHome" style="cursor: pointer">
+            <q-img
+              src="~assets/Logo.svg"
+              class="web-menu-claim-guru-logo"
+            ></q-img>
+          </a>
         </div>
-        <div class="q-mt-md text-h5 text-center fontWeight600">
-          <div class="claimguru-tagline" style="background: #f9e7d8">
+        <div class="text-h5 text-center fontWeight600 content-center">
+          <div class="claimguru-tagline login-section">
             The First and Only Catastrophe-Proof Claim Management System For
             Public Adjusters
           </div>
@@ -25,13 +28,15 @@
           <span class=""> © ClaimGuru {{ new Date().getFullYear() }}</span>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+      <div
+        class="col-lg-6 col-md-6 col-sm-12 col-xs-12 loginform-mobile-banner"
+      >
         <!-- login form -->
-        <div class="content-center bg-white login-section">
+        <div class="content-center login-section">
           <div class="login-up">
             <div class="">
-              <div class="q-mt-lg text-h4 fontWeight600 login-head">Login</div>
-              <q-form class="q-mt-lg" @submit="onUserLogin" ref="orgInfo">
+              <div class="text-h4 fontWeight600 login-head">Login</div>
+              <q-form class="" @submit="onUserLogin" ref="orgInfo">
                 <label class="text-subtitle1 fontWeight600 input-label"
                   >Email Address</label
                 >
@@ -78,7 +83,7 @@
                   </template>
                 </q-input>
 
-                <div class="row justify-center q-mt-lg">
+                <div class="row justify-center">
                   <q-btn
                     label="Login"
                     no-caps
@@ -86,19 +91,19 @@
                     color="deep-orange"
                     size="16px"
                     class="full-width fontWeight600 btn-submit"
-                    style=""
+                    style="line-height: 24px"
                   />
                 </div>
-                <div class="row justify-center q-mt-md">
+                <div class="row justify-center">
                   <div
-                    class="col-lg-12 col-md-12 col-sm-12 q-ml-md text-center"
+                    class="col-lg-12 col-md-12 col-sm-12 q-ml-md text-center signup-text"
                   >
-                    <label class="text-subtitle1 signup-text"
+                    <label class="text-subtitle1"
                       >Don’t have an account?
                     </label>
                     <a
                       href="/signup"
-                      class="text-deep-orange text-subtitle1 signup-text"
+                      class="text-deep-orange text-subtitle1 fontWeight500"
                       >Sign Up</a
                     >
                   </div>
@@ -304,6 +309,18 @@ export default {
 }
 .signup-text {
   font-size: 16px !important;
+  line-height: 24px;
+
+  @media only screen and (min-height: 500px) and (max-height: 800px) {
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  @media only screen and (min-height: 1024px) {
+    margin-top: 20px;
+  }
+  @media only screen and (max-height: 1023px) {
+    margin-top: 40px;
+  }
 }
 .login-section {
   @media only screen and (min-width: 600px) {
@@ -315,12 +332,11 @@ export default {
     margin-left: auto;
     margin-right: auto;
   }
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 601px) {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    max-width: 480px;
     margin-left: 15px;
     margin-right: 15px;
   }
@@ -339,7 +355,6 @@ export default {
     margin-top: 24px;
   }
 }
-
 .claimguru-tagline {
   @media only screen and (max-width: 1023px) {
     font-size: 28px;
@@ -347,7 +362,7 @@ export default {
     font-weight: 600;
     font-size: 24px;
     line-height: 36px;
-    margin: 40px 0px 10px 0px;
+    margin-top: 28px;
   }
   @media only screen and (min-width: 1024px) {
     color: #101828;
@@ -362,21 +377,26 @@ export default {
     font-weight: 600;
     font-size: 24px;
     line-height: 28px;
+    padding-bottom: 20px;
+    padding-top: 40px;
   }
   @media only screen and (min-width: 1024px) {
     font-weight: 600;
     font-size: 32px;
     line-height: 36px;
+    padding-bottom: 30px;
   }
 }
 .btn-submit {
   @media only screen and (max-width: 1023px) {
     border-radius: 5px;
-    height: 50px;
+    height: 40px;
+    margin-top: 4px;
   }
   @media only screen and (min-width: 1024px) {
     border-radius: 10px;
     height: 50px;
+    margin-top: 14px;
   }
 }
 .web-menu-claim-guru-logo {
@@ -567,6 +587,12 @@ export default {
 }
 
 .q-field {
+  @media only screen and (min-width: 365px) and (max-width: 379px) {
+    width: 347px;
+  }
+  @media only screen and (min-width: 380px) and (max-width: 1023px) {
+    width: 357px;
+  }
   @media only screen and (min-width: 1024px) {
     width: 431px;
   }
