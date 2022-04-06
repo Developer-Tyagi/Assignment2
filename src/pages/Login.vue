@@ -195,7 +195,7 @@ export default {
     ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
     ...mapMutations(['setSelectedClaimId', 'setNotificationRouteTo']),
     goHome() {
-      window.open(home_page);
+      window.location.href = home_page;
     },
     isMobile,
     async onUserLogin() {
