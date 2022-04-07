@@ -147,11 +147,7 @@
 
                           <div class="button-orange">
                             <q-btn
-                              class="
-                                text-white
-                                q-my-auto q-mx-auto
-                                full-width full-height
-                              "
+                              class="text-white q-my-auto q-mx-auto full-width full-height"
                               label="Create Client"
                               @click="onCreateClientButtonClick(lead)"
                             ></q-btn>
@@ -159,11 +155,7 @@
                         </div>
                       </div>
                       <div
-                        class="
-                          no-more-results-msg
-                          border-bottom-secondary
-                          text-body1 text-h5 text-center text-manatee
-                        "
+                        class="no-more-results-msg border-bottom-secondary text-body1 text-h5 text-center text-manatee"
                         v-if="noMoreResults"
                       >
                         <span class="bg-whiteSmoke q-px-sm"
@@ -516,56 +508,63 @@ export default {
   }
 };
 </script>
-<style lang="sass">
-.lead-list-item
-  position: relative
+<style lang="scss">
+.lead-list-item {
+  position: relative;
 
-  .button-left
-    position: absolute
-    z-index: 1
-    top: 0
-    width: 200px
-    left: 0
-    bottom: 0
-    display: flex
-    justify-content: flex-start
+  .button-left {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    width: 200px;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: flex-start;
+  }
 
-  .button-right
-    position: absolute
-    z-index: 1
-    top: 0
-    right: 0
-    width: 200px
-    bottom: 0
-    display: flex
-    justify-content: flex-end
+  .button-right {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    width: 200px;
+    bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
 
-  .button-orange
-    margin: 0
-    padding: 0
-    border: none
-    display: flex
-    flex-direction: column
-    width: 100px
-    height: calc(100% - 4px)
-    background-color: #F05A26
+  .button-orange {
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    height: calc(100% - 4px);
+    background-color: #f05a26;
+  }
 
-  .button-yellow
-    margin: 0
-    padding: 0
-    display: flex
-    flex-direction: column
-    border: none
-    width: 100px
-    height: calc(100% - 4px)
-    background-color: #ECA74C
+  .button-yellow {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    width: 100px;
+    height: calc(100% - 4px);
+    background-color: #eca74c;
+  }
 
-  .swipeRight
-    transform: translateX(100px)
-    transition: all 600ms ease-out
-  .swipeLeft
-    transition: all 1200ms ease-out
-    transform: translateX(-200px)
+  .swipeRight {
+    transform: translateX(100px);
+    transition: all 600ms ease-out;
+  }
+  .swipeLeft {
+    transition: all 1200ms ease-out;
+    transform: translateX(-200px);
+  }
+}
 </style>
 <style lang="scss" scoped>
 img {
