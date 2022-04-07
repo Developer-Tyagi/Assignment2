@@ -36,6 +36,7 @@ export default function () {
     isOnline: navigator.onLine,
     isOfflineClientEdit: false,
     planInfo: [],
-    webSubOptionMenuTab: '' // by default we open the Account Summary page when login the page first  time.
+    webSubOptionMenuTab: '', // by default we open the Account Summary page when login the page first  time.
+    isMobileResolution: false
   };
 }

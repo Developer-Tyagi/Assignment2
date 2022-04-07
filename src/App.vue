@@ -13,7 +13,7 @@ Vue.use(VueSignaturePad);
 Vue.use(VueCountryCode);
 export default {
   name: 'App',
-  methods: { ...mapActions(['changeNetworkStatus']) },
+  methods: { ...mapActions(['changeNetworkStatus', 'changeDeviceStatus']) },
   computed: {
     ...mapGetters(['showLoading', 'notification'])
   },
@@ -48,6 +48,9 @@ export default {
       window.addEventListener('offline', () => {
         this.changeNetworkStatus(false);
       });
+    });
+    window.addEventListener('resize', () => {
+      this.changeDeviceStatus(window.screen.width < 1024 ? true : false);
     });
   }
 };

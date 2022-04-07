@@ -6,28 +6,30 @@
       <img
         @click="$router.push('/')"
         class="cursor-pointer"
-        :class="isMobile() ? 'app-claim-guru-logo' : 'web-claim-guru-logo'"
+        :class="
+          isMobileResolution ? 'app-claim-guru-logo' : 'web-claim-guru-logo'
+        "
         :src="getImage('claimguru_new_logo.png')"
       />
     </div>
     <div
-      :class="isMobile() ? 'app-error-container' : 'web-error-container'"
-      class="text-center q-ma-md"
+      :class="
+        isMobileResolution ? 'app-error-container' : 'web-error-container'
+      "
+      class="text-center q-my-md"
     >
       <div class="q-px-md">
         <img class="app-logo" :src="getImage('claimguru_error.svg')" />
       </div>
-      <div class="full-width error-heading fontWeight600 text-h4 q-px-md">
+      <div class="full-width error-heading fontWeight600 q-px-md">
         404 Error. Page not found.
       </div>
-      <div
-        class="full-width error-message text-h6 q-px-md fontWeight400 q-px-md"
-      >
+      <div class="full-width error-message text-h6 q-px-md fontWeight400">
         Sorry, the content you are looking for doesn’t exist.
-        <br v-if="!isMobile()" />
+        <br class="line-break" />
         Either it was removed or you’ve mistyped the link.
       </div>
-      <div class="flex row-wrap button-container q-px-md">
+      <div class="full-width button-container">
         <q-btn
           to="/"
           no-caps
@@ -46,7 +48,7 @@
         />
       </div>
     </div>
-    <footer v-if="isMobile()" class="full-width q-mb-md">
+    <footer v-if="isMobileResolution" class="full-width q-mb-md">
       <q-separator class="q-mb-md error-separator" />
       <span class="footer-position fontWeight400">
         © ClaimGuru
@@ -60,15 +62,17 @@
 </template>
 
 <script>
-import { isMobile } from '@utils/common';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Error404',
+  computed: {
+    ...mapGetters(['isMobileResolution'])
+  },
   created() {
     document.title = 'Page not found - claimguru';
   },
   methods: {
-    isMobile,
     getImage(icon) {
       return require('../assets/' + icon);
     },
@@ -94,6 +98,7 @@ export default {
   flex-direction: column;
   align-items: center;
   color: #101828;
+  padding: 0px 15px 0px 15px;
   .app-logo {
     height: 131px;
     width: 117.96px;
@@ -116,6 +121,7 @@ export default {
   flex-direction: column;
   align-items: center;
   color: #101828;
+  padding: 0px 15px 0px 15px;
   .app-logo {
     height: 231px;
     width: 208px;
@@ -124,6 +130,7 @@ export default {
     padding-top: 30px;
     padding-bottom: 20px;
     line-height: 56px;
+    font-size: 48px;
     letter-spacing: 0.75px;
   }
   .error-message {
@@ -136,6 +143,7 @@ export default {
   padding-left: 32px;
   color: #667085;
   float: left;
+  letter-spacing: 0.15px;
 }
 .error-separator {
   color: #d0d5dd;
@@ -145,19 +153,34 @@ export default {
   width: 160px;
   line-height: 24px;
   font-size: 16px;
+  justify-content: center;
 }
 .button-container {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 .button-spacing {
   margin-right: 25px;
 }
 
-@media (max-width: 377px) {
+.line-break {
+  display: block;
+}
+
+@media screen and (max-width: 470px) {
+  .line-break {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 374px) {
   .button-container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   .button-spacing {
     margin-top: 25px;

@@ -172,6 +172,9 @@ export function setAccess(state, access) {
 export function setNetworkStatus(state, isOnline) {
   state.isOnline = isOnline;
 }
+export function setDeviceStatus(state, deviceStatus) {
+  state.isMobileResolution = deviceStatus;
+}
 export function setEditOfflineClientIcon(state, isOfflineClientEdit) {
   state.isOfflineClientEdit = isOfflineClientEdit;
 }
