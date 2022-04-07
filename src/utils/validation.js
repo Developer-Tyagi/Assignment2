@@ -1,6 +1,7 @@
 import { sendPhoneNumber } from '@utils/clickable';
 export function validateEmail(mail) {
-  const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const regex =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (regex.test(mail)) {
     return true;
   }
@@ -10,7 +11,8 @@ export function validateEmail(mail) {
 // This Function is used for validating the non required mails
 
 export function validateNonRequiredEmail(mail) {
-  const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const regex =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (mail) {
     if (regex.test(mail)) {
       return true;
@@ -20,7 +22,8 @@ export function validateNonRequiredEmail(mail) {
   return true;
 }
 export function validateUrl(url) {
-  const regex = /^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9 .]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/;
+  const regex =
+    /^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9 .]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/;
 
   if (url) {
     if (regex.test(url)) {
@@ -89,6 +92,14 @@ export function validateText(text) {
 // Validate alphanumeric field
 export function validateAlphaNumericText(text) {
   const regex = /^[a-zA-Z0-9]*$/;
+  if (regex.test(text)) {
+    return true;
+  }
+  return false;
+}
+// validate text that allowes alphabets and some special characters
+export function validateNames(text) {
+  const regex = /^[ A-Za-z.$-]*$/;
   if (regex.test(text)) {
     return true;
   }

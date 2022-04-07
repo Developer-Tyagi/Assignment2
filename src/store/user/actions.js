@@ -61,6 +61,7 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
       buildApiData('users', payload)
     );
     var userdata = data;
+    var returnmsg = '';
     if (data) {
       const firebaseRes =
         await firebaseAuthorization.signInWithEmailAndPassword(
@@ -79,14 +80,35 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
     }
     dispatch('setLoading', false);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
+    if (e.response[0].detail.includes('generic_decline')) {
+      returnmsg = 'Your Card Has Been Declined due to generic_decline';
+    } else if (e.response[0].detail.includes('insufficient_funds')) {
+      returnmsg = 'Your Card Has Been Declined due to insufficient_funds';
+    } else if (e.response[0].detail.includes('lost_card')) {
+      returnmsg = 'Your Card Has Been Declined due to lost_card';
+    } else if (e.response[0].detail.includes('stolen_card')) {
+      returnmsg =
+        'Your Card Has Been Declined due to generic_dstolen_cardecline';
+    } else if (e.response[0].detail.includes('expired_card')) {
+      returnmsg = 'Your Card Has Been Declined due to expired_card';
+    } else if (e.response[0].detail.includes('incorrect_cvc')) {
+      returnmsg = 'Your Card Has Been Declined due to incorrect_cvc';
+    } else if (e.response[0].detail.includes('processing_error')) {
+      returnmsg = 'Your Card Has Been Declined due to processing_error';
+    } else if (e.response[0].detail.includes('incorrect_number')) {
+      returnmsg = 'Your Card Has Been Declined due to incorrect_number';
+    } else if (e.response[0].detail.includes('card_declined')) {
+      returnmsg = 'Oops! Payment Failed. Your card was declined.';
+    } else if (e.response[0].detail.includes('stripe token is missing')) {
+      returnmsg = 'Please ask admin to add you as a beta user';
+    } else {
+      returnmsg = e.response[0].detail;
+    }
     dispatch('setNotification', {
       type: 'negative',
-      message:
-        e.response[0].detail == 'stripe token is missing'
-          ? 'Please ask admin to add you as a beta user'
-          : e.response[0].detail
+      message: returnmsg
     });
     return false;
   } finally {
@@ -95,25 +117,25 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
 }
 
 export async function checkExistingEmail({ dispatch }, email) {
-  dispatch('setLoading', true);
+  //dispatch('setLoading', true);
   try {
     const { data } = await request.get(`/users/email?email=${email}`);
-    dispatch('setLoading', false);
+    //dispatch('setLoading', false);
     if (data.attributes.exists) {
       return false;
     } else {
       return true;
     }
   } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message:
-        e.response[0].detail == 'stripe token is missing'
-          ? 'Please ask admin to add you as a beta user'
-          : e.response[0].detail
-    });
+    // //console.log(e);
+    // dispatch('setLoading', false);
+    if (e.response[0].detail == 'stripe token is missing') {
+      dispatch('setNotification', {
+        type: 'negative',
+        message: 'Please ask admin to add you as a beta user'
+      });
+    }
+
     return false;
   }
 }
@@ -133,7 +155,7 @@ export async function updateUserForOrganization({ dispatch, state }, payload) {
     });
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -193,7 +215,7 @@ export async function setPassword({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -215,7 +237,7 @@ export async function resetPassword({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -228,7 +250,7 @@ export async function resetPassword({ dispatch, state }, payload) {
 // Post Api for Inspection Type
 
 export async function addInspectionType({ dispatch, state }, payload) {
-  console.log(payload, 444);
+  //console.log(payload, 444);
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
@@ -238,7 +260,7 @@ export async function addInspectionType({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -259,7 +281,7 @@ export async function addHonorifics({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -280,7 +302,7 @@ export async function addIndustry({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -301,7 +323,7 @@ export async function addPhone({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -321,7 +343,7 @@ export async function addClientType({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -343,7 +365,7 @@ export async function addPolicyCategories({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -363,7 +385,7 @@ export async function addPolicy({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -383,7 +405,7 @@ export async function addProperty({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -403,7 +425,7 @@ export async function addClaimReason({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -424,7 +446,7 @@ export async function addLoss({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -449,7 +471,7 @@ export async function addClaimSeverity({ dispatch, state }, payload) {
     });
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -468,7 +490,7 @@ export async function addOnboardingStep({ dispatch, state }, payloadData) {
     );
     dispatch('setLoading', false);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -485,7 +507,7 @@ export async function setOnboard({ dispatch, state }, payload) {
     );
     dispatch('setLoading', false);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -508,7 +530,7 @@ export async function sendPushNotificationToken({ dispatch, state }, payload) {
 
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -525,7 +547,7 @@ export async function deletePushNotificationToken({ commit, dispatch }, token) {
     const { data } = await request.del(`/users/pushtokens/${token}`);
     dispatch('setLoading', false);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
   }
 }
@@ -542,7 +564,7 @@ export async function editUserInfo({ dispatch, state }, user) {
       message: 'User info  Updated !'
     });
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -567,7 +589,7 @@ export async function editUserProfile({ commit, dispatch, state }, user) {
     let dt = user.data.contact.fname + ' ' + user.data.contact.lname;
     commit('setUserNameInProfilePart', dt);
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -598,7 +620,7 @@ export async function updateAccessToken({ dispatch, state }, email) {
       message: 'User info  Updated !'
     });
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -616,7 +638,7 @@ export async function getPhotoIdKeys({ commit, dispatch }) {
     dispatch('setLoading', false);
     return data;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -686,7 +708,7 @@ export async function addNewCard({ dispatch, state }, payload) {
     });
     return true;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',

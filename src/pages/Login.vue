@@ -1,117 +1,137 @@
 <template>
-  <q-page :class="isMobile() ? 'bg-login-mobile' : 'bg-login'">
-    <div class="q-pa-lg">
-      <div class="flex column" style="height: 50vh">
-        <img
-          v-if="isMobile()"
-          alt="Claimguru"
-          src="~assets/claimguru_icon.png"
-          class="q-mt-auto q-mx-auto"
-          width="95"
-          height="95"
-        />
-        <img
-          v-else
-          alt="Claimguru"
-          src="~assets/logo.png"
-          class="q-mx-auto q-mt-auto"
-          width="95"
-          height="95"
-        />
-        <img
-          v-if="isMobile()"
-          alt="Claimguru"
-          src="~assets/claimguru_text.png"
-          class="q-mx-auto q-mb-auto"
-          width="190"
-          height="90"
-        />
-        <img
-          v-else
-          alt="Claimguru"
-          src="~assets/cg_text_white.png"
-          class="q-mx-auto q-mb-auto"
-          width="190"
-          height="90"
-        />
+  <q-page class="column poppinsFont">
+    <div class="col row">
+      <div
+        class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary login-mobile-banner"
+      >
+        <div class="">
+          <a @click="goHome" style="cursor: pointer">
+            <q-img
+              src="~assets/Logo.svg"
+              class="web-menu-claim-guru-logo"
+            ></q-img>
+          </a>
+        </div>
+        <div class="text-h5 text-center fontWeight600 content-center">
+          <div class="claimguru-tagline login-section">
+            The First and Only Catastrophe-Proof Claim Management System For
+            Public Adjusters
+          </div>
+        </div>
+        <div class="desktop-footer">
+          <q-img
+            src="~assets/login_banner.svg"
+            style="margin-top: 84px; margin-right: 184px; width: 75%"
+          />
+        </div>
+        <div class="claimguru-copy desktop-footer fontWeight400" style="">
+          <span class=""> © ClaimGuru {{ new Date().getFullYear() }}</span>
+        </div>
       </div>
-      <q-form class="column" autocapitalize="off" @submit="onUserLogin">
-        <q-card class="rounded row">
-          <div class="q-ml-xs column justify-center" style="width: 20px">
-            <q-icon name="person" color="primary" size="sm" />
-          </div>
-          <div class="q-pl-md col-10">
-            <q-input
-              dense
-              class="q-py-xs login-input full-width"
-              v-model="login.email"
-              placeholder="Username"
-              borderless
-            />
-          </div>
-        </q-card>
-        <q-card class="q-mt-sm rounded row">
-          <div class="q-ml-xs column justify-center" style="width: 20px">
-            <q-icon name="lock" color="primary" size="sm" />
-          </div>
-          <div class="q-pl-md col-10">
-            <q-input
-              dense
-              class="q-py-xs login-input full-width"
-              v-model="login.password"
-              placeholder="Password"
-              type="password"
-              borderless
-              :type="isPasswordVisible ? 'text' : 'password'"
-              @keyup.enter="onUserLogin"
-            >
-            </q-input>
-          </div>
-          <div class="col">
-            <q-icon
-              :name="isPasswordVisible ? 'visibility' : 'visibility_off'"
-              class="cursor-pointer q-mt-md"
-              @click="isPasswordVisible = !isPasswordVisible"
-            ></q-icon>
-          </div>
-        </q-card>
-        <div>
-          <q-btn
-            :color="isMobile() ? 'secondary' : 'white'"
-            :outline="!isMobile() ? true : false"
-            label="Login"
-            type="submit"
-            class="rounded full-width q-my-md"
-          ></q-btn>
-        </div>
+      <div
+        class="col-lg-6 col-md-6 col-sm-12 col-xs-12 loginform-mobile-banner"
+      >
+        <!-- login form -->
+        <div class="content-center login-section">
+          <div class="login-up">
+            <div class="">
+              <div class="text-h4 fontWeight600 login-head">Login</div>
+              <q-form class="" @submit="onUserLogin" ref="orgInfo">
+                <label class="text-subtitle1 fontWeight600 input-label"
+                  >Email Address</label
+                >
+                <q-input
+                  v-model="login.email"
+                  name="email"
+                  color="primary"
+                  placeholder="Enter Registered Email Address"
+                  outlined
+                  class="required input-class"
+                  lazy-rules
+                  :rules="[
+                    val => !!val || 'Please fill your email address',
+                    val =>
+                      validateEmail(val) ||
+                      'You have entered an invalid email address'
+                  ]"
+                />
+                <span class="text-red text-caption">{{ errorMSG }}</span>
+                <br v-if="errorMSG" />
+                <label class="text-subtitle1 fontWeight600 input-label"
+                  >Password</label
+                >
+                <q-input
+                  color="primary"
+                  class="required full-width input-class"
+                  placeholder="Enter Your Password"
+                  v-model="login.password"
+                  outlined
+                  :type="isPwd ? 'password' : 'text'"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please fill password',
+                    val =>
+                      (val && val.length > 7) ||
+                      'Minimum password length is 8 character'
+                  ]"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      :name="isPwd ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwd = !isPwd"
+                    />
+                  </template>
+                </q-input>
 
-        <div
-          v-if="!isMobile()"
-          class="row justify-center cursor-pointer"
-          @click="onClickSignupButton"
-        >
-          <a class="text-white" style="text-decoration: none">Sign Up</a>
+                <div class="row justify-center">
+                  <q-btn
+                    label="Login"
+                    no-caps
+                    type="submit"
+                    color="deep-orange"
+                    size="16px"
+                    class="full-width fontWeight600 btn-submit"
+                    style="line-height: 24px"
+                  />
+                </div>
+                <div class="row justify-center">
+                  <div
+                    class="col-lg-12 col-md-12 col-sm-12 q-ml-md text-center signup-text"
+                  >
+                    <label class="text-subtitle1"
+                      >Don’t have an account?
+                    </label>
+                    <a
+                      href="/signup"
+                      class="text-deep-orange text-subtitle1 fontWeight500"
+                      >Sign Up</a
+                    >
+                  </div>
+                </div>
+              </q-form>
+            </div>
+          </div>
         </div>
-        <div
-          class="row justify-center q-mt-sm cursor-pointer"
-          @click="$router.push('/forget-password')"
+      </div>
+    </div>
+    <div class="mobile-footer">
+      <q-separator />
+      <div
+        class="fontWeight400"
+        style="height: 60px; padding-top: 20px; margin: 0px 32px"
+      >
+        <span class="" style="color: #667085">
+          © ClaimGuru {{ new Date().getFullYear() }}</span
         >
-          <a
-            :class="isMobile() ? 'text-primary' : 'text-white'"
-            style="text-decoration: none"
-            >Forgot Password</a
-          >
-        </div>
-
-        <div class="text-center footer-style">Version {{ this.version }}</div>
-      </q-form>
+      </div>
     </div>
   </q-page>
 </template>
 <script>
-import { mapActions, mapMutations } from 'vuex';
-import { isMobile } from '@utils/common';
-import { getToken, getCurrentUser } from '@utils/auth';
+const stripe = Stripe(`${process.env.STRIPE_API_KEY}`);
+const home_page = process.env.HOME_PAGE_URL;
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { constants } from '@utils/constant';
 import {
   Capacitor,
   Plugins,
@@ -119,30 +139,64 @@ import {
   PushNotificationToken,
   PushNotificationActionPerformed
 } from '@capacitor/core';
+import { validateEmail, validateNames } from '@utils/validation';
+import { isMobile } from '@utils/common';
 import { Screen } from 'quasar';
-import { constants } from '@utils/constant';
 import { notification } from 'src/store/common/getters';
 import { appVersion } from '../Version';
-const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
-  'PushNotifications'
-);
+import { getToken, getCurrentUser } from '@utils/auth';
+const isPushNotificationsAvailable =
+  Capacitor.isPluginAvailable('PushNotifications');
 const { PushNotifications } = Plugins;
 
 export default {
-  name: 'Login',
+  meta() {
+    return {
+      title: this.metaTitle
+    };
+  },
   data() {
     return {
       version: appVersion,
+      metaTitle: 'Login - claimguru',
       isPasswordVisible: false,
       login: {
         email: '',
         password: ''
-      }
+      },
+      isPwd: true,
+      errorMSG: '',
+      data: {
+        type: constants.ORGANIZATION,
+        company: {
+          name: '',
+          plan: {}
+        },
+        user: {
+          email: '',
+          password: '',
+          contact: {
+            fname: '',
+            lname: ''
+          }
+        },
+        stripeToken: '',
+        isTermsAccepted: false
+      },
+      terms: false,
+      displayErrors: '',
+      div1: false,
+      div2: false,
+      div3: false,
+      showSeeAllPackages: true
     };
   },
   methods: {
     ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
     ...mapMutations(['setSelectedClaimId', 'setNotificationRouteTo']),
+    goHome() {
+      window.location.href = home_page;
+    },
     isMobile,
     async onUserLogin() {
       const loginData = {
@@ -211,10 +265,25 @@ export default {
     },
     onClickSignupButton() {
       this.$router.push('/signup');
+    },
+    getImage(icon) {
+      return require('../assets/' + icon);
+    },
+    validateEmail,
+
+    createToken() {
+      // Gather additional customer data we may have collected in our form.
+      var additionalData = { name: this.cardName };
+      // Important: Although we're submitting several fields, use cardNumber here instead of 'elements'.
+      return stripe.createToken(this.cardNumber, additionalData);
     }
   },
 
-  created() {
+  computed: {
+    ...mapGetters([])
+  },
+
+  async created() {
     if (getToken() && getCurrentUser()) {
       if (isMobile()) {
         this.$router.push('/dashboard');
@@ -226,25 +295,310 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.login-input {
-  font-size: 14px;
-  width: 80%;
+.poppinsFont {
+  font-family: poppins;
+}
+.fontWeight600 {
+  font-weight: 600;
+}
+.fontWeight500 {
+  font-weight: 500;
+}
+.fontWeight400 {
+  font-weight: 400;
+}
+.signup-text {
+  font-size: 16px !important;
+  line-height: 24px;
+
+  @media only screen and (min-height: 500px) and (max-height: 800px) {
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  @media only screen and (min-height: 1024px) {
+    margin-top: 20px;
+  }
+  @media only screen and (max-height: 1023px) {
+    margin-top: 40px;
+  }
+}
+.login-section {
+  @media only screen and (min-width: 600px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media only screen and (max-width: 601px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+.input-label {
+  @media only screen and (max-width: 1023px) {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 16px;
+  }
+  @media only screen and (min-width: 1024px) {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 24px;
+  }
+}
+.claimguru-tagline {
+  @media only screen and (max-width: 1023px) {
+    font-size: 28px;
+    color: #101828;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 36px;
+    margin-top: 28px;
+  }
+  @media only screen and (min-width: 1024px) {
+    color: #101828;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 36px;
+    margin: 101px 59px 10px 31px;
+  }
+}
+.login-head {
+  @media only screen and (max-width: 1023px) {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    padding-bottom: 20px;
+    padding-top: 40px;
+  }
+  @media only screen and (min-width: 1024px) {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 36px;
+    padding-bottom: 30px;
+  }
+}
+.btn-submit {
+  @media only screen and (max-width: 1023px) {
+    border-radius: 5px;
+    height: 40px;
+    margin-top: 4px;
+  }
+  @media only screen and (min-width: 1024px) {
+    border-radius: 10px;
+    height: 50px;
+    margin-top: 14px;
+  }
+}
+.web-menu-claim-guru-logo {
+  width: 151px;
+  height: 51px;
+  @media only screen and (max-width: 1023px) {
+    margin-left: 15px;
+    margin-top: 9.5px;
+  }
+  @media only screen and (min-width: 1024px) {
+    margin-left: 32px;
+    margin-top: 16px;
+  }
+}
+.claimguru-copy {
+  @media only screen and (max-height: 1023px) {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 62px 0px 38px 32px;
+    position: static;
+    bottom: 0px;
+  }
+  @media only screen and (min-height: 1024px) {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 62px 0px 38px 32px;
+    position: absolute;
+    bottom: 0px;
+  }
+}
+.mobile-footer {
+  @media only screen and (max-width: 1023px) {
+    display: block;
+  }
+  @media only screen and (min-width: 1024px) {
+    display: none;
+  }
+}
+.desktop-footer {
+  @media only screen and (max-width: 1023px) {
+    display: none;
+  }
+  @media only screen and (min-width: 1024px) {
+    display: block;
+  }
+}
+// .login {
+//   @media only screen and (max-width: 400px) {
+//     padding-left: 10px;
+//     padding-right: 10px;
+//     margin-left: 15px;
+//     margin-right: 15px;
+//   }
+
+//   @media only screen and (min-width: 1024px) {
+//     padding-left: 48px;
+//     padding-right: 48px;
+//   }
+// }
+.login-up {
+  @media only screen and (max-width: 1023px) {
+  }
+  @media only screen and (min-width: 1024px) {
+    margin-top: 25vh;
+  }
+}
+.test {
+  @media only screen and (max-width: 1500px) {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+  @media only screen and (min-width: 1500px) {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+.my-card {
+  border-radius: 10px;
+  @media only screen and (max-width: $breakpoint-md-max) {
+    max-width: 450px;
+    box-sizing: border-box;
+    max-height: 530px;
+  }
+  @media only screen and (max-width: $breakpoint-sm-max) {
+    max-width: 350px;
+    box-sizing: border-box;
+    max-height: 530px;
+  }
+  @media only screen and (max-width: $breakpoint-xs-max) {
+    max-width: 300px;
+    box-sizing: border-box;
+    max-height: 530px;
+  }
+}
+.card-highlighter {
+  border-radius: 10px;
+  border: 1px solid #ef5926 !important;
+}
+.cardItems {
+  width: 30%;
+  @media only screen and (max-width: $breakpoint-xs-max) {
+    width: 60%;
+  }
+}
+.card-border {
+  border-radius: 10px;
+  border: 1px solid #b9bcc6;
 }
 
-.bg-login {
-  background: #f05a26;
-  width: 40%;
-  margin-left: auto;
-  margin-right: 10%;
+#card-errors {
+  color: red;
+  margin-top: 10px;
+  max-width: 431px;
+  @media only screen and (max-width: $breakpoint-sm-max) {
+    max-width: 900px;
+  }
+  @media only screen and (max-width: $breakpoint-xs-max) {
+    max-width: 431px;
+  }
 }
-.bg-login-mobile {
-  background-color: #ededed;
-  width: 100%;
+
+::v-deep {
+  .input-placeholder {
+    .q-placeholder {
+      color: grey !important;
+    }
+  }
+  .input-text-style {
+    .q-field__native {
+      color: #525151 !important;
+    }
+  }
+  .cardInfo {
+    padding: 12.5px 14px;
+    border: 1px solid;
+    border-radius: 8px;
+    height: 50px;
+    .q-field__native {
+      font-weight: 500 !important;
+      font-size: 16px !important;
+      line-height: 24px !important;
+    }
+    .q-field__control,
+    .q-field__marginal {
+      height: 26px;
+    }
+    .q-field--auto-height,
+    .q-field__native {
+      min-height: 0px;
+    }
+  }
 }
-.rounded {
-  border-radius: 15px 15px 15px 15px;
+</style>
+<style lang="scss">
+.q-checkbox__bg {
+  border-radius: 6px !important;
 }
-.footer-style {
-  margin-top: 80px;
+.q-field--error .q-field__bottom {
+  color: #c10015 !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  line-height: 12px !important;
+}
+.q-checkbox__inner {
+  font-size: 40px;
+  width: 1em;
+  min-width: 1em;
+  height: 1em;
+  outline: 0;
+  border-radius: 50%;
+  color: #0c0c0c !important;
+}
+.q-btn__wrapper:before {
+  box-shadow: none;
+}
+.q-field__messages {
+  line-height: 12px !important;
+}
+.q-field--outlined .q-field__control {
+  border-radius: 8px;
+  padding: 0 12px;
+  height: 44px;
+}
+.q-field__marginal {
+  height: 44px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 24px;
+}
+
+.q-field {
+  @media only screen and (min-width: 365px) and (max-width: 379px) {
+    width: 347px;
+  }
+  @media only screen and (min-width: 380px) and (max-width: 1023px) {
+    width: 357px;
+  }
+  @media only screen and (min-width: 1024px) {
+    width: 431px;
+  }
+}
+.q-page-container {
+  margin: 0 auto;
+  max-width: 120rem;
 }
 </style>
