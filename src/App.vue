@@ -53,6 +53,10 @@ export default {
 };
 </script>
 <style>
+.q-app {
+  margin: 0 auto;
+  max-width: 120rem;
+}
 @font-face {
   font-family: 'Poppins';
   src: local('Poppins'),

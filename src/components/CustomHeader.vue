@@ -97,14 +97,14 @@
       <!-- setup header -->
       <div class="row" v-if="$route.name == 'setup'">
         <div
-          class="col-lg-3 col-md-3 q-px-32 q-pt-lg q-pb-md"
+          class="col-xl-3 col-lg-3 col-md-4 q-pt-lg q-pb-md"
           v-if="$route.name == 'setup'"
           style="background-color: #f9e7d8"
         >
-          <q-img size="1em" src="~assets/Logo.svg" class="LogoSize" />
+          <q-img size="1em" src="~assets/Logo.svg" class="LogoSize q-ml-32" />
         </div>
         <div
-          class="col-lg-9 padding-top-20 col-md-9 bg-white ht-83 justify-end q-pt-md"
+          class="col-xl-9 col-lg-9 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
         >
           <div class="row justify-end q-pr-xl">
             <q-avatar
@@ -118,7 +118,7 @@
             <div
               class="q-pt-sm text-capitalize text-weight-bold text-black text-subtitle1"
             >
-              <span v-if="isMobile">
+              <span v-if="isMobile" class="userNameStyle">
                 {{ userName ? userName : updatedUserName }}</span
               >
               <q-img
@@ -171,6 +171,7 @@
             <span
               v-if="!$q.screen.lt.sm"
               class="q-pt-md text-capitalize text-weight-bold text-black text-subtitle1"
+              style=""
             >
               {{ userName ? userName : updatedUserName }}
             </span>
@@ -185,12 +186,7 @@
       >
         <q-breadcrumbs style="color: #667085" active-color="#667085">
           <template v-slot:separator>
-            <q-icon
-              size="sm"
-              name="chevron_right"
-              color="#D0D5DD"
-              style="color: #d0d5dd"
-            />
+            <q-icon size="sm" name="chevron_right" color="#D0D5DD" />
           </template>
           <q-breadcrumbs-el
             class="cursor-pointer"
@@ -786,6 +782,10 @@ export default {
     },
     // function is used to open the suboption menu item for web.
     openSubOptionMenuItem(key, link, menuItem) {
+      console.log('menuItem', menuItem);
+      console.log('link', link);
+      console.log('key', key);
+
       this.breadcrumbsData.menuItemTitle = menuItem.title;
       this.breadcrumbsData.menuItemLink = key.link;
       this.breadcrumbsData.subItemTitle = key.name;
@@ -961,7 +961,12 @@ export default {
       'editSelectedClient',
       'isOfflineClientEdit',
       'userName'
-    ])
+    ]),
+    userName() {
+      // currentUser = getCurrentUser().attributes.contact
+      // let fullName = this.userName
+      // console.log(currentUser, "wqfretrshrhthththth");
+    }
   },
   async created() {
     if (window.innerWidth * 0.9 < 300) {
@@ -987,6 +992,11 @@ export default {
 <style lang="scss">
 .q-toolbar {
   padding: 0;
+}
+
+.q-header {
+  margin: 0 auto !important;
+  max-width: 120rem;
 }
 .button-50 {
   width: 50px;
@@ -1051,7 +1061,10 @@ export default {
   background: #f9e7d8;
   height: 50px;
 }
-
+::v-deep .q-layout__section--marginal {
+  background-color: white;
+  border-top: none;
+}
 .breadcrumbs-style {
   color: #667085;
 }
@@ -1069,14 +1082,15 @@ export default {
 .mt-5 {
   margin-top: 5px;
 }
-.q-px-32 {
-  padding-left: 32px;
+.q-ml-32 {
+  margin-left: 32px;
 }
 .padding-top-20 {
   padding-top: 20px;
 }
 .dropdownLogo {
   width: 12px;
+  margin-top: -17px;
   height: 6;
   margin-left: 10px;
 }
@@ -1084,5 +1098,12 @@ export default {
   width: 151px;
   height: 51px;
   margin-right: 10px;
+}
+.userNameStyle {
+  display: inline-block;
+  width: 70px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
 }
 </style>

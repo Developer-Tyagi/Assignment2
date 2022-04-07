@@ -7,6 +7,7 @@
     <CustomHeader @backButton="onBackButtonClick" />
 
     <q-page-container
+      style="margin: 0 0"
       :style="`${
         $route.name === 'dashboard' ? 'background-color: #8f8f8f;' : ''
       }`"
@@ -64,15 +65,17 @@
         <AddOptions />
       </q-dialog>
     </q-page-container>
-    <q-footer class="row" v-if="$route.name == 'setup'">
-      <div
-        class="col-lg-3 col-md-3 sm-hide xs-hide text-black text-subtitle1 q-pb-sm"
-        style="background-color: #f9e7d8"
-      >
-        <span class="px-32"> © ClaimGuru</span> <span>{{ CurrentYear }}</span>
+    <q-page-bottom>
+      <div class="row" v-if="$route.name == 'setup'">
+        <div
+          class="md-hide sm-hide xs-hide col-lg-3 col-xl-4 text-footer px-32 q-py-38 q-pl-lg"
+          style="background-color: #f9e7d8; margin-left: 0px !important"
+        >
+          © ClaimGuru<span class="q-px-sm">{{ CurrentYear }}</span>
+        </div>
+        <div class="col-md-8 col-lg-9 col-xl-8 bg-white"></div>
       </div>
-      <div class="col bg-white"></div>
-    </q-footer>
+    </q-page-bottom>
   </q-layout>
   <q-layout v-else :view="$q.screen.lt.sm ? 'hHh LpR lFf' : 'lHh LpR lFf'">
     <!--this is used because the theming of web and mob is different-->
@@ -136,14 +139,14 @@
         <AddOptions />
       </q-dialog>
     </q-page-container>
-    <q-footer class="row" v-if="!isMobile() && $route.name == 'setup'">
+    <q-footer class="row" v-show="$route.name == 'setup'">
       <div
-        class="col-3 text-black text-subtitle1 px-32 q-pb-sm q-pl-xl"
+        class="col-md-4 col-lg-3 col-xl-4 text-footer px-32 q-pb-sm q-pl-xl"
         style="background-color: #f9e7d8"
       >
-        © ClaimGuru<span>{{ CurrentYear }}</span>
+        © ClaimGuru<span class="q-px-md">{{ CurrentYear }}</span>
       </div>
-      <div class="col bg-white"></div>
+      <div class="col-md-8 col-lg-9 col-xl-8 bg-white"></div>
     </q-footer>
   </q-layout>
 </template>
@@ -270,13 +273,40 @@ export default {
 .icon-width {
   width: 100px;
 }
-
+.q-page-container {
+  margin: 0 auto !important;
+  max-width: 120rem;
+}
+.q-page-bottom {
+  margin: 0 auto !important;
+  max-width: 120rem;
+}
 .card {
   max-width: 100%;
   height: 40px;
   border-radius: 5px;
 }
+::v-deep .q-layout__section--marginal {
+  background-color: white;
+  border-top: none;
+}
+.text-footer {
+  font-weight: 400;
+  color: #667085;
+  font-size: 14px;
+  // padding-bottom: 28px;
+}
 .px-32 {
   margin-left: 32px !important;
+}
+.q-py-38 {
+  padding-top: 38px;
+  padding-bottom: 38px;
+}
+.mb-38 {
+  margin-bottom: 38px;
+}
+.ml-1 {
+  margin-left: 2px;
 }
 </style>

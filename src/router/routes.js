@@ -1,24 +1,59 @@
 import { guardMyroute } from '@utils/auth.js';
 import { isMobile } from 'src/utils/common';
+import { LocalStorage } from 'quasar';
+
+const tokenName = 'access_token';
 
 const routes = [
   {
     path: '',
     component: () => import('layouts/AuthLayout.vue'),
     children: [
+      // {
+      //   path: 'login',
+      //   name: 'login',
+      //   caseSensitive: true,
+      //   component: () => import('pages/Login.vue')
+      // },
       {
         path: 'login',
         name: 'login',
         caseSensitive: true,
-        component: () => import('pages/Login.vue')
-      },
+        component: () => import('pages/login.vue'),
+        beforeEnter: (to, from, next) => {
+          let token = LocalStorage.getItem(tokenName);
 
+          console.log(from, to, next);
+          if (!token) {
+            next();
+          } else if (from.name == 'setup') {
+            console.log('31 from setupppp');
+            next('setup');
+          }
+        }
+      },
       {
         path: 'signup',
         name: 'signup',
         caseSensitive: true,
-        component: () => import('pages/SignupReference.vue')
+        component: () => import('pages/SignupReference.vue'),
+        beforeEnter: (to, from, next) => {
+          let token = LocalStorage.getItem(tokenName);
+          if (!token) {
+            next();
+          } else if (from.name == 'setup') {
+            console.log('31 from setupppp');
+            next('setup');
+          }
+        }
       },
+
+      // {
+      //   path: 'signup',
+      //   name: 'signup',
+      //   caseSensitive: true,
+      //   component: () => import('pages/SignupReference.vue')
+      // },
 
       {
         path: 'set-password',
@@ -66,6 +101,19 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/OnBoard.vue')
       },
+      // {
+      //   path: 'signup',
+      //   name: 'signup',
+      //   caseSensitive: true,
+      //   component: () => import('pages/SignupReference.vue'),
+      //   beforeEnter: (to, from, next) => {
+      //     let token  = LocalStorage.getItem(tokenName)
+      //     console.log(token);
+      //     if (token && next('signup')) {
+      //       next('/setup')
+      //     }
+      //   }
+      // },
       {
         path: 'dashboard',
         name: 'dashboard',

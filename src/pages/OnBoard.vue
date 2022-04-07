@@ -1,8 +1,8 @@
 <template>
-  <q-page class="poppinsFont">
-    <div class="row overflowhidden" style="height: calc(100vh - 119px)">
+  <q-page class="poppinsFont min-height">
+    <div class="row" style="height: calc(100vh - 119px)">
       <div
-        class="col-lg-3 col-md-3 col-sm-12 col-xs-12 q-px-32 q-pt-lg"
+        class="col-xl-4 col-lg-3 col-md-4 col-sm-12 col-xs-12 q-px-32"
         style="background-color: #f9e7d8"
       >
         <!-- <div
@@ -12,7 +12,7 @@
         >
           <q-img size="1em" src="~assets/Logo.svg" class="LogoSize" />
         </div> -->
-        <div class="dFlex justify-between lg-hide md-hide">
+        <div class="dFlex justify-between lg-hide xl-hide md-hide">
           <div
             class=""
             v-if="$route.name == 'setup'"
@@ -29,15 +29,11 @@
                 class="text-white bg-grey"
               >
               </q-avatar>
-              <q-img
-                size="1em"
-                src="~assets/Icondown.svg"
-                class="dropdowLogo"
-              />
+              <q-img src="~assets/Icondown.svg" class="dropdowLogo" />
             </div>
           </div>
         </div>
-        <div class="fontWeight600 text-h5 q-pt-sm">Account Setup</div>
+        <div class="fontWeight600 mt-50 text-5">Account Setup</div>
         <!-- <div>
           <q-stepper
             class="no-shadow text-bold"
@@ -90,13 +86,13 @@
                 <q-img :src="getImage('step_done.svg')" />
               </q-icon>
               <div class="q-ml-sm">
-                <div>Step 1</div>
-                <div class="text-grey">Add Your Company Details</div>
+                <div class="Step-text">Step 1</div>
+                <div class="Step-Subtext">Add Your Company Details</div>
               </div>
             </div>
             <div
               class="q-ml-md height-40px"
-              style="border-left: 2px solid #ef5926"
+              style="border-left: 2px solid #ef5926; margin-top: -12px"
             ></div>
           </div>
           <div class="col q-mt-sm">
@@ -109,13 +105,13 @@
                 <q-img :src="getImage('step_done.svg')" />
               </q-icon>
               <div class="q-ml-sm">
-                <div>Step 2</div>
-                <div class="text-grey">Connect With Google Drive</div>
+                <div class="Step-text">Step 2</div>
+                <div class="Step-Subtext">Connect With Google Drive</div>
               </div>
             </div>
             <div
               class="q-ml-md height-40px"
-              style="border-left: 2px solid #ef5926"
+              style="border-left: 2px solid #ef5926; margin-top: -12px"
             ></div>
           </div>
           <div class="col q-mt-sm">
@@ -128,44 +124,32 @@
                 <q-img :src="getImage('step_done.svg')" />
               </q-icon>
               <div class="q-ml-sm">
-                <div>Step 3</div>
-                <div class="text-grey">Add PhotoID Account Details</div>
-                <div class="text-grey">(optional)</div>
+                <div class="Step-text">Step 3</div>
+                <div class="Step-Subtext">Add PhotoID Account Details</div>
+                <div class="Step-Subtext mb-30">(optional)</div>
               </div>
             </div>
           </div>
-          <q-footer class="row">
-            <!-- <q-separator class="q-mt-md" /> -->
-            <div
-              class="col-sm-12 col-md-12 lg-hide xl-hide text-black text-subtitle1 border-top q-px-32 q-pb-sm"
-              style="background-color: white"
-            >
-              © ClaimGuru<span> {{ CurrentYear }} </span>
-            </div>
-          </q-footer>
         </div>
       </div>
 
-      <div class="col-lg-9 col-md-9 cols-sm-12 col-xs-12">
-        <q-separator />
+      <div class="col-xl-8 col-lg-9 col-md-8 cols-sm-12 col-xs-12">
+        <q-separator class="seperator-color" />
         <div class="q-px-xl">
           <div v-if="step == 0">
-            <div class="column justify-center q-mt-xl">
+            <div class="column justify-center">
               <q-img
-                class="col self-center q-mt-xl"
-                height="252px"
-                width="216px"
+                class="col self-center mt-120 image-h-216 image-w-252"
                 :src="getImage('onBoard-1.svg')"
               />
             </div>
             <div
-              class="text-h5 fontWeight600 fontColor text-center q-mx-xl q-px-xl mt-43"
-              @click="windowWidth"
+              class="text-h5 fontWeight600 fontColor text-center letter-spacing-75 q-mx-xl q-px-xl mt-43"
             >
-              Set Up Your Account
+              Set Up Your Account - claimguru
             </div>
             <div
-              class="text-center fontWeight400 text-subtitle1 q-mx-xl q-px-xl fontSize"
+              class="text-center fontWeight400 text-subtitle1 letter-spacing-15 q-mx-xl q-px-xl SubTextfontSize"
             >
               Congratulations, you have successfully created your account! Next,
               we will collect some pertinent information to complete your
@@ -182,9 +166,18 @@
                 @click="getStarted"
               />
             </div>
+            <div class="row border-top">
+              <!-- <q-separator class="q-mt-md " /> -->
+              <div
+                class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-md"
+                style="background-color: white"
+              >
+                © ClaimGuru<span> {{ CurrentYear }} </span>
+              </div>
+            </div>
           </div>
           <div v-if="step == 1">
-            <div class="q-pt-lg q-px-xl" style="border-radius: 20px">
+            <div class="q-pt-lg px-15 pr-50" style="border-radius: 20px">
               <div class="q-mt-sm justify-between">
                 <div class="text-h5 fontWeight600">Company Details</div>
                 <div
@@ -197,7 +190,7 @@
               </div>
               <div class="formHeight">
                 <q-form ref="companyDetailsForm">
-                  <div class="q-mt-xl">
+                  <div class="mt-30">
                     <div class="row text-subtitle1 fontWeight600">
                       Company Name
                     </div>
@@ -214,16 +207,16 @@
                         disable
                       />
                     </div>
-                    <div class="row q-mt-sm full-width">
-                      <div class="col q-mr-md">
+                    <div class="row q-mt-sm">
+                      <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg">
                         <!-- company adminstrator changed to contact name -->
                         <div class="row text-subtitle1 fontWeight600">
                           Company Contact
                         </div>
                         <q-input
                           dense
-                          class="full-width"
-                          input-class="text-subtitle1"
+                          class=""
+                          input-class="text-subtitle1 inside-text"
                           outlined
                           v-model="companyDetails.contactNumber"
                           lazy-rules
@@ -249,15 +242,17 @@
                           </template>
                         </q-input>
                       </div>
-                      <div class="col">
+                      <div
+                        class="col-xl-6 col-lg-6 col-xs-12 col-sm-12 col-md-6"
+                      >
                         <!-- company adminstrator changed to contact name -->
                         <div class="row text-subtitle1 fontWeight600">
                           Company Email
                         </div>
                         <q-input
                           dense
-                          class="full-width"
-                          input-class="text-subtitle1"
+                          class=""
+                          input-class="text-subtitle1 inside-text"
                           placeholder="Company Email"
                           outlined
                           v-model="companyDetails.email"
@@ -270,7 +265,9 @@
                         />
                       </div>
                     </div>
-                    <div class="col q-mt-md q-mr-md full-width">
+                    <div
+                      class="col-xs-12 col-sm-12 com-md-12 q-mt-md q-mr-md full-width"
+                    >
                       <div class="row justify-between">
                         <div class="col text-subtitle1 fontWeight600">
                           Company Address
@@ -289,9 +286,12 @@
                       </div>
                     </div>
 
-                    <div class="q-mt-lg row justify-end">
+                    <div
+                      class="row justify-end"
+                      style="margin-top: 60px; padding-bottom: 100px"
+                    >
                       <q-btn
-                        class="col-1 fontWeight600"
+                        class="col-1 fontWeight600 Next-button"
                         size="md"
                         color="primary"
                         label="Next"
@@ -299,18 +299,25 @@
                         @click="NextStepperValue"
                       />
                     </div>
+                    <div class="row border-top">
+                      <!-- <q-separator class="q-mt-md " /> -->
+                      <div
+                        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-md"
+                        style="background-color: white"
+                      >
+                        © ClaimGuru<span> {{ CurrentYear }} </span>
+                      </div>
+                    </div>
                   </div>
                 </q-form>
               </div>
             </div>
           </div>
-          <div v-if="step == 2" class="column full-height">
-            <div class="col-2 q-mt-lg">
-              <div class="text-h5 fontWeight600 text-weight-bold">
-                Connect With Google Drive
-              </div>
+          <div v-if="step == 2" class="column pl-62 pr-110 full-height">
+            <div class="col-2 mt-24">
+              <div class="text-h5 fontWeight600">Connect With Google Drive</div>
               <div
-                class="q-mt-lg fontWeight400 subtitle2 q-pr-xl"
+                class="q-mt-lg fontWeight400 subtitle2 q-pr-sm"
                 style="color: #667085"
               >
                 In order to provide full access to ClaimGuru, we need permission
@@ -321,20 +328,16 @@
             </div>
 
             <div class="col-4">
-              <div class="q-mt-lg">
+              <div class="mt-24">
                 <q-btn
                   v-if="this.checkConnection == false"
                   @click="onRedirectToGoogleAuth()"
-                  class="row q-py-sm q-px-xl"
-                  style="
-                    width: 440px;
-                    border: 2px solid black;
-                    border-radius: 10px;
-                  "
+                  class="row connectWithGoogle"
                 >
                   <q-avatar>
                     <q-img
                       class="col"
+                      style="width: 15px"
                       :src="getImage('logos_google-drive.svg')"
                     />
                   </q-avatar>
@@ -346,16 +349,14 @@
                   v-else
                   class="row justify-center"
                   style="
-                    width: 350px;
-                    height: 45px;
+                    width: 345px;
+                    height: 44px;
                     border: solid 1px #039855;
                     background-color: #d1fadf;
-                    border-radius: 10px;
+                    border-radius: 8px;
                   "
                 >
-                  <span
-                    class="q-pt-sm text-center text-subtitle1 fontWeight500"
-                    style="color: #039855"
+                  <span class="q-pt-sm text-center" style="color: #039855"
                     >Connected to Google Drive
                     <span>
                       <q-icon name="task_alt" color="teal" size="sm" /> </span
@@ -364,38 +365,41 @@
               </div>
             </div>
 
-            <div class="col row q-mt-sm q-mb-xl items-end justify-between">
+            <div
+              class="col-lg-9 col-xl-9 col-md-9 col-sm-12 col-xs-12 row mt-404 q-mb-xl items-end justify-between"
+              style="position: relative"
+            >
               <q-btn
-                color="primary"
-                size="1.2em"
                 style="border-radius: 10px"
                 no-caps
-                outline
-                class="fontWeight600"
+                class="Back-Btn"
                 @click="navigatePreviousStepper"
                 >Back</q-btn
               >
 
               <q-btn
-                color="primary"
-                size="1.2em"
                 style="border-radius: 10px"
-                class="fontWeight600"
+                class="fontWeight600 Next-Btn"
                 no-caps
                 @click="NextStepperValue"
                 :disable="!checkConnection"
                 >Next</q-btn
               >
             </div>
+            <div class="row border-top">
+              <!-- <q-separator class="q-mt-md " /> -->
+              <div
+                class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-md"
+                style="background-color: white"
+              >
+                © ClaimGuru<span> {{ CurrentYear }} </span>
+              </div>
+            </div>
           </div>
           <div v-if="step == 3" class="column full-height">
-            <div class="col-3 q-mt-lg">
-              <div class="text-h5 fontWeight600 q-mt-lg">
-                PhotoID Account Details
-              </div>
-              <div
-                class="column q-mt-lg fontWeight400 text-subtitle1 text-grey"
-              >
+            <div class="col-3 q-mt-lg q-mx-md">
+              <div class="photoId-Text">PhotoID Account Details</div>
+              <div class="column Bottom-photoId-text">
                 <div class="text-justify">
                   <li>
                     If you are currently a PhotoID user, please complete your
@@ -422,35 +426,31 @@
               </div>
             </div>
             <div class="col-6">
-              <div class="q-mt-lg">
+              <div class="q-mt-lg mx-15">
                 <q-form ref="editPhotoIDForm">
                   <div class="q-mt-lg">
                     <div class="col q-pr-xl">
-                      <div class="text-subtitle1 fontWeight600 q-mb-sm">
-                        Account Email
-                      </div>
+                      <div class="text-subheading q-mb-sm">Account Email</div>
                       <q-input
                         dense
-                        input-class="text-subtitle1"
+                        input-class="photoId-Inputtext"
                         placeholder="Company Email Address"
                         outlined
                         v-model="companyDetails.photoIdEmail"
                       />
                     </div>
                     <div class="col q-pr-xl">
-                      <div class="text-subtitle1 fontWeight600 q-mt-md q-mb-sm">
-                        Api Key
-                      </div>
+                      <div class="text-subheading q-mt-md q-mb-sm">Api Key</div>
                       <q-input
                         dense
-                        class=""
-                        input-class="text-subtitle1"
+                        class="PhotoId-input"
+                        input-class="photoId-Inputtext"
                         outlined
                         placeholder="Account API Key"
                         v-model="companyDetails.photoIdAPIKey"
                       >
                         <template v-slot:append>
-                          <q-avatar>
+                          <q-avatar style="width: 13px; height: 13px">
                             <img :src="getImage('IconHelp.svg')" />
                           </q-avatar>
                         </template>
@@ -460,22 +460,15 @@
                 </q-form>
               </div>
             </div>
-            <div class="col row q-mt-sm q-mb-xl items-end justify-between">
-              <q-btn
-                color="primary"
-                size="1.2em"
-                style="border-radius: 10px"
-                no-caps
-                class="fontWeight600"
-                outline
-                @click="navigatePreviousStepper"
+            <div
+              class="col row q-mt-sm q-mb-xl q-mr-xl ml-15 mt-333 items-end justify-between"
+            >
+              <q-btn no-caps class="Back-Btn" @click="navigatePreviousStepper"
                 >Back</q-btn
               >
 
               <q-btn
-                color="primary"
-                size="1.2em"
-                class="fontWeight600"
+                class="completeSetup-Btn"
                 style="border-radius: 10px"
                 no-caps
                 @click="NextStepperValue"
@@ -487,35 +480,31 @@
           <div v-if="step > 3">
             <div class="column justify-center q-mt-xl">
               <q-img
-                class="col self-center q-mt-xl"
-                height="20%"
-                width="20%"
+                class="col self-center q-mt-xl onBoardLogo"
                 :src="getImage('onBoard-2.svg')"
               />
             </div>
-            <div
-              class="text-h5 fontWeight600 text-center q-mx-xl q-px-xl q-mt-lg"
-            >
-              Account Setup Successful
-            </div>
-            <div
-              class="text-center text-subtitle1 q-mx-xl q-px-xl q-mt-lg"
-              style="color: #667085"
-            >
-              We're excited for you to experience all that ClaimGuru has to
-              offer!
-            </div>
-            <div class="row fontWeight600 justify-center q-mt-lg rounded">
-              <q-btn
-                class="q-py-sm"
-                style="border-radius: 10px"
-                no-caps
-                color="primary"
-                name=""
-                label="Go to Home"
-                icon-right="navigate_next"
-                @click="goToHome"
-              />
+            <div class="col-sm-12 col-xs-12">
+              <div class="setup-success-text text-center mx-40 q-px-xl">
+                Account Setup Successful
+              </div>
+              <div
+                class="text-center setup-success-SubText mx-40 q-px-xl"
+                style="color: #667085"
+              >
+                We're excited for you to experience all that ClaimGuru has to
+                offer!
+              </div>
+              <div class="row justify-center mt-43 rounded">
+                <q-btn
+                  class="GoHome-btn"
+                  no-caps
+                  name=""
+                  label="Go to Home"
+                  icon-right="navigate_next"
+                  @click="goToHome"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -532,6 +521,10 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 // import customFooterMain from '../components/CustomFooterMain.vue'
 // import { isMobile } from '@utils/common';
 import { validateEmail } from '@utils/validation';
+import { LocalStorage } from 'quasar';
+
+const tokenName = 'access_token';
+
 export default {
   components: {
     AutoCompleteAddress
@@ -577,15 +570,12 @@ export default {
     onRedirectToGoogleAuth() {
       this.toRedirectGoogleAuth1();
     },
-    windowWidth() {
-      console.log('sfgytu');
-      this.windowSize = window.screen.width;
-    },
     getStarted() {
       this.step = 1;
     },
     goToHome() {
       this.$router.push('/admin');
+      LocalStorage.clear(tokenName);
     },
     onSelect({ name, iso2, dialCode }) {
       this.dialCode = dialCode;
@@ -693,6 +683,14 @@ export default {
 .poppinsFont {
   font-family: poppins;
 }
+
+.q-page-container {
+  margin: 0 auto !important;
+  max-width: 120rem;
+}
+.min-height {
+  min-height: auto !important;
+}
 .fontWeight600 {
   font-weight: 600;
 }
@@ -711,9 +709,34 @@ export default {
 .mt-43 {
   margin-top: 43px;
 }
-.fontSize {
+.mx-15 {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.image-h-216 {
+  height: 216px;
+}
+.mt-120 {
+  margin-top: 120px;
+}
+.px-15 {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.image-w-252 {
+  width: 252px;
+}
+.mx-40 {
+  margin-left: 102px;
+  margin-right: 70px;
+}
+.SubTextfontSize {
   color: #667085;
   font-size: 14px;
+  margin-top: 5px;
+  // max-width: 517px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 .dFlex {
   display: flex;
@@ -721,33 +744,421 @@ export default {
 .q-px-32 {
   padding-left: 40px;
 }
+.pr-50 {
+  padding-right: 50px;
+}
+.mt-60 {
+  margin-top: 60px;
+}
 .dropdowLogo {
-  width: 12px;
-  height: 6;
-  margin-left: 10px;
+  margin-top: 18px;
+  width: 10px;
+  height: 7px;
+  margin-left: 5px;
+  background-size: auto !important;
 }
 .StartButton {
   margin-top: 43px;
+  margin-bottom: 43px;
   width: 153px;
   height: 50px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+}
+.Next-button {
+  width: 118px;
+  height: 50px;
+}
+.GoHome-btn {
+  width: 177px;
+  height: 50px;
+  background: #ef5926;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+  margin-bottom: 100px;
 }
 .overflowhidden {
   overflow-x: hidden;
 }
-.height-40px {
-  height: 46px;
+.setup-success-text {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  color: #101828;
+  letter-spacing: 00.15px;
+  margin-top: 43px;
+}
+.setup-success-SubText {
+  margin-top: 6px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #667085;
+  letter-spacing: 00.15px;
 }
 .pr-20 {
   padding-right: 20px;
 }
+.onBoardLogo {
+  width: 322px;
+  height: 189px;
+}
+.Step-text {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+}
+.letter-spacing-75 {
+  letter-spacing: 0.75px;
+}
+.letter-spacing-15 {
+  letter-spacing: 0.15px;
+}
+.Step-Subtext {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #6e6e6e;
+  letter-spacing: 0.15px;
+  padding-right: 10px;
+}
+.seperator-color {
+  background-color: #f7f7f7;
+  height: 2px;
+}
+.mb-30 {
+  margin-bottom: 30px;
+}
+.coonectWithgoogle {
+  width: 331px;
+  height: 40px;
+  background: #ffffff;
+  border: 1px solid #0c0c0c;
+  box-sizing: border-box;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  color: #0c0c0c;
+}
+.text-5 {
+  font-size: 20px;
+  color: #0c0c0c;
+  letter-spacing: 0.75px;
+}
+.mt-50 {
+  margin-top: 50px;
+}
+.mt-30 {
+  margin-top: 30px;
+}
+.text-subtitle1 {
+  margin-bottom: 6px;
+}
+.connectWithGoogle {
+  width: 331px !important;
+  height: 50px !important;
+  background: #ffffff !important;
+  border: 1px solid #0c0c0c !important;
+  box-sizing: border-box !important;
+  border-radius: 8px !important;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height, or 150% */
+  display: flex;
+  align-items: center;
+}
+.mt-24 {
+  margin-top: 24px;
+}
+.inside-text {
+  font-family: 'Poppins';
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  align-items: center !important;
+  color: #8a90a0 !important;
+}
+.input-size {
+  width: 390px;
+  height: 44px;
+}
+.text-footer {
+  font-weight: 400;
+  color: #667085;
+  font-size: 14px;
+}
 .border-top {
-  border-top: 0px;
+  border-top: 0 px solid;
 }
 ::v-deep .q-layout__section--marginal {
   background-color: white;
-  border-top: 1px solid rgb(160, 158, 158);
+  border-top: none;
+}
+::v-deep .absolute-full {
+  background-size: auto;
+}
+.q-pl-32 {
+  padding-left: 15px;
+}
+.ml-31 {
+  padding-left: 31px !important;
+}
+.text-subtitle2 {
+  color: #667085;
+  line-height: 20px !important;
+  font-size: 14px;
+}
+.mt-333 {
+  margin-top: 333px;
+}
+.height-40px {
+  height: 46px;
+}
+.pl-62 {
+  padding-left: 2px;
+}
+.pr-110 {
+  padding-right: 50;
+}
+.mt-404 {
+  margin-top: 404px;
+}
+.Back-Btn {
+  width: 101px !important;
+  height: 50px !important;
+  border-radius: 10px !important;
+  padding: 10px, 30px, 10px, 30px !important;
+  border: 2px solid #ef5926;
+  background: #ffffff;
+  color: #ef5926 !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+}
+.Next-Btn {
+  width: 118px !important;
+  height: 50px !important;
+  border-radius: 10px !important;
+  padding: 8px, 20px, 8px, 20px !important;
+  background: rgba(239, 89, 38, 0.5);
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+}
+.completeSetup-Btn {
+  width: 175px !important;
+  height: 50px !important;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+  background: #ef5926;
+  border-radius: 10px;
+}
+.photoId-Text {
+  margin-top: 31px;
+  font-weight: 600;
+  font-size: 24px;
+  color: #101828;
+  letter-spacing: 0.75px;
+}
+.Bottom-photoId-text {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #667085;
+  letter-spacing: 0.15px;
+}
+.text-subheading {
+  letter-spacing: 00.15px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #101828;
+}
+.photoId-Inputtext {
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  display: flex;
+  align-items: center;
+  color: #8a90a0 !important;
 }
 @media only screen and (max-width: 600px) {
+  .border-top {
+    border-top: 1px solid #e5e5e5;
+  }
+  .q-px-32 {
+    padding-left: 15px;
+    padding-top: 15px;
+  }
+  .q-pl-32 {
+    padding-left: 15px;
+  }
+  .q-px-xl {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+  }
+  .q-mx-xl {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .q-px-xl {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .q-pr-lg {
+    padding-right: 0px;
+  }
+  .height-40px {
+    height: 24px;
+  }
+  .px-15 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .completeSetup-Btn {
+    margin-right: -30px;
+    width: 172px !important;
+    height: 40px !important;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffffff;
+    background: #ef5926;
+    border-radius: 10px;
+  }
+  .ml-15 {
+    margin-left: 15px;
+  }
+  .q-pr-xl {
+    padding-right: 0px;
+  }
+  .mx-40 {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .PhotoId-input {
+    width: 345px;
+    height: 44px;
+  }
+
+  .GoHome-btn {
+    width: 157px;
+    height: 40px;
+    background: #ef5926;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+    color: #ffffff;
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .mt-333 {
+    margin-top: 60px;
+  }
+  .input-size {
+    width: 345px;
+    height: 44px !important;
+  }
+  .pr-50 {
+    padding-right: 15px;
+  }
+
+  .mx-15 {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .StartButton {
+    margin-top: 43px;
+    margin-bottom: 43px;
+    width: 133px;
+    height: 40px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+  }
+  .Next-button {
+    width: 95px;
+    height: 40px;
+  }
+  .mt-50 {
+    margin-top: 28px;
+  }
+  .pl-62 {
+    padding-left: 15px;
+  }
+  .pr-110 {
+    padding-right: 15px;
+  }
+  .mt-404 {
+    margin-top: 60px;
+  }
+  .mt-24 {
+    margin-top: 16px;
+  }
+  .Back-Btn {
+    width: 81px !important;
+    height: 40px !important;
+    border-radius: 5px !important;
+    padding: 8px, 20px, 8px, 20px !important;
+    border: 2px solid #ef5926;
+    color: #ef5926 !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+  }
+  .Next-Btn {
+    width: 95px !important;
+    height: 40px !important;
+    border-radius: 10px !important;
+    padding: 8px, 20px, 8px, 20px !important;
+    background: #ef5926;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .border-top {
+    border-top: 1px solid #e5e5e5;
+  }
+  // .q-px-32 {padding-left: 15px;}
   .q-px-32 {
     padding-left: 15px;
     padding-top: 15px;
@@ -755,41 +1166,29 @@ export default {
   .q-px-xl {
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 15px;
   }
   .q-mx-xl {
     padding-left: 0px;
     padding-right: 0px;
   }
   .q-px-xl {
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 40px;
+    padding-right: 40px;
   }
-  .border-top {
-    border-top: 1px rgb(160, 158, 158);
-  }
-  .height-40px {
-    height: 24px;
-  }
-}
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-  // .q-px-32 {padding-left: 15px;}
-  .q-px-xl {
+  .px-15 {
     padding-left: 15px;
     padding-right: 15px;
   }
-  .q-mx-xl {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
+  // .height-40px {height: 24px;}
+}
+
+@media only screen and (width: 1440px) {
   .q-px-xl {
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 60px;
+    padding-right: 60px;
   }
-  .height-40px {
-    height: 24px;
+  .border-top {
+    border-top: 0px;
   }
 }
 </style>

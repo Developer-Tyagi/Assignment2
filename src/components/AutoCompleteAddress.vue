@@ -142,11 +142,12 @@
       /> -->
     </div>
     <div class="row q-mt-sm">
-      <div class="col-12 col-md-6 q-pr-md">
+      <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg">
         <div class="row text-subtitle1 text-weight-bold">City</div>
         <q-input
           dense
           outlined
+          class=""
           :class="{ required: isAsteriskMark }"
           v-model="address.addressLocality"
           placeholder="Enter City Here"
@@ -158,7 +159,7 @@
           ]"
         />
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-lg-6 col-xl-6 col-md-6">
         <div class="row text-subtitle1 text-weight-bold">State</div>
         <q-select
           dense
@@ -175,7 +176,7 @@
       </div>
     </div>
     <div class="row q-mt-sm">
-      <div class="col-12 col-md-6 q-pr-md">
+      <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg">
         <div class="row text-subtitle1 text-weight-bold">ZIP Code</div>
         <q-input
           outlined
@@ -193,7 +194,7 @@
         />
       </div>
       <!-- <div class="col-12 col-md-2">      </div> -->
-      <div class="col-12 col-md-6">
+      <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12 col-xs-12">
         <div class="row text-subtitle1 text-weight-bold">Country</div>
         <q-select
           dense
@@ -636,13 +637,30 @@ export default {
     }
   }
 }
-
+.input-size {
+  width: 390px !important;
+  height: 44px !important;
+}
+.spacearound {
+  align-content: space-around;
+}
+.text-subtitle1 {
+  margin-bottom: 6px;
+}
 .pac-container {
   z-index: 10000000;
 }
-
+.mt-30 {
+  margin-top: 30px;
+}
 .pac-icon {
   display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .q-pr-lg {
+    padding-right: 0px;
+  }
 }
 
 .pac-item {
