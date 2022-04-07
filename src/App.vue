@@ -39,6 +39,7 @@ export default {
     }
   },
   created() {
+    this.changeDeviceStatus(screen.width < 1024 ? true : false);
     window.addEventListener('load', () => {
       // now we listen for network status changes
       window.addEventListener('online', () => {
@@ -50,7 +51,7 @@ export default {
       });
     });
     window.addEventListener('resize', () => {
-      this.changeDeviceStatus(window.screen.width < 1024 ? true : false);
+      this.changeDeviceStatus(screen.width < 1024 ? true : false);
     });
   }
 };
