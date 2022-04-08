@@ -13,7 +13,7 @@ Vue.use(VueSignaturePad);
 Vue.use(VueCountryCode);
 export default {
   name: 'App',
-  methods: { ...mapActions(['changeNetworkStatus']) },
+  methods: { ...mapActions(['changeNetworkStatus', 'changeDeviceStatus']) },
   computed: {
     ...mapGetters(['showLoading', 'notification'])
   },
@@ -39,6 +39,7 @@ export default {
     }
   },
   created() {
+    this.changeDeviceStatus(screen.width < 1024 ? true : false);
     window.addEventListener('load', () => {
       // now we listen for network status changes
       window.addEventListener('online', () => {
@@ -48,6 +49,9 @@ export default {
       window.addEventListener('offline', () => {
         this.changeNetworkStatus(false);
       });
+    });
+    window.addEventListener('resize', () => {
+      this.changeDeviceStatus(screen.width < 1024 ? true : false);
     });
   }
 };

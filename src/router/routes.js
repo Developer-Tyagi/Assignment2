@@ -185,7 +185,7 @@ const routes = [
         path: 'manage-users',
         name: 'manage users',
         caseSensitive: true,
-        component: () => import('pages/ManageUsers.vue')
+        component: () => import('pages/ManageUsersNew.vue')
       },
       {
         path: 'add-user',

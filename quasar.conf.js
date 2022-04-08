@@ -20,7 +20,7 @@ module.exports = function (/* ctx */) {
     // https://quasar.dev/quasar-cli/boot-files
     boot: [],
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
-    css: ['app.sass'],
+    css: ['app.scss'],
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
       // 'ionicons-v4',
@@ -90,7 +90,7 @@ module.exports = function (/* ctx */) {
       // components: [],
       // directives: [],
       // Quasar plugins
-      plugins: ['Loading', 'Notify', 'LocalStorage', 'Dialog', 'Screen']
+      plugins: ['Loading', 'Notify', 'LocalStorage', 'Dialog', 'Screen', 'Meta']
     },
     // animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations

@@ -23,3 +23,4 @@ export const paidUsers = state => state.paidUsers;
 export const routeFromLeadDashboad = state => state.routeFromLeadDashboad;
 export const planInfo = state => state.planInfo;
 export const webSubOptionMenuTab = state => state.webSubOptionMenuTab;
+export const isMobileResolution = state => state.isMobileResolution;

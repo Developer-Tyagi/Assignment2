@@ -590,6 +590,11 @@ export function changeNetworkStatus({ commit, dispatch }, isOnline) {
   }
 }
 
+// function to store device status.
+export function changeDeviceStatus({ commit, dispatch }, deviceStatus) {
+  commit('setDeviceStatus', deviceStatus);
+}
+
 // function is used for storing the data in the local storage.
 export async function storeIdsToLocalStorage(type, old, current) {
   const oldItems = LocalStorage.getItem(type) || [];
