@@ -279,7 +279,7 @@ export default {
 }
 .q-page-bottom {
   margin: 0 auto !important;
-  max-width: 120rem;
+  max-width: 120rem !important;
 }
 .card {
   max-width: 100%;

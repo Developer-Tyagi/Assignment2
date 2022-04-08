@@ -121,10 +121,10 @@
         type="text"
         borderless
         :id="'id' + id"
-        class="full-width input-autocomplete"
+        class="full-width inside-text"
         v-model="address.address1"
         v-bind:disabled="this.readOnly"
-        style="border: 1px solid #d3d3d3; border-radius: 4px; height: 40px"
+        style="border: 1px solid #b9bcc6; border-radius: 8px; height: 44px"
         @keydown="validateAddress(address.address1)"
         placeholder="Company Address"
       />
@@ -148,6 +148,7 @@
           dense
           outlined
           class=""
+          input-class="inside-text"
           :class="{ required: isAsteriskMark }"
           v-model="address.addressLocality"
           placeholder="Enter City Here"
@@ -182,6 +183,7 @@
           outlined
           dense
           :disable="this.readOnly"
+          input-class="inside-text"
           placeholder="Zipcode"
           :class="{ required: isAsteriskMark }"
           v-model="address.postalCode"
@@ -200,6 +202,7 @@
           dense
           outlined
           :disable="this.readOnly"
+          input-class="inside-text"
           :class="{ required: isAsteriskMark }"
           v-model="address.country"
           label="Select Country"
@@ -455,6 +458,7 @@
 </template>
 <script>
 import AddressService from '@utils/country';
+import countryRegionData from 'country-region-data';
 const addressService = new AddressService();
 import {
   validateEmail,
@@ -529,7 +533,19 @@ export default {
     );
     this['obj' + this.id].addListener('place_changed', this.fillInAddress);
   },
-
+  watch: {
+    'address.addressRegion'(newVal) {
+      const arr = [];
+      countryRegionData.forEach(element => {
+        element.regions.forEach(region => {
+          if (region.name === newVal) {
+            arr.push(element);
+          }
+        });
+      });
+      this.country = arr.map(item => item.countryName);
+    }
+  },
   methods: {
     validateText,
     validateAlphaNumericText,
@@ -595,6 +611,10 @@ export default {
         this.address.houseNumber =
           place[this.getPlaceName('street_number', place)].long_name;
       }
+      console.log(
+        addressService.getStates(this.address.addressCountry),
+        ';;;;;;;;;;;;;'
+      );
       this.states = addressService.getStates(this.address.addressCountry);
     },
 
@@ -607,9 +627,10 @@ export default {
       }
     },
 
-    onCountrySelect(country) {
-      this.states = addressService.getStates(country);
-      this.country = addressService.getCountries(country);
+    async onCountrySelect(country) {
+      this.states = await addressService.getStates(country);
+      //  this.country = country
+      console.log(this.country, 'countrycountrycountrycountry');
     }
   }
 };
@@ -636,6 +657,15 @@ export default {
       color: #f05a26;
     }
   }
+}
+
+.inside-text {
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  align-items: center !important;
+  color: #8a90a0 !important;
+  padding: 10px, 14px, 10px, 14px !important;
 }
 .input-size {
   width: 390px !important;

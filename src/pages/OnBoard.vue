@@ -12,7 +12,9 @@
         >
           <q-img size="1em" src="~assets/Logo.svg" class="LogoSize" />
         </div> -->
-        <div class="dFlex justify-between lg-hide xl-hide md-hide">
+        <div
+          class="dFlex justify-between lg-hide xl-hide md-hide Bottom-border"
+        >
           <div
             class=""
             v-if="$route.name == 'setup'"
@@ -144,7 +146,7 @@
               />
             </div>
             <div
-              class="text-h5 fontWeight600 fontColor text-center letter-spacing-75 q-mx-xl q-px-xl mt-43"
+              class="text-h5 fontColor text-center letter-spacing-75 q-mx-xl q-px-xl mt-43"
             >
               Set Up Your Account - claimguru
             </div>
@@ -157,7 +159,7 @@
             </div>
             <div class="row justify-center rounded">
               <q-btn
-                class="fontWeight600 StartButton"
+                class="StartButton"
                 style="border-radius: 10px"
                 color="primary"
                 no-caps
@@ -199,7 +201,7 @@
                       <q-input
                         dense
                         class="full-width"
-                        input-class="text-subtitle1"
+                        input-class="input-subtitle1"
                         style="background: #e8edf2"
                         outlined
                         v-model="companyDetails.name"
@@ -216,7 +218,7 @@
                         <q-input
                           dense
                           class=""
-                          input-class="text-subtitle1 inside-text"
+                          input-class="inside-text"
                           outlined
                           v-model="companyDetails.contactNumber"
                           lazy-rules
@@ -252,7 +254,8 @@
                         <q-input
                           dense
                           class=""
-                          input-class="text-subtitle1 inside-text"
+                          input-class=" inside-text"
+                          style="border-radius: 8px; height: 44px"
                           placeholder="Company Email"
                           outlined
                           v-model="companyDetails.email"
@@ -291,7 +294,7 @@
                       style="margin-top: 60px; padding-bottom: 100px"
                     >
                       <q-btn
-                        class="col-1 fontWeight600 Next-button"
+                        class="col-1 Next-Btn"
                         size="md"
                         color="primary"
                         label="Next"
@@ -317,7 +320,7 @@
             <div class="col-2 mt-24">
               <div class="text-h5 fontWeight600">Connect With Google Drive</div>
               <div
-                class="q-mt-lg fontWeight400 subtitle2 q-pr-sm"
+                class="q-mt-lg fontWeight400 subtitle2"
                 style="color: #667085"
               >
                 In order to provide full access to ClaimGuru, we need permission
@@ -337,11 +340,13 @@
                   <q-avatar>
                     <q-img
                       class="col"
-                      style="width: 15px"
+                      style="width: 26px; height: 24px; margin-top: -15px"
                       :src="getImage('logos_google-drive.svg')"
                     />
                   </q-avatar>
-                  <span class="col q-ml-xs text-subtitle1 fontWeight500"
+                  <span
+                    class="col q-ml-xs fontWeight500"
+                    style="margin-bottom: 15px"
                     >Connect Google Drive</span
                   >
                 </q-btn>
@@ -662,6 +667,7 @@ export default {
       this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
       this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       this.step = 2;
+      this.checkConnection = true;
       if (this.$route.query.googleConnect == 'true') {
         this.checkConnection = true;
       } else {
@@ -705,6 +711,10 @@ export default {
 }
 .fontColor {
   color: #101828;
+  font-family: 'Poppins-semiBold';
+}
+.inside-text {
+  border-bottom: px solid #e5e5e5 !important;
 }
 .mt-43 {
   margin-top: 43px;
@@ -738,6 +748,14 @@ export default {
   padding-left: 40px;
   padding-right: 40px;
 }
+.input-subtitle1 {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  color: #101828;
+}
 .dFlex {
   display: flex;
 }
@@ -762,7 +780,7 @@ export default {
   margin-bottom: 43px;
   width: 153px;
   height: 50px;
-  font-family: 'Poppins';
+  font-family: 'Poppins-semiBold';
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -815,9 +833,7 @@ export default {
   height: 189px;
 }
 .Step-text {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
+  font-family: 'poppins-medium';
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.15px;
@@ -875,7 +891,7 @@ export default {
 }
 .connectWithGoogle {
   width: 331px !important;
-  height: 50px !important;
+  height: 40px !important;
   background: #ffffff !important;
   border: 1px solid #0c0c0c !important;
   box-sizing: border-box !important;
@@ -884,9 +900,10 @@ export default {
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
+  align-items: flex-start;
   /* identical to box height, or 150% */
   display: flex;
-  align-items: center;
+  // align-items: center;
 }
 .mt-24 {
   margin-top: 24px;
@@ -910,7 +927,7 @@ export default {
   font-size: 14px;
 }
 .border-top {
-  border-top: 0 px solid;
+  border-top: 0px;
 }
 ::v-deep .q-layout__section--marginal {
   background-color: white;
@@ -918,6 +935,9 @@ export default {
 }
 ::v-deep .absolute-full {
   background-size: auto;
+}
+::v-deep .absolute-full {
+  background-size: inherit !important;
 }
 .q-pl-32 {
   padding-left: 15px;
@@ -955,6 +975,7 @@ export default {
   color: #ef5926 !important;
   font-weight: 500 !important;
   font-size: 16px !important;
+  align-items: flex-start;
 }
 .Next-Btn {
   width: 118px !important;
@@ -983,6 +1004,10 @@ export default {
   color: #101828;
   letter-spacing: 0.75px;
 }
+.Bottom-border {
+  border-bottom: 2px #f9dfc8 !important;
+  transform: rotate(-0.15deg);
+}
 .Bottom-photoId-text {
   font-weight: 400;
   font-size: 14px;
@@ -1007,10 +1032,8 @@ export default {
   align-items: center;
   color: #8a90a0 !important;
 }
+
 @media only screen and (max-width: 600px) {
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-  }
   .q-px-32 {
     padding-left: 15px;
     padding-top: 15px;
@@ -1042,6 +1065,9 @@ export default {
     padding-right: 15px;
   }
 
+  .mt-120 {
+    margin-top: 40px;
+  }
   .completeSetup-Btn {
     margin-right: -30px;
     width: 172px !important;
@@ -1103,7 +1129,8 @@ export default {
     margin-bottom: 43px;
     width: 133px;
     height: 40px;
-    font-family: 'Poppins';
+    font-family: 'Poppins-semiBold';
+    border-radius: 5px !important;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -1117,7 +1144,7 @@ export default {
     height: 40px;
   }
   .mt-50 {
-    margin-top: 28px;
+    margin-top: 27px;
   }
   .pl-62 {
     padding-left: 15px;
@@ -1153,15 +1180,25 @@ export default {
   }
 }
 
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
+@media screen and (max-width: 800px) {
   .border-top {
     border-top: 1px solid #e5e5e5;
   }
+  .q-px-xl {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  // .border-top {
+  //   border-top: 1px solid #e5e5e5;
+  // }
   // .q-px-32 {padding-left: 15px;}
   .q-px-32 {
-    padding-left: 15px;
-    padding-top: 15px;
+    padding-left: 32px;
+    padding-top: 32px;
   }
   .q-px-xl {
     padding-left: 15px;

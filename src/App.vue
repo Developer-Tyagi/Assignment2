@@ -54,12 +54,22 @@ export default {
 </script>
 <style>
 .q-app {
-  margin: 0 auto;
-  max-width: 120rem;
+  margin: 0 auto !important;
+  max-width: 120rem !important;
 }
 @font-face {
   font-family: 'Poppins';
   src: local('Poppins'),
     url(./fonts/Poppins/Poppins-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins-medium';
+  src: local('Poppins'),
+    url(./fonts/Poppins/Poppins-Medium.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins-semiBold';
+  src: local('Poppins'),
+    url(./fonts/Poppins/Poppins-SemiBold.ttf) format('truetype');
 }
 </style>
