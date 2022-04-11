@@ -19,7 +19,7 @@ const routes = [
         path: 'login',
         name: 'login',
         caseSensitive: true,
-        component: () => import('pages/login.vue'),
+        component: () => import('pages/Login.vue'),
         beforeEnter: (to, from, next) => {
           let token = LocalStorage.getItem(tokenName);
 
