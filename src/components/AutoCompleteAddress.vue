@@ -124,7 +124,12 @@
         class="full-width inside-text"
         v-model="address.address1"
         v-bind:disabled="this.readOnly"
-        style="border: 1px solid #b9bcc6; border-radius: 8px; height: 44px"
+        style="
+          border: 1px solid #b9bcc6;
+          border-radius: 8px;
+          height: 44px;
+          padding-left: 10px;
+        "
         @keydown="validateAddress(address.address1)"
         placeholder="Company Address"
       />
@@ -141,7 +146,7 @@
         v-model="address.address2"
       /> -->
     </div>
-    <div class="row q-mt-sm">
+    <div class="row mt-30">
       <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg">
         <div class="row text-subtitle1 text-weight-bold">City</div>
         <q-input
@@ -167,6 +172,7 @@
           outlined
           :disable="this.readOnly"
           :class="{ required: isAsteriskMark }"
+          input-class="inside-text"
           v-model="address.addressRegion"
           :options="states"
           behavior="menu"
@@ -176,7 +182,7 @@
         />
       </div>
     </div>
-    <div class="row q-mt-sm">
+    <div class="row mt-30">
       <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg">
         <div class="row text-subtitle1 text-weight-bold">ZIP Code</div>
         <q-input
@@ -630,7 +636,6 @@ export default {
     async onCountrySelect(country) {
       this.states = await addressService.getStates(country);
       //  this.country = country
-      console.log(this.country, 'countrycountrycountrycountry');
     }
   }
 };
@@ -687,12 +692,24 @@ export default {
   display: none;
 }
 
+::v-deep .q-field__native {
+  color: #8a90a0 !important;
+}
+
 @media only screen and (max-width: 600px) {
   .q-pr-lg {
     padding-right: 0px;
   }
-}
 
+  .mt-30 {
+    margin-top: 16px;
+  }
+}
+@media screen and (max-width: 800px) {
+  .q-pr-lg {
+    padding-right: 0px;
+  }
+}
 .pac-item {
   font-size: 16px;
   padding: 4px 10px;

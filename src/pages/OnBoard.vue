@@ -209,7 +209,7 @@
                         disable
                       />
                     </div>
-                    <div class="row q-mt-sm">
+                    <div class="row mt-30">
                       <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg">
                         <!-- company adminstrator changed to contact name -->
                         <div class="row text-subtitle1 fontWeight600">
@@ -269,7 +269,7 @@
                       </div>
                     </div>
                     <div
-                      class="col-xs-12 col-sm-12 com-md-12 q-mt-md q-mr-md full-width"
+                      class="col-xs-12 col-sm-12 com-md-12 mt-30 q-mr-md full-width"
                     >
                       <div class="row justify-between">
                         <div class="col text-subtitle1 fontWeight600">
@@ -345,8 +345,8 @@
                     />
                   </q-avatar>
                   <span
-                    class="col q-ml-xs fontWeight500"
-                    style="margin-bottom: 15px"
+                    class="col q-ml-xs mb-15 fontWeight500"
+                    style="margin-bottom: 15px color: #0C0C0C"
                     >Connect Google Drive</span
                   >
                 </q-btn>
@@ -667,12 +667,12 @@ export default {
       this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
       this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       this.step = 2;
-      this.checkConnection = true;
       if (this.$route.query.googleConnect == 'true') {
         this.checkConnection = true;
       } else {
         let data = await this.getUserInfo();
         if (data.attributes.onboard.isCompleted == true) {
+          // console.log("6755555");
           this.$router.push('/dashboard');
           // if (isMobile()) {
           //   this.$router.push('/dashboard');
@@ -718,6 +718,9 @@ export default {
 }
 .mt-43 {
   margin-top: 43px;
+}
+.mb-15 {
+  margin-bottom: 15px;
 }
 .mx-15 {
   margin-left: 0px;
@@ -1046,6 +1049,10 @@ export default {
     padding-right: 15px;
     padding-top: 15px;
   }
+
+  .mt-30 {
+    margin-top: 16px;
+  }
   .q-mx-xl {
     padding-left: 0px;
     padding-right: 0px;
@@ -1119,7 +1126,11 @@ export default {
   .pr-50 {
     padding-right: 15px;
   }
-
+  .border-top {
+    border-top: 1px solid #e5e5e5;
+    margin-left: -15px !important;
+    margin-right: -15px !important;
+  }
   .mx-15 {
     margin-left: 15px;
     margin-right: 15px;
@@ -1183,6 +1194,11 @@ export default {
 @media screen and (max-width: 800px) {
   .border-top {
     border-top: 1px solid #e5e5e5;
+    margin-left: -50px;
+    margin-right: -50px;
+  }
+  .q-pr-lg {
+    padding-right: 0px;
   }
   .q-px-xl {
     padding-left: 0px;
