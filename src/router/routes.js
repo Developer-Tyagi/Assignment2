@@ -22,12 +22,9 @@ const routes = [
         component: () => import('pages/Login.vue'),
         beforeEnter: (to, from, next) => {
           let token = LocalStorage.getItem(tokenName);
-
-          console.log(from, to, next);
           if (!token) {
             next();
-          } else if (from.name == 'setup') {
-            console.log('31 from setupppp');
+          } else if (token && to.name == 'login') {
             next('setup');
           }
         }
@@ -41,8 +38,11 @@ const routes = [
           let token = LocalStorage.getItem(tokenName);
           if (!token) {
             next();
-          } else if (from.name == 'setup') {
-            console.log('31 from setupppp');
+          } else if (
+            from.name == 'setup' ||
+            from.name == 'login' ||
+            to.name == 'signup'
+          ) {
             next('setup');
           }
         }

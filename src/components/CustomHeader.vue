@@ -93,7 +93,10 @@
       </q-header> -->
     </div>
 
-    <q-header class="bg-white ht-83 sm-hide xs-hide">
+    <div
+      class="bg-white ht-83 sm-hide xs-hide bigScreen"
+      :reveal-offset="false"
+    >
       <!-- setup header -->
       <div class="row" v-if="$route.name == 'setup'">
         <div
@@ -115,9 +118,7 @@
             >
             </q-avatar>
 
-            <div
-              class="q-pt-sm text-capitalize text-weight-bold text-black text-subtitle1"
-            >
+            <div class="q-pt-sm text-capitalize">
               <span v-if="isMobile" class="userNameStyle">
                 {{ userName ? userName : updatedUserName }}</span
               >
@@ -126,6 +127,26 @@
                 src="~assets/Icondown.svg"
                 class="dropdownLogo"
               />
+            </div>
+            <div class="">
+              <!-- <q-btn-dropdown
+            >
+              <div class="row no-wrap">
+                <div class="column items-center" style="padding:10px">
+                  <div class="text-subtitle1 q-mt-md q-mb-xs">
+                                  <span v-if="isMobile" class="">
+                {{ userName ? userName : updatedUserName }}</span
+              >
+                  </div>
+          <q-btn
+            class="full-width q-mt-md menu-bar-style text-subtitle1 text-bold"
+            label="LOGOUT"
+            style="border-radius: 25px; width: 100%; height: 50px"
+            @click="logout()"
+          />
+                </div>
+              </div>
+            </q-btn-dropdown> -->
             </div>
           </div>
           <!-- <q-separator class="q-mt-md" /> -->
@@ -207,7 +228,7 @@
           />
         </q-breadcrumbs>
       </div>
-    </q-header>
+    </div>
 
     <!-- menu -->
     <div v-if="$route.name !== 'setup'">
@@ -1023,7 +1044,9 @@ export default {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
 }
-
+.q-pt-22 {
+  margin-top: 22px;
+}
 .menu-item-styling {
   width: 270px;
   background: #ffffff;
@@ -1044,7 +1067,10 @@ export default {
   padding-left: 28px;
   margin-left: -16px;
 }
-
+.bigScreen {
+  margin: 0 auto !important;
+  max-width: 120rem !important;
+}
 //style for web menu top claimguru logo
 .web-menu-claim-guru-logo {
   width: 151px;
@@ -1098,10 +1124,17 @@ export default {
   width: 151px;
   height: 51px;
   margin-right: 10px;
+  cursor: pointer;
 }
 .userNameStyle {
+  color: #151821;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
   display: inline-block;
-  width: 70px;
+  width: 90px;
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;

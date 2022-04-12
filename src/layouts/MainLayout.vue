@@ -64,18 +64,17 @@
       >
         <AddOptions />
       </q-dialog>
-    </q-page-container>
-    <q-page-bottom>
       <div class="row" v-if="$route.name == 'setup'">
         <div
-          class="md-hide sm-hide xs-hide col-lg-3 col-xl-4 text-footer px-32 q-py-38 q-pl-lg"
+          class="col-md-4 sm-hide xs-hide col-lg-3 col-xl-3 text-footer q-py-38"
           style="background-color: #f9e7d8; margin-left: 0px !important"
         >
-          © ClaimGuru<span class="q-px-sm">{{ CurrentYear }}</span>
+          <span class="px-32" style="color: #0c0c0c"> © ClaimGuru</span>
+          <span class="q-px-sm" style="color: #0c0c0c">{{ CurrentYear }}</span>
         </div>
         <div class="col-md-8 col-lg-9 col-xl-8 bg-white"></div>
       </div>
-    </q-page-bottom>
+    </q-page-container>
   </q-layout>
   <q-layout v-else :view="$q.screen.lt.sm ? 'hHh LpR lFf' : 'lHh LpR lFf'">
     <!--this is used because the theming of web and mob is different-->
@@ -138,16 +137,16 @@
       >
         <AddOptions />
       </q-dialog>
+      <q-footer class="row" v-show="$route.name == 'setup'">
+        <div
+          class="col-md-4 col-lg-3 col-xl-4 text-footer px-32 q-pb-sm q-pl-xl"
+          style="background-color: #f9e7d8"
+        >
+          © ClaimGuru<span class="q-px-md">{{ CurrentYear }}</span>
+        </div>
+        <div class="col-md-8 col-lg-9 col-xl-8 bg-white"></div>
+      </q-footer>
     </q-page-container>
-    <q-footer class="row" v-show="$route.name == 'setup'">
-      <div
-        class="col-md-4 col-lg-3 col-xl-4 text-footer px-32 q-pb-sm q-pl-xl"
-        style="background-color: #f9e7d8"
-      >
-        © ClaimGuru<span class="q-px-md">{{ CurrentYear }}</span>
-      </div>
-      <div class="col-md-8 col-lg-9 col-xl-8 bg-white"></div>
-    </q-footer>
   </q-layout>
 </template>
 <script>

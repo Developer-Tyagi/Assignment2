@@ -2,7 +2,7 @@
   <q-page class="poppinsFont min-height">
     <div class="row" style="height: calc(100vh - 119px)">
       <div
-        class="col-xl-4 col-lg-3 col-md-4 col-sm-12 col-xs-12 q-px-32"
+        class="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-xs-12 q-px-32"
         style="background-color: #f9e7d8"
       >
         <!-- <div
@@ -33,9 +33,37 @@
               </q-avatar>
               <q-img src="~assets/Icondown.svg" class="dropdowLogo" />
             </div>
+            <!-- <q-btn-dropdown
+            >
+              <div class="row no-wrap q-pa-md">
+                <div class="column items-center">
+            <q-avatar
+              size="3em"
+              font-size="2.5rem"
+              icon="person"
+              class="text-white bg-grey q-mr-md"
+            >
+            </q-avatar>
+
+                  <div class="text-subtitle1 q-mt-md q-mb-xs">
+                                  <span v-if="isMobile" class="">
+                {{ userName ? userName : updatedUserName }}</span
+              >
+                  </div>
+
+                  <q-btn
+                    color="primary"
+                    label="Logout"
+                    push
+                    size="sm"
+                    v-close-popup
+                  />
+                </div>
+              </div>
+            </q-btn-dropdown> -->
           </div>
         </div>
-        <div class="fontWeight600 mt-50 text-5">Account Setup</div>
+        <div class="Account-setup-text mt-50">Account Setup</div>
         <!-- <div>
           <q-stepper
             class="no-shadow text-bold"
@@ -72,7 +100,7 @@
           </q-stepper>
         </div> -->
         <!-- custom stepper -->
-        <div class="column q-mt-md">
+        <div class="column q-mt-43">
           <div class="col">
             <div class="row">
               <q-icon
@@ -94,10 +122,10 @@
             </div>
             <div
               class="q-ml-md height-40px"
-              style="border-left: 2px solid #ef5926; margin-top: -12px"
+              style="border-left: 2px solid #ef5926; margin-top: -14px"
             ></div>
           </div>
-          <div class="col q-mt-sm">
+          <div class="col">
             <div class="row">
               <q-icon v-if="step < 2" name="adjust" color="primary" size="md" />
               <q-icon v-if="step == 2" color="primary" size="md">
@@ -113,10 +141,10 @@
             </div>
             <div
               class="q-ml-md height-40px"
-              style="border-left: 2px solid #ef5926; margin-top: -12px"
+              style="border-left: 2px solid #ef5926; margin-top: -14px"
             ></div>
           </div>
-          <div class="col q-mt-sm">
+          <div class="col">
             <div class="row">
               <q-icon v-if="step < 3" name="adjust" color="primary" size="md" />
               <q-icon v-if="step == 3" color="primary" size="md">
@@ -135,7 +163,7 @@
         </div>
       </div>
 
-      <div class="col-xl-8 col-lg-9 col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-lg-9 col-md-8 cols-sm-12 col-xs-12">
         <q-separator class="seperator-color" />
         <div class="q-px-xl">
           <div v-if="step == 0">
@@ -146,9 +174,9 @@
               />
             </div>
             <div
-              class="text-h5 fontColor text-center letter-spacing-75 q-mx-xl q-px-xl mt-43"
+              class="text-h5 fontColor text-center letter-spacing-15 q-mx-xl q-px-xl mt-43"
             >
-              Set Up Your Account - claimguru
+              Set Up Your Account
             </div>
             <div
               class="text-center fontWeight400 text-subtitle1 letter-spacing-15 q-mx-xl q-px-xl SubTextfontSize"
@@ -161,7 +189,6 @@
               <q-btn
                 class="StartButton"
                 style="border-radius: 10px"
-                color="primary"
                 no-caps
                 name=""
                 label="Get Started"
@@ -171,7 +198,7 @@
             <div class="row border-top">
               <!-- <q-separator class="q-mt-md " /> -->
               <div
-                class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-md"
+                class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-18"
                 style="background-color: white"
               >
                 © ClaimGuru<span> {{ CurrentYear }} </span>
@@ -305,7 +332,7 @@
                     <div class="row border-top">
                       <!-- <q-separator class="q-mt-md " /> -->
                       <div
-                        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-md"
+                        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-18"
                         style="background-color: white"
                       >
                         © ClaimGuru<span> {{ CurrentYear }} </span>
@@ -394,7 +421,7 @@
             <div class="row border-top">
               <!-- <q-separator class="q-mt-md " /> -->
               <div
-                class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-md"
+                class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-18"
                 style="background-color: white"
               >
                 © ClaimGuru<span> {{ CurrentYear }} </span>
@@ -480,6 +507,15 @@
                 >Complete Setup</q-btn
               >
             </div>
+            <div class="row border-top">
+              <!-- <q-separator class="q-mt-md " /> -->
+              <div
+                class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-18"
+                style="background-color: white"
+              >
+                © ClaimGuru<span> {{ CurrentYear }} </span>
+              </div>
+            </div>
           </div>
 
           <div v-if="step > 3">
@@ -510,6 +546,15 @@
                   @click="goToHome"
                 />
               </div>
+              <div class="row border-top">
+                <!-- <q-separator class="q-mt-md " /> -->
+                <div
+                  class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-18"
+                  style="background-color: white"
+                >
+                  © ClaimGuru<span> {{ CurrentYear }} </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -531,12 +576,18 @@ import { LocalStorage } from 'quasar';
 const tokenName = 'access_token';
 
 export default {
+  meta() {
+    return {
+      title: this.metaTitle
+    };
+  },
   components: {
     AutoCompleteAddress
     // customFooterMain
   },
   data() {
     return {
+      metaTitle: 'Setup - claimguru',
       step: 0,
       companyDetails: {
         address: {
@@ -557,6 +608,11 @@ export default {
       dialCode: '',
       checkConnection: false
     };
+  },
+
+  mounted() {
+    // const pageName = document.getElementsByTagName("title")[0]
+    //  pageName.innerHTML = "Claimguru - Setup"
   },
 
   methods: {
@@ -652,10 +708,17 @@ export default {
   async created() {
     this.step = 0;
     await this.getOrganization();
+    console.log(this.organization.address, 'mil gya addresss1111');
     if (this.organization) {
       this.companyDetails.name = this.organization.name;
-      this.companyDetails.address.address1 = this.organization.address.address1;
-      this.companyDetails.address.address2 = this.organization.address.address2;
+      // console.log(685,this.organization.address.address1, "addresss111", );
+      if (this.organization) {
+        console.log('inside connndddddtionnn');
+        this.companyDetails.address.address1 =
+          this.organization.address.address1;
+        this.companyDetails.address.address2 =
+          this.organization.address.address2;
+      }
       this.companyDetails.address.addressLocality =
         this.organization.address.addressLocality;
       this.companyDetails.address.addressRegion =
@@ -667,8 +730,9 @@ export default {
       this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
       this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       this.step = 2;
+      this.checkConnection = true;
       if (this.$route.query.googleConnect == 'true') {
-        this.checkConnection = true;
+        // this.checkConnection = true;
       } else {
         let data = await this.getUserInfo();
         if (data.attributes.onboard.isCompleted == true) {
@@ -711,7 +775,7 @@ export default {
 }
 .fontColor {
   color: #101828;
-  font-family: 'Poppins-semiBold';
+  font-weight: 600;
 }
 .inside-text {
   border-bottom: px solid #e5e5e5 !important;
@@ -728,6 +792,9 @@ export default {
 }
 .image-h-216 {
   height: 216px;
+}
+.q-mt-43 {
+  margin-top: 34px;
 }
 .mt-120 {
   margin-top: 120px;
@@ -747,6 +814,7 @@ export default {
   color: #667085;
   font-size: 14px;
   margin-top: 5px;
+  line-height: 20px;
   // max-width: 517px;
   padding-left: 40px;
   padding-right: 40px;
@@ -761,6 +829,16 @@ export default {
 }
 .dFlex {
   display: flex;
+}
+.Account-setup-text {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  color: #0c0c0c;
 }
 .q-px-32 {
   padding-left: 40px;
@@ -784,7 +862,9 @@ export default {
   width: 153px;
   height: 50px;
   font-family: 'Poppins-semiBold';
+  background: #ef5926;
   font-style: normal;
+  box-shadow: none !important;
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
@@ -837,6 +917,7 @@ export default {
 }
 .Step-text {
   font-family: 'poppins-medium';
+  font-weight: 500;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.15px;
@@ -884,7 +965,7 @@ export default {
   letter-spacing: 0.75px;
 }
 .mt-50 {
-  margin-top: 50px;
+  margin-top: 27px;
 }
 .mt-30 {
   margin-top: 30px;
@@ -936,6 +1017,9 @@ export default {
   background-color: white;
   border-top: none;
 }
+::v-deep .q-btn__wrapper:before {
+  box-shadow: none;
+}
 ::v-deep .absolute-full {
   background-size: auto;
 }
@@ -946,7 +1030,10 @@ export default {
   padding-left: 15px;
 }
 .ml-31 {
-  padding-left: 31px !important;
+  padding-left: 16px !important;
+}
+.q-pb-18 {
+  padding-bottom: 18px;
 }
 .text-subtitle2 {
   color: #667085;
@@ -1036,6 +1123,46 @@ export default {
   color: #8a90a0 !important;
 }
 
+@media screen and (max-width: 1022px) {
+  .border-top {
+    border-top: 1px solid #e5e5e5;
+    margin-left: -50px;
+    margin-right: -50px;
+  }
+  .ml-31 {
+    margin-left: 15px !important;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .q-px-32 {
+    padding-left: 32px;
+    padding-top: 0px;
+  }
+  .border-top {
+    border-top: 1px solid #e5e5e5;
+    margin-left: -50px;
+    margin-right: -50px;
+  }
+  .q-pr-lg {
+    padding-right: 0px;
+  }
+  .q-px-xl {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .Account-setup-text {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    color: #0c0c0c;
+  }
+}
 @media only screen and (max-width: 600px) {
   .q-px-32 {
     padding-left: 15px;
@@ -1049,7 +1176,12 @@ export default {
     padding-right: 15px;
     padding-top: 15px;
   }
-
+  .q-pb-18 {
+    padding-bottom: 18px;
+  }
+  .q-mt-43 {
+    margin-top: 24px;
+  }
   .mt-30 {
     margin-top: 16px;
   }
@@ -1128,8 +1260,8 @@ export default {
   }
   .border-top {
     border-top: 1px solid #e5e5e5;
-    margin-left: -15px !important;
-    margin-right: -15px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
   }
   .mx-15 {
     margin-left: 15px;
@@ -1143,12 +1275,14 @@ export default {
     font-family: 'Poppins-semiBold';
     border-radius: 5px !important;
     font-style: normal;
+    background: #ef5926;
     font-weight: 600;
     font-size: 16px;
     line-height: 24px;
     display: flex;
     align-items: center;
     color: #ffffff;
+    box-shadow: none !important;
   }
   .Next-button {
     width: 95px;
@@ -1191,21 +1325,6 @@ export default {
   }
 }
 
-@media screen and (max-width: 800px) {
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    margin-left: -50px;
-    margin-right: -50px;
-  }
-  .q-pr-lg {
-    padding-right: 0px;
-  }
-  .q-px-xl {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-}
-
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
   // .border-top {
@@ -1213,8 +1332,8 @@ export default {
   // }
   // .q-px-32 {padding-left: 15px;}
   .q-px-32 {
-    padding-left: 32px;
-    padding-top: 32px;
+    padding-left: 15px;
+    padding-top: 15px;
   }
   .q-px-xl {
     padding-left: 15px;
@@ -1234,8 +1353,17 @@ export default {
   }
   // .height-40px {height: 24px;}
 }
-
+@media only screen and (width: 1024px) {
+  .q-px-32 {
+    padding-left: 32px;
+    padding-top: 0px;
+  }
+}
 @media only screen and (width: 1440px) {
+  .q-px-32 {
+    padding-left: 32px;
+    padding-top: 0px;
+  }
   .q-px-xl {
     padding-left: 60px;
     padding-right: 60px;
