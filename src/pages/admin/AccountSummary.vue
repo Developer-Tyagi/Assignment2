@@ -2,183 +2,28 @@
   <q-page>
     <div name="accountSummary">
       <q-card
-        class="q-pa-xl"
-        style="
-          border-radius: 20px;
-          box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-        "
+        :class="isMobileResolution ? 'q-pa-md q-mt-20' : 'q-pa-20 q-mt-40'"
+        class="summary-card"
       >
-        <div class="row justify-between">
-          <div class="text-h5 text-weight-bold">Account Summary</div>
-          <div>
-            <a
-              @click="onEditClick"
-              class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
-            >
-              Edit
-              <i class="text-primary fas fa-edit"></i>
-            </a>
-          </div>
-        </div>
-        <q-form ref="accountSummaryForm">
-          <div class="q-mt-xl">
-            <!-- Name -->
-            <div class="row">
-              <div class="col q-mr-md">
-                <div class="row text-subtitle1 text-weight-bold">
-                  First Name<span class="text-red">*</span>
-                </div>
-                <!-- {{users}} -->
-                <div class="row">
-                  <q-input
-                    dense
-                    class="full-width"
-                    input-class="text-subtitle1"
-                    outlined
-                    v-model="users.fname"
-                    :disable="!editAccountSummary"
-                    lazy-rules
-                    maxlength="128"
-                    :rules="[
-                      val => val.length > 0 || 'Please add first name',
-                      val => validateText(val) || 'Please enter valid name'
-                    ]"
-                  />
-                </div>
-              </div>
-              <div class="col">
-                <div class="row text-subtitle1 text-weight-bold">
-                  Last Name<span class="text-red">*</span>
-                </div>
-                <div class="row">
-                  <q-input
-                    dense
-                    class="full-width"
-                    input-class="text-subtitle1"
-                    outlined
-                    v-model="users.lname"
-                    :disable="!editAccountSummary"
-                    lazy-rules
-                    maxlength="128"
-                    :rules="[
-                      val => val.length > 0 || 'Please add last name',
-                      val => validateText(val) || 'Please enter valid last name'
-                    ]"
-                  />
-                </div>
-              </div>
-            </div>
-            <!-- address -->
-            <div class="q-mt-sm full-width">
-              <div class="col">
-                <div class="row text-subtitle1 text-weight-bold">
-                  Address<span class="text-red">*</span>
-                </div>
-
-                <div>
-                  <AutoCompleteAddress
-                    :id="'AddVendor'"
-                    :address="users.mailingAddress"
-                    :isDropBoxEnable="false"
-                    :isChecksEnable="false"
-                    :value="true"
-                    :view="'custom'"
-                    :readOnly="!editAccountSummary"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="row q-mt-sm full-width">
-              <div class="col q-mr-md">
-                <div class="text-subtitle1 text-weight-bold">
-                  Mobile<span class="text-red">*</span>
-                </div>
-                <div class="col clickable text-primary">
-                  <q-input
-                    dense
-                    class="full-width"
-                    input-class="text-subtitle1"
-                    outlined
-                    v-model="users.contact.number"
-                    :disable="!editAccountSummary"
-                    lazy-rules
-                    mask="(###) ### - ####"
-                    unmasked-value
-                    :rules="[
-                      val => val.length > 0 || 'Please add contact number',
-                      val =>
-                        val.length > 9 || 'Mobile number must contain 10 digit'
-                    ]"
-                  />
-                </div>
-              </div>
-              <div class="col">
-                <div class="text-bold">
-                  <div class="row text-subtitle1 text-weight-bold">
-                    Email Address<span class="text-red">*</span>
-                  </div>
-                </div>
-                <!-- @click="onEmailClick(user.email, $event)" -->
-                <div class="row">
-                  <div class="col clickable text-primary">
-                    <q-input
-                      dense
-                      class="full-width"
-                      input-class="text-subtitle1"
-                      outlined
-                      v-model="users.email"
-                      :rules="[
-                        val => val.length > 0 || 'Please add email address',
-                        val =>
-                          validateEmail(val) ||
-                          'You have entered an invalid email address!'
-                      ]"
-                      :disable="!editAccountSummary"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="q-mt-lg row justify-end" v-if="editAccountSummary">
+        <div class="flex-row justify-between items-center">
+          <div class="details-title">Company Details</div>
+          <div class="flex-row" v-if="!editCompanyDetails">
             <q-btn
-              class="col-1 q-mr-sm"
-              size="md"
-              text-color="black"
-              color="white"
-              label="Cancel"
-              @click="cancelAccountSummaryUpdate"
-            />
-            <q-btn
-              class="col-1"
-              size="md"
+              flat
+              no-caps
+              class="text-subtitle1 fontWeight600 primary-border"
+              :class="
+                isMobileResolution
+                  ? 'border-radius-5 height-40 q-px-xs'
+                  : 'border-radius-10 height-50 q-px-md'
+              "
               color="primary"
-              label="Save"
-              @click="onSaveEditedButton"
+              label="Edit"
+              @click="onEditClickOrganization"
             />
           </div>
-        </q-form>
-      </q-card>
-      <q-card
-        class="q-pa-xl q-mt-xl"
-        style="
-          border-radius: 20px;
-          box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-        "
-      >
-        <div class="row justify-between">
-          <div class="text-h5 text-weight-bold">Company Details</div>
-          <div>
-            <a
-              @click="onEditClickOrganization"
-              class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
-            >
-              Edit
-              <i class="text-primary fas fa-edit"></i>
-            </a>
-          </div>
         </div>
-        <q-form ref="companyDetailsForm">
+        <q-form v-if="editCompanyDetails" ref="companyDetailsForm">
           <div class="q-mt-xl">
             <div class="row text-subtitle1 text-weight-bold">
               Company Name<span class="text-red">*</span>
@@ -297,39 +142,360 @@
             </div>
           </div>
         </q-form>
+        <div v-else>
+          <div class="flex-row full-width q-pt-lg">
+            <!-- <img 
+            :class="isMobileResolution ? 'image-60' : 'image-80'"
+            src="" 
+            alt="Company logo"> -->
+            <q-avatar
+              :class="isMobileResolution ? 'image-60' : 'image-80'"
+              icon="person"
+              font-size="2.5rem"
+              class="text-white bg-grey"
+            >
+            </q-avatar>
+            <div class="company-details q-pl-lg">
+              <div class="flex-column full-width">
+                <div class="details-heading">Company Name</div>
+                <div class="details-content q-pt-sm">
+                  {{ organizations.users.fname }}
+                </div>
+                <div class="details-heading q-pt-lg">Mobile</div>
+                <div class="details-content q-pt-sm">
+                  {{ organizations.phoneNumber.code }}
+                  {{ organizations.phoneNumber.number }}
+                </div>
+                <div class="details-heading q-pt-lg">Email Address</div>
+                <div class="details-content q-pt-sm ellipsis">
+                  {{ organizations.companyDetails.contactEmail }}
+                </div>
+                <div class="details-heading q-pt-lg">Company Address</div>
+                <div class="details-content q-pt-sm">
+                  {{ organizations.companyDetails.address.address1 }},
+                  {{ organizations.companyDetails.address.address2 }},
+                  {{ organizations.companyDetails.address.addressLocality }},
+                  {{ organizations.companyDetails.address.addressRegion }}
+                  - {{ organizations.companyDetails.address.postalCode }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </q-card>
       <q-card
-        class="q-pa-xl q-mt-xl"
-        style="
-          border-radius: 20px;
-          box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-        "
+        :class="isMobileResolution ? 'q-pa-md q-mt-20' : 'q-pa-20 q-mt-40'"
+        class="summary-card"
       >
-        <div class="row justify-between">
-          <div class="text-h5 text-weight-bold">
-            <img
-              class="vertical-middle"
-              height="30px;"
-              width="30px;"
-              src="~assets/photo_ID_app.png"
-            />
-            ID Account Information (<a
-              class="text-primary"
-              href="https://photoidapp.net/"
-              target="_blank"
-              >signup</a
-            >)
-          </div>
+        <!-- <div class="row justify-between">
+          <div class="text-h5 text-weight-bold">Account Details</div>
           <div>
             <a
-              @click="onEditClickOrganization('PHOTOIDFORM')"
+              @click="onEditClick"
               class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
-              >Edit
+            >
+              Edit
               <i class="text-primary fas fa-edit"></i>
             </a>
           </div>
+        </div> -->
+        <div class="flex-row justify-between items-center">
+          <div class="details-title">Account Details</div>
+          <div class="flex-row" v-if="!editAccountSummary">
+            <q-btn
+              flat
+              no-caps
+              class="text-subtitle1 fontWeight600 primary-border"
+              :class="
+                isMobileResolution
+                  ? 'border-radius-5 height-40 q-px-xs'
+                  : 'border-radius-10 height-50 q-px-md'
+              "
+              color="primary"
+              label="Edit"
+              @click="onEditClick"
+            />
+          </div>
         </div>
-        <q-form ref="editPhotoIDForm">
+        <q-form v-if="editAccountSummary" ref="accountSummaryForm">
+          <div class="q-mt-xl">
+            <div class="row">
+              <div class="col q-mr-md">
+                <div class="row text-subtitle1 text-weight-bold">
+                  First Name<span class="text-red">*</span>
+                </div>
+                <div class="row">
+                  <q-input
+                    dense
+                    class="full-width"
+                    input-class="text-subtitle1"
+                    outlined
+                    v-model="users.fname"
+                    :disable="!editAccountSummary"
+                    lazy-rules
+                    maxlength="128"
+                    :rules="[
+                      val => val.length > 0 || 'Please add first name',
+                      val => validateText(val) || 'Please enter valid name'
+                    ]"
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <div class="row text-subtitle1 text-weight-bold">
+                  Last Name<span class="text-red">*</span>
+                </div>
+                <div class="row">
+                  <q-input
+                    dense
+                    class="full-width"
+                    input-class="text-subtitle1"
+                    outlined
+                    v-model="users.lname"
+                    :disable="!editAccountSummary"
+                    lazy-rules
+                    maxlength="128"
+                    :rules="[
+                      val => val.length > 0 || 'Please add last name',
+                      val => validateText(val) || 'Please enter valid last name'
+                    ]"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="q-mt-sm full-width">
+              <div class="col">
+                <div class="row text-subtitle1 text-weight-bold">
+                  Address<span class="text-red">*</span>
+                </div>
+
+                <div>
+                  <AutoCompleteAddress
+                    :id="'AddVendor'"
+                    :address="users.mailingAddress"
+                    :isDropBoxEnable="false"
+                    :isChecksEnable="false"
+                    :value="true"
+                    :view="'custom'"
+                    :readOnly="!editAccountSummary"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row q-mt-sm full-width">
+              <div class="col q-mr-md">
+                <div class="text-subtitle1 text-weight-bold">
+                  Mobile<span class="text-red">*</span>
+                </div>
+                <div class="col clickable text-primary">
+                  <q-input
+                    dense
+                    class="full-width"
+                    input-class="text-subtitle1"
+                    outlined
+                    v-model="users.contact.number"
+                    :disable="!editAccountSummary"
+                    lazy-rules
+                    mask="(###) ### - ####"
+                    unmasked-value
+                    :rules="[
+                      val => val.length > 0 || 'Please add contact number',
+                      val =>
+                        val.length > 9 || 'Mobile number must contain 10 digit'
+                    ]"
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <div class="text-bold">
+                  <div class="row text-subtitle1 text-weight-bold">
+                    Email Address<span class="text-red">*</span>
+                  </div>
+                </div>
+                <!-- @click="onEmailClick(user.email, $event)" -->
+                <div class="row">
+                  <div class="col clickable text-primary">
+                    <q-input
+                      dense
+                      class="full-width"
+                      input-class="text-subtitle1"
+                      outlined
+                      v-model="users.email"
+                      :rules="[
+                        val => val.length > 0 || 'Please add email address',
+                        val =>
+                          validateEmail(val) ||
+                          'You have entered an invalid email address!'
+                      ]"
+                      :disable="!editAccountSummary"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="q-mt-lg row justify-end" v-if="editAccountSummary">
+            <q-btn
+              class="col-1 q-mr-sm"
+              size="md"
+              text-color="black"
+              color="white"
+              label="Cancel"
+              @click="cancelAccountSummaryUpdate"
+            />
+            <q-btn
+              class="col-1"
+              size="md"
+              color="primary"
+              label="Save"
+              @click="onSaveEditedButton"
+            />
+          </div>
+        </q-form>
+        <div v-else>
+          <div class="flex-row-wrap full-width justify-between account-details">
+            <div class="q-pt-lg">
+              <div class="details-heading">First Name</div>
+              <div class="details-content q-pt-sm">
+                {{ users.fname }}
+              </div>
+            </div>
+            <div class="q-pt-lg">
+              <div class="details-heading">Last Name</div>
+              <div class="details-content q-pt-sm">
+                {{ users.lname }}
+              </div>
+            </div>
+            <div class="q-pt-lg details-container">
+              <div class="details-heading">Email Address</div>
+              <div class="details-content q-pt-sm ellipsis">
+                {{ users.email }}
+              </div>
+            </div>
+            <span></span>
+          </div>
+        </div>
+      </q-card>
+      <q-card
+        :class="isMobileResolution ? 'q-pa-md q-mt-20' : 'q-pa-20 q-mt-40'"
+        class="summary-card"
+      >
+        <div class="flex-row justify-between items-center">
+          <div class="details-title">Google Drive</div>
+          <!-- v-if="!editPhotoIDDetails" -->
+          <div class="flex-row">
+            <!-- @click="onEditClickOrganization('PHOTOIDFORM')" -->
+            <q-btn
+              flat
+              no-caps
+              class="text-subtitle1 fontWeight600 primary-border"
+              :class="
+                isMobileResolution
+                  ? 'border-radius-5 height-40 q-px-xs'
+                  : 'border-radius-10 height-50 q-px-md'
+              "
+              color="primary"
+              label="Edit"
+            />
+          </div>
+        </div>
+        <!-- <q-form  v-if="editPhotoIDDetails" ref="editPhotoIDForm">
+          <div class="row q-mt-lg full-width">
+            <div class="col q-mr-md">
+              <div class="row text-subtitle1 text-weight-bold">
+                Account Email
+              </div>
+              <q-input
+                dense
+                class="full-width"
+                input-class="text-subtitle1"
+                outlined
+                v-model="organizations.photoIDEmail"
+                :disable="!editPhotoIDDetails"
+              />
+            </div>
+            <div class="col">
+              <div class="row text-subtitle1 text-weight-bold">
+                Account Api Key
+              </div>
+              <q-input
+                dense
+                class="full-width"
+                input-class="text-subtitle1"
+                outlined
+                v-model="organizations.photoIDAPIKey"
+                :disable="!editPhotoIDDetails"
+              />
+            </div>
+          </div>
+          <div v-if="this.editPhotoIDDetails" class="q-mt-lg row justify-end">
+            <q-btn
+              class="col-1 q-mr-sm"
+              size="md"
+              label="Cancel"
+              text-color="black"
+              color="white"
+              @click="cancelPhotoIDUpdate"
+            />
+            <q-btn
+              class="col-1"
+              size="md"
+              color="primary"
+              label="Save"
+              @click="onSaveEditedButtonOrganization"
+            />
+          </div>
+        </q-form> -->
+
+        <!-- v-else -->
+        <div>
+          <div class="flex-column details-container q-pt-lg">
+            <div class="details-heading">Email</div>
+            <div class="details-content q-pt-sm ellipsis">
+              hardcodedemail@test.com
+            </div>
+            <div
+              class="flex-row justify-center items-center q-mt-lg google-drive"
+            >
+              <span class="text-center"
+                >Connected to Google Drive
+                <span>
+                  <q-icon name="task_alt" color="teal" size="16px" /> </span
+              ></span>
+            </div>
+          </div>
+        </div>
+      </q-card>
+      <q-card
+        :class="
+          isMobileResolution
+            ? 'q-pa-md q-mt-20 q-mb-20'
+            : 'q-pa-20 q-mt-40 q-mb-40'
+        "
+        class="summary-card"
+      >
+        <div class="flex-row justify-between items-center">
+          <div class="details-title">
+            PhotoID Account
+            <span class="text-grey1">(Optional)</span>
+          </div>
+          <div class="flex-row" v-if="!editPhotoIDDetails">
+            <q-btn
+              flat
+              no-caps
+              class="text-subtitle1 fontWeight600 primary-border"
+              :class="
+                isMobileResolution
+                  ? 'border-radius-5 height-40 q-px-xs'
+                  : 'border-radius-10 height-50 q-px-md'
+              "
+              color="primary"
+              label="Edit"
+              @click="onEditClickOrganization('PHOTOIDFORM')"
+            />
+          </div>
+        </div>
+        <q-form v-if="editPhotoIDDetails" ref="editPhotoIDForm">
           <div class="row q-mt-lg full-width">
             <div class="col q-mr-md">
               <div class="row text-subtitle1 text-weight-bold">
@@ -376,6 +542,22 @@
             />
           </div>
         </q-form>
+        <div v-else>
+          <div class="flex-row-wrap full-width">
+            <div class="half-width q-pt-lg details-container">
+              <div class="details-heading">PhotoID Email</div>
+              <div class="details-content q-pt-sm text-primary ellipsis">
+                {{ organizations.photoIDEmail }}
+              </div>
+            </div>
+            <div class="q-pt-lg">
+              <div class="details-heading">PhotoID API Key</div>
+              <div class="details-content q-pt-sm text-primary">
+                {{ organizations.photoIDAPIKey }}
+              </div>
+            </div>
+          </div>
+        </div>
       </q-card>
     </div>
   </q-page>
@@ -435,6 +617,11 @@ export default {
           },
           contactEmail: ''
         },
+        phoneNumber: {
+          code: '',
+          number: '',
+          type: ''
+        },
         photoIDAPIKey: '',
         photoIDEmail: '',
         users: {
@@ -487,7 +674,8 @@ export default {
       'contactTypes',
       'organization',
       'allUsers',
-      'paidUnpaidUserDetails'
+      'paidUnpaidUserDetails',
+      'isMobileResolution'
     ])
   },
 
@@ -707,7 +895,76 @@ export default {
         this.organizations.companyDetails.contactEmail =
           this.organization.email;
       }
+      if (this.organization.phoneNumber) {
+        this.organizations.phoneNumber = this.organization.phoneNumber;
+        this.organizations.phoneNumber.number = showPhoneNumber(
+          this.organization.phoneNumber.number
+        );
+      }
     }
   }
 };
 </script>
+<style lang="scss" scoped>
+.summary-card {
+  box-shadow: 0px 4px 8px -2px rgba(0, 0, 0, 0.1),
+    0px 2px 4px -2px rgba(16, 24, 40, 0.06);
+  border-radius: 20px;
+}
+.details-title {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+}
+.details-heading {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: $font-heading;
+}
+.details-content {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: $font-content;
+}
+.company-details {
+  width: calc(100vw - 208px);
+}
+.details-container {
+  width: calc(100vw - 104px);
+}
+.google-drive {
+  height: 44px;
+  width: 351px;
+  border: solid 1px #039855;
+  color: #039855;
+  background-color: #d1fadf;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+}
+@media screen and (max-width: 1023px) {
+  .details-title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+  .company-details {
+    width: calc(100vw - 146px);
+  }
+  .account-details {
+    display: flex;
+    flex-direction: column;
+  }
+  .google-drive {
+    height: 40px;
+    width: calc(100% - 0px);
+    max-width: 313px;
+  }
+  .details-container {
+    width: calc(100vw - 62px);
+  }
+}
+</style>

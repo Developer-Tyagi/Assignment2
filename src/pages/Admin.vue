@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="row q-px-xl">
+    <div class="flex-row">
       <div class="col">
         <div class="row" flat bordered>
           <!-- Main Template -->
@@ -8,7 +8,10 @@
             class="q-ml-xl full-height mobile-container-page-without-search full-width"
             v-model="webSubOptionMenuTab.key"
           >
-            <q-tab-panel name="accountSummary">
+            <q-tab-panel
+              :class="isMobileResolution ? 'q-px-15' : 'q-px-32'"
+              name="accountSummary"
+            >
               <AccountSummary> </AccountSummary>
             </q-tab-panel>
             <q-tab-panel name="groupPermission" class="q-pa-lg">
@@ -59,7 +62,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['webSubOptionMenuTab'])
+    ...mapGetters(['webSubOptionMenuTab', 'isMobileResolution'])
   }
 };
 </script>

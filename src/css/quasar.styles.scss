@@ -1,0 +1,35 @@
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+.flex-row-wrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+.q-px-15 {
+  padding: 0px 15px;
+}
+.q-px-32 {
+  padding: 0px 32px;
+}
+
+.q-pa-20 {
+  padding: 20px;
+}
+.q-mt-20 {
+  margin-top: 20px;
+}
+.q-mt-40 {
+  margin-top: 40px;
+}
+.q-mb-20 {
+  margin-bottom: 20px;
+}
+.q-mb-40 {
+  margin-bottom: 40px;
+}
