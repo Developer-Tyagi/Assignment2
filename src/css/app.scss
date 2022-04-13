@@ -1,0 +1,97 @@
+@import './input.scss';
+
+.color-grey {
+  color: $fontColor;
+}
+.heading-light {
+  color: $titleHeading;
+}
+.clickable {
+  cursor: pointer;
+}
+
+.border-right {
+  border-right: 2px solid rgba(232, 232, 232, 1);
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.height-without-header {
+  height: calc(100vh - 51px);
+}
+
+.required .q-field__native ~ .q-field__label:after {
+  content: '*';
+  color: red;
+}
+
+.mobile-container-page {
+  overflow-y: auto;
+  height: calc(100vh - 120px);
+}
+
+.mobile-container-page-without-search {
+  overflow-y: auto;
+  height: calc(100vh - 62px);
+}
+
+.actions-div {
+  height: 56px;
+  display: flex;
+  border-bottom: 1px solid #0000001f;
+  align-items: center;
+  .q-field__prepend {
+    padding: 12px;
+  }
+  .texts {
+    margin-bottom: 0;
+    font-size: 15px;
+    text-align: left;
+  }
+}
+
+.overflow {
+  overflow: auto;
+}
+
+.overflow-x {
+  overflow-x: auto;
+}
+
+.overflow-y {
+  overflow-y: auto;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.click-link {
+  color: $primary;
+}
+
+.no-visibility {
+  visibility: hidden;
+}
+
+.button-width-90 {
+  width: 90%;
+  margin-left: 5%;
+}
+
+.stepper-heading {
+  color: $dark-grey;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.fit-content {
+  width: fit-content;
+}
+
+.bgNewPrimary {
+  background-color: $sidePanel;
+}

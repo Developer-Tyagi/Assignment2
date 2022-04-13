@@ -203,17 +203,17 @@ export async function upgradePlan({ dispatch }, payload) {
 }
 
 export async function addAdditionalLicense({ dispatch }, payload) {
-  dispatch('setLoading', true);
+  //dispatch('setLoading', true);
   try {
     const { data } = await request.post(
       'organizations/plans',
       buildApiData('organizations', payload)
     );
-    dispatch('setLoading', false);
+    // dispatch('setLoading', false);
     return true;
   } catch (e) {
     console.log(e);
-    dispatch('setLoading', false);
+    //dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
       message: e.response[0].title
@@ -588,6 +588,11 @@ export function changeNetworkStatus({ commit, dispatch }, isOnline) {
   if (isOnline) {
     dispatch('syncLocalDataBase');
   }
+}
+
+// function to store device status.
+export function changeDeviceStatus({ commit, dispatch }, deviceStatus) {
+  commit('setDeviceStatus', deviceStatus);
 }
 
 // function is used for storing the data in the local storage.

@@ -1,3 +1,7 @@
+body {
+  font-family: poppins;
+}
+
 .q-field__bottom {
   padding: 3px 10px 0;
 }
@@ -243,4 +247,30 @@
 }
 .fontWeight400 {
   font-weight: 400;
+}
+
+.web-claim-guru-logo {
+  height: 51px;
+  width: 151px;
+  margin-left: 70px;
+  margin-top: 16px;
+}
+
+.app-claim-guru-logo {
+  height: 51px;
+  width: 151px;
+  margin-left: 15px;
+  margin-top: 9.5px;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.secondary-border {
+  border: 2px solid #ef5926;
+}
+
+.border-5 {
+  border-radius: 5px;
 }

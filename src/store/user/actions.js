@@ -178,12 +178,14 @@ export async function addUser({ dispatch, state }, payload) {
       type: 'positive',
       message: 'User created'
     });
+    return true;
   } catch (e) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
       message: e.response[0].detail
     });
+    return false;
   }
 }
 
@@ -700,6 +702,11 @@ export async function addNewCard({ dispatch, state }, payload) {
       buildApiData('users', payload)
     );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Card details updated'
+    });
+    return true;
   } catch (e) {
     //console.log(e);
     dispatch('setLoading', false);
@@ -707,5 +714,6 @@ export async function addNewCard({ dispatch, state }, payload) {
       type: 'negative',
       message: e.response[0].title
     });
+    return false;
   }
 }
