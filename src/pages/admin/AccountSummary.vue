@@ -187,18 +187,6 @@
         :class="isMobileResolution ? 'q-pa-md q-mt-20' : 'q-pa-20 q-mt-40'"
         class="summary-card"
       >
-        <!-- <div class="row justify-between">
-          <div class="text-h5 text-weight-bold">Account Details</div>
-          <div>
-            <a
-              @click="onEditClick"
-              class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
-            >
-              Edit
-              <i class="text-primary fas fa-edit"></i>
-            </a>
-          </div>
-        </div> -->
         <div class="flex-row justify-between items-center">
           <div class="details-title">Account Details</div>
           <div class="flex-row" v-if="!editAccountSummary">
@@ -218,137 +206,88 @@
           </div>
         </div>
         <q-form v-if="editAccountSummary" ref="accountSummaryForm">
-          <div class="q-mt-xl">
-            <div class="row">
-              <div class="col q-mr-md">
-                <div class="row text-subtitle1 text-weight-bold">
-                  First Name<span class="text-red">*</span>
-                </div>
-                <div class="row">
-                  <q-input
-                    dense
-                    class="full-width"
-                    input-class="text-subtitle1"
-                    outlined
-                    v-model="users.fname"
-                    :disable="!editAccountSummary"
-                    lazy-rules
-                    maxlength="128"
-                    :rules="[
-                      val => val.length > 0 || 'Please add first name',
-                      val => validateText(val) || 'Please enter valid name'
-                    ]"
-                  />
-                </div>
-              </div>
-              <div class="col">
-                <div class="row text-subtitle1 text-weight-bold">
-                  Last Name<span class="text-red">*</span>
-                </div>
-                <div class="row">
-                  <q-input
-                    dense
-                    class="full-width"
-                    input-class="text-subtitle1"
-                    outlined
-                    v-model="users.lname"
-                    :disable="!editAccountSummary"
-                    lazy-rules
-                    maxlength="128"
-                    :rules="[
-                      val => val.length > 0 || 'Please add last name',
-                      val => validateText(val) || 'Please enter valid last name'
-                    ]"
-                  />
-                </div>
-              </div>
+          <div
+            class="flex-row-wrap"
+            :class="isMobileResolution ? 'flex-column' : ''"
+          >
+            <div
+              class="q-mt-20"
+              :class="isMobileResolution ? '' : 'half-width q-pr-12'"
+            >
+              <div class="details-heading q-mb-6">First Name</div>
+              <q-input
+                input-class="details-content"
+                outlined
+                v-model="users.fname"
+                placehoder="First Name"
+                maxlength="128"
+                :rules="[
+                  val => val.length > 0 || 'Please add first name',
+                  val => validateText(val) || 'Please enter valid name'
+                ]"
+              />
             </div>
-            <div class="q-mt-sm full-width">
-              <div class="col">
-                <div class="row text-subtitle1 text-weight-bold">
-                  Address<span class="text-red">*</span>
-                </div>
-
-                <div>
-                  <AutoCompleteAddress
-                    :id="'AddVendor'"
-                    :address="users.mailingAddress"
-                    :isDropBoxEnable="false"
-                    :isChecksEnable="false"
-                    :value="true"
-                    :view="'custom'"
-                    :readOnly="!editAccountSummary"
-                  />
-                </div>
-              </div>
+            <div
+              :class="
+                isMobileResolution ? 'q-mt-xs' : 'half-width q-pl-12 q-mt-20'
+              "
+            >
+              <div class="details-heading q-mb-6">Last Name</div>
+              <q-input
+                input-class="details-content"
+                outlined
+                v-model="users.lname"
+                placehoder="Last Name"
+                maxlength="128"
+                :rules="[
+                  val => val.length > 0 || 'Please add last name',
+                  val => validateText(val) || 'Please enter valid last name'
+                ]"
+              />
             </div>
-            <div class="row q-mt-sm full-width">
-              <div class="col q-mr-md">
-                <div class="text-subtitle1 text-weight-bold">
-                  Mobile<span class="text-red">*</span>
-                </div>
-                <div class="col clickable text-primary">
-                  <q-input
-                    dense
-                    class="full-width"
-                    input-class="text-subtitle1"
-                    outlined
-                    v-model="users.contact.number"
-                    :disable="!editAccountSummary"
-                    lazy-rules
-                    mask="(###) ### - ####"
-                    unmasked-value
-                    :rules="[
-                      val => val.length > 0 || 'Please add contact number',
-                      val =>
-                        val.length > 9 || 'Mobile number must contain 10 digit'
-                    ]"
-                  />
-                </div>
-              </div>
-              <div class="col">
-                <div class="text-bold">
-                  <div class="row text-subtitle1 text-weight-bold">
-                    Email Address<span class="text-red">*</span>
-                  </div>
-                </div>
-                <!-- @click="onEmailClick(user.email, $event)" -->
-                <div class="row">
-                  <div class="col clickable text-primary">
-                    <q-input
-                      dense
-                      class="full-width"
-                      input-class="text-subtitle1"
-                      outlined
-                      v-model="users.email"
-                      :rules="[
-                        val => val.length > 0 || 'Please add email address',
-                        val =>
-                          validateEmail(val) ||
-                          'You have entered an invalid email address!'
-                      ]"
-                      :disable="!editAccountSummary"
-                    />
-                  </div>
-                </div>
-              </div>
+            <div :class="isMobileResolution ? 'q-mt-xs' : 'full-width q-mt-20'">
+              <div class="details-heading q-mb-6">Email Address</div>
+              <q-input
+                input-class="details-content"
+                outlined
+                v-model="users.email"
+                placehoder="Email Address"
+                :rules="[
+                  val => val.length > 0 || 'Please add email address',
+                  val => validateEmail(val) || 'Please add valid email addres'
+                ]"
+              />
             </div>
           </div>
-          <div class="q-mt-lg row justify-end" v-if="editAccountSummary">
+          <div
+            class="flex-row items-center"
+            :class="
+              isMobileResolution
+                ? 'justify-between q-mt-sm'
+                : 'justify-end q-mt-20'
+            "
+          >
             <q-btn
-              class="col-1 q-mr-sm"
-              size="md"
-              text-color="black"
-              color="white"
+              no-caps
+              class="text-subtitle1 fontWeight600 line-height-24 text-primary primary-border flex-row items-center q-mr-lg"
+              :class="
+                isMobileResolution
+                  ? 'border-radius-5 height-40 q-px-xs'
+                  : 'border-radius-10 height-50 q-px-md'
+              "
               label="Cancel"
               @click="cancelAccountSummaryUpdate"
             />
             <q-btn
-              class="col-1"
-              size="md"
-              color="primary"
+              no-caps
+              class="text-subtitle1 fontWeight600 line-height-24 text-white bg-primary"
+              :class="
+                isMobileResolution
+                  ? 'border-radius-5 height-40 q-px-xs'
+                  : 'border-radius-10 height-50 q-px-md'
+              "
               label="Save"
-              @click="onSaveEditedButton"
+              @click="onSaveEditedButton()"
             />
           </div>
         </q-form>
@@ -366,7 +305,12 @@
                 {{ users.lname }}
               </div>
             </div>
-            <div class="q-pt-lg details-container">
+            <div
+              class="q-pt-lg"
+              :class="
+                isMobileResolution ? 'details-container' : 'half-container'
+              "
+            >
               <div class="details-heading">Email Address</div>
               <div class="details-content q-pt-sm ellipsis">
                 {{ users.email }}
@@ -399,60 +343,11 @@
             />
           </div>
         </div>
-        <!-- <q-form  v-if="editPhotoIDDetails" ref="editPhotoIDForm">
-          <div class="row q-mt-lg full-width">
-            <div class="col q-mr-md">
-              <div class="row text-subtitle1 text-weight-bold">
-                Account Email
-              </div>
-              <q-input
-                dense
-                class="full-width"
-                input-class="text-subtitle1"
-                outlined
-                v-model="organizations.photoIDEmail"
-                :disable="!editPhotoIDDetails"
-              />
-            </div>
-            <div class="col">
-              <div class="row text-subtitle1 text-weight-bold">
-                Account Api Key
-              </div>
-              <q-input
-                dense
-                class="full-width"
-                input-class="text-subtitle1"
-                outlined
-                v-model="organizations.photoIDAPIKey"
-                :disable="!editPhotoIDDetails"
-              />
-            </div>
-          </div>
-          <div v-if="this.editPhotoIDDetails" class="q-mt-lg row justify-end">
-            <q-btn
-              class="col-1 q-mr-sm"
-              size="md"
-              label="Cancel"
-              text-color="black"
-              color="white"
-              @click="cancelPhotoIDUpdate"
-            />
-            <q-btn
-              class="col-1"
-              size="md"
-              color="primary"
-              label="Save"
-              @click="onSaveEditedButtonOrganization"
-            />
-          </div>
-        </q-form> -->
-
-        <!-- v-else -->
-        <div>
+        <div v-if="organizations.isDriveConnected">
           <div class="flex-column details-container q-pt-lg">
             <div class="details-heading">Email</div>
             <div class="details-content q-pt-sm ellipsis">
-              hardcodedemail@test.com
+              {{ organizations.driveEmail }}
             </div>
             <div
               class="flex-row justify-center items-center q-mt-lg google-drive"
@@ -460,7 +355,7 @@
               <span class="text-center"
                 >Connected to Google Drive
                 <span>
-                  <q-icon name="task_alt" color="teal" size="16px" /> </span
+                  <q-icon name="task_alt" color="teal" size="17px" /> </span
               ></span>
             </div>
           </div>
@@ -496,55 +391,81 @@
           </div>
         </div>
         <q-form v-if="editPhotoIDDetails" ref="editPhotoIDForm">
-          <div class="row q-mt-lg full-width">
-            <div class="col q-mr-md">
-              <div class="row text-subtitle1 text-weight-bold">
-                Account Email
-              </div>
+          <div
+            class="flex-row-wrap"
+            :class="isMobileResolution ? 'flex-column' : ''"
+          >
+            <div
+              class="q-mt-20"
+              :class="isMobileResolution ? '' : 'half-width q-pr-12'"
+            >
+              <div class="details-heading q-mb-6">PhotoID Email</div>
               <q-input
-                dense
-                class="full-width"
-                input-class="text-subtitle1"
+                input-class="details-content"
                 outlined
                 v-model="organizations.photoIDEmail"
-                :disable="!editPhotoIDDetails"
+                placehoder="PhotoID Email"
+                :rules="[
+                  val => val.length > 0 || 'Please add PhotoID Email',
+                  val => validateEmail(val) || 'Please add valid email addres'
+                ]"
               />
             </div>
-            <div class="col">
-              <div class="row text-subtitle1 text-weight-bold">
-                Account Api Key
-              </div>
+            <div
+              :class="
+                isMobileResolution ? 'q-mt-xs' : 'half-width q-pl-12 q-mt-20'
+              "
+            >
+              <div class="details-heading q-mb-6">PhotoID API Key</div>
               <q-input
-                dense
-                class="full-width"
-                input-class="text-subtitle1"
+                input-class="details-content"
                 outlined
                 v-model="organizations.photoIDAPIKey"
-                :disable="!editPhotoIDDetails"
+                placehoder="PhotoID API Key"
+                :rules="[val => val.length > 0 || 'Please add PhotoID API Key']"
               />
             </div>
           </div>
-          <div v-if="this.editPhotoIDDetails" class="q-mt-lg row justify-end">
+          <div
+            class="flex-row items-center"
+            :class="
+              isMobileResolution
+                ? 'justify-between q-mt-sm'
+                : 'justify-end q-mt-20'
+            "
+          >
             <q-btn
-              class="col-1 q-mr-sm"
-              size="md"
+              no-caps
+              class="text-subtitle1 fontWeight600 line-height-24 text-primary primary-border flex-row items-center q-mr-lg"
+              :class="
+                isMobileResolution
+                  ? 'border-radius-5 height-40 q-px-xs'
+                  : 'border-radius-10 height-50 q-px-md'
+              "
               label="Cancel"
-              text-color="black"
-              color="white"
               @click="cancelPhotoIDUpdate"
             />
             <q-btn
-              class="col-1"
-              size="md"
-              color="primary"
+              no-caps
+              class="text-subtitle1 fontWeight600 line-height-24 text-white bg-primary"
+              :class="
+                isMobileResolution
+                  ? 'border-radius-5 height-40 q-px-xs'
+                  : 'border-radius-10 height-50 q-px-md'
+              "
               label="Save"
-              @click="onSaveEditedButtonOrganization"
+              @click="onSavePhotoIDForm()"
             />
           </div>
         </q-form>
         <div v-else>
           <div class="flex-row-wrap full-width">
-            <div class="half-width q-pt-lg details-container">
+            <div
+              class="q-pt-lg"
+              :class="
+                isMobileResolution ? 'details-container' : 'half-container'
+              "
+            >
               <div class="details-heading">PhotoID Email</div>
               <div class="details-content q-pt-sm text-primary ellipsis">
                 {{ organizations.photoIDEmail }}
@@ -624,6 +545,9 @@ export default {
         },
         photoIDAPIKey: '',
         photoIDEmail: '',
+        isDriveConnected: false,
+        driveEmail: '',
+        logo: '',
         users: {
           fname: '',
           lname: '',
@@ -714,8 +638,8 @@ export default {
         const payload = {
           data: {
             name: this.organizations.users.fname,
-            photoIDAPIKey: this.organizations.photoIDAPIKey,
-            photoIDEmail: this.organizations.photoIDEmail,
+            // photoIDAPIKey: this.organizations.photoIDAPIKey,
+            // photoIDEmail: this.organizations.photoIDEmail,
             address: {
               addressCountry: 'USA',
               address1: this.organizations.companyDetails.address.address1,
@@ -732,6 +656,22 @@ export default {
         await this.updateUserForOrganization(payload);
         await this.getOrganization();
         this.editCompanyDetails = false;
+        // this.editPhotoIDDetails = false;
+      }
+    },
+
+    async onSavePhotoIDForm() {
+      const success = await this.$refs.editPhotoIDForm.validate();
+      if (success) {
+        const payload = {
+          data: {
+            name: this.organization.name,
+            photoIDEmail: this.organizations.photoIDEmail,
+            photoIDAPIKey: this.organizations.photoIDAPIKey
+          }
+        };
+        await this.updateUserForOrganization(payload);
+        await this.getOrganization();
         this.editPhotoIDDetails = false;
       }
     },
@@ -739,7 +679,7 @@ export default {
     async onSaveEditedButton() {
       const success = await this.$refs.accountSummaryForm.validate();
 
-      if (success && this.users.mailingAddress.address1.length > 0) {
+      if (success) {
         const payload = {
           id: this.userId,
           data: {
@@ -748,12 +688,12 @@ export default {
               lname: this.users.lname
             },
             email: this.users.email,
-            role: this.users.roles,
-            mailingAddress: this.users.mailingAddress,
-            phoneNumber: {
-              type: this.users.contact.type,
-              number: sendPhoneNumber(this.users.contact.number)
-            }
+            role: this.users.roles
+            // mailingAddress: this.users.mailingAddress,
+            // phoneNumber: {
+            //   type: this.users.contact.type,
+            //   number: sendPhoneNumber(this.users.contact.number)
+            // }
           }
         };
         this.editAccountSummary = false;
@@ -763,12 +703,13 @@ export default {
         this.user = getCurrentUser().attributes;
         this.users.fname = this.user.contact.fname;
         this.users.lname = this.user.contact.lname;
-        this.users.contact.type = this.user.phoneNumber.type;
-        this.users.contact.number = showPhoneNumber(
-          this.user.phoneNumber.number
-        );
         this.users.email = this.user.email;
-        this.users.mailingAddress = this.user.mailingAddress;
+        // this.users.contact.type = this.user.phoneNumber.type;
+        // this.users.contact.number = showPhoneNumber(
+        //   this.user.phoneNumber.number
+        // );
+
+        // this.users.mailingAddress = this.user.mailingAddress;
       }
     },
 
@@ -785,24 +726,24 @@ export default {
     cancelAccountSummaryUpdate() {
       this.users.fname = this.user.contact.fname;
       this.users.lname = this.user.contact.lname;
-      if (this.user.phoneNumber) {
-        this.users.contact.type = this.user.phoneNumber.type;
-        this.users.contact.number = this.user.phoneNumber.number;
-      }
-
       this.users.email = this.user.email;
-      if (this.user.mailingAddress) {
-        this.users.mailingAddress.addressRegion =
-          this.user.mailingAddress.addressRegion;
-        this.users.mailingAddress.addressLocality =
-          this.user.mailingAddress.addressLocality;
-        this.users.mailingAddress.houseNumber =
-          this.user.mailingAddress.houseNumber;
-        this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
-        this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-        this.users.mailingAddress.postalCode =
-          this.user.mailingAddress.postalCode;
-      }
+      // if (this.user.phoneNumber) {
+      //   this.users.contact.type = this.user.phoneNumber.type;
+      //   this.users.contact.number = this.user.phoneNumber.number;
+      // }
+
+      // if (this.user.mailingAddress) {
+      //   this.users.mailingAddress.addressRegion =
+      //     this.user.mailingAddress.addressRegion;
+      //   this.users.mailingAddress.addressLocality =
+      //     this.user.mailingAddress.addressLocality;
+      //   this.users.mailingAddress.houseNumber =
+      //     this.user.mailingAddress.houseNumber;
+      //   this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
+      //   this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
+      //   this.users.mailingAddress.postalCode =
+      //     this.user.mailingAddress.postalCode;
+      // }
 
       this.editAccountSummary = false;
     },
@@ -830,8 +771,8 @@ export default {
     },
     cancelPhotoIDUpdate() {
       this.editPhotoIDDetails = false;
-      this.organizations.users.lname = this.organization.photoIDAPIKey;
-      this.organizations.users.email = this.organization.photoIDEmail;
+      this.organizations.photoIDAPIKey = this.organization.photoIDAPIKey;
+      this.organizations.photoIDEmail = this.organization.photoIDEmail;
     },
     copyUserAddress() {
       this.organizations.users.mailingAddress = this.user.mailingAddress;
@@ -839,6 +780,7 @@ export default {
   },
 
   async created() {
+    document.title = 'Account Summary - claimguru';
     this.getAllUsers();
 
     this.paidUnpaidUserDetails;
@@ -876,6 +818,9 @@ export default {
       this.organizations.users.fname = this.organization.name;
       this.organizations.photoIDAPIKey = this.organization.photoIDAPIKey;
       this.organizations.photoIDEmail = this.organization.photoIDEmail;
+      this.organizations.isDriveConnected = this.organization.isDriveConnected;
+      this.organizations.driveEmail = this.organization.driveEmail;
+      this.organizations.logo = this.organization.logo;
 
       // this.organizations.users.contact.number = this.organization.website;
       this.organizations.users.email = this.organization.photoIDEmail;
@@ -902,6 +847,9 @@ export default {
         );
       }
     }
+  },
+  destroyed() {
+    document.title = 'claimguru';
   }
 };
 </script>
@@ -911,28 +859,14 @@ export default {
     0px 2px 4px -2px rgba(16, 24, 40, 0.06);
   border-radius: 20px;
 }
-.details-title {
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 32px;
-}
-.details-heading {
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
-  color: $font-heading;
-}
-.details-content {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: $font-content;
-}
 .company-details {
-  width: calc(100vw - 208px);
+  width: calc(100vw - 508px);
 }
 .details-container {
-  width: calc(100vw - 104px);
+  width: calc(100vw - 404px);
+}
+.half-container {
+  width: calc((100vw - 404px) / 2 - 0px);
 }
 .google-drive {
   height: 44px;
