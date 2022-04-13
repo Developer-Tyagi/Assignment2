@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- header -->
-    <div v-if="isMobile() && $route.name != 'setup' && $route.name !== 'admin'">
+    <div v-if="$route.name != 'setup' && $route.name !== 'admin'">
       <q-header class="bg-white">
         <q-toolbar
           class="row bg-primary rounded-header"
@@ -37,7 +37,7 @@
             icon="menu"
             aria-label="Menu"
             @click="onMenuButtonClick"
-            v-if="isMobile() && $route.name === 'dashboard'"
+            v-if="$route.name === 'dashboard'"
           ></q-btn>
           <div class="cursor-pointer" v-if="toBackButtonVisibility()">
             <q-icon
@@ -93,12 +93,12 @@
       </q-header>
     </div>
 
-    <q-header v-if="!isMobile()" class="bg-white">
+    <q-header class="bg-white">
       <!-- setup header -->
       <div class="row" v-if="$route.name == 'setup'">
         <div
           class="col-3 q-px-xl q-pt-md q-pb-md"
-          v-if="!isMobile() && $route.name == 'setup'"
+          v-if="$route.name == 'setup'"
           style="background-color: #f9e7d8"
         >
           <q-img src="~assets/Logo.svg" width="50%" />
@@ -124,32 +124,42 @@
       </div>
       <!-- admin header -->
       <div
-        class="row"
+        class="row header-color items-center text-center"
         :class="$q.screen.lt.sm ? 'justify-between' : 'justify-end'"
         v-if="$route.name == 'admin'"
-        :style="$q.screen.lt.sm ? '' : 'background-color:#ffff'"
-        style="background-color: #f9e7d8; max-height: 100px; min-height: 70px"
+        style="max-height: 100px; min-height: 70px"
       >
         <!-- menu icon -->
-        <div class="col-3 row items-center" v-if="$q.screen.lt.sm">
+        <div class="col-sm-2 mobile-view">
           <q-btn
             flat
             dense
             color="primary"
-            class="col-4 q-pl-sm"
+            class="col-4 float-left"
             icon="menu"
+            style="margin-left: 12px"
             aria-label="Menu"
             @click="onWebMenuButtonClick"
           ></q-btn>
         </div>
         <!-- logo -->
-        <div class="col-5 row justify-center q-py-sm" v-if="$q.screen.lt.sm">
-          <div class="">
-            <img width="100%" height="100%" src="~assets/new_app_logo.svg" />
-          </div>
+        <div class="col-sm-8 mobile-view">
+          <img width="115" height="38.84" src="~assets/new_app_logo.svg" />
         </div>
+        <div class="col-sm-2 mobile-view">
+          <q-avatar
+            size="3em"
+            font-size="2.5rem"
+            icon="person"
+            class="text-white bg-grey float-right"
+            style="margin-right: 9px"
+          >
+          </q-avatar>
+        </div>
+
         <!-- user name -->
-        <div class="col-4 row items-center justify-end q-pr-lg">
+        <div class="col-9 row justify-end desktop-view"></div>
+        <div class="col-3 row justify-end desktop-view">
           <div class="">
             <q-avatar
               size="3em"
@@ -160,7 +170,6 @@
             </q-avatar>
 
             <span
-              v-if="!$q.screen.lt.sm"
               class="q-pt-md text-capitalize text-weight-bold text-black text-subtitle1"
             >
               {{ userName ? userName : updatedUserName }}
@@ -171,7 +180,7 @@
       <q-separator />
 
       <div
-        v-if="!isMobile() && $route.name !== 'setup' && !$q.screen.lt.sm"
+        v-if="$route.name !== 'setup' && !$q.screen.lt.sm"
         class="q-px-xl q-ml-lg q-mt-sm q-pt-xs"
       >
         <q-breadcrumbs style="color: #667085" active-color="#667085">
@@ -202,130 +211,17 @@
     <!-- menu -->
     <div v-if="$route.name !== 'setup'">
       <!-- Menu Drawer for Mobile application-->
-      <q-drawer
-        v-if="isMobile()"
-        v-model="isLeftSidePanelOpen"
-        :width="intViewportWidth"
-        :breakpoint="992"
-        content-class="bg-side-panel"
-        @hide="onMenuHide()"
-      >
-        <div class="q-px-sm q-pt-lg menu-bar-style q-pb-sm">
-          <div class="row q-pl-lg q-pr-md">
-            <div class="q-pt-sm col-3">
-              <q-avatar
-                size="4.5em"
-                color="white"
-                text-color="primary"
-                font-size="2.5rem"
-                icon="person"
-              />
-            </div>
-            <div
-              class="col column text-weight-bold text-white q-pa-sm q-ml-md text-h6"
-              style="width: calc(100% - 54px)"
-            >
-              <div
-                class="text-capitalize ellipsis-2-lines"
-                style="width: 100%; line-height: 1.2"
-              >
-                {{
-                  user.roles[0].machineValue == 'vendor'
-                    ? user.companyName
-                    : user.name
-                }}
-              </div>
-
-              <div class="text-weight-medium text-subtitle2">
-                {{ user.contact.fname ? user.contact.fname : '' }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <q-scroll-area style="height: calc(100% - 265px)">
-          <div class="q-pr-sm">
-            <q-list separator dark>
-              <q-item
-                clickable
-                v-ripple
-                v-for="link in sidebarItems"
-                :key="link.title"
-                @click="routeTo(link)"
-                v-bind="link"
-                class="q-mt-lg bg-white rounded-sidebar q-pa-none q-pb-xs"
-                v-if="
-                  (link.title != 'Dashboard' || isMobile()) &&
-                  (link.title != 'Claims' || isMobile()) &&
-                  (link.title != 'Clients' || isMobile()) &&
-                  (link.title != 'Leads' || isMobile()) &&
-                  (link.title != 'Vendors' || isMobile()) &&
-                  (link.title != 'Carriers' || isMobile()) &&
-                  (link.title != 'Mortgages' || isMobile()) &&
-                  (link.title != 'Vendors' || isMobile()) &&
-                  (link.title != 'Carriers' || isMobile()) &&
-                  (link.title != 'Mortgages' || isMobile()) &&
-                  (link.title != 'Manage Users' || !isMobile()) &&
-                  (link.title != 'Configuration' || !isMobile()) &&
-                  (link.title != 'Admin' || !isMobile())
-                "
-              >
-                <q-item-section @click="onClickMenuItem(link.title)">
-                  <div
-                    class="row text-primary q-mb-sm"
-                    style="max-height: 68px"
-                  >
-                    <div class="q-ml-lg col-2 q-mr-sm q-pt-xs">
-                      <q-icon
-                        :size="link.title == 'Reports' ? '2rem' : '2.5rem'"
-                        :style="
-                          link.title == 'Reports' ? 'padding-top:10px' : ''
-                        "
-                        class="q-mt-sm q-mb-sm"
-                      >
-                        <q-img :src="getImage(link.icon)" color="primary" />
-                      </q-icon>
-                    </div>
-                    <div class="col-8">
-                      <div class="text-subtitle1 text-bold q-pt-sm">
-                        {{ link.title }}
-                      </div>
-
-                      <div style="font-size: 10px">
-                        {{ link.description }}
-                      </div>
-                    </div>
-                  </div>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </div>
-        </q-scroll-area>
-        <div class="q-px-lg q-mt-sm">
-          <q-btn
-            class="full-width q-mt-md menu-bar-style text-subtitle1 text-bold"
-            label="LOGOUT"
-            style="border-radius: 25px; width: 100%; height: 50px"
-            @click="logout()"
-          />
-        </div>
-        <q-separator class="q-mt-md q-mb-sm bg-primary" style="padding: none" />
-        <p class="text-black q-ml-md" style="opacity: 50%; font-size: 12px">
-          Claimguru Version {{ this.version }}
-        </p>
-      </q-drawer>
 
       <!--Menu Drawer for Web Applicaiton-->
       <q-drawer
         v-model="isLeftWebSidePanelOpen"
-        show-if-above
-        :mini="!webDrawer || miniState"
-        :width="290"
-        :breakpoint="400"
+        :show-if-above="true"
+        :width="300"
+        :breakpoint="1023"
         bordered
-        v-else
       >
         <div class="full-height" style="background-color: #f9e7d8">
-          <div class="col-2 q-mb-lg" v-if="!$q.screen.lt.sm">
+          <div class="col-2 q-mb-lg">
             <!-- <div v-if="miniState" class="row items-center">
               <div class="col q-ml-md q-py-md">
                 <q-btn
@@ -339,16 +235,6 @@
               </div>
             </div> -->
             <div class="row justify-center">
-              <!-- <div v-if="!miniState" class="col-2 q-ml-md">
-                <q-btn
-                  dense
-                  round
-                  unelevated
-                  color="primary"
-                  icon="chevron_left"
-                  @click="webDrawerCollapse()"
-                />
-              </div> -->
               <div class="col-6">
                 <q-img
                   class="web-menu-claim-guru-logo"
@@ -676,9 +562,9 @@ export default {
             },
             // Change the path to billing later
             {
-              name: 'Billing',
+              name: 'Billings',
               key: 'billing',
-              link: '/reports',
+              link: '/billing',
               icon: 'reports_menu.svg',
               description: 'Download files.'
             }
@@ -772,9 +658,9 @@ export default {
     },
     // function is used to open the suboption menu item for web.
     openSubOptionMenuItem(key, link, menuItem) {
-      console.log('menuItem', menuItem);
-      console.log('link', link);
-      console.log('key', key);
+      //  console.log('menuItem', menuItem);
+      //  console.log('link', link);
+      // console.log('key', key);
 
       this.breadcrumbsData.menuItemTitle = menuItem.title;
       this.breadcrumbsData.menuItemLink = key.link;
@@ -782,9 +668,13 @@ export default {
       this.breadcrumbsData.menuItem = menuItem;
       this.subOptionSelected = key;
       const route = this.$router.currentRoute.fullPath.split('/')[1];
+      // console.log("RoutE:",route,"Link SLice:",link.slice(1),'key.link',key.link)
       if (route != link.slice(1)) {
-        this.$router.push(link);
+        this.$router.push(key.link);
       }
+      // if (route != key.link) {
+      //   this.$router.push(key.link);
+      // }
       this.webMenuSubOptionTab(key);
     },
 
@@ -984,6 +874,22 @@ export default {
 .bg-side-panel {
   background-color: #ededed;
 }
+.mobile-view {
+  @media only screen and (max-width: 1023px) {
+    display: block;
+  }
+  @media only screen and (min-width: 1024px) {
+    display: none;
+  }
+}
+.desktop-view {
+  @media only screen and (max-width: 1023px) {
+    display: none;
+  }
+  @media only screen and (min-width: 1024px) {
+    display: block;
+  }
+}
 .title {
   font-size: 16px;
   font-weight: bold;
@@ -1013,6 +919,14 @@ export default {
   left: 38%;
   padding-left: 45px;
   margin-left: -118px;
+}
+.header-color {
+  @media only screen and (max-width: 1023px) {
+    background: #f9e7d8;
+  }
+  @media only screen and (min-width: 1024px) {
+    background: #ffffff;
+  }
 }
 .menu-item-styling-non-component {
   width: 275px;
