@@ -25,7 +25,7 @@ const routes = [
           if (!token) {
             next();
           } else if (token && to.name == 'login') {
-            next('setup');
+            next('onBoarding');
           }
         }
       },
@@ -39,11 +39,11 @@ const routes = [
           if (!token) {
             next();
           } else if (
-            from.name == 'setup' ||
+            from.name == 'onBoarding' ||
             from.name == 'login' ||
             to.name == 'signup'
           ) {
-            next('setup');
+            next('onBoarding');
           }
         }
       },
@@ -96,10 +96,34 @@ const routes = [
     beforeEnter: guardMyroute,
     children: [
       {
-        path: 'setup',
-        name: 'setup',
+        path: 'onBoarding',
+        name: 'onBoarding',
         caseSensitive: true,
-        component: () => import('pages/OnBoard.vue')
+        component: () => import('pages/onboard/OnBoardStart.vue')
+      },
+      {
+        path: 'onBoarding/step1',
+        name: 'onBoarding',
+        caseSensitive: true,
+        component: () => import('pages/onboard/OnBoardStep1.vue')
+      },
+      {
+        path: 'onBoarding/step2',
+        name: 'onBoarding',
+        caseSensitive: true,
+        component: () => import('pages/onboard/OnBoardStep2.vue')
+      },
+      {
+        path: 'onBoarding/step3',
+        name: 'onBoarding',
+        caseSensitive: true,
+        component: () => import('pages/onboard/OnBoardStep3.vue')
+      },
+      {
+        path: 'onBoarding/step4',
+        name: 'onBoarding',
+        caseSensitive: true,
+        component: () => import('pages/onboard/OnBoardStep4.vue')
       },
       // {
       //   path: 'signup',

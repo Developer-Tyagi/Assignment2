@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- header -->
-    <div v-if="$route.name != 'setup' && $route.name !== 'admin'">
+    <div v-if="$route.name != 'onBoarding' && $route.name !== 'admin'">
       <!-- <q-header class="bg-white">
         <q-toolbar
           class="row bg-primary rounded-header"
@@ -98,16 +98,16 @@
       :reveal-offset="false"
     >
       <!-- setup header -->
-      <div class="row" v-if="$route.name == 'setup'">
+      <div class="row" v-if="$route.name == 'onBoarding'">
         <div
-          class="col-xl-3 col-lg-3 col-md-4 q-pt-lg q-pb-md"
-          v-if="$route.name == 'setup'"
+          class="col-lg-4 col-md-4 q-pt-lg q-pb-md"
+          v-if="$route.name == 'onBoarding'"
           style="background-color: #f9e7d8"
         >
           <q-img size="1em" src="~assets/Logo.svg" class="LogoSize q-ml-32" />
         </div>
         <div
-          class="col-xl-9 col-lg-9 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
+          class="col-lg-8 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
         >
           <div class="row justify-end q-pr-xl">
             <q-avatar
@@ -202,7 +202,7 @@
       <!-- <q-separator /> -->
 
       <div
-        v-if="!isMobile() && $route.name !== 'setup' && !$q.screen.lt.sm"
+        v-if="!isMobile() && $route.name !== 'onBoarding' && !$q.screen.lt.sm"
         class="q-px-xl q-ml-lg q-mt-sm q-pt-xs"
       >
         <q-breadcrumbs style="color: #667085" active-color="#667085">
@@ -231,7 +231,7 @@
     </div>
 
     <!-- menu -->
-    <div v-if="$route.name !== 'setup'">
+    <div v-if="$route.name !== 'onBoarding'">
       <!-- Menu Drawer for Mobile application-->
       <q-drawer
         v-if="isMobile()"
@@ -803,10 +803,6 @@ export default {
     },
     // function is used to open the suboption menu item for web.
     openSubOptionMenuItem(key, link, menuItem) {
-      console.log('menuItem', menuItem);
-      console.log('link', link);
-      console.log('key', key);
-
       this.breadcrumbsData.menuItemTitle = menuItem.title;
       this.breadcrumbsData.menuItemLink = key.link;
       this.breadcrumbsData.subItemTitle = key.name;

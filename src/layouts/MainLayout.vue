@@ -25,7 +25,7 @@
             $route.name != 'configuration' &&
             $route.name != 'manage users' &&
             $route.name != 'admin' &&
-            $route.name != 'setup' &&
+            $route.name != 'onBoarding' &&
             $route.name != 'reports' &&
             $route.name != 'signup' &&
             $route.name != 'set-password' &&
@@ -64,9 +64,9 @@
       >
         <AddOptions />
       </q-dialog>
-      <div class="row" v-if="$route.name == 'setup'">
+      <div class="row" v-if="$route.name == 'onBoarding'">
         <div
-          class="col-md-4 sm-hide xs-hide col-lg-3 col-xl-3 text-footer q-py-38"
+          class="col-md-4 sm-hide xs-hide text-footer q-py-38"
           style="background-color: #f9e7d8; margin-left: 0px !important"
         >
           <span class="px-32" style="color: #0c0c0c"> © ClaimGuru</span>
@@ -98,7 +98,7 @@
             $route.name != 'configuration' &&
             $route.name != 'manage users' &&
             $route.name != 'admin' &&
-            $route.name != 'setup' &&
+            $route.name != 'onBoarding' &&
             $route.name != 'reports' &&
             $route.name != 'signup' &&
             $route.name != 'set-password' &&
@@ -137,7 +137,7 @@
       >
         <AddOptions />
       </q-dialog>
-      <q-footer class="row" v-show="$route.name == 'setup'">
+      <q-footer class="row" v-show="$route.name == 'onBoarding'">
         <div
           class="col-md-4 col-lg-3 col-xl-4 text-footer px-32 q-pb-sm q-pl-xl"
           style="background-color: #f9e7d8"
@@ -173,9 +173,9 @@ export default {
     let data = await this.getUserInfo();
     if (
       data.attributes.onboard.isCompleted == false &&
-      this.$route.name != 'setup'
+      this.$route.name != 'onBoarding'
     ) {
-      this.$router.push('/setup');
+      this.$router.push('/onBoarding');
     }
   },
   methods: {

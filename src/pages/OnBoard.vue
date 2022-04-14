@@ -249,13 +249,8 @@
                           outlined
                           v-model="companyDetails.contactNumber"
                           lazy-rules
-                          maxlength="10"
                           :rules="[
-                            val =>
-                              val.length > 0 || 'Please add contact number',
-                            val =>
-                              val.length > 9 ||
-                              'Mobile number must contain 10 digit'
+                            val => val.length > 0 || 'Please add contact number'
                           ]"
                         >
                           <template v-slot:prepend>
@@ -567,7 +562,7 @@
 </template>
 <script>
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 // import customFooterMain from '../components/CustomFooterMain.vue'
 // import { isMobile } from '@utils/common';
 import { validateEmail } from '@utils/validation';
@@ -592,7 +587,6 @@ export default {
       companyDetails: {
         address: {
           address1: '',
-          address2: '',
           addressLocality: '',
           addressRegion: '',
           country: '',
@@ -653,7 +647,6 @@ export default {
                 address: {
                   addressCountry: this.companyDetails.address.country,
                   address1: this.companyDetails.address.address1,
-                  address2: this.companyDetails.address.address2,
                   addressLocality: this.companyDetails.address.addressLocality,
                   addressRegion: this.companyDetails.address.addressRegion,
                   postalCode: this.companyDetails.address.postalCode
@@ -681,7 +674,6 @@ export default {
             }
           };
           await this.updateUserForOrganization(payload);
-          console.log('get');
           await this.getOrganization();
           var payload1 = {
             isCompleted: true
@@ -708,31 +700,33 @@ export default {
   async created() {
     this.step = 0;
     await this.getOrganization();
-    console.log(this.organization.address, 'mil gya addresss1111');
     if (this.organization) {
       this.companyDetails.name = this.organization.name;
       // console.log(685,this.organization.address.address1, "addresss111", );
       if (this.organization) {
-        console.log('inside connndddddtionnn');
-        this.companyDetails.address.address1 =
-          this.organization.address.address1;
-        this.companyDetails.address.address2 =
-          this.organization.address.address2;
+        this.companyDetails.address.address1 = this.organization.address
+          ? this.organization.address.address1
+          : '';
+        this.companyDetails.address.addressLocality = this.organization.address
+          ? this.organization.address.addressLocality
+          : '';
+        this.companyDetails.address.addressRegion = this.organization.address
+          ? this.organization.address.addressRegion
+          : '';
+        this.companyDetails.address.postalCode = this.organization.address
+          ? this.organization.address.postalCode
+          : '';
+        this.companyDetails.contactNumber = this.organization.phoneNumber
+          ? this.organization.phoneNumber.number
+          : '';
+        this.companyDetails.email = this.organization.email;
+        this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
+        this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       }
-      this.companyDetails.address.addressLocality =
-        this.organization.address.addressLocality;
-      this.companyDetails.address.addressRegion =
-        this.organization.address.addressRegion;
-      this.companyDetails.address.postalCode =
-        this.organization.address.postalCode;
-      this.companyDetails.contactNumber = this.organization.phoneNumber.number;
-      this.companyDetails.email = this.organization.email;
-      this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
-      this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
-      this.step = 2;
-      this.checkConnection = true;
+      this.step = 0;
+      // this.checkConnection = true;
       if (this.$route.query.googleConnect == 'true') {
-        // this.checkConnection = true;
+        this.checkConnection = true;
       } else {
         let data = await this.getUserInfo();
         if (data.attributes.onboard.isCompleted == true) {
@@ -1019,6 +1013,9 @@ export default {
 }
 ::v-deep .q-btn__wrapper:before {
   box-shadow: none;
+}
+::v-deep .q-field__messages {
+  line-height: 4px;
 }
 ::v-deep .absolute-full {
   background-size: auto;
