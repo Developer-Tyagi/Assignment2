@@ -66,7 +66,7 @@
       </q-dialog>
       <div class="row" v-if="$route.name == 'onBoarding'">
         <div
-          class="col-md-4 sm-hide xs-hide text-footer q-py-38"
+          class="col-md-4 sm-hide xs-hide text-footer q-py-38 mt-125"
           style="background-color: #f9e7d8; margin-left: 0px !important"
         >
           <span class="px-32" style="color: #0c0c0c"> © ClaimGuru</span>
@@ -307,5 +307,11 @@ export default {
 }
 .ml-1 {
   margin-left: 2px;
+}
+
+@media only screen and (width: 1024px) {
+  .mt-125 {
+    // margin-top: 125px;
+  }
 }
 </style>

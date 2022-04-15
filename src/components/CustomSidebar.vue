@@ -2,9 +2,7 @@
   <q-page class="poppinsFont min-height">
     <div class="row" style="height: calc(100vh - 119px)">
       <div style="width: 100%">
-        <div
-          class="dFlex justify-between lg-hide xl-hide md-hide Bottom-border"
-        >
+        <div class="dFlex justify-between lg-hide xl-hide md-hide">
           <div
             class=""
             v-if="$route.name == 'onBoarding'"
@@ -25,6 +23,7 @@
             </div>
           </div>
         </div>
+        <q-separator style="color: #f9dfc8; height: 1px; margin-left: -14px" />
         <div class="Account-setup-text mt-50">Account Setup</div>
         <!-- custom stepper -->
         <div class="column q-mt-43">
@@ -131,6 +130,16 @@
         </div>
       </div>
     </div>
+    <!-- <div class="row" v-if="$route.name == 'onBoarding'">
+        <div
+          class="sm-hide xs-hide text-footer q-py-38"
+          style="background-color: #f9e7d8; margin-left: 0px !important"
+        >
+          <span style="color: #0c0c0c"> © ClaimGuru</span>
+          <span class="q-px-sm" style="color: #0c0c0c">{{ CurrentYear }}</span>
+        </div>
+        <div class=" col-lg-9 col-xl-8 bg-white"></div>
+      </div> -->
   </q-page>
 </template>
 
@@ -143,6 +152,13 @@ export default {
   },
   props: {
     step: String
+  },
+  computed: {
+    CurrentYear() {
+      const d = new Date();
+      let year = d.getFullYear();
+      return year;
+    }
   },
   methods: {
     onResize(e) {

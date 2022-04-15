@@ -119,7 +119,7 @@
       <input
         required
         type="text"
-        borderless
+        outlined
         :id="'id' + id"
         class="full-width inside-text"
         v-model="address.address1"
@@ -132,6 +132,8 @@
         "
         @keydown="validateAddress(address.address1)"
         placeholder="Company Address"
+        lazy-rules
+        :rules="[val => val.length > 0 || 'Please fill address']"
       />
       <span class="q-pl-sm" style="color: #c10015 !important; font-size: 11px">
         {{ errorMSG }}

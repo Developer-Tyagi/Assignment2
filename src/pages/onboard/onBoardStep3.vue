@@ -194,19 +194,14 @@ export default {
         this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       }
       this.step = 0;
-      this.checkConnection = true;
+      //   this.checkConnection = true;
+      console.log(this.$route.query.googleConnect);
       if (this.$route.query.googleConnect == 'true') {
-        // this.checkConnection = true;
+        this.checkConnection = true;
       } else {
         let data = await this.getUserInfo();
         if (data.attributes.onboard.isCompleted == true) {
-          // console.log("6755555");
           this.$router.push('/dashboard');
-          // if (isMobile()) {
-          //   this.$router.push('/dashboard');
-          // } else {
-          //   this.$router.push('/admin');
-          // }
         }
       }
     }

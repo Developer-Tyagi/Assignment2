@@ -11,16 +11,32 @@
         <q-separator class="seperator-color" />
         <div class="q-px-xl">
           <div class="column pl-62 pr-110 full-height">
-            <div class="col-2 mt-24">
+            <div class="col-2 mt-40">
               <div class="text-h5 fontWeight600">Connect With Google Drive</div>
               <div
-                class="q-mt-lg fontWeight400 subtitle2"
+                class="q-mt-sm fontWeight400 subtitle2"
                 style="color: #667085"
               >
                 In order to provide full access to ClaimGuru, we need permission
                 to connect to your Google account. We synchronize your ClaimGuru
                 files with your Google Drive so you will retain full ownership
                 over your data.
+              </div>
+              <div class="mt-30" v-if="this.checkConnection == true">
+                <span style="font-weight: 600; font-size: 16px; color: #101828"
+                  >Email</span
+                ><br />
+                <span
+                  class="mt-8"
+                  style="
+                    font-weight: 400;
+                    font-size: 16px;
+                    color: #151821;
+                    letter-spacing: 00.15px;
+                    font-family: 'Poppins';
+                  "
+                  >test@gmail.com</span
+                >
               </div>
             </div>
 
@@ -86,11 +102,19 @@
               >
 
               <q-btn
+                v-if="toShowConnected"
                 style="border-radius: 10px"
                 class="fontWeight600 Next-Btn"
                 no-caps
                 @click="NextStepperValue"
-                :disable="!checkConnection"
+                >Next</q-btn
+              >
+              <q-btn
+                v-if="toconnectedNext"
+                style="border-radius: 10px"
+                class="fontWeight600 Next-Btn"
+                no-caps
+                @click="toconnectedNextPage"
                 >Next</q-btn
               >
             </div>
@@ -141,7 +165,9 @@ export default {
       },
       editCompanyDetails: true,
       dialCode: '',
-      checkConnection: false
+      checkConnection: false,
+      toconnectedNext: true,
+      toShowConnected: false
     };
   },
   components: {
@@ -159,7 +185,14 @@ export default {
     getStarted() {
       this.$router.push('/onBoarding/step1');
     },
+    toconnectedNextPage() {
+      this.toconnectedNext = false;
+      this.checkConnection = true;
+      this.toShowConnected = true;
+    },
     async NextStepperValue() {
+      this.toconnectedNextPage = true;
+      this.checkConnection = true;
       this.$router.push('/onBoarding/step3');
     },
     onRedirectToGoogleAuth() {
@@ -204,9 +237,9 @@ export default {
         this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       }
       this.step = 0;
-      this.checkConnection = true;
+      //   this.checkConnection = true;
       if (this.$route.query.googleConnect == 'true') {
-        // this.checkConnection = true;
+        this.checkConnection = true;
       } else {
         let data = await this.getUserInfo();
         if (data.attributes.onboard.isCompleted == true) {
@@ -252,6 +285,9 @@ export default {
 .fontWeight500 {
   font-weight: 500;
 }
+.mt-8 {
+  margin-top: 8px;
+}
 .fontWeight400 {
   font-weight: 400;
 }
@@ -267,6 +303,9 @@ export default {
 }
 .mt-43 {
   margin-top: 43px;
+}
+.mt-24 {
+  margin-top: 24px;
 }
 .mb-15 {
   margin-bottom: 15px;
@@ -474,8 +513,8 @@ export default {
   display: flex;
   // align-items: center;
 }
-.mt-24 {
-  margin-top: 24px;
+.mt-40 {
+  margin-top: 40px;
 }
 .inside-text {
   font-family: 'Poppins';
@@ -656,9 +695,15 @@ export default {
   }
 }
 @media only screen and (max-width: 600px) {
+  .mt-24 {
+    margin-top: 16px;
+  }
   .q-px-32 {
     padding-left: 15px;
     padding-top: 15px;
+  }
+  .mt-8 {
+    margin-top: 4px;
   }
   .q-pl-32 {
     padding-left: 15px;
@@ -675,7 +720,7 @@ export default {
     margin-top: 24px;
   }
   .mt-30 {
-    margin-top: 16px;
+    margin-top: 20px;
   }
   .q-mx-xl {
     padding-left: 0px;
@@ -792,9 +837,9 @@ export default {
   .mt-404 {
     margin-top: 60px;
   }
-  .mt-24 {
-    margin-top: 16px;
-    margin-left: 4px;
+  .mt-40 {
+    margin-top: 25px;
+    // margin-left: 4px;
   }
   .Back-Btn {
     width: 81px !important;
@@ -852,7 +897,7 @@ export default {
 }
 @media only screen and (width: 320px) {
   .connectedGooglebtn {
-    width: 300px;
+    width: 287px;
     height: 45px;
     margin-right: 0px;
   }

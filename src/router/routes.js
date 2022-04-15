@@ -99,31 +99,31 @@ const routes = [
         path: 'onBoarding',
         name: 'onBoarding',
         caseSensitive: true,
-        component: () => import('pages/onboard/OnBoardStart.vue')
+        component: () => import('pages/onboard/onBoardStart.vue')
       },
       {
         path: 'onBoarding/step1',
         name: 'onBoarding',
         caseSensitive: true,
-        component: () => import('pages/onboard/OnBoardStep1.vue')
+        component: () => import('pages/onboard/onBoardStep1.vue')
       },
       {
         path: 'onBoarding/step2',
         name: 'onBoarding',
         caseSensitive: true,
-        component: () => import('pages/onboard/OnBoardStep2.vue')
+        component: () => import('pages/onboard/onBoardStep2.vue')
       },
       {
         path: 'onBoarding/step3',
         name: 'onBoarding',
         caseSensitive: true,
-        component: () => import('pages/onboard/OnBoardStep3.vue')
+        component: () => import('pages/onboard/onBoardStep3.vue')
       },
       {
         path: 'onBoarding/step4',
         name: 'onBoarding',
         caseSensitive: true,
-        component: () => import('pages/onboard/OnBoardStep4.vue')
+        component: () => import('pages/onboard/onBoardStep4.vue')
       },
       // {
       //   path: 'signup',

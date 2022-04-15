@@ -2,7 +2,7 @@
   <div>
     <!-- header -->
     <div v-if="$route.name != 'onBoarding' && $route.name !== 'admin'">
-      <!-- <q-header class="bg-white">
+      <q-header class="bg-white">
         <q-toolbar
           class="row bg-primary rounded-header"
           v-if="$route.name === 'dashboard'"
@@ -37,7 +37,7 @@
             icon="menu"
             aria-label="Menu"
             @click="onMenuButtonClick"
-            v-if="isMobile() && $route.name === 'dashboard'"
+            v-if="$route.name === 'dashboard'"
           ></q-btn>
           <div class="cursor-pointer" v-if="toBackButtonVisibility()">
             <q-icon
@@ -48,8 +48,11 @@
             />
           </div>
           <div class="text-uppercase text-bold q-mx-auto">
-            Here By default the Page should be Active Lead, we change the header name based on the user routing, if user click on converted Lead then we land it to converted lead page and show the converted lead data, if user click on
-          Dead lead then we land on Dead Lead page and show Dead Lead Datamfrom lead Dashboard page
+            Here By default the Page should be Active Lead, we change the header
+            name based on the user routing, if user click on converted Lead then
+            we land it to converted lead page and show the converted lead data,
+            if user click on Dead lead then we land on Dead Lead page and show
+            Dead Lead Datamfrom lead Dashboard page
             <span v-if="$route.name == 'Leads'">{{
               converted ? converted : 'Active'
             }}</span>
@@ -90,18 +93,18 @@
             "
           />
         </div>
-      </q-header> -->
+      </q-header>
     </div>
 
     <div
       class="bg-white ht-83 sm-hide xs-hide bigScreen"
       :reveal-offset="false"
     >
+      <!-- <q-header class="bg-white"> -->
       <!-- setup header -->
       <div class="row" v-if="$route.name == 'onBoarding'">
         <div
           class="col-lg-4 col-md-4 q-pt-lg q-pb-md"
-          v-if="$route.name == 'onBoarding'"
           style="background-color: #f9e7d8"
         >
           <q-img size="1em" src="~assets/Logo.svg" class="LogoSize q-ml-32" />
@@ -154,32 +157,42 @@
       </div>
       <!-- admin header -->
       <div
-        class="row"
+        class="row header-color items-center text-center"
         :class="$q.screen.lt.sm ? 'justify-between' : 'justify-end'"
         v-if="$route.name == 'admin'"
-        :style="$q.screen.lt.sm ? '' : 'background-color:#ffff'"
-        style="background-color: #f9e7d8; max-height: 100px; min-height: 70px"
+        style="max-height: 100px; min-height: 70px"
       >
         <!-- menu icon -->
-        <div class="col-3 row items-center" v-if="$q.screen.lt.sm">
+        <div class="col-sm-2 mobile-view">
           <q-btn
             flat
             dense
             color="primary"
-            class="col-4 q-pl-sm"
+            class="col-4 float-left"
             icon="menu"
+            style="margin-left: 12px"
             aria-label="Menu"
             @click="onWebMenuButtonClick"
           ></q-btn>
         </div>
         <!-- logo -->
-        <div class="col-5 row justify-center q-py-sm" v-if="$q.screen.lt.sm">
-          <div class="">
-            <img width="100%" height="100%" src="~assets/new_app_logo.svg" />
-          </div>
+        <div class="col-sm-8 mobile-view">
+          <img width="115" height="38.84" src="~assets/new_app_logo.svg" />
         </div>
+        <div class="col-sm-2 mobile-view">
+          <q-avatar
+            size="3em"
+            font-size="2.5rem"
+            icon="person"
+            class="text-white bg-grey float-right"
+            style="margin-right: 9px"
+          >
+          </q-avatar>
+        </div>
+
         <!-- user name -->
-        <div class="col-4 row items-center justify-end q-pr-lg">
+        <div class="col-9 row justify-end desktop-view"></div>
+        <div class="col-3 row justify-end desktop-view">
           <div class="">
             <q-avatar
               size="3em"
@@ -190,7 +203,6 @@
             </q-avatar>
 
             <span
-              v-if="!$q.screen.lt.sm"
               class="q-pt-md text-capitalize text-weight-bold text-black text-subtitle1"
               style=""
             >
@@ -348,15 +360,13 @@
       <!--Menu Drawer for Web Applicaiton-->
       <q-drawer
         v-model="isLeftWebSidePanelOpen"
-        show-if-above
-        :mini="!webDrawer || miniState"
-        :width="290"
-        :breakpoint="400"
+        :show-if-above="true"
+        :width="300"
+        :breakpoint="1023"
         bordered
-        v-else
       >
         <div class="full-height" style="background-color: #f9e7d8">
-          <div class="col-2 q-mb-lg" v-if="!$q.screen.lt.sm">
+          <div class="col-2 q-mb-lg">
             <!-- <div v-if="miniState" class="row items-center">
               <div class="col q-ml-md q-py-md">
                 <q-btn
@@ -370,16 +380,6 @@
               </div>
             </div> -->
             <div class="row justify-center">
-              <!-- <div v-if="!miniState" class="col-2 q-ml-md">
-                <q-btn
-                  dense
-                  round
-                  unelevated
-                  color="primary"
-                  icon="chevron_left"
-                  @click="webDrawerCollapse()"
-                />
-              </div> -->
               <div class="col-6">
                 <q-img
                   class="web-menu-claim-guru-logo"
@@ -707,9 +707,9 @@ export default {
             },
             // Change the path to billing later
             {
-              name: 'Billing',
+              name: 'Billings',
               key: 'billing',
-              link: '/reports',
+              link: '/billing',
               icon: 'reports_menu.svg',
               description: 'Download files.'
             }
@@ -809,9 +809,13 @@ export default {
       this.breadcrumbsData.menuItem = menuItem;
       this.subOptionSelected = key;
       const route = this.$router.currentRoute.fullPath.split('/')[1];
+      // console.log("RoutE:",route,"Link SLice:",link.slice(1),'key.link',key.link)
       if (route != link.slice(1)) {
-        this.$router.push(link);
+        this.$router.push(key.link);
       }
+      // if (route != key.link) {
+      //   this.$router.push(key.link);
+      // }
       this.webMenuSubOptionTab(key);
     },
 
@@ -1021,6 +1025,22 @@ export default {
 .bg-side-panel {
   background-color: #ededed;
 }
+.mobile-view {
+  @media only screen and (max-width: 1023px) {
+    display: block;
+  }
+  @media only screen and (min-width: 1024px) {
+    display: none;
+  }
+}
+.desktop-view {
+  @media only screen and (max-width: 1023px) {
+    display: none;
+  }
+  @media only screen and (min-width: 1024px) {
+    display: block;
+  }
+}
 .title {
   font-size: 16px;
   font-weight: bold;
@@ -1052,6 +1072,14 @@ export default {
   left: 38%;
   padding-left: 45px;
   margin-left: -118px;
+}
+.header-color {
+  @media only screen and (max-width: 1023px) {
+    background: #f9e7d8;
+  }
+  @media only screen and (min-width: 1024px) {
+    background: #ffffff;
+  }
 }
 .menu-item-styling-non-component {
   width: 275px;

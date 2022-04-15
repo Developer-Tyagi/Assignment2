@@ -82,7 +82,7 @@
                           dense
                           class=""
                           input-class=" inside-text"
-                          style="border-radius: 8px; height: 44px"
+                          style="border-radius: 8px"
                           placeholder="Company Email"
                           outlined
                           v-model="companyDetails.email"
@@ -118,7 +118,7 @@
 
                     <div
                       class="row justify-end"
-                      style="margin-top: 60px; padding-bottom: 100px"
+                      style="margin-top: 60px; padding-bottom: 75px"
                     >
                       <q-btn
                         class="col-1 Next-Btn"
@@ -258,6 +258,10 @@ export default {
   height: 32px !important;
   border: 2px solid #ef5926;
   border-radius: 16px;
+}
+.q-py-38 {
+  padding-top: 38px;
+  padding-bottom: 38px;
 }
 .q-page-container {
   margin: 0 auto !important;
@@ -869,6 +873,9 @@ export default {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 0px;
+  }
+  .mt-125 {
+    margin-top: 125px;
   }
   .heighT {
     // height: -webkit-fill-available
