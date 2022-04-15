@@ -42,6 +42,9 @@
 .q-field--outlined .q-field__control {
   border-radius: 8px;
   height: 44px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .q-pr-12 {
   padding-right: 12px;

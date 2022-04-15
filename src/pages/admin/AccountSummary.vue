@@ -11,7 +11,7 @@
             <q-btn
               flat
               no-caps
-              class="text-subtitle1 fontWeight600 primary-border"
+              class="text-subtitle1 fontWeight600 primary-border flex-row items-center line-height-24"
               :class="
                 isMobileResolution
                   ? 'border-radius-5 height-40 q-px-xs'
@@ -24,8 +24,91 @@
           </div>
         </div>
         <q-form v-if="editCompanyDetails" ref="companyDetailsForm">
+          <div
+            class="flex-row full-width q-pt-lg"
+            :class="isMobileResolution ? 'flex-column' : ''"
+          >
+            <span>
+              <span class="camera-container absolute-position">
+                <q-img
+                  @click="initiateLogoUpload()"
+                  class="camera-icon"
+                  src="../../assets/camera.svg"
+                  alt="Camera"
+                />
+              </span>
+              <img
+                v-if="organizations.logo"
+                :class="isMobileResolution ? 'image-60' : 'image-80'"
+                :src="organizations.logo"
+                alt="Company logo"
+              />
+              <q-avatar
+                v-else
+                :class="isMobileResolution ? 'image-60' : 'image-80'"
+                icon="person"
+                font-size="2.5rem"
+                class="text-white bg-grey"
+              >
+              </q-avatar>
+            </span>
+            <div
+              :class="
+                isMobileResolution
+                  ? 'details-container q-mt-lg'
+                  : 'company-details q-ml-lg'
+              "
+            >
+              <div class="flex-column full-width">
+                <div class="details-heading q-mb-6">Company Name</div>
+                <q-input
+                  input-class="details-content"
+                  outlined
+                  v-model.trim="organizations.users.fname"
+                  placehoder="Company Name"
+                  maxlength="128"
+                  lazy-rules
+                  :rules="[val => val.length > 0 || 'Please add company name']"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="flex-row items-center"
+            :class="
+              isMobileResolution
+                ? 'justify-between q-mt-sm'
+                : 'justify-end q-mt-20'
+            "
+          >
+            <q-btn
+              no-caps
+              flat
+              class="text-subtitle1 fontWeight600 line-height-24 text-primary primary-border flex-row items-center q-mr-lg"
+              :class="
+                isMobileResolution
+                  ? 'border-radius-5 height-40 q-px-xs'
+                  : 'border-radius-10 height-50 q-px-md'
+              "
+              label="Cancel"
+              @click="cancelCompanyDetailsUpdate"
+            />
+            <q-btn
+              no-caps
+              class="text-subtitle1 fontWeight600 line-height-24 text-white bg-primary"
+              :class="
+                isMobileResolution
+                  ? 'border-radius-5 height-40 q-px-xs'
+                  : 'border-radius-10 height-50 q-px-md'
+              "
+              label="Save"
+              @click="onSaveEditedButtonOrganization"
+            />
+          </div>
+
           <div class="q-mt-xl">
-            <div class="row text-subtitle1 text-weight-bold">
+            <!-- <div class="row text-subtitle1 text-weight-bold">
               Company Name<span class="text-red">*</span>
             </div>
 
@@ -38,25 +121,15 @@
                 v-model="organizations.users.fname"
                 :disable="!editCompanyDetails"
                 maxlength="128"
+                lazy-rules
                 :rules="[val => val.length > 0 || 'Please add company name']"
               />
-            </div>
+            </div> -->
 
             <div class="col q-mt-sm q-mr-md full-width">
               <div class="row justify-between">
                 <div class="col text-subtitle1 text-weight-bold">
                   Address<span class="text-red">*</span>
-                </div>
-                <div
-                  v-if="editCompanyDetails"
-                  class="col row items-center justify-end"
-                >
-                  <a
-                    @click="copyUserAddress"
-                    class="text-primary text-subtitle cursor-pointer"
-                    >Copy from above
-                  </a>
-                  <q-icon color="primary" name="content_copy" />
                 </div>
               </div>
               <div v-if="organizations.companyDetails.address">
@@ -85,8 +158,9 @@
                   class="full-width"
                   input-class="text-subtitle1"
                   outlined
-                  v-model="organizations.website"
+                  v-model.trim="organizations.website"
                   :disable="!editCompanyDetails"
+                  lazy-rules
                   :rules="[
                     val =>
                       validateUrl(val) || 'You have entered an invalid URL!'
@@ -96,7 +170,6 @@
             </div>
             <div class="row q-mt-sm full-width">
               <div class="col q-mr-md">
-                <!-- company adminstrator changed to contact name -->
                 <div class="row text-subtitle1 text-weight-bold">
                   Contact Name
                 </div>
@@ -109,7 +182,6 @@
                 />
               </div>
               <div class="col">
-                <!-- company adminstrator changed to contact name -->
                 <div class="row text-subtitle1 text-weight-bold">
                   Contact Email
                 </div>
@@ -118,16 +190,17 @@
                   class="full-width"
                   input-class="text-subtitle1"
                   outlined
-                  v-model="organizations.companyDetails.contactEmail"
+                  v-model.trim="organizations.companyDetails.contactEmail"
                   :disable="!editCompanyDetails"
                 />
               </div>
             </div>
-            <div class="q-mt-lg row justify-end" v-if="editCompanyDetails">
+
+            <!-- <div class="q-mt-lg row justify-end" v-if="editCompanyDetails">
               <q-btn
                 class="col-1 q-mr-sm"
                 size="md"
-                text-color="black"
+
                 color="white"
                 label="Cancel"
                 @click="cancelCompanyDetailsUpdate"
@@ -139,16 +212,19 @@
                 label="Save"
                 @click="onSaveEditedButtonOrganization"
               />
-            </div>
+            </div> -->
           </div>
         </q-form>
         <div v-else>
           <div class="flex-row full-width q-pt-lg">
-            <!-- <img 
-            :class="isMobileResolution ? 'image-60' : 'image-80'"
-            src="" 
-            alt="Company logo"> -->
+            <img
+              v-if="organizations.logo"
+              :class="isMobileResolution ? 'image-60' : 'image-80'"
+              :src="organizations.logo"
+              alt="Company logo"
+            />
             <q-avatar
+              v-else
               :class="isMobileResolution ? 'image-60' : 'image-80'"
               icon="person"
               font-size="2.5rem"
@@ -193,7 +269,7 @@
             <q-btn
               flat
               no-caps
-              class="text-subtitle1 fontWeight600 primary-border"
+              class="text-subtitle1 fontWeight600 primary-border flex-row items-center line-height-24"
               :class="
                 isMobileResolution
                   ? 'border-radius-5 height-40 q-px-xs'
@@ -218,12 +294,14 @@
               <q-input
                 input-class="details-content"
                 outlined
-                v-model="users.fname"
+                v-model.trim="users.fname"
                 placehoder="First Name"
                 maxlength="128"
+                lazy-rules
                 :rules="[
-                  val => val.length > 0 || 'Please add first name',
-                  val => validateText(val) || 'Please enter valid name'
+                  val => !!val || 'Please fill your first name',
+                  val =>
+                    validateNames(val) || 'Only alphabets and $ . - are allowed'
                 ]"
               />
             </div>
@@ -236,27 +314,28 @@
               <q-input
                 input-class="details-content"
                 outlined
-                v-model="users.lname"
+                v-model.trim="users.lname"
                 placehoder="Last Name"
                 maxlength="128"
+                lazy-rules
                 :rules="[
-                  val => val.length > 0 || 'Please add last name',
-                  val => validateText(val) || 'Please enter valid last name'
+                  val => !!val || 'Please fill your last name',
+                  val =>
+                    validateNames(val) || 'Only alphabets and $ . - are allowed'
                 ]"
               />
             </div>
-            <div :class="isMobileResolution ? 'q-mt-xs' : 'full-width q-mt-20'">
+            <div :class="isMobileResolution ? 'q-mt-xs' : 'full-width q-mt-sm'">
               <div class="details-heading q-mb-6">Email Address</div>
               <q-input
                 input-class="details-content"
                 outlined
-                v-model="users.email"
+                v-model.trim="users.email"
                 placehoder="Email Address"
-                :rules="[
-                  val => val.length > 0 || 'Please add email address',
-                  val => validateEmail(val) || 'Please add valid email addres'
-                ]"
+                lazy-rules
+                :rules="[val => validateEmailid(val)]"
               />
+              <span class="error-msg">{{ errorMSG }}</span>
             </div>
           </div>
           <div
@@ -264,11 +343,12 @@
             :class="
               isMobileResolution
                 ? 'justify-between q-mt-sm'
-                : 'justify-end q-mt-20'
+                : 'justify-end q-mt-sm'
             "
           >
             <q-btn
               no-caps
+              flat
               class="text-subtitle1 fontWeight600 line-height-24 text-primary primary-border flex-row items-center q-mr-lg"
               :class="
                 isMobileResolution
@@ -293,15 +373,29 @@
         </q-form>
         <div v-else>
           <div class="flex-row-wrap full-width justify-between account-details">
-            <div class="q-pt-lg">
+            <div
+              class="q-pt-lg"
+              :class="
+                isMobileResolution
+                  ? 'details-container'
+                  : 'quarter-container q-px-xs'
+              "
+            >
               <div class="details-heading">First Name</div>
-              <div class="details-content q-pt-sm">
+              <div class="details-content q-pt-sm ellipsis">
                 {{ users.fname }}
               </div>
             </div>
-            <div class="q-pt-lg">
+            <div
+              class="q-pt-lg"
+              :class="
+                isMobileResolution
+                  ? 'details-container'
+                  : 'quarter-container q-px-xs'
+              "
+            >
               <div class="details-heading">Last Name</div>
-              <div class="details-content q-pt-sm">
+              <div class="details-content q-pt-sm ellipsis">
                 {{ users.lname }}
               </div>
             </div>
@@ -326,13 +420,14 @@
       >
         <div class="flex-row justify-between items-center">
           <div class="details-title">Google Drive</div>
-          <!-- v-if="!editPhotoIDDetails" -->
-          <div class="flex-row">
-            <!-- @click="onEditClickOrganization('PHOTOIDFORM')" -->
+          <div
+            v-if="organizations.isDriveConnected && !editingDriveDetails"
+            class="flex-row"
+          >
             <q-btn
               flat
               no-caps
-              class="text-subtitle1 fontWeight600 primary-border"
+              class="text-subtitle1 fontWeight600 primary-border flex-row items-center line-height-24"
               :class="
                 isMobileResolution
                   ? 'border-radius-5 height-40 q-px-xs'
@@ -340,10 +435,11 @@
               "
               color="primary"
               label="Edit"
+              @click="editingDriveDetails = true"
             />
           </div>
         </div>
-        <div v-if="organizations.isDriveConnected">
+        <div v-if="organizations.isDriveConnected && !editingDriveDetails">
           <div class="flex-column details-container q-pt-lg">
             <div class="details-heading">Email</div>
             <div class="details-content q-pt-sm ellipsis">
@@ -358,6 +454,35 @@
                   <q-icon name="task_alt" color="teal" size="17px" /> </span
               ></span>
             </div>
+          </div>
+        </div>
+        <div v-else>
+          <div
+            class="flex-row justify-center items-center q-mt-lg connect-google-drive"
+          >
+            <q-img
+              class="drive-image"
+              :src="getImage('logos_google-drive.svg')"
+            />
+            <span class="text-center"> Connect Google Drive </span>
+          </div>
+          <div
+            v-if="editingDriveDetails"
+            class="flex-row items-center q-mt-20"
+            :class="isMobileResolution ? 'justify-start' : 'justify-end '"
+          >
+            <q-btn
+              no-caps
+              flat
+              class="text-subtitle1 fontWeight600 line-height-24 text-primary primary-border flex-row items-center"
+              :class="
+                isMobileResolution
+                  ? 'border-radius-5 height-40 q-px-xs'
+                  : 'border-radius-10 height-50 q-px-md'
+              "
+              label="Cancel"
+              @click="editingDriveDetails = false"
+            />
           </div>
         </div>
       </q-card>
@@ -378,7 +503,7 @@
             <q-btn
               flat
               no-caps
-              class="text-subtitle1 fontWeight600 primary-border"
+              class="text-subtitle1 fontWeight600 primary-border flex-row items-center line-height-24"
               :class="
                 isMobileResolution
                   ? 'border-radius-5 height-40 q-px-xs'
@@ -403,11 +528,13 @@
               <q-input
                 input-class="details-content"
                 outlined
-                v-model="organizations.photoIDEmail"
+                v-model.trim="organizations.photoIDEmail"
                 placehoder="PhotoID Email"
+                lazy-rules
                 :rules="[
                   val => val.length > 0 || 'Please add PhotoID Email',
-                  val => validateEmail(val) || 'Please add valid email addres'
+                  val =>
+                    validateEmail(val) || 'Please enter valid email address'
                 ]"
               />
             </div>
@@ -420,8 +547,9 @@
               <q-input
                 input-class="details-content"
                 outlined
-                v-model="organizations.photoIDAPIKey"
+                v-model.trim="organizations.photoIDAPIKey"
                 placehoder="PhotoID API Key"
+                lazy-rules
                 :rules="[val => val.length > 0 || 'Please add PhotoID API Key']"
               />
             </div>
@@ -431,11 +559,12 @@
             :class="
               isMobileResolution
                 ? 'justify-between q-mt-sm'
-                : 'justify-end q-mt-20'
+                : 'justify-end q-mt-sm'
             "
           >
             <q-btn
               no-caps
+              flat
               class="text-subtitle1 fontWeight600 line-height-24 text-primary primary-border flex-row items-center q-mr-lg"
               :class="
                 isMobileResolution
@@ -471,15 +600,28 @@
                 {{ organizations.photoIDEmail }}
               </div>
             </div>
-            <div class="q-pt-lg">
+            <div
+              class="q-pt-lg"
+              :class="
+                isMobileResolution ? 'details-container' : 'half-container'
+              "
+            >
               <div class="details-heading">PhotoID API Key</div>
-              <div class="details-content q-pt-sm text-primary">
+              <div class="details-content q-pt-sm text-primary ellipsis">
                 {{ organizations.photoIDAPIKey }}
               </div>
             </div>
           </div>
         </div>
       </q-card>
+      <q-input
+        ref="uploadImageFileInput"
+        accept=".jpg,.png,.jpeg,image/*"
+        style="display: none"
+        v-model="fileToUpload"
+        type="file"
+        @change="uploadLogo()"
+      />
     </div>
   </q-page>
 </template>
@@ -493,7 +635,7 @@ import {
   showPhoneNumber,
   sendPhoneNumber
 } from '@utils/clickable';
-import { validateEmail, validateText, validateUrl } from '@utils/validation';
+import { validateEmail, validateNames, validateUrl } from '@utils/validation';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
@@ -506,6 +648,7 @@ export default {
       editAccountSummary: false,
       editCompanyDetails: false,
       editPhotoIDDetails: false,
+      editingDriveDetails: false,
       isEditable: false,
       columns: [
         {
@@ -590,7 +733,9 @@ export default {
             isPresent: false
           }
         }
-      }
+      },
+      fileToUpload: [],
+      errorMSG: ''
     };
   },
   computed: {
@@ -622,12 +767,13 @@ export default {
       'getPermissions',
       'getOrganization',
       'updateUserForOrganization',
-      'updateAccessToken'
+      'updateAccessToken',
+      'checkExistingEmail'
     ]),
     ...mapMutations(['webMenuSubOptionTab']),
     validateEmail,
-    validateText,
     validateUrl,
+    validateNames,
 
     async onSaveEditedButtonOrganization() {
       const success = await this.$refs.companyDetailsForm.validate();
@@ -697,13 +843,16 @@ export default {
           }
         };
         this.editAccountSummary = false;
-        await this.updateAccessToken(this.users.email);
+        if (this.users.email !== this.user.email) {
+          await this.updateAccessToken(this.users.email);
+        }
         await this.editUserProfile(payload);
         await this.getUserInfo();
         this.user = getCurrentUser().attributes;
         this.users.fname = this.user.contact.fname;
         this.users.lname = this.user.contact.lname;
         this.users.email = this.user.email;
+        this.errorMSG = '';
         // this.users.contact.type = this.user.phoneNumber.type;
         // this.users.contact.number = showPhoneNumber(
         //   this.user.phoneNumber.number
@@ -724,6 +873,7 @@ export default {
       }
     },
     cancelAccountSummaryUpdate() {
+      this.errorMSG = '';
       this.users.fname = this.user.contact.fname;
       this.users.lname = this.user.contact.lname;
       this.users.email = this.user.email;
@@ -776,6 +926,53 @@ export default {
     },
     copyUserAddress() {
       this.organizations.users.mailingAddress = this.user.mailingAddress;
+    },
+    getImage(icon) {
+      return require('../../assets/' + icon);
+    },
+    initiateLogoUpload() {
+      this.$refs.uploadImageFileInput.$el.click();
+    },
+    uploadLogo() {
+      // TODO
+      // Add file this.fileToUpload[0]
+      // console.log(this.fileToUpload[0])
+      this.fileToUpload = [];
+    },
+    async validateEmailid(val) {
+      let email_exist = true;
+      if (this.user.email !== this.users.email) {
+        email_exist = await this.checkExistingEmail(val);
+      }
+      let email_valid = await this.validateEmail(val);
+      let go_exist = false;
+      let go_valid = false;
+      let go_empty = false;
+
+      if (email_exist) {
+        go_exist = true;
+      } else {
+        go_exist = false;
+        this.errorMSG = 'This email is already in use.';
+      }
+      if (email_valid) {
+        go_valid = true;
+      } else {
+        go_valid = false;
+        this.errorMSG = 'Please enter valid email address';
+      }
+      if (val == '') {
+        go_empty = false;
+        this.errorMSG = 'Please fill your email address';
+      } else {
+        go_empty = true;
+      }
+      if (go_exist && go_valid && go_empty) {
+        this.errorMSG = '';
+        return true;
+      } else {
+        return false;
+      }
     }
   },
 
@@ -794,22 +991,22 @@ export default {
     if (this.user) {
       this.users.fname = this.user.contact.fname;
       this.users.lname = this.user.contact.lname;
-      if (this.user.phoneNumber) {
-        this.users.contact.type = this.user.phoneNumber.type;
-        this.users.contact.number = this.user.phoneNumber.number;
-      }
-      if (this.user.mailingAddress) {
-        this.users.mailingAddress.addressRegion =
-          this.user.mailingAddress.addressRegion;
-        this.users.mailingAddress.addressLocality =
-          this.user.mailingAddress.addressLocality;
-        this.users.mailingAddress.houseNumber =
-          this.user.mailingAddress.houseNumber;
-        this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
-        this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-        this.users.mailingAddress.postalCode =
-          this.user.mailingAddress.postalCode;
-      }
+      // if (this.user.phoneNumber) {
+      //   this.users.contact.type = this.user.phoneNumber.type;
+      //   this.users.contact.number = this.user.phoneNumber.number;
+      // }
+      // if (this.user.mailingAddress) {
+      //   this.users.mailingAddress.addressRegion =
+      //     this.user.mailingAddress.addressRegion;
+      //   this.users.mailingAddress.addressLocality =
+      //     this.user.mailingAddress.addressLocality;
+      //   this.users.mailingAddress.houseNumber =
+      //     this.user.mailingAddress.houseNumber;
+      //   this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
+      //   this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
+      //   this.users.mailingAddress.postalCode =
+      //     this.user.mailingAddress.postalCode;
+      // }
       this.users.email = this.user.email;
     }
     await this.getOrganization();
@@ -848,6 +1045,7 @@ export default {
       }
     }
   },
+
   destroyed() {
     document.title = 'claimguru';
   }
@@ -865,6 +1063,9 @@ export default {
 .details-container {
   width: calc(100vw - 404px);
 }
+.quarter-container {
+  width: calc((100vw - 404px) / 4 - 0px);
+}
 .half-container {
   width: calc((100vw - 404px) / 2 - 0px);
 }
@@ -879,7 +1080,45 @@ export default {
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
+  letter-spacing: 0.15px;
 }
+.drive-image {
+  height: 24px;
+  width: 27px;
+  margin-right: 10px;
+}
+.connect-google-drive {
+  height: 44px;
+  width: 331px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #0c0c0c;
+  border: 1px solid #0c0c0c;
+  box-sizing: border-box;
+  border-radius: 8px;
+  letter-spacing: 0.15px;
+}
+.camera-container {
+  position: absolute;
+  .camera-icon {
+    z-index: 1;
+    top: 50px;
+    left: 50px;
+    height: 30px;
+    width: 30px;
+  }
+}
+.error-msg {
+  position: absolute;
+  color: #c10015 !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  line-height: 12px !important;
+  margin-left: 8px;
+  margin-top: -12px;
+}
+
 @media screen and (max-width: 1023px) {
   .details-title {
     font-size: 20px;
@@ -897,8 +1136,19 @@ export default {
     width: calc(100% - 0px);
     max-width: 313px;
   }
+  .connect-google-drive {
+    height: 40px;
+    width: calc(100% - 0px);
+    max-width: 331px;
+  }
   .details-container {
     width: calc(100vw - 62px);
+  }
+  .camera-container {
+    .camera-icon {
+      top: 30px;
+      left: 30px;
+    }
   }
 }
 </style>

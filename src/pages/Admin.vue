@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="flex-row">
-      <div class="col">
+      <div class="full-width">
         <div class="row" flat bordered>
           <!-- Main Template -->
           <q-tab-panels
@@ -33,6 +33,7 @@
               <Billing />
             </q-tab-panel>
           </q-tab-panels>
+          <Footer class="q-mt-lg" />
         </div>
       </div>
     </div>
@@ -46,6 +47,7 @@ import ManageUsers from 'pages/ManageUsersNew.vue';
 import Configurations from 'pages/Configuration.vue';
 import Billing from 'pages/Billing.vue';
 import Reports from 'pages/Reports.vue';
+import Footer from 'components/Footer';
 
 import { mapGetters } from 'vuex';
 
@@ -58,7 +60,8 @@ export default {
     ManageUsers,
     Configurations,
     Reports,
-    Billing
+    Billing,
+    Footer
   },
 
   computed: {

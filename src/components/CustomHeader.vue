@@ -158,9 +158,9 @@
         </div>
 
         <!-- user name -->
-        <div class="col-9 row justify-end desktop-view"></div>
-        <div class="col-3 row justify-end desktop-view">
-          <div class="">
+        <div class="col-8 row justify-end desktop-view"></div>
+        <div class="col-4 row justify-end desktop-view">
+          <div class="flex-row items-center">
             <q-avatar
               size="3em"
               font-size="2.5rem"
@@ -170,7 +170,7 @@
             </q-avatar>
 
             <span
-              class="q-pt-md text-capitalize text-weight-bold text-black text-subtitle1"
+              class="text-capitalize text-weight-bold text-black text-subtitle1 ellipsis"
             >
               {{ userName ? userName : updatedUserName }}
             </span>
