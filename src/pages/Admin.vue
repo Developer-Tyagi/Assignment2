@@ -6,7 +6,7 @@
           <!-- Main Template -->
           <q-tab-panels
             :class="isMobileResolution ? 'q-px-15' : 'q-px-32'"
-            class="q-ml-xl full-height mobile-container-page-without-search full-width"
+            class="q-ml-xl full-height mobile-container-page-without-search full-width admin-panel"
             v-model="webSubOptionMenuTab.key"
           >
             <q-tab-panel name="accountSummary">
