@@ -1,17 +1,17 @@
 <template>
   <q-page class="poppinsFont min-height">
-    <div class="row" style="height: calc(100vh - 119px)">
+    <div class="row">
       <div
-        class="col-md-4 col-sm-12 col-xs-12 q-px-32"
+        class="col-md-4 col-sm-12 col-xs-12"
         style="background-color: #f9e7d8"
       >
-        <CustomSidebar step="1" />
+        <CustomSidebar step="0" />
       </div>
       <div class="col-md-8 cols-sm-12 col-xs-12">
         <q-separator class="seperator-color" />
         <div class="q-px-xl">
           <div>
-            <div class="q-pt-lg px-15 pr-50" style="border-radius: 20px">
+            <div class="pt-40 px-15 pr-50" style="border-radius: 20px">
               <div class="q-mt-sm justify-between">
                 <div class="text-h5 fontWeight600">Company Details</div>
                 <div
@@ -25,7 +25,10 @@
               <div class="formHeight">
                 <q-form ref="companyDetailsForm">
                   <div class="mt-30">
-                    <div class="row text-subtitle1 fontWeight600">
+                    <div
+                      class="row text-subtitle1 fontWeight600"
+                      style="margin-bottom: 8px"
+                    >
                       Company Name
                     </div>
 
@@ -34,7 +37,7 @@
                         dense
                         class="full-width"
                         input-class="input-subtitle1"
-                        style="background: #e8edf2"
+                        style="background: #e8edf2; font-size: 16px"
                         outlined
                         v-model="companyDetails.name"
                         maxlength="128"
@@ -96,7 +99,7 @@
                       </div>
                     </div>
                     <div
-                      class="col-xs-12 col-sm-12 com-md-12 mt-30 q-mr-md full-width"
+                      class="col-xs-12 col-sm-12 com-md-12 mt-25 q-mr-md full-width"
                     >
                       <div class="row justify-between">
                         <div class="col text-subtitle1 fontWeight600">
@@ -116,10 +119,7 @@
                       </div>
                     </div>
 
-                    <div
-                      class="row justify-end"
-                      style="margin-top: 60px; padding-bottom: 75px"
-                    >
+                    <div class="row justify-end mtAndBottom">
                       <q-btn
                         class="col-1 Next-Btn"
                         size="md"
@@ -129,21 +129,21 @@
                         @click="NextStepperValue"
                       />
                     </div>
-                    <div class="row border-top">
-                      <!-- <q-separator class="q-mt-md " /> -->
-                      <div
-                        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-18"
-                        style="background-color: white"
-                      >
-                        © ClaimGuru<span> {{ CurrentYear }} </span>
-                      </div>
-                    </div>
                   </div>
                 </q-form>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row border-top">
+      <!-- <q-separator class="q-mt-md " /> -->
+      <div
+        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer"
+        style="background-color: white"
+      >
+        © ClaimGuru<span> {{ CurrentYear }} </span>
       </div>
     </div>
   </q-page>
@@ -201,7 +201,34 @@ export default {
       this.$router.push('/onBoarding/step1');
     },
     async NextStepperValue() {
-      this.$router.push('/onBoarding/step2');
+      {
+        const success = await this.$refs.companyDetailsForm.validate();
+        if (success) {
+          let dc = '+' + this.dialCode;
+          var payload = {
+            data: {
+              name: this.organization.name,
+              address: {
+                addressCountry: this.companyDetails.address.country,
+                address1: this.companyDetails.address.address1,
+                addressLocality: this.companyDetails.address.addressLocality,
+                addressRegion: this.companyDetails.address.addressRegion,
+                postalCode: this.companyDetails.address.postalCode
+              },
+              phoneNumber: {
+                type: 'pager',
+                code: dc,
+                number: this.companyDetails.contactNumber
+              },
+              email: this.companyDetails.email
+            }
+          };
+
+          await this.updateUserForOrganization(payload);
+          await this.getOrganization();
+          this.$router.push('/onBoarding/step2');
+        }
+      }
     },
     onResize(e) {
       this.width = window.innerWidth;
@@ -222,6 +249,7 @@ export default {
       this.$router.push('/dashboard');
     }
     if (this.organization) {
+      this.companyDetails.name = this.organization.name;
       this.companyDetails.address.address1 = this.organization.address
         ? this.organization.address.address1
         : '';
@@ -279,9 +307,6 @@ export default {
 .fontWeight400 {
   font-weight: 400;
 }
-.formHeight {
-  height: 580px;
-}
 .fontColor {
   color: #101828;
   font-weight: 600;
@@ -308,10 +333,6 @@ export default {
 .mt-120 {
   margin-top: 120px;
 }
-.px-15 {
-  padding-left: 0px;
-  padding-right: 0px;
-}
 .image-w-252 {
   width: 252px;
 }
@@ -330,7 +351,7 @@ export default {
 }
 .input-subtitle1 {
   font-weight: 500;
-  font-size: 16px;
+  font-size: 16px !important;
   line-height: 24px;
   display: flex;
   align-items: center;
@@ -351,9 +372,6 @@ export default {
 }
 .q-px-32 {
   padding-left: 40px;
-}
-.pr-50 {
-  padding-right: 50px;
 }
 .mt-60 {
   margin-top: 60px;
@@ -538,11 +556,19 @@ export default {
 ::v-deep .absolute-full {
   background-size: inherit !important;
 }
+::v-deep .vue-country-select .dropdown-item {
+  font-family: 'Poppins';
+  font-style: normal;
+  color: #101828;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+::v-deep .vue-country-select .dropdown-list {
+  width: 315px;
+}
 .q-pl-32 {
   padding-left: 15px;
-}
-.ml-31 {
-  padding-left: 16px !important;
 }
 .q-pb-18 {
   padding-bottom: 18px;
@@ -638,11 +664,11 @@ export default {
 @media screen and (max-width: 1022px) {
   .border-top {
     border-top: 1px solid #e5e5e5;
-    margin-left: -50px;
-    margin-right: -50px;
   }
   .ml-31 {
-    margin-left: 15px !important;
+    padding-left: 31px !important;
+    margin-top: 19px;
+    margin-bottom: 19px;
   }
 
   .mb-30 {
@@ -650,24 +676,28 @@ export default {
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (min-width: 1024px) {
   .q-px-32 {
     padding-left: 32px;
-    padding-top: 0px;
+    margin-top: 19px;
+    margin-bottom: 19px;
   }
   .border-top {
     border-top: 1px solid #e5e5e5;
-    margin-left: -50px;
-    margin-right: -50px;
   }
-  .q-pr-lg {
-    padding-right: 0px;
+
+  .ml-31 {
+    margin-left: 31px !important;
+    margin-top: 19px;
+    margin-bottom: 19px;
   }
+}
+
+@media screen and (max-width: 800px) {
   .q-px-xl {
     padding-left: 0px;
     padding-right: 0px;
   }
-
   .Account-setup-text {
     font-family: 'Poppins';
     font-style: normal;
@@ -709,15 +739,8 @@ export default {
     padding-left: 0px;
     padding-right: 0px;
   }
-  .q-pr-lg {
-    padding-right: 0px;
-  }
   .height-40px {
     height: 24px;
-  }
-  .px-15 {
-    padding-left: 15px;
-    padding-right: 15px;
   }
 
   .mt-120 {
@@ -771,13 +794,8 @@ export default {
     width: 345px;
     height: 44px !important;
   }
-  .pr-50 {
-    padding-right: 15px;
-  }
   .border-top {
     border-top: 1px solid #e5e5e5;
-    margin-left: -15px !important;
-    margin-right: -15px !important;
   }
   .mx-15 {
     margin-left: 15px;
@@ -863,39 +881,68 @@ export default {
     padding-left: 40px;
     padding-right: 40px;
   }
-  .px-15 {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
   // .height-40px {height: 24px;}
 }
-@media only screen and (width: 1024px) {
+@media only screen and (max-width: 1023px) {
   .q-px-32 {
     padding-left: 32px;
-    padding-top: 0px;
+    padding-top: 18px;
   }
   .mt-125 {
     margin-top: 125px;
   }
+  .q-pr-lg {
+    padding-right: 0px;
+  }
+  .pt-40 {
+    padding-top: 40px;
+  }
+  .mt-25 {
+    margin-top: 0px;
+  }
+  .px-15 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
   .heighT {
     // height: -webkit-fill-available
+  }
+  .mtAndBottom {
+    margin-top: 60px;
+    margin-bottom: 101px;
   }
 }
 
 .heighT {
   // height: auto
 }
-@media only screen and (width: 1440px) {
+@media only screen and (min-width: 1024px) {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 0px;
   }
+  .formHeight {
+    height: 580px;
+  }
+  .pt-40 {
+    padding-top: 40px;
+  }
+  .mt-25 {
+    margin-top: 10px;
+  }
+  .pr-50 {
+    padding-right: 50px;
+  }
   .q-px-xl {
-    padding-left: 60px;
+    padding-left: 62px;
     padding-right: 60px;
   }
   .border-top {
     border-top: 0px;
+  }
+  .mtAndBottom {
+    margin-top: 60px;
+    margin-bottom: 10px;
   }
 }
 </style>

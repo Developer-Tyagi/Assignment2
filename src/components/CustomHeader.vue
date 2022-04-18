@@ -1158,7 +1158,7 @@ export default {
   font-size: 16px;
   line-height: 24px;
   display: inline-block;
-  width: 90px;
+  width: 70px;
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;

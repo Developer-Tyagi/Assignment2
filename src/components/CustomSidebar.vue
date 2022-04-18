@@ -1,10 +1,10 @@
 <template>
   <q-page class="poppinsFont min-height">
-    <div class="row" style="height: calc(100vh - 119px)">
+    <div class="row">
       <div style="width: 100%">
         <div class="dFlex justify-between lg-hide xl-hide md-hide">
           <div
-            class=""
+            class="pr-15"
             v-if="$route.name == 'onBoarding'"
             style="background-color: #f9e7d8"
           >
@@ -17,113 +17,119 @@
                 font-size="2.5rem"
                 icon="person"
                 class="text-white bg-grey"
+                style=""
               >
               </q-avatar>
               <q-img src="~assets/Icondown.svg" class="dropdowLogo" />
             </div>
           </div>
         </div>
-        <q-separator style="color: #f9dfc8; height: 1px; margin-left: -14px" />
-        <div class="Account-setup-text mt-50">Account Setup</div>
-        <!-- custom stepper -->
-        <div class="column q-mt-43">
-          <div class="col">
-            <div class="row">
-              <!-- <q-icon
+        <q-separator
+          class="md-hide lg-hide xl-hide"
+          style="color: #f9dfc8; margin-left: -14px"
+        />
+        <div class="ml-32 mt-34">
+          <div class="Account-setup-text">Account Setup</div>
+          <!-- custom stepper -->
+          <div class="column q-mt-43">
+            <div class="col">
+              <div class="row">
+                <!-- <q-icon
                 name="adjust"
                 color="primary"
                 size="md"
               /> -->
 
-              <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 1" class="step1Logon" /> -->
-              <q-icon
-                name="adjust"
-                color="primary"
-                v-if="step == 0"
-                size="md"
-              />
-              <q-img
-                size="1em"
-                src="~assets/stepWorking.svg"
-                class="stepWorking"
-                v-if="step == 1"
-              />
-              <q-img
-                size="1em"
-                src="~assets/_Step1done.svg"
-                class="step1Logon"
-                v-if="step == 2 || step == 3 || step == 4"
-              />
+                <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 1" class="step1Logon" /> -->
+                <q-icon
+                  name="adjust"
+                  color="primary"
+                  v-if="step == 0"
+                  size="md"
+                />
+                <q-img
+                  size="1em"
+                  src="~assets/stepWorking.svg"
+                  class="stepWorking"
+                  v-if="step == 1"
+                />
+                <q-img
+                  size="1em"
+                  src="~assets/_Step1done.svg"
+                  class="step1Logon"
+                  v-if="step == 2 || step == 3 || step == 4"
+                />
 
-              <div class="q-ml-sm">
-                <div class="Step-text">Step 1</div>
-                <div class="Step-Subtext">Add Your Company Details</div>
-              </div>
-            </div>
-            <div
-              class="q-ml-md height-40px"
-              style="border-left: 2px solid #ef5926; margin-top: -14px"
-            ></div>
-          </div>
-          <div class="col">
-            <div class="row">
-              <q-icon
-                name="adjust"
-                color="primary"
-                v-if="step == 1 || step == 0"
-                size="md"
-              />
-              <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 2" class="step1Logon" /> -->
-              <q-img
-                size="1em"
-                src="~assets/stepWorking.svg"
-                class="stepWorking"
-                v-if="step == 2"
-              />
-              <q-img
-                size="1em"
-                src="~assets/_Step1done.svg"
-                class="step1Logon"
-                v-if="step == 3 || step == 4"
-              />
-              <div class="q-ml-sm">
-                <div class="Step-text">Step 2</div>
-                <div class="Step-Subtext">Connect With Google Drive</div>
-              </div>
-            </div>
-            <div
-              class="q-ml-md height-40px"
-              style="border-left: 2px solid #ef5926; margin-top: -14px"
-            ></div>
-          </div>
-          <div class="col">
-            <div class="row">
-              <q-icon
-                name="adjust"
-                color="primary"
-                size="md"
-                v-if="step == 0 || step == 1 || step == 2"
-              />
-              <q-img
-                size="1em"
-                src="~assets/stepWorking.svg"
-                class="stepWorking"
-                v-if="step == 3"
-              />
-              <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" class="step1Logon"  v-if="step == 3"/> -->
-              <q-img
-                size="1em"
-                src="~assets/_Step1done.svg"
-                class="step1Logon"
-                v-if="step == 4"
-              />
-              <div class="q-ml-sm">
-                <div class="Step-text">Step 3</div>
-                <div class="Step-Subtext">
-                  Add PhotoID Account Details
-                  <span v-if="width >= 1203">(optional)</span>
+                <div class="q-ml-sm">
+                  <div class="Step-text">Step 1</div>
+                  <div class="Step-Subtext">Add Your Company Details</div>
                 </div>
-                <div class="Step-Subtext" v-if="width < 1203">(optional)</div>
+              </div>
+              <div
+                class="q-ml-md height-40px"
+                style="border-left: 2px solid #ef5926; margin-top: -14px"
+              ></div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <q-icon
+                  name="adjust"
+                  color="primary"
+                  v-if="step == 1 || step == 0"
+                  size="md"
+                />
+                <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 2" class="step1Logon" /> -->
+                <q-img
+                  size="1em"
+                  src="~assets/stepWorking.svg"
+                  class="stepWorking"
+                  v-if="step == 2"
+                />
+                <q-img
+                  size="1em"
+                  src="~assets/_Step1done.svg"
+                  class="step1Logon"
+                  v-if="step == 3 || step == 4"
+                />
+                <div class="q-ml-sm">
+                  <div class="Step-text">Step 2</div>
+                  <div class="Step-Subtext">Connect With Google Drive</div>
+                </div>
+              </div>
+              <div
+                class="q-ml-md height-40px"
+                style="border-left: 2px solid #ef5926; margin-top: -14px"
+              ></div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <q-icon
+                  name="adjust"
+                  color="primary"
+                  size="md"
+                  v-if="step == 0 || step == 1 || step == 2"
+                />
+                <q-img
+                  size="1em"
+                  src="~assets/stepWorking.svg"
+                  class="stepWorking"
+                  v-if="step == 3"
+                />
+                <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" class="step1Logon"  v-if="step == 3"/> -->
+                <q-img
+                  size="1em"
+                  src="~assets/_Step1done.svg"
+                  class="step1Logon"
+                  v-if="step == 4"
+                />
+                <div class="q-ml-sm">
+                  <div class="Step-text">Step 3</div>
+                  <div class="Step-Subtext">
+                    Add PhotoID Account Details
+                    <span v-if="width >= 1203">(optional)</span>
+                  </div>
+                  <div class="Step-Subtext" v-if="width < 1203">(optional)</div>
+                </div>
               </div>
             </div>
           </div>
@@ -197,22 +203,6 @@ export default {
 .min-height {
   min-height: auto !important;
 }
-.fontWeight600 {
-  font-weight: 600;
-}
-.fontWeight500 {
-  font-weight: 500;
-}
-.fontWeight400 {
-  font-weight: 400;
-}
-.formHeight {
-  height: 580px;
-}
-.fontColor {
-  color: #101828;
-  font-weight: 600;
-}
 .inside-text {
   border-bottom: px solid #e5e5e5 !important;
 }
@@ -228,9 +218,6 @@ export default {
 }
 .image-h-216 {
   height: 216px;
-}
-.q-mt-43 {
-  margin-top: 34px;
 }
 .mt-120 {
   margin-top: 120px;
@@ -343,9 +330,6 @@ export default {
   line-height: 20px;
   color: #667085;
   letter-spacing: 00.15px;
-}
-.pr-20 {
-  padding-right: 20px;
 }
 .onBoardLogo {
   width: 322px;
@@ -562,264 +546,59 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (max-width: 1022px) {
+@media screen and (min-width: 1024px) {
+  .ml-32 {
+    margin-left: 32px;
+  }
+  .mt-34 {
+    margin-top: 34px;
+  }
+  .height-40px {
+    height: 46px;
+  }
+  .q-mt-43 {
+    margin-top: 34px;
+  }
+  .pr-20 {
+    padding-right: 38px;
+  }
   .border-top {
     border-top: 1px solid #e5e5e5;
     margin-left: -50px;
     margin-right: -50px;
   }
-  .ml-31 {
-    margin-left: 15px !important;
+}
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (max-width: 1023px) {
+  .ml-32 {
+    margin-left: 15px;
   }
-
-  .mb-30 {
+  .pr-20 {
+    padding-right: 20px;
+    padding-top: 15px;
+  }
+  .pr-15 {
+    padding-left: 15px;
+    padding-top: 15px;
+  }
+  .mt-34 {
+    margin-top: 28px;
     margin-bottom: 30px;
   }
-}
 
-@media screen and (max-width: 800px) {
-  .q-px-32 {
-    padding-left: 32px;
-    padding-top: 0px;
-  }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    margin-left: -50px;
-    margin-right: -50px;
-  }
-  .q-pr-lg {
-    padding-right: 0px;
-  }
-  .q-px-xl {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-
-  .Account-setup-text {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 24px;
-    display: flex;
-    align-items: center;
-    color: #0c0c0c;
-  }
-}
-@media only screen and (max-width: 600px) {
-  .q-px-32 {
-    padding-left: 15px;
-    padding-top: 15px;
-  }
-  .q-pl-32 {
-    padding-left: 15px;
-  }
-  .q-px-xl {
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 15px;
-  }
-  .q-pb-18 {
-    padding-bottom: 18px;
+  .height-40px {
+    height: 24px;
   }
   .q-mt-43 {
     margin-top: 24px;
   }
-  .mt-30 {
-    margin-top: 16px;
-  }
-  .q-mx-xl {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-  .q-px-xl {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-  .q-pr-lg {
-    padding-right: 0px;
-  }
-  .height-40px {
-    height: 24px;
-  }
-  .px-15 {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
-  .mt-120 {
-    margin-top: 40px;
-  }
-  .completeSetup-Btn {
-    margin-right: -30px;
-    width: 172px !important;
-    height: 40px !important;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-    color: #ffffff;
-    background: #ef5926;
-    border-radius: 10px;
-  }
-  .ml-15 {
-    margin-left: 15px;
-  }
-  .q-pr-xl {
-    padding-right: 0px;
-  }
-  .mx-40 {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  .PhotoId-input {
-    width: 345px;
-    height: 44px;
-  }
-
-  .GoHome-btn {
-    width: 157px;
-    height: 40px;
-    background: #ef5926;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 24px;
-    color: #ffffff;
-    margin-bottom: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
-  .mt-333 {
-    margin-top: 60px;
-  }
-  .input-size {
-    width: 345px;
-    height: 44px !important;
-  }
-  .pr-50 {
-    padding-right: 15px;
-  }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    margin-left: -15px !important;
-    margin-right: -15px !important;
-  }
-  .mx-15 {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  .StartButton {
-    margin-top: 43px;
-    margin-bottom: 43px;
-    width: 133px;
-    height: 40px;
-    font-family: 'Poppins-semiBold';
-    border-radius: 5px !important;
-    font-style: normal;
-    background: #ef5926;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-    display: flex;
-    align-items: center;
-    color: #ffffff;
-    box-shadow: none !important;
-  }
-  .Next-button {
-    width: 95px;
-    height: 40px;
-  }
-  .mt-50 {
-    margin-top: 27px;
-  }
-  .pl-62 {
-    padding-left: 15px;
-  }
-  .pr-110 {
-    padding-right: 15px;
-  }
-  .mt-404 {
-    margin-top: 60px;
-  }
-  .mt-24 {
-    margin-top: 16px;
-  }
-  .Back-Btn {
-    width: 81px !important;
-    height: 40px !important;
-    border-radius: 5px !important;
-    padding: 8px, 20px, 8px, 20px !important;
-    border: 2px solid #ef5926;
-    color: #ef5926 !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;
-  }
-  .Next-Btn {
-    width: 95px !important;
-    height: 40px !important;
-    border-radius: 10px !important;
-    padding: 8px, 20px, 8px, 20px !important;
-    background: #ef5926;
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;
-  }
+}
+@media only screen and (max-width: 600px) {
 }
 
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-  // .border-top {
-  //   border-top: 1px solid #e5e5e5;
-  // }
-  // .q-px-32 {padding-left: 15px;}
-  .q-px-32 {
-    padding-left: 15px;
-    padding-top: 15px;
-  }
-  .q-px-xl {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-  .q-mx-xl {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-  .q-px-xl {
-    padding-left: 40px;
-    padding-right: 40px;
-  }
-  .px-15 {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-  // .height-40px {height: 24px;}
-}
 @media only screen and (width: 1024px) {
-  .q-px-32 {
-    padding-left: 32px;
-    padding-top: 0px;
-  }
-  .heighT {
-    // height: -webkit-fill-available
-  }
 }
 
-.heighT {
-  // height: auto
-}
 @media only screen and (width: 1440px) {
-  .q-px-32 {
-    padding-left: 32px;
-    padding-top: 0px;
-  }
-  .q-px-xl {
-    padding-left: 60px;
-    padding-right: 60px;
-  }
-  .border-top {
-    border-top: 0px;
-  }
 }
 </style>

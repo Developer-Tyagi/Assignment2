@@ -48,7 +48,7 @@
     <q-input
       dense
       borderless
-      class="input-style input-overlay"
+      class="input-style input-overlay mt-30"
       style="height: 60px"
       v-model="address.address2"
       label="Address 2"
@@ -133,7 +133,10 @@
         @keydown="validateAddress(address.address1)"
         placeholder="Company Address"
         lazy-rules
-        :rules="[val => val.length > 0 || 'Please fill address']"
+        :rules="[
+          val => val.length > 0 || 'Please fill address',
+          val => validateAddress(val) || 'You have entered an invalid address!'
+        ]"
       />
       <span class="q-pl-sm" style="color: #c10015 !important; font-size: 11px">
         {{ errorMSG }}
@@ -148,8 +151,8 @@
         v-model="address.address2"
       /> -->
     </div>
-    <div class="row mt-30">
-      <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg">
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg mt-16">
         <div class="row text-subtitle1 text-weight-bold">City</div>
         <q-input
           dense
@@ -167,7 +170,7 @@
           ]"
         />
       </div>
-      <div class="col-12 col-lg-6 col-xl-6 col-md-6">
+      <div class="col-12 col-lg-6 col-xl-6 col-md-6 mt-16">
         <div class="row text-subtitle1 text-weight-bold">State</div>
         <q-select
           dense
@@ -184,8 +187,8 @@
         />
       </div>
     </div>
-    <div class="row mt-30">
-      <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg">
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg mt-30">
         <div class="row text-subtitle1 text-weight-bold">ZIP Code</div>
         <q-input
           outlined
@@ -204,7 +207,7 @@
         />
       </div>
       <!-- <div class="col-12 col-md-2">      </div> -->
-      <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12 col-xs-12">
+      <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12 col-xs-12 mt-30">
         <div class="row text-subtitle1 text-weight-bold">Country</div>
         <q-select
           dense
@@ -619,10 +622,6 @@ export default {
         this.address.houseNumber =
           place[this.getPlaceName('street_number', place)].long_name;
       }
-      console.log(
-        addressService.getStates(this.address.addressCountry),
-        ';;;;;;;;;;;;;'
-      );
       this.states = addressService.getStates(this.address.addressCountry);
     },
 
@@ -687,9 +686,6 @@ export default {
 .pac-container {
   z-index: 10000000;
 }
-.mt-30 {
-  margin-top: 30px;
-}
 .pac-icon {
   display: none;
 }
@@ -698,18 +694,26 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media only screen and (max-width: 600px) {
-  .q-pr-lg {
-    padding-right: 0px;
-  }
-
+@media only screen and (min-width: 1024px) {
   .mt-30 {
-    margin-top: 16px;
+    margin-top: 10px;
+  }
+  .mt-16 {
+    margin-top: 30px;
   }
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1023px) {
   .q-pr-lg {
     padding-right: 0px;
+  }
+  .mt-30 {
+    margin-top: 0px;
+  }
+  .mt-16 {
+    margin-top: 16px;
+  }
+  .mt-25 {
+    margin-top: 0px;
   }
 }
 .pac-item {

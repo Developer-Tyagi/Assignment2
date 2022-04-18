@@ -2,7 +2,7 @@
   <q-page class="poppinsFont min-height">
     <div class="row">
       <div
-        class="col-md-4 col-sm-12 col-xs-12 q-px-32"
+        class="col-md-4 col-sm-12 col-xs-12"
         style="background-color: #f9e7d8"
       >
         <CustomSidebar step="2" />
@@ -35,7 +35,7 @@
                     letter-spacing: 00.15px;
                     font-family: 'Poppins';
                   "
-                  >test@gmail.com</span
+                  >{{ this.emailId }}</span
                 >
               </div>
             </div>
@@ -102,19 +102,11 @@
               >
 
               <q-btn
-                v-if="toShowConnected"
                 style="border-radius: 10px"
                 class="fontWeight600 Next-Btn"
                 no-caps
                 @click="NextStepperValue"
-                >Next</q-btn
-              >
-              <q-btn
-                v-if="toconnectedNext"
-                style="border-radius: 10px"
-                class="fontWeight600 Next-Btn"
-                no-caps
-                @click="toconnectedNextPage"
+                :disable="!checkConnection"
                 >Next</q-btn
               >
             </div>
@@ -148,6 +140,7 @@ export default {
   data() {
     return {
       metaTitle: 'Step2 - claimguru',
+      emailId: '',
       step: 0,
       companyDetails: {
         address: {
@@ -165,9 +158,7 @@ export default {
       },
       editCompanyDetails: true,
       dialCode: '',
-      checkConnection: false,
-      toconnectedNext: true,
-      toShowConnected: false
+      checkConnection: false
     };
   },
   components: {
@@ -185,14 +176,7 @@ export default {
     getStarted() {
       this.$router.push('/onBoarding/step1');
     },
-    toconnectedNextPage() {
-      this.toconnectedNext = false;
-      this.checkConnection = true;
-      this.toShowConnected = true;
-    },
     async NextStepperValue() {
-      this.toconnectedNextPage = true;
-      this.checkConnection = true;
       this.$router.push('/onBoarding/step3');
     },
     onRedirectToGoogleAuth() {
@@ -237,11 +221,12 @@ export default {
         this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       }
       this.step = 0;
-      //   this.checkConnection = true;
+      this.checkConnection = true;
       if (this.$route.query.googleConnect == 'true') {
         this.checkConnection = true;
       } else {
         let data = await this.getUserInfo();
+        this.emailId = data.attributes.email;
         if (data.attributes.onboard.isCompleted == true) {
           // console.log("6755555");
           this.$router.push('/dashboard');

@@ -1,8 +1,8 @@
 <template>
   <q-page class="poppinsFont min-height">
-    <div class="row" style="height: calc(100vh - 119px)">
+    <div class="row">
       <div
-        class="col-md-4 col-sm-12 col-xs-12 q-px-32"
+        class="col-md-4 col-sm-12 col-xs-12"
         style="background-color: #f9e7d8"
       >
         <CustomSidebar step="3" />
@@ -195,7 +195,6 @@ export default {
       }
       this.step = 0;
       //   this.checkConnection = true;
-      console.log(this.$route.query.googleConnect);
       if (this.$route.query.googleConnect == 'true') {
         this.checkConnection = true;
       } else {

@@ -1,166 +1,11 @@
 <template>
   <q-page class="poppinsFont min-height">
-    <div class="row" style="height: calc(100vh - 119px)">
+    <div class="row">
       <div
-        class="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-xs-12 q-px-32"
+        class="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-xs-12"
         style="background-color: #f9e7d8"
       >
-        <!-- <div
-          class=""
-          v-if="$route.name == 'setup'"
-          style="background-color: #f9e7d8"
-        >
-          <q-img size="1em" src="~assets/Logo.svg" class="LogoSize" />
-        </div> -->
-        <div
-          class="dFlex justify-between lg-hide xl-hide md-hide Bottom-border"
-        >
-          <div
-            class=""
-            v-if="$route.name == 'setup'"
-            style="background-color: #f9e7d8"
-          >
-            <q-img size="1em" src="~assets/Logo.svg" class="LogoSize" />
-          </div>
-          <div class="justify-end">
-            <div class="row justify-end dFlex pr-20">
-              <q-avatar
-                size="3em"
-                font-size="2.5rem"
-                icon="person"
-                class="text-white bg-grey"
-              >
-              </q-avatar>
-              <q-img src="~assets/Icondown.svg" class="dropdowLogo" />
-            </div>
-            <!-- <q-btn-dropdown
-            >
-              <div class="row no-wrap q-pa-md">
-                <div class="column items-center">
-            <q-avatar
-              size="3em"
-              font-size="2.5rem"
-              icon="person"
-              class="text-white bg-grey q-mr-md"
-            >
-            </q-avatar>
-
-                  <div class="text-subtitle1 q-mt-md q-mb-xs">
-                                  <span v-if="isMobile" class="">
-                {{ userName ? userName : updatedUserName }}</span
-              >
-                  </div>
-
-                  <q-btn
-                    color="primary"
-                    label="Logout"
-                    push
-                    size="sm"
-                    v-close-popup
-                  />
-                </div>
-              </div>
-            </q-btn-dropdown> -->
-          </div>
-        </div>
-        <div class="Account-setup-text mt-50">Account Setup</div>
-        <!-- <div>
-          <q-stepper
-            class="no-shadow text-bold"
-            v-model="step"
-            vertical
-            color="primary"
-            inactive-color="primary"
-            inactive-icon="adjust"
-            active-icon="circle"
-            animated
-            style="background-color: #f9e7d8"
-          >
-            <q-step
-              :name="1"
-              title="Step 1"
-              caption=" Add Your Company Details"
-              :done="step > 1"
-            />
-
-            <q-step
-              :name="2"
-              title="Step 2"
-              caption="Connect With Google Drive"
-              :done="step > 2"
-            />
-
-            <q-step
-              :name="3"
-              title="Step 3"
-              caption="Add PhotoID Account Details (optional)"
-              :done="step > 3"
-            >
-            </q-step>
-          </q-stepper>
-        </div> -->
-        <!-- custom stepper -->
-        <div class="column q-mt-43">
-          <div class="col">
-            <div class="row">
-              <q-icon
-                v-if="step == 0"
-                name="adjust"
-                color="primary"
-                size="md"
-              />
-              <q-icon v-if="step == 1" color="primary" size="md">
-                <q-img :src="getImage('step_active.svg')" />
-              </q-icon>
-              <q-icon class="q-ml-xs" v-if="step > 1" color="primary" size="sm">
-                <q-img :src="getImage('step_done.svg')" />
-              </q-icon>
-              <div class="q-ml-sm">
-                <div class="Step-text">Step 1</div>
-                <div class="Step-Subtext">Add Your Company Details</div>
-              </div>
-            </div>
-            <div
-              class="q-ml-md height-40px"
-              style="border-left: 2px solid #ef5926; margin-top: -14px"
-            ></div>
-          </div>
-          <div class="col">
-            <div class="row">
-              <q-icon v-if="step < 2" name="adjust" color="primary" size="md" />
-              <q-icon v-if="step == 2" color="primary" size="md">
-                <q-img :src="getImage('step_active.svg')" />
-              </q-icon>
-              <q-icon class="q-ml-xs" v-if="step > 2" color="primary" size="sm">
-                <q-img :src="getImage('step_done.svg')" />
-              </q-icon>
-              <div class="q-ml-sm">
-                <div class="Step-text">Step 2</div>
-                <div class="Step-Subtext">Connect With Google Drive</div>
-              </div>
-            </div>
-            <div
-              class="q-ml-md height-40px"
-              style="border-left: 2px solid #ef5926; margin-top: -14px"
-            ></div>
-          </div>
-          <div class="col">
-            <div class="row">
-              <q-icon v-if="step < 3" name="adjust" color="primary" size="md" />
-              <q-icon v-if="step == 3" color="primary" size="md">
-                <q-img :src="getImage('step_active.svg')" />
-              </q-icon>
-              <q-icon class="q-ml-xs" v-if="step > 3" color="primary" size="sm">
-                <q-img :src="getImage('step_done.svg')" />
-              </q-icon>
-              <div class="q-ml-sm">
-                <div class="Step-text">Step 3</div>
-                <div class="Step-Subtext">Add PhotoID Account Details</div>
-                <div class="Step-Subtext mb-30">(optional)</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <CustomSidebar step="1" />
       </div>
 
       <div class="col-xl-9 col-lg-9 col-md-8 cols-sm-12 col-xs-12">
@@ -563,6 +408,7 @@
 <script>
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { mapGetters, mapActions } from 'vuex';
+import CustomSidebar from 'components/CustomSidebar';
 // import customFooterMain from '../components/CustomFooterMain.vue'
 // import { isMobile } from '@utils/common';
 import { validateEmail } from '@utils/validation';
@@ -577,7 +423,8 @@ export default {
     };
   },
   components: {
-    AutoCompleteAddress
+    AutoCompleteAddress,
+    CustomSidebar
     // customFooterMain
   },
   data() {
