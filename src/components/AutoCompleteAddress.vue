@@ -131,6 +131,7 @@
           padding-left: 10px;
         "
         @keydown="validateAddress(address.address1)"
+        @blur="validateAddress(address.address1)"
         placeholder="Company Address"
         lazy-rules
         :rules="[
@@ -561,6 +562,7 @@ export default {
     validateText,
     validateAlphaNumericText,
     validateAddress(val) {
+      console.log(val);
       if (val.length < 2) {
         this.errorMSG = 'Please enter the valid address';
         return false;

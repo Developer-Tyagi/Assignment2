@@ -90,7 +90,7 @@
                           outlined
                           v-model="companyDetails.email"
                           :rules="[
-                            val => val.length > 0 || 'Please add email address',
+                            val => val > 0 || 'Please add email address',
                             val =>
                               validateEmail(val) ||
                               'You have entered an invalid email address!'
@@ -560,12 +560,12 @@ export default {
   font-family: 'Poppins';
   font-style: normal;
   color: #101828;
-  font-weight: 400;
-  font-size: 16px;
+  font-weight: 100;
+  font-size: 14px;
   line-height: 24px;
 }
 ::v-deep .vue-country-select .dropdown-list {
-  width: 315px;
+  width: 355px !important;
 }
 .q-pl-32 {
   padding-left: 15px;
