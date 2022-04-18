@@ -151,7 +151,7 @@ export async function updateUserForOrganization({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     let msg = 'Company details  updated';
     if (payload.data.photoIDEmail) {
-      msg = 'PhotoID Account details updated';
+      msg = 'PhotoID account details updated';
     }
     dispatch('setNotification', {
       type: 'positive',

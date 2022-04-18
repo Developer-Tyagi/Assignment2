@@ -5,13 +5,11 @@
         <div class="row" flat bordered>
           <!-- Main Template -->
           <q-tab-panels
+            :class="isMobileResolution ? 'q-px-15' : 'q-px-32'"
             class="q-ml-xl full-height mobile-container-page-without-search full-width"
             v-model="webSubOptionMenuTab.key"
           >
-            <q-tab-panel
-              :class="isMobileResolution ? 'q-px-15' : 'q-px-32'"
-              name="accountSummary"
-            >
+            <q-tab-panel name="accountSummary">
               <AccountSummary> </AccountSummary>
             </q-tab-panel>
             <q-tab-panel name="groupPermission" class="q-pa-lg">

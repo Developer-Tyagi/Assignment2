@@ -231,22 +231,37 @@
               class="text-white bg-grey"
             >
             </q-avatar>
-            <div class="company-details q-pl-lg">
+            <div class="company-details q-ml-lg">
               <div class="flex-column full-width">
                 <div class="details-heading">Company Name</div>
                 <div class="details-content q-pt-sm">
                   {{ organizations.users.fname }}
                 </div>
-                <div class="details-heading q-pt-lg">Mobile</div>
+                <div
+                  class="details-heading"
+                  :class="isMobileResolution ? 'q-pt-md' : 'q-pt-lg'"
+                >
+                  Mobile
+                </div>
                 <div class="details-content q-pt-sm">
                   {{ organizations.phoneNumber.code }}
                   {{ organizations.phoneNumber.number }}
                 </div>
-                <div class="details-heading q-pt-lg">Email Address</div>
+                <div
+                  class="details-heading"
+                  :class="isMobileResolution ? 'q-pt-md' : 'q-pt-lg'"
+                >
+                  Email Address
+                </div>
                 <div class="details-content q-pt-sm ellipsis">
                   {{ organizations.companyDetails.contactEmail }}
                 </div>
-                <div class="details-heading q-pt-lg">Company Address</div>
+                <div
+                  class="details-heading"
+                  :class="isMobileResolution ? 'q-pt-md' : 'q-pt-lg'"
+                >
+                  Company Address
+                </div>
                 <div class="details-content q-pt-sm">
                   {{ organizations.companyDetails.address.address1 }},
                   {{ organizations.companyDetails.address.address2 }},
@@ -298,17 +313,11 @@
                 placehoder="First Name"
                 maxlength="128"
                 lazy-rules
-                :rules="[
-                  val => !!val || 'Please fill your first name',
-                  val =>
-                    validateNames(val) || 'Only alphabets and $ . - are allowed'
-                ]"
+                :rules="[val => val || 'Please fill your first name']"
               />
             </div>
             <div
-              :class="
-                isMobileResolution ? 'q-mt-xs' : 'half-width q-pl-12 q-mt-20'
-              "
+              :class="isMobileResolution ? '' : 'half-width q-pl-12 q-mt-20'"
             >
               <div class="details-heading q-mb-6">Last Name</div>
               <q-input
@@ -318,14 +327,10 @@
                 placehoder="Last Name"
                 maxlength="128"
                 lazy-rules
-                :rules="[
-                  val => !!val || 'Please fill your last name',
-                  val =>
-                    validateNames(val) || 'Only alphabets and $ . - are allowed'
-                ]"
+                :rules="[val => !val || 'Please fill your last name']"
               />
             </div>
-            <div :class="isMobileResolution ? 'q-mt-xs' : 'full-width q-mt-sm'">
+            <div :class="isMobileResolution ? '' : 'full-width q-mt-sm'">
               <div class="details-heading q-mb-6">Email Address</div>
               <q-input
                 input-class="details-content"
@@ -387,11 +392,10 @@
               </div>
             </div>
             <div
-              class="q-pt-lg"
               :class="
                 isMobileResolution
-                  ? 'details-container'
-                  : 'quarter-container q-px-xs'
+                  ? 'details-container q-pt-md'
+                  : 'quarter-container q-px-xs q-pt-lg'
               "
             >
               <div class="details-heading">Last Name</div>
@@ -400,9 +404,10 @@
               </div>
             </div>
             <div
-              class="q-pt-lg"
               :class="
-                isMobileResolution ? 'details-container' : 'half-container'
+                isMobileResolution
+                  ? 'details-container q-pt-md'
+                  : 'half-container q-pt-lg'
               "
             >
               <div class="details-heading">Email Address</div>
@@ -539,9 +544,7 @@
               />
             </div>
             <div
-              :class="
-                isMobileResolution ? 'q-mt-xs' : 'half-width q-pl-12 q-mt-20'
-              "
+              :class="isMobileResolution ? '' : 'half-width q-pl-12 q-mt-20'"
             >
               <div class="details-heading q-mb-6">PhotoID API Key</div>
               <q-input
@@ -601,9 +604,10 @@
               </div>
             </div>
             <div
-              class="q-pt-lg"
               :class="
-                isMobileResolution ? 'details-container' : 'half-container'
+                isMobileResolution
+                  ? 'details-container q-pt-md'
+                  : 'half-container q-pt-lg'
               "
             >
               <div class="details-heading">PhotoID API Key</div>
@@ -635,7 +639,7 @@ import {
   showPhoneNumber,
   sendPhoneNumber
 } from '@utils/clickable';
-import { validateEmail, validateNames, validateUrl } from '@utils/validation';
+import { validateEmail, validateUrl } from '@utils/validation';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
@@ -773,7 +777,6 @@ export default {
     ...mapMutations(['webMenuSubOptionTab']),
     validateEmail,
     validateUrl,
-    validateNames,
 
     async onSaveEditedButtonOrganization() {
       const success = await this.$refs.companyDetailsForm.validate();
@@ -941,7 +944,7 @@ export default {
     },
     async validateEmailid(val) {
       let email_exist = true;
-      if (this.user.email !== this.users.email) {
+      if (this.user.email !== this.users.email && val) {
         email_exist = await this.checkExistingEmail(val);
       }
       let email_valid = await this.validateEmail(val);
