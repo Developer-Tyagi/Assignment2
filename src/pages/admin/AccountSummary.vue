@@ -313,7 +313,7 @@
                 placehoder="First Name"
                 maxlength="128"
                 lazy-rules
-                :rules="[val => val || 'Please fill your first name']"
+                :rules="[val => !!val || 'Please fill your first name']"
               />
             </div>
             <div
@@ -327,7 +327,7 @@
                 placehoder="Last Name"
                 maxlength="128"
                 lazy-rules
-                :rules="[val => !val || 'Please fill your last name']"
+                :rules="[val => !!val || 'Please fill your last name']"
               />
             </div>
             <div :class="isMobileResolution ? '' : 'full-width q-mt-sm'">
