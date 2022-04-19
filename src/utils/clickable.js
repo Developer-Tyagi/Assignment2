@@ -35,7 +35,7 @@ export function showPhoneNumber(value) {
         number += ')';
         number += ' ';
       } else if (i == 6) {
-        number += '-';
+        number += ' ';
       }
       number += value[i];
     }

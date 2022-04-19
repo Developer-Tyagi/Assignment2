@@ -149,9 +149,13 @@ export async function updateUserForOrganization({ dispatch, state }, payload) {
       buildApiData('organizations', payload.data)
     );
     dispatch('setLoading', false);
+    let msg = 'Company details  updated';
+    if (payload.data.photoIDEmail) {
+      msg = 'PhotoID account details updated';
+    }
     dispatch('setNotification', {
       type: 'positive',
-      message: 'Company details  Updated !'
+      message: msg
     });
     return true;
   } catch (e) {
@@ -584,7 +588,7 @@ export async function editUserProfile({ commit, dispatch, state }, user) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
-      message: 'User info  Updated !'
+      message: 'User info updated'
     });
     let dt = user.data.contact.fname + ' ' + user.data.contact.lname;
     commit('setUserNameInProfilePart', dt);
@@ -593,7 +597,7 @@ export async function editUserProfile({ commit, dispatch, state }, user) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: 'failed to update User'
+      message: 'User info update failed'
     });
   }
 }
@@ -617,14 +621,14 @@ export async function updateAccessToken({ dispatch, state }, email) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
-      message: 'User info  Updated !'
+      message: 'Account email updated'
     });
   } catch (e) {
     //console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: 'failed to update User'
+      message: 'Account email update failed'
     });
   }
 }
