@@ -467,26 +467,9 @@
       >
         <div class="flex-row justify-between items-center">
           <div class="details-title">Google Drive</div>
-          <div
-            v-if="organizations.isDriveConnected && !editingDriveDetails"
-            class="flex-row"
-          >
-            <q-btn
-              flat
-              no-caps
-              class="text-subtitle1 fontWeight600 primary-border flex-row items-center line-height-24"
-              :class="
-                isMobileResolution
-                  ? 'border-radius-5 height-40 q-px-xs'
-                  : 'border-radius-10 height-50 q-px-md'
-              "
-              color="primary"
-              label="Edit"
-              @click="editingDriveDetails = true"
-            />
-          </div>
+          <span></span>
         </div>
-        <div v-if="organizations.isDriveConnected && !editingDriveDetails">
+        <div v-if="organizations.isDriveConnected">
           <div class="flex-column details-container q-pt-lg">
             <div class="details-heading">Email</div>
             <div class="details-content q-pt-sm ellipsis">
@@ -501,35 +484,6 @@
                   <q-icon name="task_alt" color="teal" size="17px" /> </span
               ></span>
             </div>
-          </div>
-        </div>
-        <div v-else>
-          <div
-            class="flex-row justify-center items-center q-mt-lg connect-google-drive"
-          >
-            <img
-              class="drive-image"
-              :src="getImage('logos_google-drive.svg')"
-            />
-            <span class="text-center"> Connect Google Drive </span>
-          </div>
-          <div
-            v-if="editingDriveDetails"
-            class="flex-row items-center q-mt-20"
-            :class="isMobileResolution ? 'justify-start' : 'justify-end '"
-          >
-            <q-btn
-              no-caps
-              flat
-              class="text-subtitle1 fontWeight600 line-height-24 text-primary primary-border flex-row items-center"
-              :class="
-                isMobileResolution
-                  ? 'border-radius-5 height-40 q-px-xs'
-                  : 'border-radius-10 height-50 q-px-md'
-              "
-              label="Cancel"
-              @click="editingDriveDetails = false"
-            />
           </div>
         </div>
       </q-card>
@@ -695,7 +649,6 @@ export default {
       editAccountSummary: false,
       editCompanyDetails: false,
       editPhotoIDDetails: false,
-      editingDriveDetails: false,
       isEditable: false,
       columns: [
         {
@@ -1152,23 +1105,6 @@ export default {
   line-height: 24px;
   letter-spacing: 0.15px;
 }
-.drive-image {
-  height: 24px;
-  width: 27px;
-  margin-right: 10px;
-}
-.connect-google-drive {
-  height: 44px;
-  width: 331px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-  color: #0c0c0c;
-  border: 1px solid #0c0c0c;
-  box-sizing: border-box;
-  border-radius: 8px;
-  letter-spacing: 0.15px;
-}
 .camera-container {
   position: absolute;
   .camera-icon {
@@ -1209,11 +1145,6 @@ export default {
     height: 40px;
     width: calc(100% - 0px);
     max-width: 313px;
-  }
-  .connect-google-drive {
-    height: 40px;
-    width: calc(100% - 0px);
-    max-width: 331px;
   }
   .details-container {
     width: calc(100vw - 62px);
