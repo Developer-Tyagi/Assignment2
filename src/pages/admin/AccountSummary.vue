@@ -109,7 +109,7 @@
                   outlined
                   v-model.trim="organizations.users.fname"
                   placehoder="Company Name"
-                  maxlength="256"
+                  :maxlength="maxlengthConstants.companyName"
                   lazy-rules
                   :rules="[val => val.length > 0 || 'Please add company name']"
                 />
@@ -353,7 +353,7 @@
                 outlined
                 v-model.trim="users.fname"
                 placehoder="First Name"
-                maxlength="128"
+                :maxlength="maxlengthConstants.firstName"
                 lazy-rules
                 :rules="[val => !!val || 'Please fill your first name']"
               />
@@ -367,7 +367,7 @@
                 outlined
                 v-model.trim="users.lname"
                 placehoder="Last Name"
-                maxlength="128"
+                :maxlength="maxlengthConstants.lastName"
                 lazy-rules
                 :rules="[val => !!val || 'Please fill your last name']"
               />
@@ -683,6 +683,7 @@ import {
 } from '@utils/clickable';
 import { validateEmail, validateUrl } from '@utils/validation';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import { constants } from '@utils/constant';
 
 export default {
   name: 'AccountSummary',
@@ -781,9 +782,9 @@ export default {
         }
       },
       fileToUpload: [],
-      errorMSG: ''
+      errorMSG: '',
+      maxlengthConstants: constants.maxLength
     };
-    ue;
   },
   computed: {
     ...mapGetters([
