@@ -30,7 +30,51 @@
           >
             <span>
               <span class="camera-container absolute-position">
+                <q-btn
+                  :ripple="false"
+                  round
+                  v-if="organizations && organizations.logo"
+                  style="width: 0px"
+                >
+                  <q-img
+                    class="camera-icon"
+                    src="../../assets/edit-logo.svg"
+                    alt="Camera"
+                  />
+                  <q-menu>
+                    <q-list class="text-subtitle1 line-height-24 q-pa-sm">
+                      <q-item
+                        clickable
+                        v-close-popup
+                        @click="initiateLogoUpload()"
+                        class="flex-row items-center"
+                      >
+                        <q-img
+                          class="icon-20 q-mr-md"
+                          src="../../assets/camera-flat.svg"
+                          alt="Camera"
+                        />
+                        <q-item-section> Upload new logo </q-item-section>
+                      </q-item>
+                      <q-item
+                        clickable
+                        v-close-popup
+                        @click="deleteLogo(organizations.logo)"
+                        class="flex-row items-center"
+                      >
+                        <q-img
+                          class="icon-20 q-mr-md"
+                          src="../../assets/delete.svg"
+                          alt="Camera"
+                        />
+                        <q-item-section> Remove logo </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-menu>
+                </q-btn>
+
                 <q-img
+                  v-else
                   @click="initiateLogoUpload()"
                   class="camera-icon"
                   src="../../assets/camera.svg"
@@ -38,19 +82,18 @@
                 />
               </span>
               <img
-                v-if="organizations.logo"
+                v-if="organizations && organizations.logo"
+                class="company-logo"
                 :class="isMobileResolution ? 'image-60' : 'image-80'"
                 :src="organizations.logo"
                 alt="Company logo"
               />
-              <q-avatar
+              <img
                 v-else
                 :class="isMobileResolution ? 'image-60' : 'image-80'"
-                icon="person"
-                font-size="2.5rem"
-                class="text-white bg-grey"
-              >
-              </q-avatar>
+                :src="getImage('empty-company-logo.svg')"
+                alt="Company logo"
+              />
             </span>
             <div
               :class="
@@ -66,7 +109,7 @@
                   outlined
                   v-model.trim="organizations.users.fname"
                   placehoder="Company Name"
-                  maxlength="128"
+                  maxlength="256"
                   lazy-rules
                   :rules="[val => val.length > 0 || 'Please add company name']"
                 />
@@ -218,19 +261,18 @@
         <div v-else>
           <div class="flex-row full-width q-pt-lg">
             <img
-              v-if="organizations.logo"
+              v-if="organizations && organizations.logo"
+              class="company-logo"
               :class="isMobileResolution ? 'image-60' : 'image-80'"
               :src="organizations.logo"
               alt="Company logo"
             />
-            <q-avatar
+            <img
               v-else
               :class="isMobileResolution ? 'image-60' : 'image-80'"
-              icon="person"
-              font-size="2.5rem"
-              class="text-white bg-grey"
-            >
-            </q-avatar>
+              :src="getImage('empty-company-logo.svg')"
+              alt="Company logo"
+            />
             <div class="company-details q-ml-lg">
               <div class="flex-column full-width">
                 <div class="details-heading">Company Name</div>
@@ -465,7 +507,7 @@
           <div
             class="flex-row justify-center items-center q-mt-lg connect-google-drive"
           >
-            <q-img
+            <img
               class="drive-image"
               :src="getImage('logos_google-drive.svg')"
             />
@@ -741,6 +783,7 @@ export default {
       fileToUpload: [],
       errorMSG: ''
     };
+    ue;
   },
   computed: {
     ...mapGetters([
@@ -751,7 +794,17 @@ export default {
       'isMobileResolution'
     ])
   },
-
+  watch: {
+    organization(value) {
+      if (this.organizations.logo !== value.logo) {
+        this.deleteFileFromFirebase({
+          url: this.organizations.logo,
+          showMsg: false
+        });
+        this.organizations.logo = value.logo;
+      }
+    }
+  },
   methods: {
     toGetStateShortName,
     onPhoneNumberClick,
@@ -772,7 +825,11 @@ export default {
       'getOrganization',
       'updateUserForOrganization',
       'updateAccessToken',
-      'checkExistingEmail'
+      'checkExistingEmail',
+      'uploadCompanyLogo',
+      'deleteFileFromFirebase',
+      'updateCompanyLogo',
+      'setNotification'
     ]),
     ...mapMutations(['webMenuSubOptionTab']),
     validateEmail,
@@ -936,10 +993,11 @@ export default {
     initiateLogoUpload() {
       this.$refs.uploadImageFileInput.$el.click();
     },
-    uploadLogo() {
-      // TODO
-      // Add file this.fileToUpload[0]
-      // console.log(this.fileToUpload[0])
+    async uploadLogo() {
+      await this.uploadCompanyLogo({
+        file: this.fileToUpload[0],
+        companyName: this.organization.name
+      });
       this.fileToUpload = [];
     },
     async validateEmailid(val) {
@@ -976,6 +1034,14 @@ export default {
       } else {
         return false;
       }
+    },
+    async deleteLogo(logoUrl) {
+      await this.deleteFileFromFirebase({ url: logoUrl, showMsg: true });
+      await this.updateCompanyLogo({
+        logoURL: '',
+        companyName: this.organization.name
+      });
+      await this.getOrganization();
     }
   },
 
@@ -1120,6 +1186,10 @@ export default {
   line-height: 12px !important;
   margin-left: 8px;
   margin-top: -12px;
+}
+.company-logo {
+  border: 1px solid #000000;
+  border-radius: 75px;
 }
 
 @media screen and (max-width: 1023px) {

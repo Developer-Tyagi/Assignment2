@@ -6,6 +6,11 @@ import { claim, estimator } from '../claims/getters';
 import { makeId } from '../leads/actions';
 import { date } from 'quasar';
 import { constants } from '@utils/constant';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/storage';
+import firebaseAuthorization from '@utils/firebase';
+
 export function setLoading({ commit }, value) {
   commit('setLoading', value);
 }
@@ -1154,4 +1159,90 @@ export async function getPaidUsers({ commit, dispatch }, params) {
       message: e.response[0].title
     });
   }
+}
+
+export function fileUpload(
+  { dispatch, commit },
+  { file, url, companyName = '' }
+) {
+  try {
+    dispatch('setLoading', true);
+    const ref = firebase.storage().ref(url);
+    var metadata = {
+      contentType: file.type
+    };
+    const uploadTask = ref.put(file, metadata);
+    uploadTask.on(
+      'state_changed',
+      function (snapshot) {
+        const progress = Math.floor(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+      },
+      function (error) {},
+      function () {
+        uploadTask.snapshot.ref
+          .getDownloadURL()
+          .then(async function (downloadURL) {
+            if (
+              downloadURL.includes('company') &&
+              downloadURL.includes('logo')
+            ) {
+              const isUpdated = await dispatch('updateCompanyLogo', {
+                logoURL: downloadURL,
+                companyName: companyName
+              });
+              await dispatch('getOrganization');
+              dispatch('setLoading', false);
+              if (isUpdated) {
+                dispatch('setNotification', {
+                  type: 'positive',
+                  message: 'Company logo updated'
+                });
+              }
+            }
+          });
+      }
+    );
+  } catch (e) {
+    dispatch('setLoading', false);
+  }
+}
+
+export async function deleteFileFromFirebase({ commit, dispatch }, fileUrl) {
+  // To find File Path from the url
+  const { currentUser } = firebaseAuthorization;
+  const startIndex = fileUrl.url.indexOf(currentUser.uid);
+  const endIndex = fileUrl.url.indexOf('?');
+  let filePath = fileUrl.url
+    .substring(startIndex, endIndex)
+    .split('%2F')
+    .join('/');
+  // Replace space code with space
+  filePath = filePath.split('%20').join(' ');
+  const storageRef = firebase.storage().ref();
+  const deleteRef = storageRef.child(filePath);
+
+  await deleteRef
+    .delete()
+    .then(() => {
+      if (fileUrl.showMsg) {
+        dispatch('setNotification', {
+          type: 'positive',
+          message: 'Company logo deleted'
+        });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      if (fileUrl.showMsg) {
+        dispatch('setNotification', {
+          color: 'negative',
+          textColor: 'white',
+          timeout: 3000,
+          icon: 'report_problem',
+          message: error.message
+        });
+      }
+    });
 }
