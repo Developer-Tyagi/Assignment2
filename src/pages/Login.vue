@@ -550,7 +550,7 @@ export default {
   }
 }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
 .q-checkbox__bg {
   border-radius: 6px !important;
 }
