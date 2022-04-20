@@ -1234,7 +1234,6 @@ export async function deleteFileFromFirebase({ commit, dispatch }, fileUrl) {
       }
     })
     .catch(error => {
-      console.log(error);
       if (fileUrl.showMsg) {
         dispatch('setNotification', {
           color: 'negative',

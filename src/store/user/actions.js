@@ -7,6 +7,7 @@ import {
   getCurrentUser
 } from '@utils/auth';
 import firebaseAuthorization from '@utils/firebase';
+import axios from 'axios';
 
 // function is used for user login .
 export async function userLogin({ commit, dispatch }, formData) {
@@ -754,4 +755,29 @@ export async function updateCompanyLogo({ dispatch, commit }, logo) {
     });
     return false;
   }
+}
+
+export async function verifyPhotoidAccount({ dispatch, commit }, payload) {
+  const data = {
+    email: payload.photoIDEmail,
+    apiToken: payload.photoIDAPIKey
+  };
+  const options = {
+    headers: {}
+  };
+  const response = await axios
+    .post('https://api.photoidapp.net/api/getAssignments', data, options)
+    .then(
+      response => {
+        return true;
+      },
+      error => {
+        dispatch('setNotification', {
+          type: 'negative',
+          message: error.response.data.message
+        });
+        return false;
+      }
+    );
+  return response;
 }

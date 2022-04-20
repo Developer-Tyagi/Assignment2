@@ -783,7 +783,8 @@ export default {
       'uploadCompanyLogo',
       'deleteFileFromFirebase',
       'updateCompanyLogo',
-      'setNotification'
+      'setNotification',
+      'verifyPhotoidAccount'
     ]),
     ...mapMutations(['webMenuSubOptionTab']),
     validateEmail,
@@ -830,9 +831,12 @@ export default {
             photoIDAPIKey: this.organizations.photoIDAPIKey
           }
         };
-        await this.updateUserForOrganization(payload);
-        await this.getOrganization();
-        this.editPhotoIDDetails = false;
+        let accountExists = await this.verifyPhotoidAccount(payload.data);
+        if (accountExists) {
+          await this.updateUserForOrganization(payload);
+          await this.getOrganization();
+          this.editPhotoIDDetails = false;
+        }
       }
     },
 
