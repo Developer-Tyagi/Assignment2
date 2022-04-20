@@ -44,7 +44,7 @@
                 <q-form ref="editPhotoIDForm">
                   <div class="">
                     <div class="col q-pr-xl">
-                      <div class="text-subheading q-mb-sm">Account Email</div>
+                      <div class="text-subheading q-mb-6">Account Email</div>
                       <q-input
                         dense
                         input-class="photoId-Inputtext"
@@ -54,9 +54,9 @@
                       />
                     </div>
                     <div class="col q-pr-xl">
-                      <div class="text-subheading mt30 q-mb-sm">Api Key</div>
+                      <div class="text-subheading mt30 q-mb-6">Api Key</div>
                       <q-input
-                        dense
+                        style="color: #667085"
                         class="PhotoId-input"
                         input-class="photoId-Inputtext"
                         outlined
@@ -75,7 +75,7 @@
               </div>
             </div>
             <div
-              class="col row q-mt-sm q-mb-xl q-mr-xl ml-15 mt-323 items-end justify-between"
+              class="col row q-mt-sm q-mb-100 q-mr-xl ml-15 mt-323 items-end justify-between"
             >
               <q-btn no-caps class="Back-Btn" @click="navigatePreviousStepper"
                 >Back</q-btn
@@ -85,17 +85,17 @@
                 >Complete Setup</q-btn
               >
             </div>
-            <div class="row border-top">
-              <!-- <q-separator class="q-mt-md " /> -->
-              <div
-                class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer"
-                style="background-color: white"
-              >
-                © ClaimGuru<span> {{ CurrentYear }} </span>
-              </div>
-            </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row border-top">
+      <!-- <q-separator class="q-mt-md " /> -->
+      <div
+        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer"
+        style="background-color: white"
+      >
+        © ClaimGuru<span> {{ CurrentYear }} </span>
       </div>
     </div>
   </q-page>
@@ -219,6 +219,9 @@ export default {
   border: 2px solid #ffffff;
   border-radius: 16px;
 }
+.q-mb-6 {
+  margin-bottom: 6px;
+}
 .q-page-container {
   margin: 0 auto !important;
   max-width: 120rem;
@@ -250,9 +253,6 @@ export default {
 }
 .mb-15 {
   margin-bottom: 15px;
-}
-.mt30 {
-  margin-top: 30px;
 }
 .mx-15 {
   margin-left: 0px;
@@ -343,6 +343,9 @@ export default {
 .Next-button {
   width: 118px;
   height: 50px;
+}
+.q-mb-100 {
+  margin-bottom: 100px;
 }
 .GoHome-btn {
   width: 177px;
@@ -609,8 +612,6 @@ export default {
 @media screen and (max-width: 1022px) {
   .border-top {
     border-top: 1px solid #e5e5e5;
-    margin-left: -50px;
-    margin-right: -50px;
   }
   .style-type-none {
     list-style-type: none;
@@ -629,8 +630,6 @@ export default {
   }
   .border-top {
     border-top: 1px solid #e5e5e5;
-    margin-left: -50px;
-    margin-right: -50px;
   }
   .q-pr-lg {
     padding-right: 0px;
@@ -829,10 +828,10 @@ export default {
   // .q-px-32 {padding-left: 15px;}
 
   .mt30 {
-    margin-top: 16px;
+    margin-top: 30px;
   }
   .q-mt-30 {
-    margin-top: 25px;
+    margin-top: 30px;
   }
   .q-px-32 {
     padding-left: 15px;

@@ -38,18 +38,18 @@
                   @click="goToHome"
                 />
               </div>
-              <div class="row border-top">
-                <!-- <q-separator class="q-mt-md " /> -->
-                <div
-                  class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-19"
-                  style="background-color: white"
-                >
-                  © ClaimGuru<span> {{ CurrentYear }} </span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row border-top">
+      <!-- <q-separator class="q-mt-md " /> -->
+      <div
+        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer"
+        style="background-color: white"
+      >
+        © ClaimGuru<span> {{ CurrentYear }} </span>
       </div>
     </div>
   </q-page>
@@ -552,11 +552,11 @@ export default {
 @media screen and (max-width: 1022px) {
   .border-top {
     border-top: 1px solid #e5e5e5;
-    margin-left: -50px;
-    margin-right: -50px;
   }
   .ml-31 {
-    margin-left: 15px !important;
+    padding-left: 31px !important;
+    margin-top: 19px;
+    margin-bottom: 19px;
   }
 }
 
@@ -567,8 +567,6 @@ export default {
   }
   .border-top {
     border-top: 1px solid #e5e5e5;
-    margin-left: -50px;
-    margin-right: -50px;
   }
   .q-pr-lg {
     padding-right: 0px;
@@ -778,10 +776,11 @@ export default {
   }
   // .height-40px {height: 24px;}
 }
-@media only screen and (width: 1024px) {
-  .q-px-32 {
-    padding-left: 32px;
-    padding-top: 0px;
+@media only screen and (min-width: 1024px) {
+  .ml-31 {
+    padding-left: 31px !important;
+    margin-top: 19px;
+    margin-bottom: 19px;
   }
 }
 @media only screen and (width: 1440px) {

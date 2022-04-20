@@ -14,7 +14,7 @@
             <div class="col-2 mt-40">
               <div class="text-h5 fontWeight600">Connect With Google Drive</div>
               <div
-                class="q-mt-sm fontWeight400 subtitle2"
+                class="q-mt-8 fontWeight400 subtitle2"
                 style="color: #667085"
               >
                 In order to provide full access to ClaimGuru, we need permission
@@ -63,7 +63,7 @@
                     class="col q-ml-xs mb-15 fontWeight500"
                     style="
                       margin-bottom: 15px;
-                      margin-left: 20px;
+                      margin-left: 10px;
                       color: #0c0c0c;
                     "
                     >Connect Google Drive</span
@@ -73,6 +73,7 @@
                   v-else
                   class="row justify-center connectedGooglebtn"
                   style="
+                    font-size: 16px;
                     border: solid 1px #039855;
                     background-color: #d1fadf;
                     border-radius: 8px;
@@ -90,7 +91,7 @@
             </div>
 
             <div
-              class="col-lg-9 col-xl-9 col-md-9 col-sm-12 col-xs-12 row mt-404 q-mb-100 items-end justify-between"
+              class="col-lg-9 col-xl-9 col-md-9 col-sm-12 col-xs-12 row mt-404 q-mb-100 items-end justify-between align-start"
               style="position: relative"
             >
               <q-btn
@@ -101,20 +102,12 @@
                 >Back</q-btn
               >
 
-              <!-- <q-btn
-                style="border-radius: 10px"
-                class="fontWeight600 Next-Btn"
-                no-caps
-                @click="NextStepperValue"
-                :disable="!checkConnection"
-                >Next</q-btn
-              > -->
               <q-btn
                 style="border-radius: 10px"
                 class="fontWeight600 Next-Btn"
                 no-caps
                 @click="NextStepperValue"
-                :disable="checkConnection"
+                :disable="!checkConnection"
                 >Next</q-btn
               >
             </div>
@@ -185,8 +178,7 @@ export default {
       this.$router.push('/onBoarding/step1');
     },
     async NextStepperValue() {
-      this.checkConnection = true;
-      // this.$router.push('/onBoarding/step3');
+      this.$router.push('/onBoarding/step3');
     },
     onRedirectToGoogleAuth() {
       this.toRedirectGoogleAuth1();
@@ -230,7 +222,7 @@ export default {
         this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       }
       this.step = 0;
-      // this.checkConnection = true;
+      this.checkConnection = true;
       if (this.$route.query.googleConnect == 'true') {
         this.checkConnection = true;
       } else {
@@ -535,6 +527,9 @@ export default {
   background-color: white;
   border-top: none;
 }
+::v-deep .items-center {
+  align-items: center;
+}
 ::v-deep .q-btn__wrapper:before {
   box-shadow: none;
 }
@@ -565,7 +560,7 @@ export default {
   height: 46px;
 }
 .pl-62 {
-  padding-left: 2px;
+  // padding-left: 2px;
 }
 .pr-110 {
   padding-right: 50px;
@@ -691,6 +686,9 @@ export default {
   }
 }
 @media only screen and (max-width: 600px) {
+  .q-mt-8 {
+    margin-top: 6px;
+  }
   .mt-24 {
     margin-top: 16px;
   }
@@ -708,6 +706,9 @@ export default {
     padding-left: 15px;
     padding-right: 15px;
     padding-top: 15px;
+  }
+  ::v-deep .items-center {
+    align-content: flex-start;
   }
   .q-pb-18 {
     padding-bottom: 18px;
@@ -841,11 +842,13 @@ export default {
     width: 81px !important;
     height: 40px !important;
     border-radius: 5px !important;
-    padding: 8px, 20px, 8px, 20px !important;
     border: 2px solid #ef5926;
     color: #ef5926 !important;
     font-weight: 600 !important;
     font-size: 16px !important;
+  }
+  .align-start {
+    align-items: flex-start;
   }
   .connectedGooglebtn {
     width: 345px;
@@ -869,21 +872,24 @@ export default {
   //   border-top: 1px solid #e5e5e5;
   // }
   // .q-px-32 {padding-left: 15px;}
+  .q-mt-8 {
+    margin-top: 8px !important;
+  }
   .q-px-32 {
     padding-left: 15px;
     padding-top: 15px;
   }
-  .q-px-xl {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
+  // .q-px-xl {
+  //   padding-left: 15px;
+  //   padding-right: 15px;
+  // }
   .q-mx-xl {
     padding-left: 0px;
     padding-right: 0px;
   }
   .q-px-xl {
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: 62px;
+    padding-right: 60px;
   }
   .px-15 {
     padding-left: 15px;
@@ -899,7 +905,7 @@ export default {
   }
 
   .connectWithGoogle {
-    width: 300px !important;
+    width: 290px !important;
     height: 40px !important;
     background: #ffffff !important;
     border: 1px solid #0c0c0c !important;
@@ -907,7 +913,7 @@ export default {
     border-radius: 8px !important;
     font-style: normal;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 13px;
     line-height: 24px;
     align-items: flex-start;
     /* identical to box height, or 150% */
