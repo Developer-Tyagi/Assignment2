@@ -94,7 +94,7 @@ export default {
     CustomSidebar
   },
   methods: {
-    ...mapActions(['getUserInfo', 'getOrganization', 'toRedirectGoogleAuth1']),
+    ...mapActions(['getUserInfo', 'getOrganization']),
     getImage(icon) {
       return require('../../assets/' + icon);
     },
@@ -106,9 +106,6 @@ export default {
     },
     async NextStepperValue() {
       this.$router.push('/onBoarding/step3');
-    },
-    onRedirectToGoogleAuth() {
-      this.toRedirectGoogleAuth1();
     },
     goToHome() {
       this.$router.push('/admin');

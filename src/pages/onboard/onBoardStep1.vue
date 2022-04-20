@@ -87,10 +87,13 @@
                           input-class=" inside-text"
                           style="border-radius: 8px"
                           placeholder="Company Email"
+                          lazy-rules
                           outlined
                           v-model="companyDetails.email"
                           :rules="[
-                            val => val > 0 || 'Please add email address',
+                            val =>
+                              (val && val.length > 0) ||
+                              'Please add email address',
                             val =>
                               validateEmail(val) ||
                               'You have entered an invalid email address!'
@@ -189,7 +192,11 @@ export default {
     CustomSidebar
   },
   methods: {
-    ...mapActions(['getUserInfo', 'getOrganization']),
+    ...mapActions([
+      'getUserInfo',
+      'getOrganization',
+      'updateUserForOrganization'
+    ]),
     validateEmail,
     getImage(icon) {
       return require('../../assets/' + icon);
@@ -199,6 +206,16 @@ export default {
     },
     getStarted() {
       this.$router.push('/onBoarding/step1');
+    },
+    validateEmailManually(val) {
+      console.log(val);
+      if (val.length < 2) {
+        this.errorMSG = 'Please enter the valid address';
+        return false;
+      } else {
+        this.errorMSG = '';
+        return true;
+      }
     },
     async NextStepperValue() {
       {

@@ -40,7 +40,7 @@
               </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="justify-content: center">
               <div class="mt-24 col-sm-12">
                 <q-btn
                   v-if="this.checkConnection == false"
@@ -90,7 +90,7 @@
             </div>
 
             <div
-              class="col-lg-9 col-xl-9 col-md-9 col-sm-12 col-xs-12 row mt-404 q-mb-xl items-end justify-between"
+              class="col-lg-9 col-xl-9 col-md-9 col-sm-12 col-xs-12 row mt-404 q-mb-100 items-end justify-between"
               style="position: relative"
             >
               <q-btn
@@ -112,16 +112,16 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
 
-        <div class="row border-top">
-          <!-- <q-separator class="q-mt-md " /> -->
-          <div
-            class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-18"
-            style="background-color: white"
-          >
-            © ClaimGuru<span> {{ CurrentYear }} </span>
-          </div>
-        </div>
+    <div class="row border-top">
+      <!-- <q-separator class="q-mt-md " /> -->
+      <div
+        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer"
+        style="background-color: white"
+      >
+        © ClaimGuru<span> {{ CurrentYear }} </span>
       </div>
     </div>
   </q-page>
@@ -221,7 +221,7 @@ export default {
         this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       }
       this.step = 0;
-      this.checkConnection = true;
+      // this.checkConnection = true;
       if (this.$route.query.googleConnect == 'true') {
         this.checkConnection = true;
       } else {
@@ -541,9 +541,6 @@ export default {
 .q-pl-32 {
   padding-left: 15px;
 }
-.ml-31 {
-  padding-left: 16px !important;
-}
 .q-pb-18 {
   padding-bottom: 18px;
 }
@@ -645,8 +642,13 @@ export default {
     // margin-left: -50px;
     // margin-right: -50px;
   }
+  .q-mb-100 {
+    margin-bottom: 100px;
+  }
   .ml-31 {
-    margin-left: 15px !important;
+    padding-left: 31px !important;
+    margin-top: 19px;
+    margin-bottom: 19px;
   }
 }
 
@@ -904,10 +906,15 @@ export default {
     // align-items: center;
   }
 }
-@media only screen and (width: 1024px) {
+@media only screen and (min-width: 1024px) {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 0px;
+  }
+  .ml-31 {
+    margin-left: 31px !important;
+    margin-top: 19px;
+    margin-bottom: 19px;
   }
 }
 @media only screen and (width: 1440px) {
