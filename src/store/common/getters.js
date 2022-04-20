@@ -14,6 +14,7 @@ export const fileRoleOptions = state => state.fileRoleOptions;
 export const tokens = state => state.tokens;
 export const pageAccess = state => state.pageAccess;
 export const organization = state => state.organization;
+export const organizationId = state => state.organizationId;
 export const isEdit = state => state.isEdit;
 export const isOnline = state => state.isOnline;
 export const isOfflineClientEdit = state => state.isOfflineClientEdit;
