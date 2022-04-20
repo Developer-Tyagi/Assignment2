@@ -11,9 +11,9 @@
         <q-separator class="seperator-color" />
         <div class="q-px-xl">
           <div>
-            <div class="column justify-center q-mt-xl">
+            <div class="column justify-center q-mt-100">
               <q-img
-                class="col self-center q-mt-xl onBoardLogo"
+                class="col self-center onBoardLogo"
                 :src="getImage('onBoard-2.svg')"
               />
             </div>
@@ -287,7 +287,6 @@ export default {
   font-family: 'Poppins-semiBold';
   background: #ef5926;
   font-style: normal;
-  box-shadow: none !important;
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
@@ -305,10 +304,11 @@ export default {
   background: #ef5926;
   border-radius: 10px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 16px !important;
   line-height: 24px;
   color: #ffffff;
   margin-bottom: 100px;
+  box-shadow: none !important;
 }
 .overflowhidden {
   overflow-x: hidden;
@@ -440,14 +440,15 @@ export default {
   background-color: white;
   border-top: none;
 }
-::v-deep .q-btn__wrapper:before {
-  box-shadow: none;
+::v-deep .q-btn .q-icon {
+  width: 6px;
+  height: 12px;
 }
 ::v-deep .q-field__messages {
   line-height: 4px;
 }
-::v-deep .absolute-full {
-  background-size: auto;
+::v-deep .q-btn__wrapper:before {
+  box-shadow: none;
 }
 ::v-deep .absolute-full {
   background-size: inherit !important;
@@ -662,7 +663,7 @@ export default {
     background: #ef5926;
     border-radius: 10px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 14px !important;
     line-height: 24px;
     color: #ffffff;
     margin-bottom: 100px;
@@ -705,7 +706,6 @@ export default {
     display: flex;
     align-items: center;
     color: #ffffff;
-    box-shadow: none !important;
   }
   .Next-button {
     width: 95px;
@@ -776,11 +776,20 @@ export default {
   }
   // .height-40px {height: 24px;}
 }
+
+@media only screen and (max-width: 1023px) {
+  .q-mt-100 {
+    margin-top: 40px;
+  }
+}
 @media only screen and (min-width: 1024px) {
   .ml-31 {
     padding-left: 31px !important;
     margin-top: 19px;
     margin-bottom: 19px;
+  }
+  .q-mt-100 {
+    margin-top: 100px;
   }
 }
 @media only screen and (width: 1440px) {
@@ -788,7 +797,7 @@ export default {
     padding-left: 32px;
     padding-top: 0px;
   }
-  .q-px-xl {
+  .q-px-52 {
     padding-left: 60px;
     padding-right: 60px;
   }

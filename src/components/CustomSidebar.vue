@@ -29,7 +29,12 @@
           style="background-color: #f9dfc8; margin-left: -14px"
         />
         <div class="ml-32 mt-34">
-          <div class="Account-setup-text">Account Setup</div>
+          <div
+            class="Account-setup-text"
+            v-if="step == 0 || step == 1 || step == 2"
+          >
+            Account Setup
+          </div>
           <!-- custom stepper -->
           <div class="column q-mt-43">
             <div class="col">
