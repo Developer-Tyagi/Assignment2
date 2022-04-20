@@ -1,0 +1,59 @@
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+.flex-row-wrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+.q-px-15 {
+  padding: 0px 15px;
+}
+.q-px-32 {
+  padding: 0px 32px;
+}
+
+.q-pa-20 {
+  padding: 20px;
+}
+.q-mt-20 {
+  margin-top: 20px;
+}
+.q-mt-40 {
+  margin-top: 40px;
+}
+.q-mb-20 {
+  margin-bottom: 20px;
+}
+.q-mb-40 {
+  margin-bottom: 40px;
+}
+.q-mt-6 {
+  margin-top: 6px;
+}
+.q-mb-6 {
+  margin-bottom: 6px;
+}
+.q-field--outlined .q-field__control {
+  border-radius: 8px;
+  height: 44px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.q-pr-12 {
+  padding-right: 12px;
+}
+.q-pl-12 {
+  padding-left: 12px;
+}
+.admin-panel {
+  .q-tab-panel {
+    padding: 0px;
+  }
+}

@@ -534,6 +534,7 @@ export default {
     ...mapGetters(['isOfflineClientEdit'])
   },
   mounted() {
+    console.log('ye call hua', this.address.addressCountry);
     this.address.addressCountry = 'United States';
     this.onCountrySelect(this.address.addressCountry);
     this['obj' + this.id] = new google.maps.places.Autocomplete(

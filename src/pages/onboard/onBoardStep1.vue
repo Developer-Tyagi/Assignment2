@@ -5,7 +5,7 @@
         class="col-md-4 col-sm-12 col-xs-12"
         style="background-color: #f9e7d8"
       >
-        <CustomSidebar step="0" />
+        <CustomSidebar step="1" />
       </div>
       <div class="col-md-8 cols-sm-12 col-xs-12">
         <q-separator class="seperator-color" />
@@ -266,6 +266,7 @@ export default {
       this.$router.push('/dashboard');
     }
     if (this.organization) {
+      console.log(this.organization, 269);
       this.companyDetails.name = this.organization.name;
       this.companyDetails.address.address1 = this.organization.address
         ? this.organization.address.address1
@@ -281,6 +282,9 @@ export default {
         : '';
       this.companyDetails.contactNumber = this.organization.phoneNumber
         ? this.organization.phoneNumber.number
+        : '';
+      this.companyDetails.address.country = this.organization.address
+        ? this.organization.address.addressCountry
         : '';
       this.companyDetails.email = this.organization.email;
       this.companyDetails.photoIdEmail = this.organization.photoIDEmail;

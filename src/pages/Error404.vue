@@ -43,7 +43,7 @@
         <q-btn
           no-caps
           flat
-          class="bgNewPrimary secondary-border text-primary fontWeight600 border-5 error-buttons"
+          class="bgNewPrimary primary-border text-primary fontWeight600 border-5 error-buttons"
           label="Contact Us"
         />
       </div>
