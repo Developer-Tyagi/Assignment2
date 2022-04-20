@@ -26,7 +26,7 @@
         </div>
         <q-separator
           class="md-hide lg-hide xl-hide"
-          style="color: #f9dfc8; margin-left: -14px"
+          style="background-color: #f9dfc8; margin-left: -14px"
         />
         <div class="ml-32 mt-34">
           <div class="Account-setup-text">Account Setup</div>

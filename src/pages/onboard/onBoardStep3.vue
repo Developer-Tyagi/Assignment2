@@ -15,13 +15,13 @@
               <div class="photoId-Text">PhotoID Account Details</div>
               <div class="column Bottom-photoId-text mt-4">
                 <div class="text-justify">
-                  <li>
+                  <li class="style-type-none">
                     If you are currently a PhotoID user, please complete your
                     information below.
                   </li>
                 </div>
                 <div class="text-justify">
-                  <li>
+                  <li class="style-type-none">
                     If not, please consider signing up by
                     <a
                       class="text-orange"
@@ -32,7 +32,7 @@
                   </li>
                 </div>
                 <div class="text-justify">
-                  <li>
+                  <li class="style-type-none">
                     Our partnership with PhotoID will enhance your user
                     experience.
                   </li>
@@ -190,16 +190,16 @@ export default {
         this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
         this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       }
-      this.step = 0;
+      // this.step = 0;
       //   this.checkConnection = true;
-      if (this.$route.query.googleConnect == 'true') {
-        this.checkConnection = true;
-      } else {
-        let data = await this.getUserInfo();
-        if (data.attributes.onboard.isCompleted == true) {
-          this.$router.push('/dashboard');
-        }
-      }
+      // if (this.$route.query.googleConnect == 'true') {
+      //   this.checkConnection = true;
+      // } else {
+      //   let data = await this.getUserInfo();
+      //   if (data.attributes.onboard.isCompleted == true) {
+      //     this.$router.push('/dashboard');
+      //   }
+      // }
     }
   }
 };
@@ -611,6 +611,9 @@ export default {
     border-top: 1px solid #e5e5e5;
     margin-left: -50px;
     margin-right: -50px;
+  }
+  .style-type-none {
+    list-style-type: none;
   }
   .ml-31 {
     padding-left: 31px !important;

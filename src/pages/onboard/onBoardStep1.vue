@@ -580,13 +580,12 @@ export default {
 ::v-deep .vue-country-select .dropdown-item {
   font-family: 'Poppins';
   font-style: normal;
-  color: #101828;
-  font-weight: 100;
+  color: rgba(0, 0, 0, 0.87);
+  font-weight: 400;
+  padding: 14px 8px;
   font-size: 14px;
+  letter-spacing: 0.13118px;
   line-height: 24px;
-}
-::v-deep .vue-country-select .dropdown-list {
-  width: 355px !important;
 }
 .q-pl-32 {
   padding-left: 15px;
@@ -691,9 +690,12 @@ export default {
     margin-top: 19px;
     margin-bottom: 19px;
   }
-
   .mb-30 {
     margin-bottom: 30px;
+  }
+
+  ::v-deep .vue-country-select .dropdown-list {
+    width: 84vw !important;
   }
 }
 
@@ -706,11 +708,14 @@ export default {
   .border-top {
     border-top: 1px solid #e5e5e5;
   }
-
   .ml-31 {
     margin-left: 31px !important;
     margin-top: 19px;
     margin-bottom: 19px;
+  }
+
+  ::v-deep .vue-country-select .dropdown-list {
+    width: 25vw !important;
   }
 }
 
@@ -734,6 +739,10 @@ export default {
   .q-px-32 {
     padding-left: 15px;
     padding-top: 15px;
+  }
+
+  ::v-deep .vue-country-select .dropdown-list {
+    width: calc(100vw - 45px) !important;
   }
   .q-pl-32 {
     padding-left: 15px;
