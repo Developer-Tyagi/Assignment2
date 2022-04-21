@@ -448,11 +448,14 @@ export default {
       this.currentSelectdUser.firstName = sel_user.attributes.contact.fname;
       this.currentSelectdUser.lastName = sel_user.attributes.contact.lname;
       this.currentSelectdUser.email = sel_user.attributes.email;
-      this.currentSelectdUser.contactNumber = '';
       this.currentSelectdUser.role = sel_user.attributes.roles[0].value;
       this.currentSelectdUser.paidStatus = sel_user.attributes.roles[0].isPaid;
-      this.currentSelectdUser.subRole = '';
 
+      if (sel_user.attributes.subRole) {
+        this.currentSelectdUser.subRole = sel_user.attributes.subRole.value;
+      } else {
+        this.currentSelectdUser.subRole = '';
+      }
       if (sel_user.attributes.licenses) {
         this.currentSelectdUser.license_state =
           sel_user.attributes.licenses[0].state;

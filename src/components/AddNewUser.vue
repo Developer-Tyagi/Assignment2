@@ -449,10 +449,27 @@ export default {
     async addExtraUser() {
       const success = await this.$refs.userInfo.validate();
       let currentSelectedRole = this.selectedRoleObject.machineValue;
-      let allowedVal =
-        this.organization.allowedRoles[currentSelectedRole].count;
-      let currentUsed =
-        this.organization.currentRoles[currentSelectedRole].count;
+      let allowedVal = '';
+      if (this.organization.allowedRoles[currentSelectedRole]) {
+        allowedVal = this.organization.allowedRoles[currentSelectedRole].count;
+      } else {
+        allowedVal = 0;
+      }
+      let currentUsed = '';
+      if (this.organization.currentRoles[currentSelectedRole]) {
+        currentUsed = this.organization.currentRoles[currentSelectedRole].count;
+      } else {
+        currentUsed = 0;
+      }
+      console.log(
+        'Current1',
+        currentUsed,
+        'allowedVal1',
+        allowedVal,
+        'role',
+        currentSelectedRole
+      );
+
       if (allowedVal - currentUsed > 0) {
         this.submitUser();
       } else {
@@ -528,11 +545,21 @@ export default {
         }
       };
       let currentSelectedRole = this.selectedRoleObject.machineValue;
-      let allowedVal =
-        this.organization.allowedRoles[currentSelectedRole].count;
-      let currentUsed =
-        this.organization.currentRoles[currentSelectedRole].count;
 
+      let allowedVal = '';
+      if (this.organization.allowedRoles[currentSelectedRole]) {
+        allowedVal = this.organization.allowedRoles[currentSelectedRole].count;
+      } else {
+        allowedVal = 0;
+      }
+
+      let currentUsed = '';
+      if (this.organization.currentRoles[currentSelectedRole]) {
+        currentUsed = this.organization.currentRoles[currentSelectedRole].count;
+      } else {
+        currentUsed = 0;
+      }
+      console.log('Current2', currentUsed, 'allowedVal2', allowedVal);
       if (allowedVal - currentUsed > 0) {
         var licenseGrant = true;
       } else {
