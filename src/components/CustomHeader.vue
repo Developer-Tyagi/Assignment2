@@ -113,15 +113,20 @@
           class="col-lg-8 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
         >
           <div class="row justify-end q-pr-xl">
-            <q-avatar
+            <!-- <q-avatar
               size="3em"
               font-size="2.5rem"
               icon="person"
               class="text-white bg-grey q-mr-md"
             >
-            </q-avatar>
+            </q-avatar> -->
+            <q-img
+              size="1em"
+              src="~assets/Avatarforprofile.svg"
+              class="AvtarLogoSize"
+            />
 
-            <div class="q-pt-sm text-capitalize">
+            <div class="q-pt-sm text-capitalize" style="margin-left: 5px">
               <span v-if="isMobile" class="userNameStyle">
                 {{ userName ? userName : updatedUserName }}</span
               >
@@ -1012,7 +1017,10 @@ export default {
 .q-toolbar {
   padding: 0;
 }
-
+.AvtarLogoSize {
+  width: 40px;
+  height: 40px;
+}
 .q-header {
   margin: 0 auto !important;
   max-width: 120rem;
