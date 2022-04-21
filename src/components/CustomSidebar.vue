@@ -1,140 +1,138 @@
 <template>
-  <q-page class="poppinsFont min-height">
-    <div class="row">
-      <div style="width: 100%">
-        <div class="dFlex justify-between lg-hide xl-hide md-hide">
-          <div
-            class="pr-15"
-            v-if="$route.name == 'onBoarding'"
-            style="background-color: #f9e7d8"
-          >
-            <q-img size="1em" src="~assets/Logo.svg" class="LogoSize" />
-          </div>
-          <div class="justify-end">
-            <div class="row justify-end dFlex pr-20">
-              <q-avatar
-                size="3em"
-                font-size="2.5rem"
-                icon="person"
-                class="text-white bg-grey"
-                style=""
-              >
-              </q-avatar>
-              <q-img src="~assets/Icondown.svg" class="dropdowLogo" />
-            </div>
+  <q-page class="poppinsFont min-height max-width">
+    <div>
+      <div class="dFlex justify-between lg-hide xl-hide md-hide">
+        <div
+          class="pr-15"
+          v-if="$route.name == 'onBoarding'"
+          style="background-color: #f9e7d8"
+        >
+          <q-img size="1em" src="~assets/Logo.svg" class="LogoSize" />
+        </div>
+        <div class="justify-end">
+          <div class="row justify-end dFlex pr-20">
+            <q-avatar
+              size="3em"
+              font-size="2.5rem"
+              icon="person"
+              class="text-white bg-grey"
+              style=""
+            >
+            </q-avatar>
+            <q-img src="~assets/Icondown.svg" class="dropdowLogo" />
           </div>
         </div>
-        <q-separator
-          class="md-hide lg-hide xl-hide"
-          style="background-color: #f9dfc8; margin-left: -14px"
-        />
-        <div class="ml-32 mt-34">
-          <div
-            class="Account-setup-text"
-            v-if="step == 0 || step == 1 || step == 2"
-          >
-            Account Setup
-          </div>
-          <!-- custom stepper -->
-          <div class="column q-mt-43">
-            <div class="col">
-              <div class="row">
-                <!-- <q-icon
+      </div>
+      <q-separator
+        class="md-hide lg-hide xl-hide"
+        style="background-color: #f9dfc8; margin-left: -14px"
+      />
+      <div class="ml-32 mt-34">
+        <div
+          class="Account-setup-text"
+          v-if="step == 0 || step == 1 || step == 2"
+        >
+          Account Setup
+        </div>
+        <!-- custom stepper -->
+        <div class="column q-mt-43">
+          <div class="col">
+            <div class="row">
+              <!-- <q-icon
                 name="adjust"
                 color="primary"
                 size="md"
               /> -->
 
-                <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 1" class="step1Logon" /> -->
-                <q-icon
-                  name="adjust"
-                  color="primary"
-                  v-if="step == 0"
-                  size="md"
-                />
-                <q-img
-                  size="1em"
-                  src="~assets/stepWorking.svg"
-                  class="stepWorking"
-                  v-if="step == 1"
-                />
-                <q-img
-                  size="1em"
-                  src="~assets/_Step1done.svg"
-                  class="step1Logon"
-                  v-if="step == 2 || step == 3 || step == 4"
-                />
+              <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 1" class="step1Logon" /> -->
+              <q-icon
+                name="adjust"
+                color="primary"
+                v-if="step == 0"
+                size="md"
+              />
+              <q-img
+                size="1em"
+                src="~assets/stepWorking.svg"
+                class="stepWorking"
+                v-if="step == 1"
+              />
+              <q-img
+                size="1em"
+                src="~assets/_Step1done.svg"
+                class="step1Logon"
+                v-if="step == 2 || step == 3 || step == 4"
+              />
 
-                <div class="q-ml-sm">
-                  <div class="Step-text">Step 1</div>
-                  <div class="Step-Subtext">Add Your Company Details</div>
-                </div>
+              <div class="q-ml-sm">
+                <div class="Step-text">Step 1</div>
+                <div class="Step-Subtext">Add Your Company Details</div>
               </div>
-              <div
-                class="q-ml-md height-40px"
-                style="border-left: 2px solid #ef5926; margin-top: -14px"
-              ></div>
             </div>
-            <div class="col">
-              <div class="row">
-                <q-icon
-                  name="adjust"
-                  color="primary"
-                  v-if="step == 1 || step == 0"
-                  size="md"
-                />
-                <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 2" class="step1Logon" /> -->
-                <q-img
-                  size="1em"
-                  src="~assets/stepWorking.svg"
-                  class="stepWorking"
-                  v-if="step == 2"
-                />
-                <q-img
-                  size="1em"
-                  src="~assets/_Step1done.svg"
-                  class="step1Logon"
-                  v-if="step == 3 || step == 4"
-                />
-                <div class="q-ml-sm">
-                  <div class="Step-text">Step 2</div>
-                  <div class="Step-Subtext">Connect With Google Drive</div>
-                </div>
+            <div
+              class="q-ml-md height-40px"
+              style="border-left: 2px solid #ef5926; margin-top: -14px"
+            ></div>
+          </div>
+          <div class="col">
+            <div class="row">
+              <q-icon
+                name="adjust"
+                color="primary"
+                v-if="step == 1 || step == 0"
+                size="md"
+              />
+              <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 2" class="step1Logon" /> -->
+              <q-img
+                size="1em"
+                src="~assets/_Stepiconbase.png"
+                class="stepWorking"
+                v-if="step == 2"
+              />
+              <q-img
+                size="1em"
+                src="~assets/_Step1done.svg"
+                class="step1Logon"
+                v-if="step == 3 || step == 4"
+              />
+              <div class="q-ml-sm">
+                <div class="Step-text">Step 2</div>
+                <div class="Step-Subtext">Connect With Google Drive</div>
               </div>
-              <div
-                class="q-ml-md height-40px"
-                style="border-left: 2px solid #ef5926; margin-top: -14px"
-              ></div>
             </div>
-            <div class="col">
-              <div class="row">
-                <q-icon
-                  name="adjust"
-                  color="primary"
-                  size="md"
-                  v-if="step == 0 || step == 1 || step == 2"
-                />
-                <q-img
-                  size="1em"
-                  src="~assets/stepWorking.svg"
-                  class="stepWorking"
-                  v-if="step == 3"
-                />
-                <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" class="step1Logon"  v-if="step == 3"/> -->
-                <q-img
-                  size="1em"
-                  src="~assets/_Step1done.svg"
-                  class="step1Logon"
-                  v-if="step == 4"
-                />
-                <div class="q-ml-sm">
-                  <div class="Step-text">Step 3</div>
-                  <div class="Step-Subtext">
-                    Add PhotoID Account Details
-                    <span v-if="width >= 1203">(optional)</span>
-                  </div>
-                  <div class="Step-Subtext" v-if="width < 1203">(optional)</div>
+            <div
+              class="q-ml-md height-40px"
+              style="border-left: 2px solid #ef5926; margin-top: -14px"
+            ></div>
+          </div>
+          <div class="col">
+            <div class="row">
+              <q-icon
+                name="adjust"
+                color="primary"
+                size="md"
+                v-if="step == 0 || step == 1 || step == 2"
+              />
+              <q-img
+                size="1em"
+                src="~assets/stepWorking.svg"
+                class="stepWorking"
+                v-if="step == 3"
+              />
+              <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" class="step1Logon"  v-if="step == 3"/> -->
+              <q-img
+                size="1em"
+                src="~assets/_Step1done.svg"
+                class="step1Logon"
+                v-if="step == 4"
+              />
+              <div class="q-ml-sm">
+                <div class="Step-text">Step 3</div>
+                <div class="Step-Subtext">
+                  Add PhotoID Account Details
+                  <span v-if="width >= 1203">(optional)</span>
                 </div>
+                <div class="Step-Subtext" v-if="width < 1203">(optional)</div>
               </div>
             </div>
           </div>
@@ -598,7 +596,10 @@ export default {
     margin-top: 24px;
   }
 }
-@media only screen and (max-width: 600px) {
+@media only screen and (min-width: 1440px) {
+  .max-width {
+    max-width: 480px;
+  }
 }
 
 @media only screen and (width: 1024px) {

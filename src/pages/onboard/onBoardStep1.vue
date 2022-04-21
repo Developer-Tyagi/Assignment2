@@ -2,7 +2,7 @@
   <q-page class="poppinsFont min-height">
     <div class="row">
       <div
-        class="col-md-4 col-sm-12 col-xs-12"
+        class="col-md-4 col-sm-12 col-xs-12 max-width"
         style="background-color: #f9e7d8"
       >
         <CustomSidebar step="1" />
@@ -391,9 +391,6 @@ export default {
   align-items: center;
   color: #0c0c0c;
 }
-.q-px-32 {
-  padding-left: 40px;
-}
 .mt-60 {
   margin-top: 60px;
 }
@@ -569,7 +566,7 @@ export default {
   box-shadow: none;
 }
 ::v-deep .q-field__messages {
-  line-height: 4px;
+  line-height: 10px;
 }
 ::v-deep .absolute-full {
   background-size: auto;
@@ -700,11 +697,6 @@ export default {
 }
 
 @media screen and (min-width: 1024px) {
-  .q-px-32 {
-    padding-left: 32px;
-    margin-top: 19px;
-    margin-bottom: 19px;
-  }
   .border-top {
     border-top: 1px solid #e5e5e5;
   }
@@ -940,6 +932,12 @@ export default {
   .mtAndBottom {
     margin-top: 60px;
     margin-bottom: 101px;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .max-width {
+    max-width: 480px;
   }
 }
 

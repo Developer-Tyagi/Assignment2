@@ -1,8 +1,8 @@
 <template>
   <q-page class="poppinsFont min-height">
-    <div class="row" style="height: calc(100vh - 119px)">
+    <div class="row">
       <div
-        class="col-md-4 col-sm-12 col-xs-12"
+        class="col-md-4 col-sm-12 col-xs-12 max-width"
         style="background-color: #f9e7d8"
       >
         <CustomSidebar step="0" />
@@ -40,17 +40,17 @@
                 @click="getStarted"
               />
             </div>
-            <div class="row border-top">
-              <!-- <q-separator class="q-mt-md " /> -->
-              <div
-                class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-18"
-                style="background-color: white"
-              >
-                © ClaimGuru<span> {{ CurrentYear }} </span>
-              </div>
-            </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row border-top">
+      <!-- <q-separator class="q-mt-md " /> -->
+      <div
+        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer"
+        style="background-color: white"
+      >
+        © ClaimGuru<span> {{ CurrentYear }} </span>
       </div>
     </div>
     <div>
@@ -357,9 +357,6 @@ export default {
   color: #667085;
   font-size: 14px;
 }
-.border-top {
-  border-top: 0px;
-}
 ::v-deep .q-layout__section--marginal {
   background-color: white;
   border-top: none;
@@ -378,9 +375,6 @@ export default {
 }
 .q-pl-32 {
   padding-left: 15px;
-}
-.ml-31 {
-  padding-left: 16px !important;
 }
 .q-pb-18 {
   padding-bottom: 18px;
@@ -476,11 +470,11 @@ export default {
 @media screen and (max-width: 1022px) {
   .border-top {
     border-top: 1px solid #e5e5e5;
-    margin-left: -50px;
-    margin-right: -50px;
   }
   .ml-31 {
-    margin-left: 15px !important;
+    padding-left: 31px !important;
+    margin-top: 19px;
+    margin-bottom: 19px;
   }
 }
 
@@ -491,8 +485,6 @@ export default {
   }
   .border-top {
     border-top: 1px solid #e5e5e5;
-    margin-left: -50px;
-    margin-right: -50px;
   }
   .q-pr-lg {
     padding-right: 0px;
@@ -610,8 +602,6 @@ export default {
   }
   .border-top {
     border-top: 1px solid #e5e5e5;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
   }
   .mx-15 {
     margin-left: 15px;
@@ -677,10 +667,6 @@ export default {
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  // .border-top {
-  //   border-top: 1px solid #e5e5e5;
-  // }
-  // .q-px-32 {padding-left: 15px;}
   .q-px-32 {
     padding-left: 15px;
     padding-top: 15px;
@@ -703,16 +689,20 @@ export default {
   }
   // .height-40px {height: 24px;}
 }
-@media only screen and (width: 1024px) {
+@media only screen and (min-width: 1024px) {
+  .ml-31 {
+    margin-left: 31px !important;
+    margin-top: 19px;
+    margin-bottom: 19px;
+  }
+}
+@media only screen and (min-width: 1440px) {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 0px;
   }
-}
-@media only screen and (width: 1440px) {
-  .q-px-32 {
-    padding-left: 32px;
-    padding-top: 0px;
+  .max-width {
+    max-width: 480px;
   }
   .q-px-xl {
     padding-left: 60px;

@@ -66,13 +66,13 @@
       </q-dialog>
       <div class="row" v-if="$route.name == 'onBoarding'">
         <div
-          class="col-md-4 sm-hide xs-hide text-footer q-py-38 mt-125"
+          class="col-xl-3 col-md-4 sm-hide xs-hide text-footer q-py-38 mt-125"
           style="background-color: #f9e7d8; margin-left: 0px !important"
         >
           <span class="px-32" style="color: #0c0c0c"> © ClaimGuru</span>
           <span class="q-px-sm" style="color: #0c0c0c">{{ CurrentYear }}</span>
         </div>
-        <div class="col-md-8 col-lg-9 col-xl-8 bg-white"></div>
+        <div class="col-xl-9 col-md-8 col-lg-9 col-xl-8 bg-white"></div>
       </div>
     </q-page-container>
   </q-layout>
