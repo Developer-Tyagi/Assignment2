@@ -275,8 +275,17 @@
       </div>
       <q-dialog v-model="confirm_dia" persistent>
         <q-card class="poppinsFont viewUser">
-          <q-card-section class="col-2 items-center viewUserHeader">
+          <q-card-section class="items-center viewUserHeader">
             <span class="fontWeight600 fontSize20">User Details</span>
+            <q-btn
+              icon="close"
+              flat
+              round
+              dense
+              v-close-popup
+              class=""
+              style="float: right"
+            />
           </q-card-section>
           <q-card-section
             class="row items-center fontSize16 lineHeight24 viewUserRows"
@@ -359,7 +368,7 @@
           <div class="row justify-between q-pa-lg">
             <q-btn
               class="fontWeight600 fontSize16 lineHeight24"
-              label="Close"
+              label="Cancel"
               no-caps
               v-close-popup
               outline
@@ -530,10 +539,10 @@ export default {
 }
 .viewUserHeader {
   @media only screen and (min-width: 1024px) {
-    padding: 24px 0px 14px 24px;
+    padding: 24px 24px 14px 24px;
   }
   @media only screen and (max-width: 1023px) {
-    padding: 19px 0px 17px 16px;
+    padding: 19px 16px 17px 16px;
   }
 }
 </style>

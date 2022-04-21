@@ -375,6 +375,7 @@
               style="border-radius: 10px; width: 125px; height: 50px"
               color="deep-orange"
               size="1rem"
+              @click="pageRefresh()"
             />
           </div>
         </div>
@@ -433,6 +434,9 @@ export default {
     ...mapActions(['addAdditionalLicense', 'addUser', 'checkExistingEmail']),
     getImage(icon) {
       return require('../assets/' + icon);
+    },
+    pageRefresh() {
+      this.$router.go();
     },
     myRule(val) {
       if (val.length <= 0) {
