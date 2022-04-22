@@ -104,24 +104,26 @@
       <!-- setup header -->
       <div class="row" v-if="$route.name == 'onBoarding'">
         <div
-          class="col-lg-4 col-md-4 q-pt-lg q-pb-md"
+          class="col-xl-4 col-lg-4 col-md-4 q-pt-lg q-pb-md"
           style="background-color: #f9e7d8"
         >
           <q-img size="1em" src="~assets/Logo.svg" class="LogoSize q-ml-32" />
         </div>
         <div
-          class="col-lg-8 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
+          class="col-xl-9 col-lg-8 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
         >
           <div class="row justify-end q-pr-xl">
-            <q-avatar
+            <!-- <q-avatar
               size="3em"
               font-size="2.5rem"
               icon="person"
               class="text-white bg-grey q-mr-md"
             >
-            </q-avatar>
+            </q-avatar> -->
 
-            <div class="q-pt-sm text-capitalize">
+            <q-img src="~assets/Avatarforprofile.svg" class="ProfileLogoSize" />
+
+            <div class="q-pt-sm text-capitalize" style="margin-left: 10px">
               <span v-if="isMobile" class="userNameStyle">
                 {{ userName ? userName : updatedUserName }}</span
               >
@@ -160,7 +162,7 @@
         class="row header-color items-center text-center"
         :class="$q.screen.lt.sm ? 'justify-between' : 'justify-end'"
         v-if="$route.name == 'admin'"
-        style="max-height: 100px; min-height: 70px"
+        style="height: 83px"
       >
         <!-- menu icon -->
         <div class="col-sm-2 mobile-view">
@@ -192,21 +194,26 @@
 
         <!-- user name -->
         <div class="col-8 row justify-end desktop-view"></div>
-        <div class="col-4 row justify-end desktop-view">
+        <div class="justify-end" style="margin-right: 38px">
           <div class="flex-row items-center">
-            <q-avatar
+            <!-- <q-avatar
               size="3em"
               font-size="2.5rem"
               icon="person"
               class="text-white bg-grey q-mr-md"
             >
-            </q-avatar>
-
-            <span
-              class="text-capitalize text-weight-bold text-black text-subtitle1 ellipsis"
-            >
-              {{ userName ? userName : updatedUserName }}
-            </span>
+            </q-avatar> -->
+            <img width="40" height="40" src="~assets/Avatarforprofile.svg" />
+            <div class="text-capitalize" style="margin-left: 8px">
+              <span class="userNameStyle">
+                {{ userName ? userName : updatedUserName }}</span
+              >
+              <q-img
+                size="1em"
+                src="~assets/Icondown.svg"
+                class="dropdownLogo"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1012,7 +1019,10 @@ export default {
 .q-toolbar {
   padding: 0;
 }
-
+.ProfileLogoSize {
+  width: 40px;
+  height: 40px;
+}
 .q-header {
   margin: 0 auto !important;
   max-width: 120rem;

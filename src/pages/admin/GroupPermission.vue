@@ -1,6 +1,22 @@
 <template>
   <q-page>
     <div>
+      <div style="margin-top: 36px; margin-left: 36px; margin-bottom: 26px">
+        <q-img
+          size="1em"
+          style="width: 15px; height: 16px"
+          src="~assets/Home-Icon.svg"
+          class="LogoSize"
+        />
+        <q-img
+          size="1em"
+          style="width: 4px; height: 8px; margin-left: 21px; margin-right: 22px"
+          src="~assets/Forward-Icon.svg"
+          class="LogoSize"
+        />
+        <span>Group Permissions</span>
+      </div>
+      <div class="group-per-text"><span>Group Permissions</span></div>
       <p>
         Please select the role you wish to configure from the selector below and
         then set privileges by checking the associated box. Checking the box
@@ -63,11 +79,11 @@
                   <div
                     v-if="
                       user.value.permission != null &&
-                        checkPermission(
-                          permissions[ind].machineValue,
-                          user.machineValue,
-                          index
-                        )
+                      checkPermission(
+                        permissions[ind].machineValue,
+                        user.machineValue,
+                        index
+                      )
                     "
                   >
                     <q-icon
@@ -133,7 +149,7 @@ export default {
   computed: {
     ...mapGetters(['roleTypes', 'permissions']),
 
-    sortedPermissions: function() {
+    sortedPermissions: function () {
       function compare(a, b) {
         if (a.name < b.name) {
           return -1;
@@ -254,3 +270,16 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.group-per-text {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600 !important;
+  font-size: 24px !important;
+  line-height: 32px;
+  display: flex;
+  align-items: center;
+  color: #000000 !important;
+}
+</style>

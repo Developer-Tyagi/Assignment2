@@ -1,5 +1,6 @@
 <template>
   <q-page>
+    <q-separator class="seperator-color" />
     <div class="flex-row">
       <div class="full-width">
         <div class="row" flat bordered>
@@ -67,3 +68,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+.seperator-color {
+  background-color: #f7f7f7;
+  height: 2px;
+}
+</style>

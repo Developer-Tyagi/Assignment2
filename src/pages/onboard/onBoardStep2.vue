@@ -107,7 +107,7 @@
                 class="fontWeight600 Next-Btn"
                 no-caps
                 @click="NextStepperValue"
-                :disable="!checkConnection"
+                :disable="checkConnection"
                 >Next</q-btn
               >
             </div>
@@ -178,7 +178,8 @@ export default {
       this.$router.push('/onBoarding/step1');
     },
     async NextStepperValue() {
-      this.$router.push('/onBoarding/step3');
+      this.checkConnection = true;
+      // this.$router.push('/onBoarding/step3');
     },
     onRedirectToGoogleAuth() {
       this.toRedirectGoogleAuth1();
@@ -222,7 +223,7 @@ export default {
         this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       }
       this.step = 0;
-      this.checkConnection = true;
+      // this.checkConnection = true;
       if (this.$route.query.googleConnect == 'true') {
         this.checkConnection = true;
       } else {

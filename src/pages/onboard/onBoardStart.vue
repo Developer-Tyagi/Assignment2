@@ -703,10 +703,13 @@ export default {
   }
   // .height-40px {height: 24px;}
 }
-@media only screen and (width: 1024px) {
+@media only screen and (min-width: 1024px) {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 0px;
+  }
+  .max-width-480px {
+    max-width: 453px;
   }
 }
 @media only screen and (width: 1440px) {
