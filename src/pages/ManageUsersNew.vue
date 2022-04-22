@@ -622,10 +622,10 @@ export default {
 }
 .actionButtons {
   @media only screen and (min-width: 1024px) {
-    padding: 50px 24px 24px 24px;
+    padding: 50px 24px 24px 24px !important;
   }
   @media only screen and (max-width: 1023px) {
-    padding: 30px 16px 16px 16px;
+    padding: 30px 16px 16px 16px !important;
   }
 }
 .viewUser {
@@ -678,22 +678,22 @@ export default {
   }
 }
 .mobile-only-view-btns {
-  @media only screen and (max-width: 375px) {
+  @media only screen and (max-width: 374px) {
     display: block;
+    height: 90px;
     .vieweditbtn {
       margin-top: 10px;
-      margin-bottom: 20px;
     }
   }
-  @media only screen and (min-width: 376px) {
+  @media only screen and (min-width: 375px) {
     display: none;
   }
 }
 .desktop-tab-view-btns {
-  @media only screen and (max-width: 375px) {
+  @media only screen and (max-width: 374px) {
     display: none;
   }
-  @media only screen and (min-width: 376px) {
+  @media only screen and (min-width: 375px) {
     display: block;
   }
 }
