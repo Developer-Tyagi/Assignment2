@@ -169,3 +169,10 @@
 .label-letter-space {
   letter-spacing: 00.15px;
 }
+.q-dialog__backdrop {
+  z-index: -1;
+  pointer-events: all;
+  outline: 0;
+  background: #000000 !important;
+  opacity: 0.7 !important;
+}

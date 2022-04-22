@@ -938,15 +938,6 @@ export default {
   }
 }
 </style>
-<style lang="scss">
-.q-dialog__backdrop {
-  z-index: -1;
-  pointer-events: all;
-  outline: 0;
-  background: #000000 !important;
-  opacity: 0.8 !important;
-}
-</style>
 <style lang="scss" scoped>
 .q-tab-panel {
   padding: 45px 0px 0px 0px;

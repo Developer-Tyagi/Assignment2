@@ -277,7 +277,7 @@
         </div>
       </div>
       <q-dialog v-model="confirm_dia" persistent class="viewModel">
-        <q-card class="poppinsFont viewUser">
+        <q-card class="poppinsFont viewUser label-letter-space">
           <q-card-section class="items-center viewUserHeader">
             <span
               class="fontWeight600 fontSize20 lineHeight24 header-letter-space"
@@ -296,18 +296,28 @@
           <q-card-section
             class="row items-center fontSize16 lineHeight24 viewUserRows"
           >
-            <span class="col-4 fontWeight600">First name</span>
-            <span class="col-7 fontWeight400 q-pl-md">{{
-              currentSelectdUser.firstName ? currentSelectdUser.firstName : '-'
-            }}</span>
+            <span class="col-4 fontWeight600">First Name</span>
+            <span
+              class="col-7 fontWeight400 q-pl-md"
+              style="word-wrap: break-word"
+              >{{
+                currentSelectdUser.firstName
+                  ? currentSelectdUser.firstName
+                  : '-'
+              }}</span
+            >
           </q-card-section>
           <q-card-section
             class="row items-center fontSize16 lineHeight24 viewUserRows"
           >
-            <span class="col-4 fontWeight600">Last name</span>
-            <span class="col-7 fontWeight400 q-pl-md">{{
-              currentSelectdUser.lastName ? currentSelectdUser.lastName : '-'
-            }}</span>
+            <span class="col-4 fontWeight600">Last Name</span>
+            <span
+              class="col-7 fontWeight400 q-pl-md"
+              style="word-wrap: break-word"
+              >{{
+                currentSelectdUser.lastName ? currentSelectdUser.lastName : '-'
+              }}</span
+            >
           </q-card-section>
           <!-- <q-card-section class="row items-center fontSize16 lineHeight24 viewUserRows">
             <span class="col-4 fontWeight600">Contact</span>
@@ -330,12 +340,14 @@
           >
             <span class="col-4 fontWeight600">User Role</span>
             <span class="col-7 fontWeight400 q-pl-md row">
-              <span class="fontWeight400 desktop-tab-view"
+              <span
+                class="fontWeight400 desktop-tab-view"
+                style="word-wrap: break-word"
                 >{{ currentSelectdUser.role ? currentSelectdUser.role : '-'
                 }}<span class="q-pl-md"
                   ><span
                     v-if="!this.currentSelectdUser.paidStatus"
-                    class="q-px-sm fontWeight500 fontSize16 lineHeight20"
+                    class="q-px-sm fontWeight500 fontSize14 lineHeight24"
                     style="
                       color: #027a48;
                       background-color: #ecfdf3;
@@ -345,7 +357,7 @@
                   >
                   <span
                     v-else
-                    class="q-px-sm fontWeight500 fontSize16 lineHeight20"
+                    class="q-px-sm fontWeight500 fontSize14 lineHeight24"
                     style="
                       color: #c4320a;
                       background-color: #f7e6e1;
@@ -355,7 +367,10 @@
                   ></span
                 ></span
               >
-              <span class="col-xs-12 mobile-only-view">
+              <span
+                class="col-xs-12 mobile-only-view"
+                style="word-wrap: break-word"
+              >
                 {{
                   currentSelectdUser.role ? currentSelectdUser.role : '-'
                 }}</span
@@ -389,39 +404,68 @@
             v-if="currentSelectdUser.subRole"
           >
             <span class="col-4 fontWeight600">Role Title</span>
-            <span class="col-7 fontWeight400 q-pl-md">{{
-              currentSelectdUser.subRole ? currentSelectdUser.subRole : '-'
-            }}</span>
+            <span
+              class="col-7 fontWeight400 q-pl-md"
+              style="word-wrap: break-word"
+              >{{
+                currentSelectdUser.subRole ? currentSelectdUser.subRole : '-'
+              }}</span
+            >
           </q-card-section>
           <q-card-section
             class="row items-center fontSize16 lineHeight24 viewUserRows"
             v-if="currentSelectdUser.license"
           >
             <span class="col-4 fontWeight600">PIA License</span>
-            <span class="col-7 fontWeight400 q-pl-md">{{
-              currentSelectdUser.license
-            }}</span>
+            <span
+              class="col-7 fontWeight400 q-pl-md"
+              style="word-wrap: break-word"
+              >{{ currentSelectdUser.license }}</span
+            >
           </q-card-section>
           <div class="actionButtons">
-            <q-btn
-              class="fontWeight600 fontSize16 lineHeight24"
-              label="Cancel"
-              no-caps
-              v-close-popup
-              outline
-              color="deep-orange"
-              size="1rem"
-              style="border-radius: 10px"
-            />
-            <!-- <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> </div> -->
-            <q-btn
-              class="fontWeight600 fontSize16 lineHeight24"
-              label="Edit User Details"
-              no-caps
-              style="border-radius: 10px; float: right"
-              color="deep-orange"
-              size="1rem"
-            />
+            <div class="desktop-tab-view-btns">
+              <q-btn
+                class="fontWeight600 fontSize16 lineHeight24 viewcancelbtn"
+                label="Cancel"
+                no-caps
+                v-close-popup
+                outline
+                color="deep-orange"
+                size="1rem"
+                style=""
+              />
+              <!-- <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> </div> -->
+              <q-btn
+                class="fontWeight600 fontSize16 lineHeight24 vieweditbtn"
+                label="Edit User Details"
+                no-caps
+                style="float: right"
+                color="deep-orange"
+                size="1rem"
+              />
+            </div>
+            <div class="mobile-only-view-btns row">
+              <q-btn
+                class="fontWeight600 fontSize16 lineHeight24 viewcancelbtn col-xs-12"
+                label="Cancel"
+                no-caps
+                v-close-popup
+                outline
+                color="deep-orange"
+                size="1rem"
+                style=""
+              />
+              <div class="col-xs-12"></div>
+              <q-btn
+                class="fontWeight600 fontSize16 lineHeight24 vieweditbtn col-xs-12"
+                label="Edit User Details"
+                no-caps
+                style="float: right"
+                color="deep-orange"
+                size="1rem"
+              />
+            </div>
           </div>
         </q-card>
       </q-dialog>
@@ -502,6 +546,7 @@ export default {
       } else {
         this.currentSelectdUser.subRole = '';
       }
+      // console.log("length:",sel_user.attributes.licenses.length)
       if (sel_user.attributes.licenses) {
         var element = '';
         for (
@@ -509,11 +554,16 @@ export default {
           index < sel_user.attributes.licenses.length;
           index++
         ) {
-          element =
-            element +
-            sel_user.attributes.licenses[index].state +
-            '-' +
-            sel_user.attributes.licenses[index].number;
+          if (sel_user.attributes.licenses[index].state != '') {
+            element =
+              element +
+              sel_user.attributes.licenses[index].state +
+              '-' +
+              sel_user.attributes.licenses[index].number;
+          } else {
+            element = '';
+          }
+
           if (index != sel_user.attributes.licenses.length - 1) {
             element = element + ', ';
           }
@@ -572,13 +622,14 @@ export default {
 }
 .actionButtons {
   @media only screen and (min-width: 1024px) {
-    padding: 60px 24px 24px 24px;
+    padding: 50px 24px 24px 24px;
   }
   @media only screen and (max-width: 1023px) {
-    padding: 40px 16px 16px 16px;
+    padding: 30px 16px 16px 16px;
   }
 }
 .viewUser {
+  border-radius: 8px;
   @media only screen and (min-width: 1024px) {
     width: 50%;
     max-width: 560px;
@@ -626,16 +677,52 @@ export default {
     display: block;
   }
 }
+.mobile-only-view-btns {
+  @media only screen and (max-width: 375px) {
+    display: block;
+    .vieweditbtn {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+  }
+  @media only screen and (min-width: 376px) {
+    display: none;
+  }
+}
+.desktop-tab-view-btns {
+  @media only screen and (max-width: 375px) {
+    display: none;
+  }
+  @media only screen and (min-width: 376px) {
+    display: block;
+  }
+}
 </style>
 <style lang="scss">
-.editbtn {
-  @media only screen and (max-width: 599px) {
-    margin-top: 10px;
+.vieweditbtn {
+  @media only screen and (min-width: 1024px) {
+    width: 190px;
+    border-radius: 10px;
+  }
+  @media only screen and (max-width: 1023px) {
+    width: 170px;
+    border-radius: 5px;
   }
   .q-btn__wrapper:before {
     box-shadow: none;
   }
 }
+.viewcancelbtn {
+  @media only screen and (min-width: 1024px) {
+    width: 118px;
+    border-radius: 10px;
+  }
+  @media only screen and (max-width: 1023px) {
+    width: 98px;
+    border-radius: 5px;
+  }
+}
+
 .actionButtons {
   .q-btn {
     @media only screen and (min-width: 1024px) {
