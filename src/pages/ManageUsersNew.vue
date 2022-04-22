@@ -1,13 +1,13 @@
 <template>
   <q-page class="poppinsFont">
-    <div class="text-h5 fontWeight600">Manage Users</div>
+    <div class="text-h5 fontWeight600 header-letter-space">Manage Users</div>
     <AddNewUser
       @closeUserDialog="CloseDialog($event)"
       :showDialog="addAdditionalUser"
     />
     <!-- additional user -->
     <div
-      class="col q-mt-lg q-pt-lg q-px-md"
+      class="col q-mt-lg q-pt-lg q-px-md label-letter-space"
       style="
         min-width: 345px;
         border: 1px solid #e8e9ec;
@@ -55,7 +55,10 @@
       </div>
     </div>
 
-    <div class="q-mt-md" style="border: 1px solid #e4e7ec; border-radius: 8px">
+    <div
+      class="q-mt-md label-letter-space"
+      style="border: 1px solid #e4e7ec; border-radius: 8px"
+    >
       <div
         class="col-12"
         v-if="$q.screen.gt.sm"
@@ -273,10 +276,13 @@
           </q-icon>
         </div>
       </div>
-      <q-dialog v-model="confirm_dia" persistent>
+      <q-dialog v-model="confirm_dia" persistent class="viewModel">
         <q-card class="poppinsFont viewUser">
           <q-card-section class="items-center viewUserHeader">
-            <span class="fontWeight600 fontSize20">User Details</span>
+            <span
+              class="fontWeight600 fontSize20 lineHeight24 header-letter-space"
+              >User Details</span
+            >
             <q-btn
               icon="close"
               flat
@@ -291,7 +297,7 @@
             class="row items-center fontSize16 lineHeight24 viewUserRows"
           >
             <span class="col-4 fontWeight600">First name</span>
-            <span class="col-7 fontWeight400">{{
+            <span class="col-7 fontWeight400 q-pl-md">{{
               currentSelectdUser.firstName ? currentSelectdUser.firstName : '-'
             }}</span>
           </q-card-section>
@@ -299,7 +305,7 @@
             class="row items-center fontSize16 lineHeight24 viewUserRows"
           >
             <span class="col-4 fontWeight600">Last name</span>
-            <span class="col-7 fontWeight400">{{
+            <span class="col-7 fontWeight400 q-pl-md">{{
               currentSelectdUser.lastName ? currentSelectdUser.lastName : '-'
             }}</span>
           </q-card-section>
@@ -311,20 +317,53 @@
             class="row items-center fontSize16 lineHeight24 viewUserRows"
           >
             <span class="col-4 fontWeight600">Email</span>
-            <span class="col-7 fontWeight400">{{
-              currentSelectdUser.email ? currentSelectdUser.email : '-'
-            }}</span>
+            <span
+              class="col-7 fontWeight400 q-pl-md"
+              style="word-wrap: break-word"
+              >{{
+                currentSelectdUser.email ? currentSelectdUser.email : '-'
+              }}</span
+            >
           </q-card-section>
           <q-card-section
             class="row items-center fontSize16 lineHeight24 viewUserRows"
           >
             <span class="col-4 fontWeight600">User Role</span>
-            <span class="col-7 fontWeight400"
-              >{{ currentSelectdUser.role ? currentSelectdUser.role : '-'
-              }}<span class="q-pl-md"
+            <span class="col-7 fontWeight400 q-pl-md row">
+              <span class="fontWeight400 desktop-tab-view"
+                >{{ currentSelectdUser.role ? currentSelectdUser.role : '-'
+                }}<span class="q-pl-md"
+                  ><span
+                    v-if="!this.currentSelectdUser.paidStatus"
+                    class="q-px-sm fontWeight500 fontSize16 lineHeight20"
+                    style="
+                      color: #027a48;
+                      background-color: #ecfdf3;
+                      border-radius: 10px;
+                    "
+                    >Free Role</span
+                  >
+                  <span
+                    v-else
+                    class="q-px-sm fontWeight500 fontSize16 lineHeight20"
+                    style="
+                      color: #c4320a;
+                      background-color: #f7e6e1;
+                      border-radius: 10px;
+                    "
+                    >Paid Role</span
+                  ></span
+                ></span
+              >
+              <span class="col-xs-12 mobile-only-view">
+                {{
+                  currentSelectdUser.role ? currentSelectdUser.role : '-'
+                }}</span
+              >
+              <span class="col-xs-12 mobile-only-view"
                 ><span
                   v-if="!this.currentSelectdUser.paidStatus"
-                  class="q-px-sm fontWeight500 fontSize16 lineHeight20"
+                  class="q-px-sm fontWeight500 fontSize14 lineHeight24"
                   style="
                     color: #027a48;
                     background-color: #ecfdf3;
@@ -334,7 +373,7 @@
                 >
                 <span
                   v-else
-                  class="q-px-sm fontWeight500 fontSize16 lineHeight20"
+                  class="q-px-sm fontWeight500 fontSize14 lineHeight24"
                   style="
                     color: #c4320a;
                     background-color: #f7e6e1;
@@ -342,30 +381,28 @@
                   "
                   >Paid Role</span
                 ></span
-              ></span
-            >
+              >
+            </span>
           </q-card-section>
           <q-card-section
             class="row items-center fontSize16 lineHeight24 viewUserRows"
             v-if="currentSelectdUser.subRole"
           >
             <span class="col-4 fontWeight600">Role Title</span>
-            <span class="col-7 fontWeight400">{{
+            <span class="col-7 fontWeight400 q-pl-md">{{
               currentSelectdUser.subRole ? currentSelectdUser.subRole : '-'
             }}</span>
           </q-card-section>
           <q-card-section
             class="row items-center fontSize16 lineHeight24 viewUserRows"
-            v-if="currentSelectdUser.license_state"
+            v-if="currentSelectdUser.license"
           >
             <span class="col-4 fontWeight600">PIA License</span>
-            <span class="col-7 fontWeight400">{{
-              currentSelectdUser.license_state +
-              '-' +
-              currentSelectdUser.license_number
+            <span class="col-7 fontWeight400 q-pl-md">{{
+              currentSelectdUser.license
             }}</span>
           </q-card-section>
-          <div class="row justify-between q-pa-lg">
+          <div class="actionButtons">
             <q-btn
               class="fontWeight600 fontSize16 lineHeight24"
               label="Cancel"
@@ -376,6 +413,7 @@
               size="1rem"
               style="border-radius: 10px"
             />
+            <!-- <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> </div> -->
             <q-btn
               class="fontWeight600 fontSize16 lineHeight24"
               label="Edit User Details"
@@ -413,8 +451,7 @@ export default {
         role: '',
         subRole: '',
         email: '',
-        license_state: '',
-        license_number: '',
+        license: '',
         paidStatus: ''
       },
       org: ''
@@ -466,13 +503,28 @@ export default {
         this.currentSelectdUser.subRole = '';
       }
       if (sel_user.attributes.licenses) {
-        this.currentSelectdUser.license_state =
-          sel_user.attributes.licenses[0].state;
-        this.currentSelectdUser.license_number =
-          sel_user.attributes.licenses[0].number;
+        var element = '';
+        for (
+          let index = 0;
+          index < sel_user.attributes.licenses.length;
+          index++
+        ) {
+          element =
+            element +
+            sel_user.attributes.licenses[index].state +
+            '-' +
+            sel_user.attributes.licenses[index].number;
+          if (index != sel_user.attributes.licenses.length - 1) {
+            element = element + ', ';
+          }
+        }
+        // this.currentSelectdUser.license_state =
+        //   sel_user.attributes.licenses[0].state;
+        // this.currentSelectdUser.license_number =
+        //   sel_user.attributes.licenses[0].number;
+        this.currentSelectdUser.license = element;
       } else {
-        this.currentSelectdUser.license_state = '';
-        this.currentSelectdUser.license_number = '';
+        this.currentSelectdUser.license = '';
       }
     },
     openMore() {}
@@ -518,15 +570,28 @@ export default {
 .lineHeight20 {
   line-height: 20px;
 }
+.actionButtons {
+  @media only screen and (min-width: 1024px) {
+    padding: 60px 24px 24px 24px;
+  }
+  @media only screen and (max-width: 1023px) {
+    padding: 40px 16px 16px 16px;
+  }
+}
 .viewUser {
   @media only screen and (min-width: 1024px) {
     width: 50%;
     max-width: 560px;
   }
   @media only screen and (max-width: 1023px) {
-    width: 90% !important;
+    width: 100% !important;
     min-width: 300px;
     max-width: 560px;
+  }
+}
+.paidStatus {
+  @media only screen and (min-width: 1024px) {
+    padding-left: 10px;
   }
 }
 .viewUserRows {
@@ -534,15 +599,59 @@ export default {
     padding: 10px 0px 10px 24px;
   }
   @media only screen and (max-width: 1023px) {
-    padding: 10px 0px 10px 24px;
+    padding: 10px 0px 10px 16px;
   }
 }
 .viewUserHeader {
   @media only screen and (min-width: 1024px) {
-    padding: 24px 24px 14px 24px;
+    padding: 24px 24px 20px 24px;
   }
   @media only screen and (max-width: 1023px) {
     padding: 19px 16px 17px 16px;
+  }
+}
+.mobile-only-view {
+  @media only screen and (max-width: 599px) {
+    display: block;
+  }
+  @media only screen and (min-width: 600px) {
+    display: none;
+  }
+}
+.desktop-tab-view {
+  @media only screen and (max-width: 599px) {
+    display: none;
+  }
+  @media only screen and (min-width: 600px) {
+    display: block;
+  }
+}
+</style>
+<style lang="scss">
+.editbtn {
+  @media only screen and (max-width: 599px) {
+    margin-top: 10px;
+  }
+  .q-btn__wrapper:before {
+    box-shadow: none;
+  }
+}
+.actionButtons {
+  .q-btn {
+    @media only screen and (min-width: 1024px) {
+      height: 50px;
+    }
+    @media only screen and (max-width: 1023px) {
+      height: 40px;
+    }
+  }
+  .q-btn--outline .q-btn__wrapper:before {
+    border: 2px solid #ef5926;
+  }
+}
+.viewModel {
+  .q-dialog__inner--minimized {
+    padding: 15px;
   }
 }
 </style>
