@@ -11,7 +11,7 @@
             0px 8px 8px -4px rgba(16, 24, 40, 0.04);
         "
       >
-        <q-card-section class="row items-center q-pb-none">
+        <q-card-section class="row items-center q-pb-sm">
           <div class="text-h6 fontWeight600">Add an Additional User</div>
           <q-space />
           <q-btn
@@ -25,9 +25,13 @@
         </q-card-section>
         <q-card-section>
           <q-form class="q-mt-md" @submit="addExtraUser()" ref="userInfo">
-            <div class="row">
+            <div class="row q-pb-xs">
               <div class="col q-mr-md">
-                <div class="text-subtitle1 fontWeight600">First name</div>
+                <div
+                  class="text-subtitle1 fontWeight600 fontSize16 lineHeight24"
+                >
+                  First name
+                </div>
                 <div>
                   <q-input
                     borderless
@@ -42,7 +46,11 @@
                 </div>
               </div>
               <div class="col">
-                <div class="text-subtitle1 fontWeight600">Last name</div>
+                <div
+                  class="text-subtitle1 fontWeight600 fontSize16 lineHeight24"
+                >
+                  Last name
+                </div>
                 <div>
                   <q-input
                     borderless
@@ -58,8 +66,10 @@
                 </div>
               </div>
             </div>
-            <div class="q-mt-md">
-              <div class="text-subtitle1 fontWeight600">Email</div>
+            <div class="q-pt-md q-pb-xs">
+              <div class="text-subtitle1 fontWeight600 fontSize16 lineHeight24">
+                Email
+              </div>
               <div>
                 <q-input
                   borderless
@@ -90,8 +100,10 @@
                 <br v-if="errorMSG" />
               </div>
             </div>
-            <div class="q-mt-md">
-              <div class="text-subtitle1 fontWeight600">Select Role</div>
+            <div class="q-pt-md q-pb-xs">
+              <div class="text-subtitle1 fontWeight600 fontSize16 lineHeight24">
+                Select Role
+              </div>
 
               <div>
                 <q-select
@@ -116,8 +128,10 @@
                 />
               </div>
             </div>
-            <div class="q-mt-md" v-if="selectedRole.length > 0">
-              <div class="text-subtitle1 fontWeight600">Select Title</div>
+            <div class="q-pt-md q-pb-xs" v-if="selectedRole.length > 0">
+              <div class="text-subtitle1 fontWeight600 fontSize16 lineHeight24">
+                Select Title
+              </div>
               <div>
                 <q-select
                   dense
@@ -142,7 +156,7 @@
               </div>
             </div>
             <div
-              class="q-mt-md"
+              class="q-pt-md q-pb-xs"
               v-if="
                 selectedSubRole.machineValue == 'executive_owner' ||
                 selectedSubRole.machineValue == 'ale_adjuster' ||
@@ -151,7 +165,9 @@
                 selectedSubRole.machineValue == 'pia_public_insurance_adjuster_'
               "
             >
-              <div class="text-subtitle1 fontWeight600">PIA License</div>
+              <div class="text-subtitle1 fontWeight600 fontSize16 lineHeight24">
+                PIA License
+              </div>
               <div
                 class="row"
                 :class="index > 0 ? 'q-mt-sm' : ''"
@@ -359,6 +375,7 @@
               style="border-radius: 10px; width: 125px; height: 50px"
               color="deep-orange"
               size="1rem"
+              @click="pageRefresh()"
             />
           </div>
         </div>
@@ -418,6 +435,9 @@ export default {
     getImage(icon) {
       return require('../assets/' + icon);
     },
+    pageRefresh() {
+      this.$router.go();
+    },
     myRule(val) {
       if (val.length <= 0) {
         this.stateError = 'Please selcect the state';
@@ -449,10 +469,27 @@ export default {
     async addExtraUser() {
       const success = await this.$refs.userInfo.validate();
       let currentSelectedRole = this.selectedRoleObject.machineValue;
-      let allowedVal =
-        this.organization.allowedRoles[currentSelectedRole].count;
-      let currentUsed =
-        this.organization.currentRoles[currentSelectedRole].count;
+      let allowedVal = '';
+      if (this.organization.allowedRoles[currentSelectedRole]) {
+        allowedVal = this.organization.allowedRoles[currentSelectedRole].count;
+      } else {
+        allowedVal = 0;
+      }
+      let currentUsed = '';
+      if (this.organization.currentRoles[currentSelectedRole]) {
+        currentUsed = this.organization.currentRoles[currentSelectedRole].count;
+      } else {
+        currentUsed = 0;
+      }
+      console.log(
+        'Current1',
+        currentUsed,
+        'allowedVal1',
+        allowedVal,
+        'role',
+        currentSelectedRole
+      );
+
       if (allowedVal - currentUsed > 0) {
         this.submitUser();
       } else {
@@ -528,11 +565,21 @@ export default {
         }
       };
       let currentSelectedRole = this.selectedRoleObject.machineValue;
-      let allowedVal =
-        this.organization.allowedRoles[currentSelectedRole].count;
-      let currentUsed =
-        this.organization.currentRoles[currentSelectedRole].count;
 
+      let allowedVal = '';
+      if (this.organization.allowedRoles[currentSelectedRole]) {
+        allowedVal = this.organization.allowedRoles[currentSelectedRole].count;
+      } else {
+        allowedVal = 0;
+      }
+
+      let currentUsed = '';
+      if (this.organization.currentRoles[currentSelectedRole]) {
+        currentUsed = this.organization.currentRoles[currentSelectedRole].count;
+      } else {
+        currentUsed = 0;
+      }
+      console.log('Current2', currentUsed, 'allowedVal2', allowedVal);
       if (allowedVal - currentUsed > 0) {
         var licenseGrant = true;
       } else {
@@ -597,6 +644,21 @@ export default {
 <style lang="scss" scoped>
 .poppinsFont {
   font-family: poppins;
+}
+.fontSize14 {
+  font-size: 14px;
+}
+.fontSize16 {
+  font-size: 16px;
+}
+.fontSize20 {
+  font-size: 20px;
+}
+.lineHeight24 {
+  line-height: 24px;
+}
+.lineHeight20 {
+  line-height: 20px;
 }
 ::v-deep {
   .input-style1 {

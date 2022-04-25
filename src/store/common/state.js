@@ -33,6 +33,7 @@ export default function () {
     tokens: [],
     pageAccess: [],
     organization: [],
+    organizationId: '',
     isOnline: navigator.onLine,
     isOfflineClientEdit: false,
     planInfo: [],
