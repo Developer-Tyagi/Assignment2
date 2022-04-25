@@ -23,7 +23,7 @@
             />
           </div>
         </div>
-        <q-form v-if="editCompanyDetails" ref="companyDetailsForm">
+        <q-form greedy v-if="editCompanyDetails" ref="companyDetailsForm">
           <div
             class="flex-row full-width q-mt-20"
             :class="isMobileResolution ? 'flex-column' : ''"
@@ -76,7 +76,7 @@
                 <q-img
                   v-else
                   @click="initiateLogoUpload()"
-                  class="camera-icon"
+                  class="camera-icon cursor-pointer"
                   src="../../assets/camera.svg"
                   alt="Camera"
                 />
@@ -108,7 +108,7 @@
                   input-class="details-content"
                   outlined
                   v-model.trim="organizations.users.fname"
-                  placehoder="Company Name"
+                  placeholder="Company Name"
                   :maxlength="maxlengthConstants.companyName"
                   lazy-rules
                   :rules="[val => val.length > 0 || 'Please fill company name']"
@@ -126,8 +126,7 @@
                     <q-input
                       input-class="details-content"
                       outlined
-                      placehoder="000 000 0000"
-                      mask="### ### ####"
+                      placeholder="000 000 0000"
                       v-model="organizations.phoneNumber.number"
                       lazy-rules
                       :rules="[
@@ -156,7 +155,7 @@
                       input-class="details-content"
                       outlined
                       v-model.trim="organizations.companyDetails.contactEmail"
-                      placehoder="Company Email"
+                      placeholder="Company Email"
                       lazy-rules
                       :rules="[
                         val => val.length > 0 || 'Please fill company email',
@@ -221,12 +220,10 @@
                       v-model="
                         organizations.companyDetails.address.addressRegion
                       "
-                      placehoder="State"
+                      placeholder="State"
                       :options="states"
                       lazy-rules
-                      :rules="[
-                        val => val.length > 0 || 'Please select the state'
-                      ]"
+                      :rules="[val => !!val || 'Please select the state']"
                     >
                       <template v-slot:selected>
                         <template
@@ -234,9 +231,11 @@
                             organizations.companyDetails.address.addressRegion
                           "
                         >
-                          {{
-                            organizations.companyDetails.address.addressRegion
-                          }}
+                          <span class="details-content">
+                            {{
+                              organizations.companyDetails.address.addressRegion
+                            }}
+                          </span>
                         </template>
                         <template v-else>
                           <span class="placeholder-color"> Select State </span>
@@ -290,9 +289,12 @@
                             organizations.companyDetails.address.addressCountry
                           "
                         >
-                          {{
-                            organizations.companyDetails.address.addressCountry
-                          }}
+                          <span class="details-content">
+                            {{
+                              organizations.companyDetails.address
+                                .addressCountry
+                            }}
+                          </span>
                         </template>
                         <template v-else>
                           <span class="placeholder-color">
@@ -415,7 +417,7 @@
             />
           </div>
         </div>
-        <q-form v-if="editAccountSummary" ref="accountDetailsForm">
+        <q-form greedy v-if="editAccountSummary" ref="accountDetailsForm">
           <div
             class="flex-row-wrap"
             :class="isMobileResolution ? 'flex-column' : ''"
@@ -429,7 +431,7 @@
                 input-class="details-content"
                 outlined
                 v-model.trim="users.fname"
-                placehoder="First Name"
+                placeholder="First Name"
                 :maxlength="maxlengthConstants.firstName"
                 lazy-rules
                 :rules="[val => !!val || 'Please fill first name']"
@@ -443,7 +445,7 @@
                 input-class="details-content"
                 outlined
                 v-model.trim="users.lname"
-                placehoder="Last Name"
+                placeholder="Last Name"
                 :maxlength="maxlengthConstants.lastName"
                 lazy-rules
                 :rules="[val => !!val || 'Please fill last name']"
@@ -455,7 +457,7 @@
                 input-class="details-content"
                 outlined
                 v-model.trim="users.email"
-                placehoder="Email Address"
+                placeholder="Email Address"
                 lazy-rules
                 :rules="[val => validateEmailid(val)]"
               />
@@ -589,7 +591,7 @@
             />
           </div>
         </div>
-        <q-form v-if="editPhotoIDDetails" ref="editPhotoIDForm">
+        <q-form greedy v-if="editPhotoIDDetails" ref="editPhotoIDForm">
           <div
             class="flex-row-wrap"
             :class="isMobileResolution ? 'flex-column' : ''"
@@ -603,7 +605,7 @@
                 input-class="details-content"
                 outlined
                 v-model.trim="organizations.photoIDEmail"
-                placehoder="PhotoID Email"
+                placeholder="PhotoID Email"
                 lazy-rules
                 :rules="[
                   val => val.length > 0 || 'Please fill photoid email',
@@ -620,7 +622,7 @@
                 input-class="details-content"
                 outlined
                 v-model.trim="organizations.photoIDAPIKey"
-                placehoder="PhotoID API Key"
+                placeholder="PhotoID API Key"
                 lazy-rules
                 :rules="[
                   val => val.length > 0 || 'Please fill photoid api key'
@@ -687,7 +689,7 @@
       </q-card>
       <q-input
         ref="uploadImageFileInput"
-        accept=".jpg,.png,.jpeg,image/*"
+        accept="image/jpg, image/png, image/jpeg"
         style="display: none"
         v-model="fileToUpload"
         type="file"
@@ -897,7 +899,7 @@ export default {
                 this.organizations.companyDetails.address.addressCountry,
               postalCode: this.organizations.companyDetails.address.postalCode
             },
-            email: this.organizations.companyDetails.email,
+            email: this.organizations.companyDetails.contactEmail,
             phoneNumber: {
               code: this.organizations.phoneNumber.code,
               number: this.organizations.phoneNumber.number,

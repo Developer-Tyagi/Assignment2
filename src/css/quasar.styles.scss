@@ -60,3 +60,9 @@
     padding: 0px;
   }
 }
+input {
+  color: $font-content !important;
+}
+input::placeholder {
+  color: #8a90a0;
+}
