@@ -2,12 +2,12 @@
   <q-page class="poppinsFont min-height">
     <div class="row">
       <div
-        class="col-md-4 col-sm-12 col-xs-12 max-width"
+        class="col-xl-3 col-md-4 col-sm-12 col-xs-12 max-width"
         style="background-color: #f9e7d8"
       >
         <CustomSidebar step="1" />
       </div>
-      <div class="col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12">
         <q-separator class="seperator-color" />
         <div class="q-px-xl">
           <div>
@@ -15,7 +15,7 @@
               <div class="q-mt-sm justify-between">
                 <div class="text-h5 fontWeight600">Company Details</div>
                 <div
-                  class="text-subtitle2 fontWeight400 q-mt-sm"
+                  class="text-subtitle2 fontWeight400"
                   style="color: #667085"
                 >
                   Fill out the form below with the information about your
@@ -35,7 +35,7 @@
                     <div class="row">
                       <q-input
                         dense
-                        class="full-width"
+                        class="full-width companyNameInput"
                         input-class="input-subtitle1"
                         style="background: #e8edf2; font-size: 16px"
                         outlined
@@ -208,7 +208,6 @@ export default {
       this.$router.push('/onBoarding/step1');
     },
     validateEmailManually(val) {
-      console.log(val);
       if (val.length < 2) {
         this.errorMSG = 'Please enter the valid address';
         return false;
@@ -266,7 +265,6 @@ export default {
       this.$router.push('/dashboard');
     }
     if (this.organization) {
-      console.log(this.organization, 269);
       this.companyDetails.name = this.organization.name;
       this.companyDetails.address.address1 = this.organization.address
         ? this.organization.address.address1
@@ -360,6 +358,12 @@ export default {
 .mx-40 {
   margin-left: 102px;
   margin-right: 70px;
+}
+.companyNameInput {
+  border-radius: 8px;
+}
+::v-deep.companyNameInput.q-field--outlined .q-field__control::before {
+  border: none !important;
 }
 .SubTextfontSize {
   color: #667085;
@@ -592,6 +596,7 @@ export default {
 }
 .text-subtitle2 {
   color: #667085;
+  margin-top: 4px;
   line-height: 20px !important;
   font-size: 14px;
 }
@@ -930,7 +935,7 @@ export default {
     // height: -webkit-fill-available
   }
   .mtAndBottom {
-    margin-top: 60px;
+    margin-top: 10px;
     margin-bottom: 101px;
   }
 }

@@ -2,13 +2,13 @@
   <q-page class="poppinsFont min-height">
     <div class="row">
       <div
-        class="col-md-4 col-sm-12 col-xs-12 max-width"
+        class="col-xl-3 col-md-4 col-sm-12 col-xs-12 max-width"
         style="background-color: #f9e7d8"
       >
         <CustomSidebar step="0" />
       </div>
 
-      <div class="col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12">
         <q-separator class="seperator-color" />
         <div class="q-px-xl">
           <div>
@@ -160,11 +160,10 @@ export default {
 .SubTextfontSize {
   color: #667085;
   font-size: 14px;
-  margin-top: 5px;
+  // margin-top: 6px;
   line-height: 20px;
   // max-width: 517px;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding: 0 40px;
 }
 .input-subtitle1 {
   font-weight: 500;
@@ -318,7 +317,7 @@ export default {
   margin-top: 30px;
 }
 .text-subtitle1 {
-  margin-bottom: 6px;
+  margin: 6px 15px;
 }
 .connectWithGoogle {
   width: 331px !important;
@@ -523,6 +522,7 @@ export default {
   }
   .q-mt-43 {
     margin-top: 24px;
+    margin-bottom: 0px !important;
   }
   .mt-30 {
     margin-top: 16px;
@@ -701,9 +701,9 @@ export default {
     padding-left: 32px;
     padding-top: 0px;
   }
-  .max-width {
-    max-width: 480px;
-  }
+  // .max-width {
+  //   max-width: 480px;
+  // }
   .q-px-xl {
     padding-left: 60px;
     padding-right: 60px;

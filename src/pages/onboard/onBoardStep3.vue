@@ -169,7 +169,6 @@ export default {
     await this.getOrganization();
     if (this.organization) {
       this.companyDetails.name = this.organization.name;
-      // console.log(685,this.organization.address.address1, "addresss111", );
       if (this.organization) {
         this.companyDetails.address.address1 = this.organization.address
           ? this.organization.address.address1

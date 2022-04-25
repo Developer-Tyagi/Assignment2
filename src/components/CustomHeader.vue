@@ -104,13 +104,13 @@
       <!-- setup header -->
       <div class="row" v-if="$route.name == 'onBoarding'">
         <div
-          class="col-lg-4 col-xl-3 col-md-4 q-pb-md max-width"
+          class="col-xl-3 col-md-4 q-pb-md max-width"
           style="background-color: #f9e7d8; padding-top: 22px"
         >
           <q-img size="1em" src="~assets/Logo.svg" class="LogoSize q-ml-32" />
         </div>
         <div
-          class="col-lg-8 col-xl-9 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
+          class="col-xl-9 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
         >
           <div class="row justify-end q-pr-xl">
             <!-- <q-avatar
@@ -989,7 +989,6 @@ export default {
     userName() {
       // currentUser = getCurrentUser().attributes.contact
       // let fullName = this.userName
-      // console.log(currentUser, "wqfretrshrhthththth");
     }
   },
   async created() {
@@ -1177,5 +1176,10 @@ export default {
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
+}
+@media (min-width: 1024px) {
+  .max-width {
+    max-width: 480px !important;
+  }
 }
 </style>

@@ -204,7 +204,9 @@ export default {
   max-width: 120rem;
 }
 .min-height {
-  min-height: auto !important;
+  @media (min-width: 1024px) {
+    height: calc(100vh - 215px);
+  }
 }
 .inside-text {
   border-bottom: px solid #e5e5e5 !important;
@@ -265,6 +267,10 @@ export default {
   display: flex;
   align-items: center;
   color: #0c0c0c;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 }
 .q-px-32 {
   padding-left: 40px;
@@ -596,7 +602,7 @@ export default {
     margin-top: 24px;
   }
 }
-@media only screen and (min-width: 1440px) {
+@media only screen and (min-width: 1024px) {
   .max-width {
     max-width: 480px;
   }
