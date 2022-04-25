@@ -1,15 +1,16 @@
 <template>
   <q-page class="poppinsFont">
-    <div class="text-h5 fontWeight600 header-letter-space">Manage Users</div>
-    <AddNewUser
-      @closeUserDialog="CloseDialog($event)"
-      :showDialog="addAdditionalUser"
-    />
+    <div class="text-h5 fontWeight600">Manage Users</div>
+
+    <div class="row">
+      <!-- payment method -->
+    </div>
     <!-- additional user -->
     <div
-      class="col q-mt-lg q-pt-lg q-px-md label-letter-space"
+      class="col q-mt-lg q-pt-lg q-px-md"
       style="
         min-width: 345px;
+
         border: 1px solid #e8e9ec;
         border-radius: 10px;
         box-shadow: 0px 2px 4px -2px rgba(16, 24, 40, 0.06);
@@ -23,7 +24,7 @@
           </span>
           <span class="fontWeight600 text-h5 q-mr-xs">4/6</span>
         </div>
-        <div class="col-md-2 col-sm-12 col-xs-12">
+        <div class="col-md-3 col-sm-12 col-xs-12">
           <span class="fontWeight600 text-h5 q-mr-xs" style="color: #667085">
             Office Staff
           </span>
@@ -41,24 +42,20 @@
           </span>
           <span class="fontWeight600 text-h5 q-mr-xs">9</span>
         </div>
-        <div class="col-md-3 col-sm-12 col-xs-12">
+        <div class="col-md-2 col-sm-12 col-xs-12">
           <q-btn
             class="q-mr-md fontWeight600 text-subtitle1"
             no-caps
             icon="add_circle"
             color="primary"
             label="Add an Additional User"
-            @click="openAdditionalUserDialog()"
             style="border-radius: 10px; min-width: 280px; max-width: 540px"
           />
         </div>
       </div>
     </div>
 
-    <div
-      class="q-mt-md label-letter-space"
-      style="border: 1px solid #e4e7ec; border-radius: 8px"
-    >
+    <div class="q-mt-md" style="border: 1px solid #e4e7ec; border-radius: 8px">
       <div
         class="col-12"
         v-if="$q.screen.gt.sm"
@@ -68,13 +65,13 @@
           <span class="col-3 q-mr-md q-pl-md q-py-md fontWeight500 text-grey1"
             >Name</span
           >
-          <span class="col-4 q-pl-md q-mr-md q-py-md fontWeight500 text-grey1"
+          <span class="col-3 q-pl-md q-mr-md q-py-md fontWeight500 text-grey1"
             >Email</span
           >
-          <span class="col-3 q-pl-md q-mr-md q-py-md fontWeight500 text-grey1"
+          <span class="col-2 q-pl-md q-mr-md q-py-md fontWeight500 text-grey1"
             >Role</span
           >
-          <span class="col-1 q-pl-md q-mr-md q-py-md fontWeight500 text-grey1"
+          <span class="col-2 q-pl-md q-mr-md q-py-md fontWeight500 text-grey1"
             >Action</span
           >
         </div>
@@ -84,170 +81,42 @@
         v-if="$q.screen.gt.sm"
         style="border-bottom: 1px solid #e4e7ec"
       >
-        <div v-for="user in allUsers" :key="user.id">
+        <div v-for="(order, index) in orders" :key="index">
           <div class="row" style="border-bottom: 1px solid #e4e7ec">
-            <span class="col-3 q-mr-md q-mt-md q-pl-md q-py-sm fontWeight500"
-              >{{
-                user.attributes.contact.fname
-                  ? user.attributes.contact.fname
-                  : '-'
-              }}
-              {{ user.attributes.contact.lname }}</span
+            <span class="col-3 q-mr-md q-pl-md q-py-md fontWeight500">{{
+              order[0]
+            }}</span>
+            <span
+              class="col-3 q-mr-md q-pl-md q-py-md fontWeight500 text-grey1"
+              >{{ order[1] }}</span
             >
             <span
-              class="col-4 q-mr-md q-mt-md q-pl-md q-py-sm fontWeight500 text-grey1"
-              >{{ user.attributes.email }}</span
+              class="col-2 q-mr-md q-pl-md q-py-md fontWeight500 text-grey1"
+              >{{ order[2] }}</span
             >
-
             <span
-              class="col-3 q-mr-md q-mt-md q-pl-md q-py-sm fontWeight500 text-grey1"
-              >{{
-                user.attributes.roles ? user.attributes.roles[0].value : '-'
-              }}</span
+              class="col-2 q-mr-md q-pl-md q-py-md fontWeight500 text-grey1 text-caption"
+              >{{ order[3] }}</span
             >
-            <span class="col-1 q-mr-md q-pl-md q-py-md fontWeight500">
-              <q-btn flat round icon="more_vert">
-                <q-menu>
-                  <q-list
-                    style="min-width: 100px"
-                    class="poppinsFont fontWeight400"
-                  >
-                    <q-item clickable v-close-popup @click="viewUser(user)">
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('eye.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>View Details</q-item-section>
-                    </q-item>
-
-                    <q-item clickable v-close-popup>
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('edit-3.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Edit Details</q-item-section>
-                    </q-item>
-
-                    <q-item
-                      clickable
-                      v-close-popup
-                      v-if="user.attributes.isEnabled"
-                    >
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('user-x.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Disable User</q-item-section>
-                    </q-item>
-                    <!-- Add vif -->
-                    <q-item
-                      clickable
-                      v-close-popup
-                      v-if="!user.attributes.isEnabled"
-                    >
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('user-check.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Activate User</q-item-section>
-                    </q-item>
-                    <q-item clickable v-close-popup>
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('lock.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Reset Password</q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-menu>
-              </q-btn>
-            </span>
+            <!-- <span class="col-1 q-mr-md q-pl-lg q-py-md fontWeight500">
+              <q-icon size="sm">
+                <q-img
+                  class="q-mb-xs q-mr-sm"
+                  :src="getImage('download_cloud.svg')"
+                />
+              </q-icon>
+            </span> -->
           </div>
         </div>
       </div>
       <div v-else class="col-12">
-        <div v-for="user in allUsers" :key="user.id">
-          <div>
-            {{
-              user.attributes.contact.fname
-                ? user.attributes.contact.fname
-                : '-'
-            }}
-            {{ user.attributes.contact.lname }}
-          </div>
+        <div v-for="order in orders" :key="order[0]">
+          <div>{{ order[0] }}</div>
           <div class="q-mt-md" style="border-bottom: 1px solid #e4e7ec">
-            <span class="q-mr-md">{{ user.attributes.email }}</span>
-            <span class="q-mr-md">{{
-              user.attributes.roles ? user.attributes.roles[0].value : '-'
-            }}</span>
-
-            <span class="col-1 q-mr-md q-pl-md q-py-md fontWeight500">
-              <q-btn flat round icon="more_vert">
-                <q-menu>
-                  <q-list
-                    style="min-width: 100px"
-                    class="poppinsFont fontWeight400"
-                  >
-                    <q-item clickable v-close-popup @click="viewUser(user)">
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('eye.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>View Details</q-item-section>
-                    </q-item>
-
-                    <q-item clickable v-close-popup>
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('edit-3.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Edit Details</q-item-section>
-                    </q-item>
-
-                    <q-item
-                      clickable
-                      v-close-popup
-                      v-if="user.attributes.isEnabled"
-                    >
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('user-x.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Disable User</q-item-section>
-                    </q-item>
-                    <!-- Add vif -->
-                    <q-item
-                      clickable
-                      v-close-popup
-                      v-if="!user.attributes.isEnabled"
-                    >
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('user-check.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Activate User</q-item-section>
-                    </q-item>
-                    <q-item clickable v-close-popup>
-                      <q-item-section side>
-                        <q-icon size="sm">
-                          <q-img class="" :src="getImage('lock.svg')" />
-                        </q-icon>
-                      </q-item-section>
-                      <q-item-section>Reset Password</q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-menu>
-              </q-btn>
-            </span>
+            <span class="q-mr-md">{{ order[1] }}</span>
+            <span class="q-mr-md">{{ order[2] }}</span>
+            <span class="q-mr-md">{{ order[3] }}</span>
+            <span>{{ order[4] }}</span>
           </div>
         </div>
       </div>
@@ -276,238 +145,36 @@
           </q-icon>
         </div>
       </div>
-      <q-dialog v-model="confirm_dia" persistent class="viewModel">
-        <q-card class="poppinsFont viewUser label-letter-space">
-          <q-card-section class="items-center viewUserHeader">
-            <span
-              class="fontWeight600 fontSize20 lineHeight24 header-letter-space"
-              >User Details</span
-            >
-            <q-btn
-              icon="close"
-              flat
-              round
-              dense
-              v-close-popup
-              class=""
-              style="float: right"
-            />
-          </q-card-section>
-          <q-card-section
-            class="row items-center fontSize16 lineHeight24 viewUserRows"
-          >
-            <span class="col-4 fontWeight600">First Name</span>
-            <span
-              class="col-7 fontWeight400 q-pl-md"
-              style="word-wrap: break-word"
-              >{{
-                currentSelectdUser.firstName
-                  ? currentSelectdUser.firstName
-                  : '-'
-              }}</span
-            >
-          </q-card-section>
-          <q-card-section
-            class="row items-center fontSize16 lineHeight24 viewUserRows"
-          >
-            <span class="col-4 fontWeight600">Last Name</span>
-            <span
-              class="col-7 fontWeight400 q-pl-md"
-              style="word-wrap: break-word"
-              >{{
-                currentSelectdUser.lastName ? currentSelectdUser.lastName : '-'
-              }}</span
-            >
-          </q-card-section>
-          <!-- <q-card-section class="row items-center fontSize16 lineHeight24 viewUserRows">
-            <span class="col-4 fontWeight600">Contact</span>
-            <span class="col-7 fontWeight400">{{currentSelectdUser.contactNumber ? currentSelectdUser.contactNumber : '-'}}</span>
-          </q-card-section> -->
-          <q-card-section
-            class="row items-center fontSize16 lineHeight24 viewUserRows"
-          >
-            <span class="col-4 fontWeight600">Email</span>
-            <span
-              class="col-7 fontWeight400 q-pl-md"
-              style="word-wrap: break-word"
-              >{{
-                currentSelectdUser.email ? currentSelectdUser.email : '-'
-              }}</span
-            >
-          </q-card-section>
-          <q-card-section
-            class="row items-center fontSize16 lineHeight24 viewUserRows"
-          >
-            <span class="col-4 fontWeight600">User Role</span>
-            <span class="col-7 fontWeight400 q-pl-md row">
-              <span
-                class="fontWeight400 desktop-tab-view"
-                style="word-wrap: break-word"
-                >{{ currentSelectdUser.role ? currentSelectdUser.role : '-'
-                }}<span class="q-pl-md"
-                  ><span
-                    v-if="!this.currentSelectdUser.paidStatus"
-                    class="q-px-sm fontWeight500 fontSize14 lineHeight24"
-                    style="
-                      color: #027a48;
-                      background-color: #ecfdf3;
-                      border-radius: 10px;
-                    "
-                    >Free Role</span
-                  >
-                  <span
-                    v-else
-                    class="q-px-sm fontWeight500 fontSize14 lineHeight24"
-                    style="
-                      color: #c4320a;
-                      background-color: #f7e6e1;
-                      border-radius: 10px;
-                    "
-                    >Paid Role</span
-                  ></span
-                ></span
-              >
-              <span
-                class="col-xs-12 mobile-only-view"
-                style="word-wrap: break-word"
-              >
-                {{
-                  currentSelectdUser.role ? currentSelectdUser.role : '-'
-                }}</span
-              >
-              <span class="col-xs-12 mobile-only-view"
-                ><span
-                  v-if="!this.currentSelectdUser.paidStatus"
-                  class="q-px-sm fontWeight500 fontSize14 lineHeight24"
-                  style="
-                    color: #027a48;
-                    background-color: #ecfdf3;
-                    border-radius: 10px;
-                  "
-                  >Free Role</span
-                >
-                <span
-                  v-else
-                  class="q-px-sm fontWeight500 fontSize14 lineHeight24"
-                  style="
-                    color: #c4320a;
-                    background-color: #f7e6e1;
-                    border-radius: 10px;
-                  "
-                  >Paid Role</span
-                ></span
-              >
-            </span>
-          </q-card-section>
-          <q-card-section
-            class="row items-center fontSize16 lineHeight24 viewUserRows"
-            v-if="currentSelectdUser.subRole"
-          >
-            <span class="col-4 fontWeight600">Role Title</span>
-            <span
-              class="col-7 fontWeight400 q-pl-md"
-              style="word-wrap: break-word"
-              >{{
-                currentSelectdUser.subRole ? currentSelectdUser.subRole : '-'
-              }}</span
-            >
-          </q-card-section>
-          <q-card-section
-            class="row items-center fontSize16 lineHeight24 viewUserRows"
-            v-if="currentSelectdUser.license"
-          >
-            <span class="col-4 fontWeight600">PIA License</span>
-            <span
-              class="col-7 fontWeight400 q-pl-md"
-              style="word-wrap: break-word"
-              >{{ currentSelectdUser.license }}</span
-            >
-          </q-card-section>
-          <div class="actionButtons">
-            <div class="desktop-tab-view-btns">
-              <q-btn
-                class="fontWeight600 fontSize16 lineHeight24 viewcancelbtn"
-                label="Cancel"
-                no-caps
-                v-close-popup
-                outline
-                color="deep-orange"
-                size="1rem"
-                style=""
-              />
-              <!-- <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> </div> -->
-              <q-btn
-                class="fontWeight600 fontSize16 lineHeight24 vieweditbtn"
-                label="Edit User Details"
-                no-caps
-                style="float: right"
-                color="deep-orange"
-                size="1rem"
-              />
-            </div>
-            <div class="mobile-only-view-btns row">
-              <q-btn
-                class="fontWeight600 fontSize16 lineHeight24 viewcancelbtn col-xs-12"
-                label="Cancel"
-                no-caps
-                v-close-popup
-                outline
-                color="deep-orange"
-                size="1rem"
-                style=""
-              />
-              <div class="col-xs-12"></div>
-              <q-btn
-                class="fontWeight600 fontSize16 lineHeight24 vieweditbtn col-xs-12"
-                label="Edit User Details"
-                no-caps
-                style="float: right"
-                color="deep-orange"
-                size="1rem"
-              />
-            </div>
-          </div>
-        </q-card>
-      </q-dialog>
     </div>
   </q-page>
 </template>
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
-import AddNewUser from '../components/AddNewUser.vue';
 import { isMobile } from '@utils/common';
 import { validateEmail } from '@utils/validation';
 export default {
-  components: { AddNewUser },
+  components: {},
   data() {
     return {
+      orders: [
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner'],
+        ['Jason Rhye', 'jason@10xincubators.com', 'Owner']
+      ],
       cardData: {},
       paginationValue: 1,
       totalPaginationPages: 10,
-      totalRecordsPerPage: 8,
-      confirm_dia: false,
-      showing: false,
-      addAdditionalUser: false,
-      currentSelectdUser: {
-        firstName: '',
-        lastName: '',
-        contactNumber: '',
-        role: '',
-        subRole: '',
-        email: '',
-        license: '',
-        paidStatus: ''
-      },
-      org: ''
+      totalRecordsPerPage: 8
     };
   },
   methods: {
-    ...mapActions([
-      'getAllUsers',
-      'getCardInfo',
-      'getRoles',
-      'getOrganization'
-    ]),
+    ...mapActions(['getCardInfo']),
     isMobile,
     validateEmail,
     getImage(icon) {
@@ -518,77 +185,15 @@ export default {
     },
     decreasePaginationValue() {
       this.paginationValue--;
-    },
-    openAdditionalUserDialog() {
-      if (this.addAdditionalUser == true) {
-        this.addAdditionalUser = false;
-      }
-      this.addAdditionalUser = true;
-    },
-    CloseDialog(val) {
-      if (val == false) {
-        this.addAdditionalUser = false;
-      } else {
-        this.addAdditionalUser = true;
-      }
-    },
-    viewUser(sel_user) {
-      this.confirm_dia = true;
-      // console.log(this.organizationId)
-      this.currentSelectdUser.firstName = sel_user.attributes.contact.fname;
-      this.currentSelectdUser.lastName = sel_user.attributes.contact.lname;
-      this.currentSelectdUser.email = sel_user.attributes.email;
-      this.currentSelectdUser.role = sel_user.attributes.roles[0].value;
-      this.currentSelectdUser.paidStatus = sel_user.attributes.roles[0].isPaid;
-
-      if (sel_user.attributes.subRole) {
-        this.currentSelectdUser.subRole = sel_user.attributes.subRole.value;
-      } else {
-        this.currentSelectdUser.subRole = '';
-      }
-      // console.log("length:",sel_user.attributes.licenses.length)
-      if (sel_user.attributes.licenses) {
-        var element = '';
-        for (
-          let index = 0;
-          index < sel_user.attributes.licenses.length;
-          index++
-        ) {
-          if (sel_user.attributes.licenses[index].state != '') {
-            element =
-              element +
-              sel_user.attributes.licenses[index].state +
-              '-' +
-              sel_user.attributes.licenses[index].number;
-          } else {
-            element = '';
-          }
-
-          if (index != sel_user.attributes.licenses.length - 1) {
-            element = element + ', ';
-          }
-        }
-        // this.currentSelectdUser.license_state =
-        //   sel_user.attributes.licenses[0].state;
-        // this.currentSelectdUser.license_number =
-        //   sel_user.attributes.licenses[0].number;
-        this.currentSelectdUser.license = element;
-      } else {
-        this.currentSelectdUser.license = '';
-      }
-    },
-    openMore() {}
+    }
   },
   computed: {
-    ...mapGetters(['allUsers', 'organization', 'organizationId'])
+    ...mapGetters(['organization'])
   },
   async created() {
-    this.getAllUsers();
-    this.getOrganization();
     this.step = 0;
     let cardInfo = await this.getCardInfo();
     this.cardData = cardInfo.attributes.cards[0];
-    await this.getRoles('hideLoader');
   }
 };
 </script>
@@ -604,141 +209,5 @@ export default {
 }
 .fontWeight400 {
   font-weight: 400;
-}
-.fontSize14 {
-  font-size: 14px;
-}
-.fontSize16 {
-  font-size: 16px;
-}
-.fontSize20 {
-  font-size: 20px;
-}
-.lineHeight24 {
-  line-height: 24px;
-}
-.lineHeight20 {
-  line-height: 20px;
-}
-.actionButtons {
-  @media only screen and (min-width: 1024px) {
-    padding: 50px 24px 24px 24px !important;
-  }
-  @media only screen and (max-width: 1023px) {
-    padding: 30px 16px 16px 16px !important;
-  }
-}
-.viewUser {
-  border-radius: 8px;
-  @media only screen and (min-width: 1024px) {
-    width: 50%;
-    max-width: 560px;
-  }
-  @media only screen and (max-width: 1023px) {
-    width: 100% !important;
-    min-width: 300px;
-    max-width: 560px;
-  }
-}
-.paidStatus {
-  @media only screen and (min-width: 1024px) {
-    padding-left: 10px;
-  }
-}
-.viewUserRows {
-  @media only screen and (min-width: 1024px) {
-    padding: 10px 0px 10px 24px;
-  }
-  @media only screen and (max-width: 1023px) {
-    padding: 10px 0px 10px 16px;
-  }
-}
-.viewUserHeader {
-  @media only screen and (min-width: 1024px) {
-    padding: 24px 24px 20px 24px;
-  }
-  @media only screen and (max-width: 1023px) {
-    padding: 19px 16px 17px 16px;
-  }
-}
-.mobile-only-view {
-  @media only screen and (max-width: 599px) {
-    display: block;
-  }
-  @media only screen and (min-width: 600px) {
-    display: none;
-  }
-}
-.desktop-tab-view {
-  @media only screen and (max-width: 599px) {
-    display: none;
-  }
-  @media only screen and (min-width: 600px) {
-    display: block;
-  }
-}
-.mobile-only-view-btns {
-  @media only screen and (max-width: 374px) {
-    display: block;
-    height: 90px;
-    .vieweditbtn {
-      margin-top: 10px;
-    }
-  }
-  @media only screen and (min-width: 375px) {
-    display: none;
-  }
-}
-.desktop-tab-view-btns {
-  @media only screen and (max-width: 374px) {
-    display: none;
-  }
-  @media only screen and (min-width: 375px) {
-    display: block;
-  }
-}
-</style>
-<style lang="scss">
-.vieweditbtn {
-  @media only screen and (min-width: 1024px) {
-    width: 190px;
-    border-radius: 10px;
-  }
-  @media only screen and (max-width: 1023px) {
-    width: 170px;
-    border-radius: 5px;
-  }
-  .q-btn__wrapper:before {
-    box-shadow: none;
-  }
-}
-.viewcancelbtn {
-  @media only screen and (min-width: 1024px) {
-    width: 118px;
-    border-radius: 10px;
-  }
-  @media only screen and (max-width: 1023px) {
-    width: 98px;
-    border-radius: 5px;
-  }
-}
-
-.actionButtons {
-  .q-btn {
-    @media only screen and (min-width: 1024px) {
-      height: 50px;
-    }
-    @media only screen and (max-width: 1023px) {
-      height: 40px;
-    }
-  }
-  .q-btn--outline .q-btn__wrapper:before {
-    border: 2px solid #ef5926;
-  }
-}
-.viewModel {
-  .q-dialog__inner--minimized {
-    padding: 15px;
-  }
 }
 </style>

@@ -1,42 +1,64 @@
 <template>
   <q-page class="poppinsFont">
-    <div class="text-h5 fontWeight600 billing-header">Billing</div>
+    <div class="text-h5 fontWeight600 q-mt-md">Billing</div>
     <AddNewUser
       @closeUserDialog="CloseDialog($event)"
       :showDialog="addAdditionalUser"
     />
-    <div class="row custom-cols">
+    <div class="row q-gutter-lg" style="margin-top: 30px">
       <!-- package div -->
       <div
-        class="col-md-5 col-sm-12 col-xs-12 cards"
+        class="col q-mt-lg q-pb-sm"
         style="
+          padding: 24px 24px;
+          min-width: 345px;
           border: 1px solid #e8e9ec;
-          border-radius: 10px;
+          border-radius: 8px;
           box-shadow: 0px 2px 4px -2px rgba(16, 24, 40, 0.06);
           box-shadow: 0px 4px 8px -2px rgba(0, 0, 0, 0.1);
         "
       >
-        <div class="row justify-between innercard">
-          <div class="col fontWeight500" style="font-size: 20px">
+        <div class="row justify-between">
+          <div
+            class="col fontWeight500"
+            style="font-size: 18px; line-height: 28px; color: #101828"
+          >
             {{ organization.plan.value }}
           </div>
           <div class="col row justify-end">
-            <span class="fontWeight600 text-h5">$</span
+            <span
+              class="fontWeight600 text-h5 q-mr-xs"
+              style="font-size: 30px; line-height: 44px; margin: 6px 0px"
+              >$</span
             ><span
               v-if="organization.plan.value == 'Firm Package'"
-              class="fontWeight600 text-h4"
+              class="fontWeight600"
+              style="
+                color: #101828;
+                font-size: 36px;
+                line-height: 60px;
+                margin: 0px 2px;
+              "
               >250</span
             ><span
               v-if="organization.plan.value == 'Individual Package'"
               class="fontWeight600 text-h4"
+              style="
+                color: #101828;
+                font-size: 36px;
+                line-height: 60px;
+                margin: 0px 2px;
+              "
               >125</span
-            ><span class="fontWeight500 text-subtitle1 q-pt-sm q-mt-sm"
-              >/mos</span
+            ><span
+              class="fontWeight500 text-subtitle1 q-pt-sm"
+              style="margin-top: 15px; color: #667085"
+              >/mo</span
             >
           </div>
         </div>
         <div
-          class="innercard-items"
+          style="margin-top: 2px"
           v-for="role in organization.plan.roles"
           :key="role.machineValue"
         >
@@ -44,13 +66,20 @@
             <q-img
               class="q-mb-xs q-mr-sm"
               :src="getImage('Check_icon_billing.svg')"
-              width="3%"
-              height="3%"
+              width="4%"
+              height="4%"
+              style="max-width: 20px; max-height: 20px"
             />
-            <span class="q-ml-xs">{{
-              role.count == -1 ? 'Unlimited' : role.count
-            }}</span>
-            <span class="q-ml-xs">{{ role.value }}</span>
+            <span
+              class="q-ml-xs text-grey1"
+              style="line-height: 28px; color: #667085"
+              >{{ role.count == -1 ? 'Unlimited' : role.count }}</span
+            >
+            <span
+              class="q-ml-xs text-grey1"
+              style="line-height: 28px; color: #667085"
+              >{{ role.value }}</span
+            >
           </div>
         </div>
 
@@ -60,89 +89,115 @@
         >
           <q-separator />
           <div
-            class="q-mt-md q-mr-md text-primary text-right cursor-pointer"
+            class="q-mt-md text-primary text-right cursor-pointer"
             @click="openUpgradePlanDialog()"
           >
             Upgrade to Firm Package <q-icon name="north_east" color="primary" />
           </div>
         </div>
       </div>
-      <div class="col-md-2 col-sm-12 col-xs-12"></div>
       <!-- payment method -->
       <div
-        class="col-md-5 col-sm-12 col-xs-12 cards"
+        class="col q-mt-lg q-pb-md"
         style="
+          padding: 24px;
+          min-width: 345px;
           border: 1px solid #e8e9ec;
-          border-radius: 10px;
+          border-radius: 8px;
           box-shadow: 0px 2px 4px -2px rgba(16, 24, 40, 0.06);
           box-shadow: 0px 4px 8px -2px rgba(0, 0, 0, 0.1);
         "
       >
-        <div class="innercard">
-          <div class="fontWeight500" style="font-size: 20px">
-            Payment method
-          </div>
-          <div class="q-mt-xs" style="color: #667085">
-            Change how you pay for your package.
-          </div>
-          <div
-            class=""
-            style="
-              border: 1px solid #e4e7ec;
-              border-radius: 10px;
-              margin-top: 20px;
-              margin-bottom: 24px;
-            "
-          >
-            <div class="row card-elements">
+        <div
+          class="fontWeight500"
+          style="font-size: 18px; line-height: 28px; color: #101828"
+        >
+          Payment method
+        </div>
+        <div
+          class="q-mt-xs"
+          style="
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            color: #667085;
+          "
+        >
+          Change how you pay for your package.
+        </div>
+        <div
+          class="q-py-sm q-px-sm"
+          style="
+            border: 1px solid #e4e7ec;
+            border-radius: 10px;
+            margin: 20px 0px;
+          "
+        >
+          <div class="row q-px-sm q-pt-sm">
+            <div class="col-2">
               <q-img
                 v-if="cardData.brand == 'Visa'"
-                class="col-2"
                 src="~assets/visa_logo.svg"
-                style="height: 15%; width: 13%"
+                style="border: 1px solid #f2f4f7; height: 40px; width: 60px"
               />
 
               <q-img
                 v-if="cardData.brand == 'MasterCard'"
-                class="col-2"
                 src="~assets/mc_symbol.svg"
-                style="height: 13%; width: 10%; border: 1px solid #f2f4f7"
+                style="border: 1px solid #f2f4f7; height: 40px; width: 60px"
               />
               <q-img
-                v-if="cardData.brand == 'AmericanExpress	'"
-                class="col-2"
-                src="~assets/American_Express-Logo.wine.svg"
-                style="height: 13%; width: 10%; border: 1px solid #f2f4f7"
+                v-if="cardData.brand == 'American Express'"
+                src="~assets/90120_card_512x512.png"
+                style="border: 1px solid #f2f4f7; height: 40px; width: 60px"
               />
-              <div class="col-7 q-pl-md">
-                <span class="fontWeight500"
+            </div>
+
+            <div class="col-8 row q-pl-lg">
+              <div class="col-12">
+                <span
+                  class="fontWeight500"
+                  style="font-size: 14px; line-height: 20px; color: #344054"
                   >{{ cardData.brand }} ending in
                   {{ cardData.lastFourDigits }}</span
                 >
                 <br />
-                <span class="fontWeight400" style="color: #667085"
-                  >Expiry {{ cardData.expMonth }}/{{ cardData.expYear }}</span
+                <span
+                  class="fontWeight400"
+                  style="font-size: 14px; line-height: 20px; color: #667085"
+                >
+                  Expiry {{ expMonth }}/{{ cardData.expYear }}</span
                 >
               </div>
+            </div>
+            <div class="col-2">
               <q-btn
                 flat
-                class="col-3 text-black edit-payment-btn"
+                no-caps
+                class="text-black float-right"
                 color="white"
                 label="Edit"
                 @click="openEditDialog()"
-                style="border: 1px solid #d0d5dd; border-radius: 10px"
+                style="
+                  border: 1px solid #d0d5dd;
+                  border-radius: 8px;
+                  max-width: 58px;
+                "
               />
             </div>
-            <div class="row q-mt-md" style="color: #667085">
-              <div class="col-2"></div>
-              <div class="col-10">
-                <q-icon class="q-mr-xs q-mt-xs" size="sm"
-                  ><q-img
-                    class="q-mb-xs q-mr-sm"
-                    :src="getImage('mailbox.svg')"
-                  /> </q-icon
-                >{{ organization.email }}
-              </div>
+          </div>
+          <div class="row text-grey1 q-px-sm no-wrap">
+            <div class="col-2"></div>
+            <div class="col-10 q-pl-lg ellipsis">
+              <q-icon class="q-mr-xs q-pt-xs" size="1em"
+                ><q-img
+                  class="q-mb-xs"
+                  :src="getImage('mailbox.svg')"
+                /> </q-icon
+              ><span
+                style="font-size: 14px; line-height: 20px; color: #667085"
+                >{{ organization.email }}</span
+              >
             </div>
           </div>
         </div>
@@ -151,31 +206,41 @@
     <!-- additional user -->
     <div
       v-if="organization.plan.value == 'Firm Package'"
-      class="col-lg-12 col-md-12 col-sm-12 col-xs-12 add-user-box"
+      class="col q-mt-lg q-pt-md q-px-md"
       style="
+        min-width: 345px;
         border: 1px solid #e8e9ec;
         border-radius: 10px;
         box-shadow: 0px 2px 4px -2px rgba(16, 24, 40, 0.06);
         box-shadow: 0px 4px 8px -2px rgba(0, 0, 0, 0.1);
       "
     >
-      <div class="row add-user-innerbox fontWeight600">
+      <div class="row q-px-lg q-pb-md fontWeight600">
         <q-btn
-          class="q-mr-md fontWeight600 text-subtitle1"
+          class="col-3 q-mr-md fontWeight600 text-subtitle1"
           outline
           no-caps
-          icon="add_circle"
           color="primary"
-          label="Add an Additional User"
           @click="openAdditionalUserDialog()"
-          style="border-radius: 10px"
-        />
-        <div class="row justify-start add-user-pricetag" style="">
+          style="
+            border-radius: 10px;
+            min-width: 280px;
+            max-width: 540px;
+            height: 44px;
+          "
+        >
+          <q-icon class="q-mr-sm" style="height: 17px; width: 17px">
+            <q-img :src="getImage('addIconNew.svg')" />
+          </q-icon>
+          Add an Additional User
+        </q-btn>
+        <div
+          class="col-2 row justify-start q-pl-sm"
+          style="min-width: 300px; max-width: 540px"
+        >
           <span class="fontWeight600 text-h5 q-mr-xs">$</span
           ><span class="fontWeight600 text-h4">50</span
-          ><span
-            class="fontWeight500 text-subtitle1 q-pt-sm"
-            style="color: #667085"
+          ><span class="fontWeight500 text-subtitle1 q-pt-sm text-grey1 q-pt-md"
             >/month per user*</span
           >
         </div>
@@ -183,28 +248,47 @@
     </div>
 
     <!-- billing history -->
-    <div class="text-h5 fontWeight600 billing-his-section">Billing history</div>
+    <div class="text-h5 fontWeight600 q-mt-xl">Billing history</div>
 
-    <div class="q-mt-md" style="border: 1px solid #e4e7ec; border-radius: 8px">
+    <div
+      style="
+        box-shadow: 0px 2px 4px -2px rgba(16, 24, 40, 0.06);
+        box-shadow: 0px 4px 8px -2px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e4e7ec;
+        border-radius: 8px;
+        margin-top: 30px;
+      "
+    >
       <div
         class="col-12"
         v-if="$q.screen.gt.sm"
-        style="border-bottom: 1px solid #e4e7ec"
+        style="border-bottom: 1px solid #e4e7ec; background: #f9fafb"
       >
-        <div class="row text-caption">
-          <span class="col-3 q-pl-md q-py-md fontWeight500 text-grey1"
+        <div class="row">
+          <span
+            class="col-4 q-pl-md q-py-md fontWeight500"
+            style="font-size: 12px; line-height: 18px; color: #667085"
             >Order</span
           >
-          <span class="col-3 q-pl-md q-py-md fontWeight500 text-grey1"
+          <span
+            class="col-2 q-pl-md q-py-md fontWeight500"
+            style="font-size: 12px; line-height: 18px; color: #667085"
             >Amount</span
           >
-          <span class="col-2 q-pl-md q-py-md fontWeight500 text-grey1"
+          <span
+            class="col-3 q-pl-md q-py-md fontWeight500"
+            style="font-size: 12px; line-height: 18px; color: #667085"
             >Date</span
           >
-          <span class="col-2 q-pl-md q-py-md fontWeight500 text-grey1"
+          <span
+            class="col-2 q-pl-md q-py-md fontWeight500"
+            style="font-size: 12px; line-height: 18px; color: #667085"
             >Status</span
           >
-          <span class="col-2 q-pl-md q-py-md fontWeight500 text-grey1"></span>
+          <span
+            class="col-1 q-pl-md q-py-md fontWeight500"
+            style="font-size: 12px; line-height: 18px; color: #667085"
+          ></span>
         </div>
       </div>
       <div
@@ -213,32 +297,46 @@
         style="border-bottom: 1px solid #e4e7ec"
       >
         <div v-for="(bill, index) in billingData" :key="index">
-          <div class="row" style="border-bottom: 1px solid #e4e7ec">
-            <span class="col-3 q-pl-md q-py-md fontWeight500">{{
-              '#' + showOrderId(bill.attributes.number)
-            }}</span>
-            <span class="col-3 q-pl-md q-py-md fontWeight500 text-grey1"
-              >USD ${{ bill.attributes.amountPaid }}</span
-            >
-            <span class="col-2 q-pl-md q-py-md fontWeight500 text-grey1">{{
-              createDate(bill.attributes.created)
-            }}</span>
+          <div
+            class="row"
+            style="
+              border-bottom: 1px solid #e4e7ec;
+              padding-top: 26px;
+              padding-bottom: 26px;
+            "
+          >
             <span
-              class="col-2 q-pl-md q-py-md fontWeight500 text-grey1 text-capitalize text-caption"
+              class="col-4 q-pl-md fontWeight500"
+              style="font-size: 14px; line-height: 20px; color: #101828"
+              >{{ '# ' + bill.id }}</span
+            >
+            <span
+              class="col-2 q-pl-md fontWeight500"
+              style="font-size: 14px; line-height: 20px; color: #667085"
+              >USD ${{ (bill.attributes.amountPaid / 100).toFixed(2) }}</span
+            >
+            <span
+              class="col-3 q-pl-md fontWeight500"
+              style="font-size: 14px; line-height: 20px; color: #667085"
+              >{{ createDate(bill.attributes.created) }}</span
+            >
+            <span
+              class="col-2 q-pl-md fontWeight500 text-grey1 text-capitalize text-caption"
               style="color: #027a48"
               ><span
                 class="q-px-sm"
                 style="
                   color: #027a48;
                   background-color: #ecfdf3;
-                  border-radius: 10px;
+                  border-radius: 16px;
+                  line-height: 18px;
                 "
               >
                 <q-icon name="check" size="1em" style="color: #12b76a" />
                 {{ bill.attributes.status }}</span
               ></span
             >
-            <span class="col-1 q-pl-lg q-py-md fontWeight500">
+            <span class="col-1 q-pl-lg fontWeight500">
               <a :href="bill.attributes.downloadLink">
                 <q-icon size="sm">
                   <q-img
@@ -252,43 +350,41 @@
         </div>
       </div>
       <div v-else class="col-12">
-        <div v-for="(bill, index) in billingData" :key="index">
-          <div
-            class="q-mt-sm q-ml-md col-12"
-            style="font-weight: bold;font-size: 14px;line-height: 20px; color: #101828; font"
-          >
-            {{ '# ' + showOrderId(bill.attributes.number) }}
+        <div
+          v-for="(bill, index) in billingData"
+          :key="index"
+          class="row q-pb-xs"
+        >
+          <div class="col-12 q-px-md q-mt-md text-bold">
+            <div>{{ '# ' + bill.id }}</div>
           </div>
+
           <div
-            class="q-mt-md q-ml-md row"
-            style="
-              border-bottom: 1px solid #e4e7ec;
-              color: #667085;
-              font-weight: 400;
-              font-size: 14px;
-              line-height: 20px;
-            "
+            class="col-12 row q-pb-sm q-px-md q-mt-sm"
+            style="border-bottom: 1px solid #e4e7ec"
           >
-            <span class="col-3">USD ${{ bill.attributes.amountPaid }}</span>
-            <span class="col-3">{{ createDate(bill.attributes.created) }}</span>
-            <span class="col-3" style="text-transform: capitalize"
+            <span class="col-4 text-left"
+              >USD ${{ (bill.attributes.amountPaid / 100).toFixed(2) }}</span
+            >
+            <span class="col-4">{{ createDate(bill.attributes.created) }}</span>
+            <span class="col-3"
               ><span
+                class="q-px-sm"
                 style="
                   color: #027a48;
                   background-color: #ecfdf3;
-                  border-radius: 10px;
+                  border-radius: 16px;
+                  line-height: 18px;
                 "
-                ><q-icon name="check" size="1em" style="color: #12b76a" />
+              >
+                <q-icon name="check" size="1em" style="color: #12b76a" />
                 {{ bill.attributes.status }}</span
               ></span
             >
-            <span class="col-3 fontWeight500">
+            <span class="col-1 text-center">
               <a :href="bill.attributes.downloadLink">
-                <q-icon size="sm">
-                  <q-img
-                    class="q-mb-xs q-mr-sm"
-                    :src="getImage('download_cloud.svg')"
-                  />
+                <q-icon size="xs">
+                  <q-img class="" :src="getImage('download_cloud.svg')" />
                 </q-icon>
               </a>
             </span>
@@ -307,7 +403,10 @@
               :src="getImage('arrow_circle_left.svg')"
           /></q-icon>
         </div>
-        <div class="col-10 text-center q-pt-xs">
+        <div
+          class="col-10 text-center q-pt-xs"
+          style="font-size: 14px; line-height: 20px; color: #667085"
+        >
           Page {{ this.paginationValue }}
         </div>
         <div class="col-1" @click="hasMore ? increasePaginationValue() : ''">
@@ -321,25 +420,53 @@
       </div>
     </div>
 
-    <div class="text-grey text-body1 q-mt-sm desktop-view">
+    <div
+      class="text-grey1 fontWeight400"
+      v-if="$q.screen.gt.sm"
+      style="font-size: 16px; line-height: 20px; margin-top: 20px"
+    >
       *You will be charged a pro-rated for the current month
     </div>
 
     <!-- Edit payment Dialog -->
     <q-dialog v-model="icon" persistent>
-      <q-card class="full-width" style="max-width: 600px">
-        <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6 fontWeight600">Edit Payment</div>
+      <q-card
+        class="full-width poppinsFont"
+        style="
+          max-width: 600px;
+          border-radius: 8px;
+          padding: 24px;
+          box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.1),
+            0px 8px 8px -4px rgba(16, 24, 40, 0.04);
+        "
+      >
+        <div class="row items-center q-pb-none">
+          <div
+            class="fontWeight600"
+            style="font-size: 20px; line-height: 24px; color: #101828"
+          >
+            Edit Payment
+          </div>
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
+        </div>
 
-        <q-card-section>
-          <q-form class="q-mt-md" @submit="onPaymentClick()" ref="orgInfo">
-            <div>{{ displayErrors }}</div>
-            <div class="q-mt-lg"></div>
-            <div id="card-errors" class="q-my-lg"></div>
-            <label class="text-subtitle1 text-weight-bold">Card Number</label>
+        <div>
+          <q-form
+            style="margin-top: 24px"
+            @submit="onPaymentClick()"
+            ref="orgInfo"
+          >
+            <!-- <div class="" style="color:#D92D20">{{ displayErrors }}</div> -->
+            <div class=""></div>
+            <div id="card-errors" class="q-my-lg" style="color: #d92d20">
+              {{ displayErrors }}
+            </div>
+            <label
+              class="fontWeight600"
+              style="font-size: 16px; line-height: 24px; color: #152141"
+              >Card Number</label
+            >
             <div
               id="card-number"
               class="cardInfo f-w-500 text-body1 border-top-left-right q-mt-xs q-mb-lg"
@@ -347,7 +474,11 @@
               <!-- a Stripe Element will be inserted. -->
             </div>
 
-            <label class="text-subtitle1 text-weight-bold">Name on Card</label>
+            <label
+              class="fontWeight600"
+              style="font-size: 16px; line-height: 24px; color: #152141"
+              >Name on Card</label
+            >
             <q-input
               borderless
               class="bg-white cardInfo text-body1 q-mt-xs q-mb-lg"
@@ -363,8 +494,10 @@
 
             <div class="row justify-between">
               <div class="col-6 q-pr-md">
-                <label class="text-subtitle1 text-weight-bold"
-                  >Expiry Date</label
+                <label
+                  class="fontWeight600"
+                  style="font-size: 16px; line-height: 24px; color: #152141"
+                  >Expiration Date</label
                 >
                 <div
                   id="card-expiry"
@@ -374,7 +507,11 @@
                 </div>
               </div>
               <div class="col-6 q-pl-xs">
-                <label class="text-subtitle1 text-weight-bold">CVC</label>
+                <label
+                  class="fontWeight600"
+                  style="font-size: 16px; line-height: 24px; color: #152141"
+                  >CVC</label
+                >
                 <div
                   id="card-cvc"
                   class="cardInfo text-body1 border-bottom-right q-mt-xs"
@@ -392,6 +529,8 @@
                 outline
                 color="deep-orange"
                 size="1rem"
+                style="border-radius: 10px; width: 118px; height: 50px"
+                @click="closeEditPayment()"
               />
               <q-btn
                 label="Save Payment"
@@ -399,25 +538,29 @@
                 type="submit"
                 color="deep-orange"
                 size="1rem"
+                style="border-radius: 10px; width: 190px; height: 50px"
               />
             </div>
-            <div class="q-mt-md"></div>
+            <div class=""></div>
           </q-form>
-        </q-card-section>
+        </div>
       </q-card>
     </q-dialog>
 
     <!-- Upgrade Plan Dialog -->
     <q-dialog v-model="upgradePlanDialog" persistent>
-      <q-card class="full-width" style="max-width: 400px">
-        <q-card-section class="text-center q-pb-none">
-          <div class="text-h6 fontWeight500">
+      <q-card
+        class="full-width poppinsFont"
+        style="max-width: 400px; border-radius: 12px; padding: 24px"
+      >
+        <div class="text-center q-pb-none">
+          <div class="fontWeight500" style="font-size: 18px; line-height: 28px">
             Do you wish to upgrade your account?
           </div>
-        </q-card-section>
-        <q-card-section
-          class="q-mx-md q-my-lg"
-          style="border: 1px solid black; border-radius: 8px"
+        </div>
+        <div
+          class=""
+          style="border: 1px solid black; border-radius: 10px; margin: 32px 0"
         >
           <div class="row justify-center q-pb-md q-pt-sm">
             <div class="row justify-center">
@@ -450,35 +593,37 @@
           <div
             class="q-pt-md text-blue-grey text-center fontWeight400 text-caption"
           >
-            Additional licenses at $50/month
+            Additional licenses at $50/mo
           </div>
 
           <div
             class="q-mt-sm q-pl-lg q-ml-md q-mb-sm fontWeight400 text-blue-grey"
             style="font-size: 10px"
           >
-            * Vendor roles are limited
+            *Vendor roles are limited
           </div>
-        </q-card-section>
+        </div>
 
-        <div class="q-mx-md q-mb-lg">
+        <div class=" ">
           <div class="row justify-between">
             <q-btn
-              class="col q-mr-md"
+              class="col q-mr-md fontWeight600"
               v-close-popup
               label="Cancel"
               no-caps
               outline
               color="deep-orange"
               size="1rem"
+              style="border-radius: 8px; width: 170px; height: 44px"
             />
             <q-btn
-              class="col"
+              class="col fontWeight600"
               label="Confirm"
               no-caps
               @click="upgradePackage()"
               color="deep-orange"
               size="1rem"
+              style="border-radius: 8px; width: 170px; height: 44px"
             />
           </div>
         </div>
@@ -495,20 +640,14 @@ import { getToken } from '@utils/auth';
 import AddNewUser from '../components/AddNewUser.vue';
 
 export default {
-  meta() {
-    return {
-      title: this.metaTitle
-    };
-  },
   components: { AddNewUser },
   data() {
     return {
-      metaTitle: 'Billing - claimguru',
       firmPackages: [
         '3 Claims Manager',
         '1 Office Manager',
         '3 Office Staff',
-        'Unlimited Vendors *'
+        'Unlimited Vendors*'
       ],
       displayErrors: '',
       cardName: '',
@@ -576,6 +715,9 @@ export default {
         endingBefore: this.billingData[1].id
       };
       this.getInvoices(payload);
+    },
+    closeEditPayment() {
+      this.cardName = '';
     },
     openEditDialog() {
       this.icon = true;
@@ -674,9 +816,9 @@ export default {
       let cardInfo = await this.getCardInfo();
       this.cardData = cardInfo.attributes.cards[0];
       this.setLoading(false);
-
-      // show confirmation toast msg
-      this.icon = false;
+      if (res) {
+        this.icon = false;
+      }
     },
     createToken() {
       // Gather additional customer data we may have collected in our form.
@@ -719,42 +861,45 @@ export default {
     async getInvoices(payload) {
       let result = await this.getOrgInvoices(payload);
       this.billingData = result.data;
-
       this.hasMore = result.meta.hasMore;
     },
     createDate(date1) {
       const month = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
+        'January',
+        'February',
+        'March',
+        'April',
         'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
       ];
       var date = new Date(date1);
       return (
-        month[date.getMonth()] +
+        month[date.getMonth() + 1] +
         ' ' +
         date.getDate() +
         ', ' +
         date.getFullYear()
       );
-    },
-    showOrderId(orderID) {
-      var id = orderID.split('-');
-      return id[1];
     }
   },
   computed: {
-    ...mapGetters(['organization'])
+    ...mapGetters(['organization', 'setPlans']),
+    expMonth() {
+      if (this.cardData.expMonth && this.cardData.expMonth > 9) {
+        return this.cardData.expMonth;
+      } else {
+        return '0' + this.cardData.expMonth;
+      }
+    }
   },
   async created() {
+    // this.$q.screen.setSizes({ sm: 1100, md: 1160, lg: 1000, xl: 2000 })
     this.setLoading(true);
     let cardInfo = await this.getCardInfo();
     this.cardData = cardInfo.attributes.cards[0];
@@ -763,7 +908,7 @@ export default {
       startingAfter: '',
       endingBefore: ''
     };
-    this.getInvoices(payload);
+    await this.getInvoices(payload);
     await this.getRoles('hideLoader');
     await this.getAllPlans();
     this.setLoading(false);
@@ -783,121 +928,6 @@ export default {
 .fontWeight400 {
   font-weight: 400;
 }
-.billing-header {
-  @media only screen and (min-width: 1024px) {
-    margin-top: 50px;
-  }
-  @media only screen and (max-width: 1023px) {
-    margin-top: 22px;
-  }
-}
-.billing-his-section {
-  @media only screen and (min-width: 1024px) {
-    margin-top: 40px;
-  }
-  @media only screen and (max-width: 1023px) {
-    margin-top: 24px;
-    // padding-bottom: 16px;
-  }
-}
-.cards {
-  @media only screen and (min-width: 1024px) {
-    margin-top: 30px;
-  }
-  @media only screen and (max-width: 1023px) {
-    margin-top: 20px;
-    padding-bottom: 16px;
-  }
-}
-.card-elements {
-  @media only screen and (min-width: 1024px) {
-    margin: 16px;
-  }
-  @media only screen and (max-width: 1023px) {
-    margin: 10px;
-  }
-}
-.innercard-items {
-  @media only screen and (min-width: 1024px) {
-    margin-left: 24px;
-    margin-bottom: 2px;
-  }
-  @media only screen and (max-width: 1023px) {
-    margin-left: 16px;
-    margin-bottom: 2px;
-  }
-}
-.innercard {
-  @media only screen and (min-width: 1024px) {
-    margin: 24px 24px 16px 24px;
-  }
-  @media only screen and (max-width: 1023px) {
-    margin: 16px 16px 16px 16px;
-  }
-}
-.custom-cols {
-  @media only screen and (min-width: 1024px) {
-    .col-md-2 {
-      width: 2.6667% !important;
-    }
-    .col-md-5 {
-      width: 48.6667% !important;
-    }
-  }
-}
-
-.edit-payment-btn {
-  @media only screen and (min-width: 1024px) {
-    // height: 58px !important;
-    // width: 40px !important;
-    line-height: 20px;
-    // padding: 10px 16px 10px 16px;
-  }
-  @media only screen and (max-width: 1023px) {
-    // height: 54px;
-    // width: 36px;
-    line-height: 20px;
-    // padding: 8px 14px 8px 14px;
-  }
-}
-.add-user-innerbox {
-  @media only screen and (min-width: 1024px) {
-    margin-left: 40px;
-    margin-top: 24px;
-    margin-bottom: 15px;
-  }
-  @media only screen and (max-width: 1023px) {
-    margin-left: 40px;
-    margin-right: 40px;
-    margin-top: 16px;
-    margin-bottom: 17px;
-  }
-}
-.add-user-box {
-  @media only screen and (min-width: 1024px) {
-    margin-top: 40px;
-  }
-  @media only screen and (max-width: 1023px) {
-    margin-top: 30px;
-    margin-bottom: 40px;
-  }
-}
-.add-user-pricetag {
-  @media only screen and (min-width: 1024px) {
-    margin-left: 20px;
-  }
-  @media only screen and (max-width: 1023px) {
-    margin-top: 30px;
-  }
-}
-.mobile-footer {
-  @media only screen and (max-width: 1023px) {
-    display: block;
-  }
-  @media only screen and (min-width: 1024px) {
-    display: none;
-  }
-}
 ::v-deep {
   .input-placeholder {
     .q-placeholder {
@@ -912,9 +942,9 @@ export default {
 
   .cardInfo {
     padding: 12.5px 14px;
-    border: 1px solid;
+    border: 1px solid #b9bcc6;
     border-radius: 8px;
-    height: 50px;
+    height: 44px;
     .q-field__native {
       font-weight: 500 !important;
       font-size: 16px !important;
@@ -929,21 +959,5 @@ export default {
       min-height: 0px;
     }
   }
-  .q-dialog__backdrop {
-    z-index: -1;
-    pointer-events: all;
-    outline: 0;
-    background: #000000 !important;
-    opacity: 0.8 !important;
-  }
-}
-</style>
-<style lang="scss" scoped>
-.q-tab-panel {
-  padding: 45px 0px 0px 0px;
-}
-.q-page-container {
-  margin: 0 auto;
-  max-width: 120rem;
 }
 </style>
