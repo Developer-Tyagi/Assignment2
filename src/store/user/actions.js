@@ -7,6 +7,7 @@ import {
   getCurrentUser
 } from '@utils/auth';
 import firebaseAuthorization from '@utils/firebase';
+import axios from 'axios';
 
 // function is used for user login .
 export async function userLogin({ commit, dispatch }, formData) {
@@ -720,4 +721,63 @@ export async function addNewCard({ dispatch, state }, payload) {
     });
     return false;
   }
+}
+
+export async function uploadCompanyLogo({ dispatch }, fileData) {
+  const { currentUser } = firebaseAuthorization;
+  const url = `${currentUser.uid}/company/logo/${(Date.now() / 1000) | 0}T.${
+    fileData.file.type.split('/')[1] ? fileData.file.type.split('/')[1] : png
+  }`;
+  const data = {
+    file: fileData.file,
+    url,
+    companyName: fileData.companyName
+  };
+  dispatch('fileUpload', data);
+}
+
+export async function updateCompanyLogo({ dispatch, commit }, logo) {
+  let payload = {
+    logo: logo.logoURL,
+    name: logo.companyName
+  };
+  try {
+    const { data } = await request.patch(
+      '/organizations',
+      buildApiData('organizations', payload)
+    );
+    return true;
+  } catch (e) {
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].detail
+    });
+    return false;
+  }
+}
+
+export async function verifyPhotoidAccount({ dispatch, commit }, payload) {
+  const data = {
+    email: payload.photoIDEmail,
+    apiToken: payload.photoIDAPIKey
+  };
+  const options = {
+    headers: {}
+  };
+  const response = await axios
+    .post('https://api.photoidapp.net/api/getAssignments', data, options)
+    .then(
+      response => {
+        return true;
+      },
+      error => {
+        dispatch('setNotification', {
+          type: 'negative',
+          message: error.response.data.message
+        });
+        return false;
+      }
+    );
+  return response;
 }
