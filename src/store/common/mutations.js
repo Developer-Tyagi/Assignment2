@@ -84,7 +84,6 @@ export function setPlans(state, plans) {
 }
 export function setOrganization(state, org) {
   state.organization = org.attributes;
-  state.organizationId = org.id;
 }
 
 export async function setLossCause(state, causes) {
