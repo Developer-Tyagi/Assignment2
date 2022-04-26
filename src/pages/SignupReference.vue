@@ -357,6 +357,7 @@
                   placeholder="Enter Your First Name"
                   outlined
                   class="required"
+                  :maxlength="maxlengthConstants.firstName"
                   lazy-rules
                   :rules="[
                     val => !!val || 'Please fill your first name',
@@ -376,6 +377,7 @@
                   placeholder="Enter Your Last Name"
                   outlined
                   class="required"
+                  :maxlength="maxlengthConstants.lastName"
                   lazy-rules
                   :rules="[
                     val => !!val || 'Please fill your last name',
@@ -436,6 +438,7 @@
                   placeholder="Enter Your Company Name"
                   outlined
                   class="required"
+                  :maxlength="maxlengthConstants.companyName"
                   lazy-rules
                   :rules="[
                     val =>
@@ -767,7 +770,8 @@ export default {
       div2: false,
       div3: false,
       showSeeAllPackages: true,
-      plans_fetched: []
+      plans_fetched: [],
+      maxlengthConstants: constants.maxLength
     };
   },
   computed: {},
