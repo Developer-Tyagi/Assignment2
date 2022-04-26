@@ -45,5 +45,10 @@ export const constants = {
     CLAIM_GURU_DEV_SERVER: 'https://api.claimguru.cilalabs.dev',
     SIGNUP_LIVE_SERVER_ROUTING: 'www.claimguru.com',
     SIGNUP_DEV_SERVER_ROUTING: 'https://claimguru.cilalabs.dev/'
+  },
+  maxLength: {
+    firstName: 128,
+    lastName: 128,
+    companyName: 256
   }
 };
