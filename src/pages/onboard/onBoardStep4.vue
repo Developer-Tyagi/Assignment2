@@ -96,10 +96,10 @@ export default {
       this.dialCode = dialCode;
     },
     getStarted() {
-      this.$router.push('/onBoarding/step1');
+      this.$router.push('/onboarding/step1');
     },
     async NextStepperValue() {
-      this.$router.push('/onBoarding/step3');
+      this.$router.push('/onboarding/step3');
     },
     goToHome() {
       this.$router.push('/admin');

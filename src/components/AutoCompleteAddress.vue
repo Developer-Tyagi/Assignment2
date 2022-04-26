@@ -136,7 +136,7 @@
         lazy-rules
         :rules="[
           val => val.length > 0 || 'Please fill address',
-          val => validateAddress(val) || 'You have entered an invalid address!'
+          val => validateAddress(val) || 'Please add company address'
         ]"
       />
       <span class="q-pl-sm" style="color: #c10015 !important; font-size: 11px">

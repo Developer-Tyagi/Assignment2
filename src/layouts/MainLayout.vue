@@ -25,7 +25,7 @@
             $route.name != 'configuration' &&
             $route.name != 'manage users' &&
             $route.name != 'admin' &&
-            $route.name != 'onBoarding' &&
+            $route.name != 'onboarding' &&
             $route.name != 'reports' &&
             $route.name != 'signup' &&
             $route.name != 'set-password' &&
@@ -64,7 +64,7 @@
       >
         <AddOptions />
       </q-dialog>
-      <div class="row" v-if="$route.name == 'onBoarding'">
+      <div class="row" v-if="$route.name == 'onboarding'">
         <div
           class="col-xl-3 col-md-4 max-width sm-hide xs-hide text-footer q-py-38"
           style="background-color: #f9e7d8; margin-left: 0px !important"
@@ -99,7 +99,7 @@
             $route.name != 'configuration' &&
             $route.name != 'manage users' &&
             $route.name != 'admin' &&
-            $route.name != 'onBoarding' &&
+            $route.name != 'onboarding' &&
             $route.name != 'reports' &&
             $route.name != 'signup' &&
             $route.name != 'set-password' &&
@@ -138,7 +138,7 @@
       >
         <AddOptions />
       </q-dialog>
-      <q-footer class="row" v-show="$route.name == 'onBoarding'">
+      <q-footer class="row" v-show="$route.name == 'onboarding'">
         <div
           class="col-md-4 col-lg-3 col-xl-4 text-footer px-32 q-pb-sm q-pl-xl"
           style="background-color: #f9e7d8"
@@ -174,9 +174,9 @@ export default {
     let data = await this.getUserInfo();
     if (
       data.attributes.onboard.isCompleted == false &&
-      this.$route.name != 'onBoarding'
+      this.$route.name != 'onboarding'
     ) {
-      this.$router.push('/onBoarding');
+      this.$router.push('/onboarding');
     }
   },
   methods: {
@@ -270,6 +270,9 @@ export default {
 };
 </script>
 <style lang="scss">
+body {
+  overflow-x: hidden;
+}
 .icon-width {
   width: 100px;
 }

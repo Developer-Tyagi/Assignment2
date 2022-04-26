@@ -3,13 +3,13 @@
     <div>
       <div class="dFlex justify-between lg-hide xl-hide md-hide">
         <div
-          v-if="$route.name == 'onBoarding'"
+          v-if="$route.name == 'onboarding'"
           style="background-color: #f9e7d8"
         >
           <q-img size="1em" src="~assets/Logo.svg" class="LogoSize" />
         </div>
-        <div class="justify-end">
-          <div class="row justify-end dFlex pr-20">
+        <div class="justify-end pr-20">
+          <div class="row justify-end dFlex">
             <q-img
               size="1em"
               src="~assets/Avatarforprofile.svg"
@@ -17,6 +17,23 @@
             />
             <q-img src="~assets/Icondown.svg" class="dropdowLogo" />
           </div>
+          <q-popup-proxy
+            ref="logoutProxy"
+            class="bannerContainer"
+            transition-show="scale"
+            transition-hide="scale"
+          >
+            <q-banner class="bg-white">
+              <div class="userDetailContainer">
+                <p class="userEmail">jaconjones@gmail.com</p>
+                <p class="companyName">10X Incubator</p>
+              </div>
+              <div class="logoutContainer">
+                <h6 class="logoutText">Log Out</h6>
+                <q-img src="~assets/LogOutIcon.svg" class="logoutLogo" />
+              </div>
+            </q-banner>
+          </q-popup-proxy>
         </div>
       </div>
       <q-separator
@@ -141,7 +158,7 @@
         </div>
       </div>
     </div>
-    <!-- <div class="row" v-if="$route.name == 'onBoarding'">
+    <!-- <div class="row" v-if="$route.name == 'onboarding'">
         <div
           class="sm-hide xs-hide text-footer q-py-38"
           style="background-color: #f9e7d8; margin-left: 0px !important"
@@ -186,14 +203,48 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.q-banner {
+  border-radius: 20px !important;
+  top: 70px !important;
+}
+.userDetailContainer {
+  margin: 16px 39px 16px 16px;
+  .userEmail {
+    font-size: 12px;
+    margin: 0px;
+  }
+  .companyName {
+    font-size: 10px;
+    margin-top: 4px;
+  }
+}
+.logoutContainer {
+  display: flex;
+  justify-content: space-between;
+  border-top: 2px solid #ccc;
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+
+  .logoutText {
+    margin: 0px;
+    padding: 0px;
+    font-size: 16px;
+  }
+  .logoutLogo {
+    height: 15px;
+    width: 15px;
+    margin-top: 5px;
+  }
+}
+
 .poppinsFont {
   font-family: poppins;
 }
 .step1Logon {
   width: 32px !important;
   height: 32px !important;
-  // border: 2px solid #EF5926;
-  // border-radius: 16px;
 }
 .LogoSize {
   width: 151px;
@@ -271,12 +322,13 @@ export default {
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
-  line-height: 24px;
+  line-height: 32px;
   display: flex;
   align-items: center;
   color: #0c0c0c;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1023px) {
+    line-height: 24px;
     font-size: 20px;
   }
 }
@@ -563,7 +615,7 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (min-width: 1024px) {
+@media (min-width: 1024px) {
   .ml-32 {
     margin-left: 32px;
   }
@@ -584,9 +636,12 @@ export default {
     margin-left: -50px;
     margin-right: -50px;
   }
+  .max-width {
+    max-width: 480px;
+  }
 }
 /* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (max-width: 1023px) {
+@media (max-width: 1023px) {
   .ml-32 {
     margin-left: 15px;
   }
@@ -609,16 +664,5 @@ export default {
   .q-mt-43 {
     margin-top: 24px;
   }
-}
-@media only screen and (min-width: 1024px) {
-  .max-width {
-    max-width: 480px;
-  }
-}
-
-@media only screen and (width: 1024px) {
-}
-
-@media only screen and (width: 1440px) {
 }
 </style>

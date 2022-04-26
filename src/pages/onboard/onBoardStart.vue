@@ -25,7 +25,7 @@
             </div>
             <div style="display: flex; justify-content: center">
               <div
-                class="text-center fontWeight400 text-subtitle1 letter-spacing-15 SubTextfontSize"
+                class="text-center fontWeight400 text-subtitle1 letter-spacing-15"
                 style="width: 517px"
               >
                 Congratulations, you have successfully created your account!
@@ -56,8 +56,15 @@ import { mapGetters, mapActions } from 'vuex';
 import CustomSidebar from 'components/CustomSidebar';
 import MobileFooter from 'components/MobileFooter.vue';
 export default {
+  meta() {
+    return {
+      title: this.metaTitle
+    };
+  },
   data() {
-    return {};
+    return {
+      metaTitle: 'Set Up Your Account - claimguru'
+    };
   },
   components: {
     CustomSidebar,
@@ -69,7 +76,7 @@ export default {
       return require('../../assets/' + icon);
     },
     getStarted() {
-      this.$router.push('/onBoarding/step1');
+      this.$router.push('/onboarding/step1');
     }
   },
   computed: {
@@ -138,6 +145,9 @@ export default {
 }
 .mt-120 {
   margin-top: 120px;
+  @media (max-width: 768px) {
+    margin-top: 40px;
+  }
 }
 .px-15 {
   padding-left: 0px;
@@ -149,14 +159,6 @@ export default {
 .mx-40 {
   margin-left: 102px;
   margin-right: 70px;
-}
-.SubTextfontSize {
-  color: #667085;
-  font-size: 14px;
-  // margin-top: 6px;
-  line-height: 20px;
-  // max-width: 517px;
-  // padding: 0 40px;
 }
 .input-subtitle1 {
   font-weight: 500;
@@ -310,6 +312,9 @@ export default {
   margin-top: 30px;
 }
 .text-subtitle1 {
+  color: #667085;
+  font-size: 14px;
+  line-height: 20px;
   margin: 6px 15px;
   width: 517px;
   @media (max-width: 1023px) {
@@ -522,10 +527,6 @@ export default {
   .px-15 {
     padding-left: 15px;
     padding-right: 15px;
-  }
-
-  .mt-120 {
-    margin-top: 40px;
   }
   .completeSetup-Btn {
     margin-right: -30px;

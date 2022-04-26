@@ -12,7 +12,7 @@
         <div class="q-px-xl">
           <div class="column pl-62 pr-110 full-height">
             <div class="col-2 mt-40">
-              <div class="text-h5 fontWeight600">Connect With Google Drive</div>
+              <div class="text-h5 fontWeight500">Connect With Google Drive</div>
               <div
                 class="q-mt-8 fontWeight400 subtitle2"
                 style="color: #667085"
@@ -59,13 +59,7 @@
                       :src="getImage('logos_google-drive.svg')"
                     />
                   </q-avatar>
-                  <span
-                    class="col q-ml-xs mb-15 fontWeight500"
-                    style="
-                      margin-bottom: 15px;
-                      margin-left: 10px;
-                      color: #0c0c0c;
-                    "
+                  <span class="col q-ml-xs mb-15 fontWeight500 connectDriveText"
                     >Connect Google Drive</span
                   >
                 </q-btn>
@@ -97,7 +91,7 @@
               <q-btn
                 style="border-radius: 10px"
                 no-caps
-                class="Back-Btn"
+                class="Back-Btn fontWeight600"
                 @click="navigatePreviousStepper"
                 >Back</q-btn
               >
@@ -132,7 +126,7 @@ export default {
   },
   data() {
     return {
-      metaTitle: 'Step2 - claimguru',
+      metaTitle: 'Connect With Google Drive - claimguru',
       emailId: '',
       step: 0,
       companyDetails: {
@@ -168,11 +162,11 @@ export default {
       this.dialCode = dialCode;
     },
     getStarted() {
-      this.$router.push('/onBoarding/step1');
+      this.$router.push('/onboarding/step1');
     },
     async NextStepperValue() {
       this.checkConnection = true;
-      this.$router.push('/onBoarding/step3');
+      this.$router.push('/onboarding/step3');
     },
     onRedirectToGoogleAuth() {
       this.toRedirectGoogleAuth1();
@@ -236,6 +230,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.connectDriveText {
+  margin-bottom: 15px;
+  margin-left: 10px;
+  color: #0c0c0c;
+  text-transform: capitalize !important;
+}
 .poppinsFont {
   font-family: poppins;
 }
@@ -551,6 +551,9 @@ export default {
 }
 .mt-404 {
   margin-top: 484px;
+  @media (max-width: 768px) {
+    margin-top: 60px;
+  }
 }
 .Back-Btn {
   width: 101px !important;
@@ -563,6 +566,7 @@ export default {
   font-weight: 500 !important;
   font-size: 16px !important;
   align-items: flex-start;
+  line-height: 24px;
 }
 .connectedGooglebtn {
   width: 351px;
@@ -624,7 +628,7 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (max-width: 1022px) {
+@media (max-width: 1023px) {
   .q-mb-100 {
     margin-bottom: 100px;
   }
@@ -800,9 +804,6 @@ export default {
   .pr-110 {
     padding-right: 15px;
   }
-  .mt-404 {
-    margin-top: 60px;
-  }
   .mt-40 {
     margin-top: 25px;
     // margin-left: 4px;
@@ -810,6 +811,7 @@ export default {
   .Back-Btn {
     width: 81px !important;
     height: 40px !important;
+    line-height: 24px;
     border-radius: 5px !important;
     border: 2px solid #ef5926;
     color: #ef5926 !important;

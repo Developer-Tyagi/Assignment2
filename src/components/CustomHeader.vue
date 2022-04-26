@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- header -->
-    <div v-if="$route.name != 'onBoarding' && $route.name !== 'admin'">
+    <div v-if="$route.name != 'onboarding' && $route.name !== 'admin'">
       <q-header class="bg-white">
         <q-toolbar
           class="row bg-primary rounded-header"
@@ -100,9 +100,8 @@
       class="bg-white ht-83 sm-hide xs-hide bigScreen"
       :reveal-offset="false"
     >
-      <!-- <q-header class="bg-white"> -->
       <!-- setup header -->
-      <div class="row" v-if="$route.name == 'onBoarding'">
+      <div class="row" v-if="$route.name == 'onboarding'">
         <div
           class="col-xl-3 col-md-4 q-pb-md max-width"
           style="background-color: #f9e7d8"
@@ -111,58 +110,53 @@
             size="1em"
             src="~assets/Logo.svg"
             class="LogoSize"
-            @click="routeTo({ link: 'onBoarding' })"
+            @click="routeTo({ link: 'onboarding' })"
           />
         </div>
         <div
           class="col-xl-9 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
         >
-          <div class="row justify-end q-pr-xl">
-            <!-- <q-avatar
-              size="3em"
-              font-size="2.5rem"
-              icon="person"
-              class="text-white bg-grey q-mr-md"
-            >
-            </q-avatar> -->
-            <q-img
-              size="1em"
-              src="~assets/Avatarforprofile.svg"
-              class="AvtarLogoSize"
-            />
-
-            <div class="q-pt-sm text-capitalize" style="margin-left: 5px">
-              <span v-if="isMobile" class="userNameStyle">
-                {{ userName ? userName : updatedUserName }}</span
-              >
+          <div
+            class="row justify-end q-pr-xl"
+            @click="openDropdown = !openDropdown"
+          >
+            <div style="position: relative; display: flex">
               <q-img
                 size="1em"
-                src="~assets/Icondown.svg"
-                class="dropdownLogo"
+                src="~assets/Avatarforprofile.svg"
+                class="AvtarLogoSize"
               />
-            </div>
-            <div class="">
-              <!-- <q-btn-dropdown
-            >
-              <div class="row no-wrap">
-                <div class="column items-center" style="padding:10px">
-                  <div class="text-subtitle1 q-mt-md q-mb-xs">
-                                  <span v-if="isMobile" class="">
-                {{ userName ? userName : updatedUserName }}</span
-              >
-                  </div>
-          <q-btn
-            class="full-width q-mt-md menu-bar-style text-subtitle1 text-bold"
-            label="LOGOUT"
-            style="border-radius: 25px; width: 100%; height: 50px"
-            @click="logout()"
-          />
-                </div>
+
+              <div class="q-pt-sm text-capitalize" style="margin-left: 5px">
+                <span v-if="isMobile" class="userNameStyle">
+                  {{ userName ? userName : updatedUserName }}</span
+                >
+                <q-img
+                  size="1em"
+                  src="~assets/Icondown.svg"
+                  class="dropdownLogo"
+                />
               </div>
-            </q-btn-dropdown> -->
+
+              <q-popup-proxy
+                ref="logoutProxy"
+                class="bannerContainer"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-banner class="bg-white">
+                  <div class="userDetailContainer">
+                    <p class="userEmail">jaconjones@gmail.com</p>
+                    <p class="companyName">10X Incubator</p>
+                  </div>
+                  <div class="logoutContainer">
+                    <h6 class="logoutText">Log Out</h6>
+                    <q-img src="~assets/LogOutIcon.svg" class="logoutLogo" />
+                  </div>
+                </q-banner>
+              </q-popup-proxy>
             </div>
           </div>
-          <!-- <q-separator class="q-mt-md" /> -->
         </div>
       </div>
       <!-- admin header -->
@@ -222,7 +216,7 @@
       </div>
       <!-- <q-separator /> -->
       <div
-        v-if="!isMobile() && $route.name !== 'onBoarding' && !$q.screen.lt.sm"
+        v-if="!isMobile() && $route.name !== 'onboarding' && !$q.screen.lt.sm"
         class="q-px-xl q-ml-lg q-mt-sm q-pt-xs"
       >
         <q-breadcrumbs style="color: #667085" active-color="#667085">
@@ -251,7 +245,7 @@
     </div>
 
     <!-- menu -->
-    <div v-if="$route.name !== 'onBoarding'">
+    <div v-if="$route.name !== 'onboarding'">
       <!-- Menu Drawer for Mobile application-->
       <q-drawer
         v-if="isMobile()"
@@ -580,14 +574,18 @@ import {
 } from '@utils/auth';
 import { isMobile } from '@utils/common';
 import { Capacitor } from '@capacitor/core';
+// import QPopover from 'quasar-framework/src/components/popover/QPopover.js'
 import { removeFirebaseToken } from '@utils/firebase';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { appVersion } from '../Version';
 export default {
   name: 'CustomHeader',
-
+  components: {
+    // QPopover
+  },
   data() {
     return {
+      openDropdown: false,
       version: appVersion,
       webDrawer: true,
       miniState: false,
@@ -1052,6 +1050,41 @@ export default {
   }
   @media only screen and (min-width: 1024px) {
     display: block;
+  }
+}
+.q-menu {
+  border-radius: 20px !important;
+  top: 70px !important;
+}
+.userDetailContainer {
+  margin: 16px 39px 16px 16px;
+  .userEmail {
+    font-size: 12px;
+    margin: 0px;
+  }
+  .companyName {
+    font-size: 10px;
+    margin-top: 4px;
+  }
+}
+.logoutContainer {
+  display: flex;
+  justify-content: space-between;
+  border-top: 2px solid #ccc;
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+
+  .logoutText {
+    margin: 0px;
+    padding: 0px;
+    font-size: 16px;
+  }
+  .logoutLogo {
+    height: 15px;
+    width: 15px;
+    margin-top: 5px;
   }
 }
 .title {

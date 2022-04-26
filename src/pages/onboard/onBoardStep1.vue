@@ -9,9 +9,9 @@
       </div>
       <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12">
         <q-separator class="seperator-color" />
-        <div class="q-px-xl pt-40 px-15 pr-50">
-          <div class="q-mt-sm justify-between">
-            <div class="text-h5 fontWeight600">Company Details</div>
+        <div class="q-px-xl px-15 pr-50">
+          <div class="justify-between">
+            <div class="text-h5 fontWeight600 mt-40">Company Details</div>
             <div class="text-subtitle2 fontWeight400" style="color: #667085">
               Fill out the form below with the information about your company.
             </div>
@@ -163,7 +163,7 @@ export default {
   },
   data() {
     return {
-      metaTitle: 'Step1 - claimguru',
+      metaTitle: 'Company Details - claimguru',
       width: window.innerWidth,
       step: 0,
       companyDetails: {
@@ -204,7 +204,7 @@ export default {
       this.dialCode = dialCode;
     },
     getStarted() {
-      this.$router.push('/onBoarding/step1');
+      this.$router.push('/onboarding/step1');
     },
     validateEmailManually(val) {
       if (val.length < 2) {
@@ -241,7 +241,7 @@ export default {
 
           await this.updateUserForOrganization(payload);
           await this.getOrganization();
-          this.$router.push('/onBoarding/step2');
+          this.$router.push('/onboarding/step2');
         }
       }
     },
@@ -681,7 +681,7 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (max-width: 1022px) {
+@media screen and (max-width: 1023px) {
   .mb-30 {
     margin-bottom: 30px;
   }
@@ -894,8 +894,8 @@ export default {
   .q-pr-lg {
     padding-right: 0px;
   }
-  .pt-40 {
-    padding-top: 40px;
+  .mt-40 {
+    margin-top: 40px;
   }
   .mt-25 {
     margin-top: 0px;
@@ -930,8 +930,8 @@ export default {
   .formHeight {
     height: 580px;
   }
-  .pt-40 {
-    padding-top: 40px;
+  .mt-40 {
+    margin-top: 40px;
   }
   .mt-25 {
     margin-top: 10px;

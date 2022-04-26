@@ -141,13 +141,13 @@ export default {
       this.dialCode = dialCode;
     },
     getStarted() {
-      this.$router.push('/onBoarding/step1');
+      this.$router.push('/onboarding/step1');
     },
     navigatePreviousStepper() {
-      this.$router.push('/onBoarding/step2');
+      this.$router.push('/onboarding/step2');
     },
     async NextStepperValue() {
-      this.$router.push('/onBoarding/step4');
+      this.$router.push('/onboarding/step4');
     }
   },
   computed: {
@@ -594,7 +594,7 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (max-width: 1022px) {
+@media screen and (max-width: 1023px) {
   .style-type-none {
     list-style-type: none;
   }
