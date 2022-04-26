@@ -105,9 +105,14 @@
       <div class="row" v-if="$route.name == 'onBoarding'">
         <div
           class="col-xl-3 col-md-4 q-pb-md max-width"
-          style="background-color: #f9e7d8; padding-top: 22px"
+          style="background-color: #f9e7d8"
         >
-          <q-img size="1em" src="~assets/Logo.svg" class="LogoSize q-ml-32" />
+          <q-img
+            size="1em"
+            src="~assets/Logo.svg"
+            class="LogoSize"
+            @click="routeTo({ link: 'onBoarding' })"
+          />
         </div>
         <div
           class="col-xl-9 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
@@ -1161,8 +1166,9 @@ export default {
 .LogoSize {
   width: 151px;
   height: 51px;
+  margin-left: 32px;
+  margin-top: 22px;
   margin-right: 10px;
-  cursor: pointer;
 }
 .userNameStyle {
   color: #151821;
@@ -1172,7 +1178,7 @@ export default {
   font-size: 16px;
   line-height: 24px;
   display: inline-block;
-  width: 70px;
+  width: 170px;
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;

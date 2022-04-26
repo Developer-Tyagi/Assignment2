@@ -2,12 +2,12 @@
   <q-page class="poppinsFont min-height">
     <div class="row">
       <div
-        class="col-md-4 col-sm-12 col-xs-12"
+        class="col-xl-3 col-md-4 col-sm-12 col-xs-12 max-width"
         style="background-color: #f9e7d8"
       >
         <CustomSidebar step="2" />
       </div>
-      <div class="col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12">
         <q-separator class="seperator-color" />
         <div class="q-px-xl">
           <div class="column pl-62 pr-110 full-height">
@@ -107,7 +107,7 @@
                 class="fontWeight600 Next-Btn"
                 no-caps
                 @click="NextStepperValue"
-                :disable="checkConnection"
+                :disable="!checkConnection"
                 >Next</q-btn
               >
             </div>
@@ -115,22 +115,14 @@
         </div>
       </div>
     </div>
-
-    <div class="row border-top">
-      <!-- <q-separator class="q-mt-md " /> -->
-      <div
-        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer"
-        style="background-color: white"
-      >
-        © ClaimGuru<span> {{ CurrentYear }} </span>
-      </div>
-    </div>
+    <MobileFooter />
   </q-page>
 </template>
 
 <script>
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomSidebar from 'components/CustomSidebar';
+import MobileFooter from 'components/MobileFooter.vue';
 import { mapGetters, mapActions } from 'vuex';
 export default {
   meta() {
@@ -159,12 +151,13 @@ export default {
       },
       editCompanyDetails: true,
       dialCode: '',
-      checkConnection: false
+      checkConnection: true
     };
   },
   components: {
     AutoCompleteAddress,
-    CustomSidebar
+    CustomSidebar,
+    MobileFooter
   },
   methods: {
     ...mapActions(['getUserInfo', 'getOrganization', 'toRedirectGoogleAuth1']),
@@ -179,7 +172,7 @@ export default {
     },
     async NextStepperValue() {
       this.checkConnection = true;
-      // this.$router.push('/onBoarding/step3');
+      this.$router.push('/onBoarding/step3');
     },
     onRedirectToGoogleAuth() {
       this.toRedirectGoogleAuth1();
@@ -222,7 +215,7 @@ export default {
         this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       }
       this.step = 0;
-      // this.checkConnection = true;
+      this.checkConnection = true;
       if (this.$route.query.googleConnect == 'true') {
         this.checkConnection = true;
       } else {
@@ -290,7 +283,7 @@ export default {
   margin-top: 43px;
 }
 .mt-24 {
-  margin-top: 24px;
+  margin-top: 30px;
 }
 .mb-15 {
   margin-bottom: 15px;
@@ -514,14 +507,6 @@ export default {
   width: 390px;
   height: 44px;
 }
-.text-footer {
-  font-weight: 400;
-  color: #667085;
-  font-size: 14px;
-}
-.border-top {
-  border-top: 0px;
-}
 ::v-deep .q-layout__section--marginal {
   background-color: white;
   border-top: none;
@@ -565,7 +550,7 @@ export default {
   padding-right: 50px;
 }
 .mt-404 {
-  margin-top: 404px;
+  margin-top: 484px;
 }
 .Back-Btn {
   width: 101px !important;
@@ -640,18 +625,8 @@ export default {
 }
 
 @media screen and (max-width: 1022px) {
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    // margin-left: -50px;
-    // margin-right: -50px;
-  }
   .q-mb-100 {
     margin-bottom: 100px;
-  }
-  .ml-31 {
-    padding-left: 31px !important;
-    margin-top: 19px;
-    margin-bottom: 19px;
   }
 }
 
@@ -659,11 +634,6 @@ export default {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 0px;
-  }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    // margin-left: -50px;
-    // margin-right: -50px;
   }
   .q-pr-lg {
     padding-right: 0px;
@@ -684,12 +654,17 @@ export default {
     color: #0c0c0c;
   }
 }
+@media only screen and (min-width: 1440px) {
+  .max-width {
+    max-width: 480px;
+  }
+}
 @media only screen and (max-width: 600px) {
   .q-mt-8 {
     margin-top: 6px;
   }
   .mt-24 {
-    margin-top: 16px;
+    margin-top: 20px;
   }
   .q-px-32 {
     padding-left: 15px;
@@ -791,11 +766,6 @@ export default {
   .pr-50 {
     padding-right: 15px;
   }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-  }
   .mx-15 {
     margin-left: 15px;
     margin-right: 15px;
@@ -867,10 +837,6 @@ export default {
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  // .border-top {
-  //   border-top: 1px solid #e5e5e5;
-  // }
-  // .q-px-32 {padding-left: 15px;}
   .q-mt-8 {
     margin-top: 8px !important;
   }
@@ -878,10 +844,6 @@ export default {
     padding-left: 15px;
     padding-top: 15px;
   }
-  // .q-px-xl {
-  //   padding-left: 15px;
-  //   padding-right: 15px;
-  // }
   .q-mx-xl {
     padding-left: 0px;
     padding-right: 0px;
@@ -894,7 +856,6 @@ export default {
     padding-left: 15px;
     padding-right: 15px;
   }
-  // .height-40px {height: 24px;}
 }
 @media only screen and (width: 320px) {
   .connectedGooglebtn {
@@ -925,11 +886,6 @@ export default {
     padding-left: 32px;
     padding-top: 0px;
   }
-  .ml-31 {
-    margin-left: 31px !important;
-    margin-top: 19px;
-    margin-bottom: 19px;
-  }
 }
 @media only screen and (width: 1440px) {
   .q-px-32 {
@@ -939,9 +895,6 @@ export default {
   .q-px-xl {
     padding-left: 60px;
     padding-right: 60px;
-  }
-  .border-top {
-    border-top: 0px;
   }
 }
 </style>

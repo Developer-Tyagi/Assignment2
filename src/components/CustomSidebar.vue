@@ -3,7 +3,6 @@
     <div>
       <div class="dFlex justify-between lg-hide xl-hide md-hide">
         <div
-          class="pr-15"
           v-if="$route.name == 'onBoarding'"
           style="background-color: #f9e7d8"
         >
@@ -11,14 +10,11 @@
         </div>
         <div class="justify-end">
           <div class="row justify-end dFlex pr-20">
-            <q-avatar
-              size="3em"
-              font-size="2.5rem"
-              icon="person"
-              class="text-white bg-grey"
-              style=""
-            >
-            </q-avatar>
+            <q-img
+              size="1em"
+              src="~assets/Avatarforprofile.svg"
+              class="AvtarLogoSize"
+            />
             <q-img src="~assets/Icondown.svg" class="dropdowLogo" />
           </div>
         </div>
@@ -30,7 +26,13 @@
       <div class="ml-32 mt-34">
         <div
           class="Account-setup-text"
-          v-if="step == 0 || step == 1 || step == 2"
+          :style="
+            step == 0 || step == 1 || step == 2
+              ? 'display: block;'
+              : (step == 3 || step == 4) && width < 1024
+              ? 'display: block;'
+              : 'display:none;'
+          "
         >
           Account Setup
         </div>
@@ -192,6 +194,12 @@ export default {
   height: 32px !important;
   // border: 2px solid #EF5926;
   // border-radius: 16px;
+}
+.LogoSize {
+  width: 151px;
+  height: 51px;
+  margin-left: 15px;
+  margin-top: 15px;
 }
 .stepWorking {
   width: 32px !important;

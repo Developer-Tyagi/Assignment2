@@ -23,12 +23,15 @@
             >
               Set Up Your Account
             </div>
-            <div
-              class="text-center fontWeight400 text-subtitle1 letter-spacing-15 q-mx-xl q-px-xl SubTextfontSize"
-            >
-              Congratulations, you have successfully created your account! Next,
-              we will collect some pertinent information to complete your
-              account so you can get the most out of our system.
+            <div style="display: flex; justify-content: center">
+              <div
+                class="text-center fontWeight400 text-subtitle1 letter-spacing-15 SubTextfontSize"
+                style="width: 517px"
+              >
+                Congratulations, you have successfully created your account!
+                Next, we will collect some pertinent information to complete
+                your account so you can get the most out of our system.
+              </div>
             </div>
             <div class="row justify-center rounded">
               <q-btn
@@ -44,31 +47,21 @@
         </div>
       </div>
     </div>
-    <div class="row border-top">
-      <!-- <q-separator class="q-mt-md " /> -->
-      <div
-        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer"
-        style="background-color: white"
-      >
-        © ClaimGuru<span> {{ CurrentYear }} </span>
-      </div>
-    </div>
-    <div>
-      <!-- <customFooterMain /> -->
-    </div>
+    <MobileFooter />
   </q-page>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CustomSidebar from 'components/CustomSidebar';
-
+import MobileFooter from 'components/MobileFooter.vue';
 export default {
   data() {
     return {};
   },
   components: {
-    CustomSidebar
+    CustomSidebar,
+    MobileFooter
   },
   methods: {
     ...mapActions(['getUserInfo']),
@@ -163,7 +156,7 @@ export default {
   // margin-top: 6px;
   line-height: 20px;
   // max-width: 517px;
-  padding: 0 40px;
+  // padding: 0 40px;
 }
 .input-subtitle1 {
   font-weight: 500;
@@ -318,6 +311,10 @@ export default {
 }
 .text-subtitle1 {
   margin: 6px 15px;
+  width: 517px;
+  @media (max-width: 1023px) {
+    width: 345px;
+  }
 }
 .connectWithGoogle {
   width: 331px !important;
@@ -350,11 +347,6 @@ export default {
 .input-size {
   width: 390px;
   height: 44px;
-}
-.text-footer {
-  font-weight: 400;
-  color: #667085;
-  font-size: 14px;
 }
 ::v-deep .q-layout__section--marginal {
   background-color: white;
@@ -466,24 +458,10 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (max-width: 1022px) {
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-  }
-  .ml-31 {
-    padding-left: 31px !important;
-    margin-top: 19px;
-    margin-bottom: 19px;
-  }
-}
-
 @media screen and (max-width: 800px) {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 0px;
-  }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
   }
   .q-pr-lg {
     padding-right: 0px;
@@ -600,9 +578,6 @@ export default {
   .pr-50 {
     padding-right: 15px;
   }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-  }
   .mx-15 {
     margin-left: 15px;
     margin-right: 15px;
@@ -689,13 +664,7 @@ export default {
   }
   // .height-40px {height: 24px;}
 }
-@media only screen and (min-width: 1024px) {
-  .ml-31 {
-    margin-left: 31px !important;
-    margin-top: 19px;
-    margin-bottom: 19px;
-  }
-}
+
 @media only screen and (min-width: 1440px) {
   .q-px-32 {
     padding-left: 32px;
@@ -707,9 +676,6 @@ export default {
   .q-px-xl {
     padding-left: 60px;
     padding-right: 60px;
-  }
-  .border-top {
-    border-top: 0px;
   }
 }
 </style>

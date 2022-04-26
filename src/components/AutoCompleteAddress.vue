@@ -121,7 +121,7 @@
         type="text"
         outlined
         :id="'id' + id"
-        class="full-width inside-text"
+        class="full-width inside-text companyAddressInput"
         v-model="address.address1"
         v-bind:disabled="this.readOnly"
         style="
@@ -665,7 +665,11 @@ export default {
     }
   }
 }
-
+input.companyAddressInput {
+  &:focus {
+    border: 2px solid #c10015 !important;
+  }
+}
 .inside-text {
   font-weight: 500 !important;
   font-size: 16px !important;
