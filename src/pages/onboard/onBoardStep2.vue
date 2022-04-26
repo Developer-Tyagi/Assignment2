@@ -151,7 +151,7 @@ export default {
       },
       editCompanyDetails: true,
       dialCode: '',
-      checkConnection: true
+      checkConnection: false
     };
   },
   components: {
@@ -215,7 +215,7 @@ export default {
         this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       }
       this.step = 0;
-      this.checkConnection = true;
+      // this.checkConnection = true;
       if (this.$route.query.googleConnect == 'true') {
         this.checkConnection = true;
       } else {
