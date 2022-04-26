@@ -119,7 +119,6 @@ export default {
     await this.getOrganization();
     if (this.organization) {
       this.companyDetails.name = this.organization.name;
-      // console.log(685,this.organization.address.address1, "addresss111", );
       if (this.organization) {
         this.companyDetails.address.address1 = this.organization.address
           ? this.organization.address.address1
@@ -147,7 +146,6 @@ export default {
       } else {
         let data = await this.getUserInfo();
         if (data.attributes.onboard.isCompleted == true) {
-          // console.log("6755555");
           this.$router.push('/dashboard');
           // if (isMobile()) {
           //   this.$router.push('/dashboard');
