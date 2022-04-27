@@ -1,5 +1,5 @@
 <template>
-  <q-page class="column poppinsFont">
+  <q-page class="column poppinsFont page-content">
     <div class="col row custom-cols">
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary">
         <div class="q-pb-md">
@@ -40,12 +40,10 @@
           </div>
         </div>
         <div
-          class="text-h5 text-center claimguru-tagline fontWeight600 outer-padding package-section"
+          class="text-h5 text-center claimguru-tagline fontWeight600 package-section q-py-md"
         >
-          <div class="" style="">
-            The First and Only Catastrophe-Proof Claim Management System For
-            Public Adjusters
-          </div>
+          The First and Only Catastrophe-Proof Claim Management System For
+          Public Adjusters
         </div>
         <div class="">
           <div
@@ -84,7 +82,8 @@
                 color: #ef5926;
                 border-radius: 10px 10px 0 0;
                 background-color: #f9dfc8;
-                height: 32px !important; ;
+                height: 32px !important;
+                padding: 2px 0;
               "
             >
               Selected Package
@@ -98,8 +97,8 @@
                 height: 32px !important; ;
               "
             ></div>
-            <div class="q-px-lg">
-              <div class="row justify-center q-pt-md">
+            <div class="q-px-lg manage-mob-width">
+              <div class="row justify-center q-pt-md q-pb-md">
                 <q-img
                   :src="getImage('Featured icon (1).svg')"
                   width="20%"
@@ -110,19 +109,21 @@
                 Firm Package
               </div>
               <div class="text-h6 fontWeight600 text-center pack-heading">
-                $250
+                <span class="amt">$250</span>
                 <span class="text-grey fontWeight400 text-subtitle2"
                   >/ month</span
                 >
               </div>
               <div
-                class="text-subtitle1 text-center q-my-sm period-heading"
+                class="text-subtitle1 text-center period-heading"
                 style="color: #ef5926"
                 v-if="firmPackages.plandata.length > 0"
               >
                 Start your {{ firmPackages.trialPeriodDays }} Day Free Trial
               </div>
+
               <div
+<<<<<<< HEAD
                 v-if="firmPackages.plandata.length == 0"
                 class="firm-plan-details"
               >
@@ -136,6 +137,9 @@
               </div>
               <div
                 class="q-ml-md text-subtitle1 pack-data fontWeight400 col-md-4 col-xs-12 col-sm-12"
+=======
+                class="q-ml-md text-subtitle1 pack-data fontWeight400 col-md-4 col-xs-12 col-sm-12 pkg-details"
+>>>>>>> 57db340a (Fix signup page UI issues)
                 v-for="key in firmPackages.plandata"
                 :key="key.tempkey"
               >
@@ -151,7 +155,7 @@
               </div>
 
               <div
-                class="q-ml-md q-pt-md text-blue-grey fontWeight400 text-subtitle1 aditional-licence"
+                class="q-ml-md q-mb-md q-pt-md text-blue-grey fontWeight400 text-subtitle1 aditional-licence"
               >
                 Additional licenses at $50/mo
               </div>
@@ -181,7 +185,8 @@
                 color: #ef5926;
                 border-radius: 10px 10px 0 0;
                 background-color: #f9dfc8;
-                height: 32px !important; ;
+                height: 32px !important;
+                padding: 2px 0;
               "
             >
               Selected Package
@@ -192,11 +197,11 @@
               style="
                 color: #ef5926;
                 border-radius: 10px 10px 0 0;
-                height: 32px !important; ;
+                height: 32px !important;
               "
             ></div>
-            <div class="q-px-lg q-pb-lg">
-              <div class="row justify-center q-pt-md">
+            <div class="q-px-lg q-pb-lg manage-package-mob-width">
+              <div class="row justify-center q-pt-md q-pb-md">
                 <q-img
                   :src="getImage('Featured icon (2).svg')"
                   width="20%"
@@ -231,7 +236,7 @@
                 </q-card-actions>
               </div>
               <div
-                class="q-ml-md text-subtitle1 fontWeight400 pack-data"
+                class="q-ml-md text-subtitle1 fontWeight400 pack-data pkg-details"
                 v-for="key2 in individualPackages.plandata"
                 :key="key2.tempkey2"
               >
@@ -250,7 +255,7 @@
         </div>
         <div class="test desktop-view outer-padding package-section">
           <div class="card-border bg-white card-container-enterprice">
-            <div class="row q-px-md q-pt-md">
+            <div class="row q-px-lg q-pt-md q-mx-md">
               <div class="col-md-9 col-sm-12 text-h6 text-left row">
                 <div class="col-md-1 col-sm-12">
                   <q-img
@@ -260,13 +265,13 @@
                   />
                 </div>
                 <div
-                  class="col-md-11 col-sm-12 fontWeight500 text-left q-pl-md q-pt-sm pack-heading"
+                  class="col-md-11 col-sm-12 fontWeight500 text-left q-pl-lg q-pt-sm pack-heading"
                 >
                   Enterprise Package
                 </div>
               </div>
               <div
-                class="col text-subtitle1 fontWeight500 col-md-3 col-sm-12 q-pt-sm"
+                class="col text-subtitle1 fontWeight500 col-md-3 col-sm-12 q-pt-sm q-pr-md"
               >
                 <a
                   class="text-deep-orange float-right contact-us"
@@ -276,7 +281,7 @@
                 >
               </div>
             </div>
-            <div class="col-auto row q-px-xl q-my-lg">
+            <div class="col-auto row q-px-md q-mt-md q-ml-md">
               <div class="col-1 text-center">
                 <q-img
                   class="q-mt-xs check-img"
@@ -284,7 +289,7 @@
                   width="40%"
                 />
               </div>
-              <div class="col q-ml-xs">
+              <div class="col q-pb-sm">
                 <span class="text-subtitle1 fontWeight400 pack-data"
                   >Custom setup for large firms with more than 8 paid roles
                   custom pricing
@@ -294,7 +299,7 @@
           </div>
         </div>
         <div
-          class="col row test outer-padding package-section"
+          class="col row test outer-padding package-section enterprise-mob-package"
           :class="{ 'card-disabled': !div3 && continueClick }"
         >
           <div
@@ -327,7 +332,7 @@
                 </a>
               </div>
               <div
-                class="q-ml-md text-subtitle1 fontWeight400 q-pb-md pack-data"
+                class="q-ml-md text-subtitle1 fontWeight400 q-pb-md pack-data pkg-details"
               >
                 <q-img
                   class="q-mt-xs check-img"
@@ -353,7 +358,7 @@
           v-if="continueClick === false"
           class="q-pt-xl content-center bg-white signup-main signup-section"
         >
-          <div class="signup-sub">
+          <div class="signup-sub subscribe">
             <div class="col signup">
               <div class="desktop-view">
                 <q-linear-progress
@@ -469,13 +474,13 @@
                       (val && val.length > 0) || 'Please fill your company name'
                   ]"
                 />
-                <div class="q-mt-sm row justify-start text-caption">
+                <div class="row justify-start text-caption term-policy-text">
                   <q-checkbox v-model="terms" lazy />
                   <label class="q-mt-sm login-text" style="margin-top: 10px"
                     >I agree to ClaimGuru’s</label
                   >
                   <a
-                    class="q-mt-sm q-ml-xs q-mr-xs text-deep-orange fontWeight400"
+                    class="q-mt-sm q-ml-xs q-mr-xs text-deep-orange fontWeight400 term_of_use"
                     href="/terms-conditions"
                     style="margin-top: 10px"
                     target="_blank"
@@ -483,7 +488,7 @@
                   >
                   <label class="q-mt-sm" style="margin-top: 10px"> and</label>
                   <a
-                    class="q-mt-sm q-ml-xs q-mr-xs text-deep-orange fontWeight400"
+                    class="q-mt-sm q-ml-xs q-mr-xs text-deep-orange fontWeight400 term_of_use"
                     href="privacy-policy"
                     style="margin-top: 10px"
                     target="_blank"
@@ -586,7 +591,7 @@
                     v-model="cardName"
                     placeholder="Enter Name on Card"
                     outlined
-                    class="required"
+                    class="required full-width"
                     lazy-rules
                     :rules="[
                       val =>
@@ -1188,14 +1193,9 @@ export default {
   }
 }
 .aditional-licence {
-  @media only screen and (max-width: 1023px) {
-    font-size: 12px;
-    line-height: 14px;
-  }
-  @media only screen and (min-width: 1024px) {
-    font-size: 14px;
-    line-height: 26px;
-  }
+  font-size: 12px;
+  line-height: 14px;
+  margin-bottom: 25px;
 }
 .card-bottom {
   @media only screen and (max-width: 1023px) {
@@ -1238,8 +1238,8 @@ export default {
 }
 .enterprice-img {
   @media only screen and (min-width: 1475px) {
-    height: 44px !important;
-    width: 44px !important;
+    height: 50px !important;
+    width: 50px !important;
   }
   @media only screen and (min-width: 1150px) and (max-width: 1250px) {
     margin-top: 8px;
@@ -1253,14 +1253,8 @@ export default {
   }
 }
 .package-icon {
-  @media only screen and (max-width: 1023px) {
-    height: 36px !important;
-    width: 36px !important;
-  }
-  @media only screen and (min-width: 1024px) {
-    height: 40px !important;
-    width: 40px !important;
-  }
+  height: 50px !important;
+  width: 50px !important;
 }
 .claimguru-tagline {
   @media only screen and (max-width: 1023px) {
@@ -1269,14 +1263,12 @@ export default {
     font-weight: 600;
     font-size: 24px;
     line-height: 36px;
-    margin: 40px 0px 10px 0px;
   }
   @media only screen and (min-width: 1024px) {
     color: #101828;
     font-weight: 600;
     font-size: 28px;
     line-height: 36px;
-    margin: 16px 6px 10px 7px;
   }
 }
 .signup-text {
@@ -1391,18 +1383,11 @@ export default {
   }
 }
 .signup-head {
-  @media only screen and (max-width: 1023px) {
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 28px;
-    margin-top: 30px;
-  }
-  @media only screen and (min-width: 1024px) {
-    font-weight: 600;
-    font-size: 32px;
-    line-height: 36px;
-    margin-top: 70px;
-  }
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 36px;
+  margin-top: 70px;
+  margin-bottom: 35px;
 }
 .outer-padding {
   @media only screen and (max-width: 1023px) {
@@ -1445,17 +1430,15 @@ export default {
   }
 }
 .login-text {
-  @media only screen and (max-width: 1023px) {
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
-  }
-  @media only screen and (min-width: 1024px) {
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
-  }
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
 }
+
+a.term_of_use {
+  font-weight: 600;
+}
+
 .signup-main {
   @media only screen and (max-width: 1023px) {
     padding-top: 0px !important;
@@ -1514,17 +1497,23 @@ export default {
     line-height: 20px;
     font-weight: 600;
   }
+
+  span.amt {
+    font-size: 20px;
+  }
 }
 .period-heading {
   @media only screen and (min-width: 1024px) {
     font-size: 16px;
-    line-height: 20px;
-    font-weight: 500;
+    line-height: 24px;
+    font-weight: 600;
+    margin: 14px 0 17px 0;
   }
   @media only screen and (max-width: 1023px) {
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 16px;
+    line-height: 24px;
     font-weight: 600;
+    margin: 14px 0 17px 0;
   }
 }
 .main-pack-heading {
@@ -1746,6 +1735,7 @@ export default {
   border-radius: 8px;
   padding: 0 12px;
   height: 44px;
+  max-width: 430px;
 }
 .q-field__marginal {
   height: 44px;
@@ -1756,9 +1746,175 @@ export default {
   margin: 0 auto;
   max-width: 120rem;
 }
+
+.page-content {
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+.claimguru-tagline {
+  max-width: 600px;
+  margin: 0 auto;
+}
 .q-field {
   @media only screen and (min-width: 1024px) {
     //width: 431px;
+  }
+}
+
+.signup-sub.subscribe {
+  .q-field--with-bottom {
+    padding-bottom: 25px !important;
+  }
+}
+
+@media (max-width: 1300px) {
+  .claimguru-tagline,
+  .main-pack-heading {
+    max-width: 460px;
+    font-size: 22px !important;
+  }
+
+  .pack-heading {
+    font-size: 18px !important;
+  }
+
+  .pack-data {
+    margin-left: 0 !important;
+    font-size: 14px;
+  }
+
+  .pack-data span {
+    font-size: 14px;
+  }
+
+  .card-container-enterprice .q-px-lg {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .card-container-enterprice .q-ml-md {
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1200px) {
+  .package-section {
+    flex-direction: column;
+    .col-md-5 {
+      min-width: 100% !important;
+    }
+  }
+
+  .signup-sub.subscribe .signup {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.subscribe input::placeholder {
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #8a90a0 !important;
+  opacity: 1; /* Firefox */
+}
+
+.subscribe input:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #8a90a0 !important;
+}
+
+.subscribe input::-ms-input-placeholder {
+  /* Microsoft Edge */
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #8a90a0 !important;
+}
+
+.term-policy-text {
+  margin-bottom: 30px;
+}
+@media (max-width: 576px) {
+  .claimguru-tagline {
+    max-width: 345px !important;
+    padding: 25px 0 10px 0;
+    font-size: 24px !important;
+  }
+  // .manage-mob-width{
+  //   padding: 0 60px;
+  // }
+
+  // .manage-package-mob-width{
+  //   padding: 0 60px 30px 60px;
+  // }
+
+  .main-pack-heading {
+    font-size: 24px !important;
+  }
+  .manage-mob-width,
+  .manage-package-mob-width,
+  .enterprise-mob-package {
+    .pack-heading {
+      font-size: 16px !important;
+      span.amt {
+        font-size: 16px !important;
+      }
+    }
+
+    .period-heading {
+      font-size: 14px !important;
+      margin: 10px 0 10px 0;
+    }
+    .pkg-details {
+      margin: 0 auto !important;
+      width: 220px;
+    }
+
+    .package-icon {
+      width: 40px !important;
+      height: 40px !important;
+    }
+  }
+  .aditional-licence {
+    margin-bottom: 10px !important;
+  }
+
+  .enterprise-mob-package {
+    .pack-heading {
+      padding: 10px 0 0 0;
+    }
+    .pack-data.pkg-details {
+      padding: 0 0 15px 34px;
+      .check-img {
+        margin-left: -32px;
+      }
+    }
+  }
+
+  .signup-head {
+    font-size: 24px !important;
+    margin-top: 10px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .signup-sub.subscribe .q-field--with-bottom {
+    padding-bottom: 15px !important;
+  }
+
+  .term-policy-text {
+    margin-bottom: 15px;
+  }
+
+  .signup-text {
+    margin-top: 25px;
   }
 }
 </style>
