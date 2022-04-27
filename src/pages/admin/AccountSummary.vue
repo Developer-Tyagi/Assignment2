@@ -81,19 +81,30 @@
                   alt="Camera"
                 />
               </span>
-              <img
-                v-if="organizations && organizations.logo"
-                class="company-logo"
+              <q-skeleton
+                v-if="
+                  (companyLogoUploadPercentage > 0 &&
+                    companyLogoUploadPercentage <= 100) ||
+                  organization.logo !== organizations.logo
+                "
+                type="circle"
                 :class="isMobileResolution ? 'image-60' : 'image-80'"
-                :src="organizations.logo"
-                alt="Company logo"
               />
-              <img
-                v-else
-                :class="isMobileResolution ? 'image-60' : 'image-80'"
-                :src="getImage('empty-company-logo.svg')"
-                alt="Company logo"
-              />
+              <span v-else>
+                <img
+                  v-if="organization && organization.logo"
+                  class="company-logo"
+                  :class="isMobileResolution ? 'image-60' : 'image-80'"
+                  :src="organization.logo"
+                  alt="Company logo"
+                />
+                <img
+                  v-else
+                  :class="isMobileResolution ? 'image-60' : 'image-80'"
+                  :src="getImage('empty-company-logo.svg')"
+                  alt="Company logo"
+                />
+              </span>
             </span>
             <div
               :class="
@@ -341,18 +352,24 @@
         <div v-else>
           <div class="flex-row full-width q-pt-lg">
             <img
-              v-if="organizations && organizations.logo"
+              v-if="organization && organization.logo"
               class="company-logo"
               :class="isMobileResolution ? 'image-60' : 'image-80'"
-              :src="organizations.logo"
+              :src="organization.logo"
               alt="Company logo"
             />
             <img
-              v-else
+              v-else-if="organization && organization.logo == ''"
               :class="isMobileResolution ? 'image-60' : 'image-80'"
               :src="getImage('empty-company-logo.svg')"
               alt="Company logo"
             />
+            <q-skeleton
+              v-else
+              type="circle"
+              :class="isMobileResolution ? 'image-60' : 'image-80'"
+            />
+
             <div class="company-details q-ml-lg">
               <div class="flex-column full-width">
                 <div class="details-heading">Company Name</div>
@@ -780,7 +797,8 @@ export default {
       'organization',
       'allUsers',
       'paidUnpaidUserDetails',
-      'isMobileResolution'
+      'isMobileResolution',
+      'companyLogoUploadPercentage'
     ])
   },
   watch: {

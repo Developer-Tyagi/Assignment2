@@ -12,3 +12,7 @@ export function setUserNameInProfilePart(state, data) {
 export function setCheckGoogleDriveConnect(state, data) {
   state.checkConnection = data;
 }
+
+export function setCompanyLogoUploadPercentage(state, data) {
+  state.companyLogoUploadPercentage = data;
+}

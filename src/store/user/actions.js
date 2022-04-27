@@ -785,3 +785,7 @@ export async function verifyPhotoidAccount({ dispatch, commit }, payload) {
     );
   return response;
 }
+
+export async function resetCompanyLogoPercentage({ commit }) {
+  commit('setCompanyLogoUploadPercentage', -1);
+}
