@@ -147,56 +147,30 @@
           <img width="115" height="38.84" src="~assets/new_app_logo.svg" />
         </div>
         <div class="col-sm-2 mobile-view q-mr-sm">
-          <img
-            v-if="organization && organization.logo"
-            class="header-logo"
-            :class="isMobileResolution ? 'image-30' : 'image-40'"
-            :src="organization.logo"
-            alt="Company logo"
-          />
-          <img
-            v-else
-            :class="isMobileResolution ? 'image-30' : 'image-40'"
-            :src="getImage('empty-company-logo.svg')"
-            alt="Company logo"
-          />
-          <!-- <q-avatar
+          <q-avatar
             size="3em"
             font-size="2.5rem"
             icon="person"
             class="text-white bg-grey float-right"
             style="margin-right: 9px"
           >
-          </q-avatar> -->
+          </q-avatar>
         </div>
 
         <!-- user name -->
         <div class="col-8 row justify-end desktop-view"></div>
         <div class="col-4 row justify-end desktop-view">
           <div class="flex-row items-center">
-            <img
-              v-if="organization && organization.logo"
-              class="header-logo"
-              :class="isMobileResolution ? 'image-30' : 'image-40'"
-              :src="organization.logo"
-              alt="Company logo"
-            />
-            <img
-              v-else
-              :class="isMobileResolution ? 'image-30' : 'image-40'"
-              :src="getImage('empty-company-logo.svg')"
-              alt="Company logo"
-            />
-            <!-- <q-avatar
+            <q-avatar
               size="3em"
               font-size="2.5rem"
               icon="person"
               class="text-white bg-grey q-mr-md"
             >
-            </q-avatar> -->
+            </q-avatar>
 
             <span
-              class="text-capitalize text-weight-bold text-black text-subtitle1 ellipsis q-pl-sm"
+              class="text-capitalize text-weight-bold text-black text-subtitle1 ellipsis"
             >
               {{ userName ? userName : updatedUserName }}
             </span>
@@ -651,8 +625,7 @@ export default {
       'getActiveLeadsList',
       'getArchivedLeadsList',
       'getClients',
-      'getAccess',
-      'getOrganization'
+      'getAccess'
     ]),
     //function is used to collapse the web-drawer in the
 
@@ -868,13 +841,10 @@ export default {
       'isOnline',
       'editSelectedClient',
       'isOfflineClientEdit',
-      'userName',
-      'organization',
-      'isMobileResolution'
+      'userName'
     ])
   },
   async created() {
-    await this.getOrganization();
     if (window.innerWidth * 0.9 < 300) {
       this.intViewportWidth = window.innerWidth * 0.9;
     } else {
