@@ -123,7 +123,6 @@
               </div>
 
               <div
-<<<<<<< HEAD
                 v-if="firmPackages.plandata.length == 0"
                 class="firm-plan-details"
               >
@@ -136,10 +135,7 @@
                 </q-card-actions>
               </div>
               <div
-                class="q-ml-md text-subtitle1 pack-data fontWeight400 col-md-4 col-xs-12 col-sm-12"
-=======
                 class="q-ml-md text-subtitle1 pack-data fontWeight400 col-md-4 col-xs-12 col-sm-12 pkg-details"
->>>>>>> 57db340a (Fix signup page UI issues)
                 v-for="key in firmPackages.plandata"
                 :key="key.tempkey"
               >
