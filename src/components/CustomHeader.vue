@@ -146,7 +146,7 @@
         <div class="col-sm-8 mobile-view">
           <img width="115" height="38.84" src="~assets/new_app_logo.svg" />
         </div>
-        <div class="col-sm-2 mobile-view q-mr-sm">
+        <div class="col-sm-2 mobile-view">
           <q-avatar
             size="3em"
             font-size="2.5rem"
