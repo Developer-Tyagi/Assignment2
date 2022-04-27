@@ -110,7 +110,7 @@
             size="1em"
             src="~assets/Logo.svg"
             class="LogoSize"
-            @click="routeTo({ link: 'onboarding' })"
+            @click="clickedLogo"
           />
         </div>
         <div
@@ -973,6 +973,9 @@ export default {
           this.sidebarItems.push(this.linksDataForMobileDrawer[i]);
         }
       }
+    },
+    clickedLogo() {
+      window.location.href = 'https://claimguru.cilalabs.dev/';
     }
   },
 

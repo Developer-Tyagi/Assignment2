@@ -83,7 +83,7 @@
                 v-if="step == 2 || step == 3 || step == 4"
               />
 
-              <div class="q-ml-sm">
+              <div class="stepLabelContainer">
                 <div class="Step-text">Step 1</div>
                 <div class="Step-Subtext">Add Your Company Details</div>
               </div>
@@ -114,7 +114,7 @@
                 class="step1Logon"
                 v-if="step == 3 || step == 4"
               />
-              <div class="q-ml-sm">
+              <div class="stepLabelContainer">
                 <div class="Step-text">Step 2</div>
                 <div class="Step-Subtext">Connect With Google Drive</div>
               </div>
@@ -145,7 +145,7 @@
                 class="step1Logon"
                 v-if="step == 4"
               />
-              <div class="q-ml-sm">
+              <div class="stepLabelContainer">
                 <div class="Step-text">Step 3</div>
                 <div class="Step-Subtext">
                   Add PhotoID Account Details
@@ -267,6 +267,10 @@ export default {
     height: calc(100vh - 215px);
   }
 }
+
+.stepLabelContainer {
+  margin-left: 16px;
+}
 .inside-text {
   border-bottom: px solid #e5e5e5 !important;
 }
@@ -327,7 +331,7 @@ export default {
   align-items: center;
   color: #0c0c0c;
 
-  @media (max-width: 1023px) {
+  @media (max-width: 1024px) {
     line-height: 24px;
     font-size: 20px;
   }
@@ -641,7 +645,7 @@ export default {
   }
 }
 /* Small devices (portrait tablets and large phones, 600px and up) */
-@media (max-width: 1023px) {
+@media (max-width: 1024px) {
   .ml-32 {
     margin-left: 15px;
   }

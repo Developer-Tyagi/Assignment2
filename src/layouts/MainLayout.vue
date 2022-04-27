@@ -293,6 +293,17 @@ body {
   background-color: white;
   border-top: none;
 }
+.bodyMinHeight {
+  @media (max-width: 1024px) {
+    min-height: calc(100vh - 419px);
+  }
+}
+.titleLetterSpacing {
+  letter-spacing: 0.75px;
+}
+.normalLetterSpacing {
+  letter-spacing: 0.15px;
+}
 .text-footer {
   font-weight: 400;
   color: #667085;

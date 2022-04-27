@@ -7,12 +7,17 @@
       >
         <CustomSidebar step="1" />
       </div>
-      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12 bodyMinHeight">
         <q-separator class="seperator-color" />
         <div class="q-px-xl px-15 pr-50">
           <div class="justify-between">
-            <div class="text-h5 fontWeight600 mt-40">Company Details</div>
-            <div class="text-subtitle2 fontWeight400" style="color: #667085">
+            <div class="text-h5 fontWeight600 mt-40 titleLetterSpacing">
+              Company Details
+            </div>
+            <div
+              class="text-subtitle2 fontWeight400 normalLetterSpacing"
+              style="color: #667085"
+            >
               Fill out the form below with the information about your company.
             </div>
           </div>
@@ -126,7 +131,7 @@
                         </div>
                       </div>
 
-                      <div class="row justify-end mtAndBottom">
+                      <div class="row justify-end">
                         <q-btn
                           class="col-1 Next-Btn"
                           size="md"
@@ -296,6 +301,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep {
+  input {
+    color: #101828 !important;
+  }
+  input::placeholder {
+    color: #8a90a0;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+  }
+}
 .poppinsFont {
   font-family: poppins;
 }
@@ -628,12 +643,23 @@ export default {
 .Next-Btn {
   width: 118px !important;
   height: 50px !important;
-  border-radius: 10px !important;
+  border-radius: 10px;
   padding: 8px, 20px, 8px, 20px !important;
   background: rgba(239, 89, 38, 0.5);
   color: #ffffff !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
+  margin-top: 40px;
+  margin-bottom: 15px;
+  line-height: 24px;
+
+  @media (max-width: 1024px) {
+    width: 95px !important;
+    height: 40px !important;
+    border-radius: 5px !important;
+    margin-top: 42px;
+    margin-bottom: 15px;
+  }
 }
 .completeSetup-Btn {
   width: 175px !important;
@@ -681,7 +707,7 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (max-width: 1023px) {
+@media screen and (max-width: 1024px) {
   .mb-30 {
     margin-bottom: 30px;
   }
@@ -852,16 +878,6 @@ export default {
     font-weight: 600 !important;
     font-size: 16px !important;
   }
-  .Next-Btn {
-    width: 95px !important;
-    height: 40px !important;
-    border-radius: 10px !important;
-    padding: 8px, 20px, 8px, 20px !important;
-    background: #ef5926;
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;
-  }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -883,7 +899,7 @@ export default {
     padding-right: 40px;
   }
 }
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: 1024px) {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 18px;
@@ -906,10 +922,6 @@ export default {
   }
   .heighT {
     // height: -webkit-fill-available
-  }
-  .mtAndBottom {
-    margin-top: 10px;
-    margin-bottom: 101px;
   }
 }
 
@@ -942,10 +954,6 @@ export default {
   .q-px-xl {
     padding-left: 62px;
     padding-right: 60px;
-  }
-  .mtAndBottom {
-    margin-top: 60px;
-    margin-bottom: 10px;
   }
 }
 </style>

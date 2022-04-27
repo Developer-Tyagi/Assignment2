@@ -7,7 +7,7 @@
       >
         <CustomSidebar step="4" />
       </div>
-      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12 bodyMinHeight">
         <q-separator class="seperator-color" />
         <div class="q-px-xl">
           <div>
@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      metaTitle: 'Step4 - claimguru',
+      metaTitle: 'Account Setup Successfull - claimguru',
       step: 0,
       companyDetails: {
         address: {
@@ -628,7 +628,7 @@ export default {
     width: 157px;
     height: 40px;
     background: #ef5926;
-    border-radius: 10px;
+    border-radius: 5px;
     font-weight: 600;
     font-size: 16px !important;
     line-height: 24px;
@@ -739,7 +739,7 @@ export default {
     max-width: 480px;
   }
 }
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: 1024px) {
   .q-mt-100 {
     margin-top: 40px;
   }

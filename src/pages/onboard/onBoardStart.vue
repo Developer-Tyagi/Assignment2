@@ -8,7 +8,7 @@
         <CustomSidebar step="0" />
       </div>
 
-      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12 bodyMinHeight">
         <q-separator class="seperator-color" />
         <div class="q-px-xl">
           <div>

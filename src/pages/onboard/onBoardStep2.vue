@@ -7,14 +7,16 @@
       >
         <CustomSidebar step="2" />
       </div>
-      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12 bodyMinHeight">
         <q-separator class="seperator-color" />
-        <div class="q-px-xl">
-          <div class="column pl-62 pr-110 full-height">
+        <div class="">
+          <div class="column connectDriveContainer full-height">
             <div class="col-2 mt-40">
-              <div class="text-h5 fontWeight500">Connect With Google Drive</div>
+              <div class="text-h5 fontWeight500 titleLetterSpacing">
+                Connect With Google Drive
+              </div>
               <div
-                class="q-mt-8 fontWeight400 subtitle2"
+                class="q-mt-8 fontWeight400 subtitle2 normalLetterSpacing"
                 style="color: #667085"
               >
                 In order to provide full access to ClaimGuru, we need permission
@@ -78,7 +80,12 @@
                     style="color: #039855; padding-top: 10px"
                     >Connected to Google Drive
                     <span>
-                      <q-icon name="task_alt" color="teal" size="sm" /> </span
+                      <q-icon
+                        name="task_alt"
+                        color="teal"
+                        size="sm"
+                        class="ticIcon"
+                      /> </span
                   ></span>
                 </div>
               </div>
@@ -145,7 +152,7 @@ export default {
       },
       editCompanyDetails: true,
       dialCode: '',
-      checkConnection: false
+      checkConnection: true
     };
   },
   components: {
@@ -172,7 +179,11 @@ export default {
       this.toRedirectGoogleAuth1();
     },
     navigatePreviousStepper() {
-      this.$router.push('./step1');
+      if (this.checkConnection) {
+        this.checkConnection = false;
+      } else {
+        this.$router.push('./step1');
+      }
     }
   },
   computed: {
@@ -230,6 +241,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.connectDriveContainer {
+  margin-left: 62px;
+  margin-right: 110px;
+  @media (max-width: 1023px) {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+.ticIcon {
+  height: 20px;
+  width: 20px;
+  margin-left: 10px;
+}
 .connectDriveText {
   margin-bottom: 15px;
   margin-left: 10px;
@@ -284,6 +308,9 @@ export default {
 }
 .mt-24 {
   margin-top: 30px;
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+  }
 }
 .mb-15 {
   margin-bottom: 15px;
@@ -544,7 +571,7 @@ export default {
   height: 46px;
 }
 .pl-62 {
-  // padding-left: 2px;
+  padding-left: 2px;
 }
 .pr-110 {
   padding-right: 50px;
@@ -558,15 +585,22 @@ export default {
 .Back-Btn {
   width: 101px !important;
   height: 50px !important;
-  border-radius: 10px !important;
+  border-radius: 10px;
   padding: 10px, 30px, 10px, 30px !important;
   border: 2px solid #ef5926;
   background: #ffffff;
   color: #ef5926 !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   align-items: flex-start;
   line-height: 24px;
+
+  @media (max-width: 1023px) {
+    width: 81px !important;
+    height: 40px !important;
+    line-height: 24px;
+    border-radius: 5px !important;
+  }
 }
 .connectedGooglebtn {
   width: 351px;
@@ -575,12 +609,19 @@ export default {
 .Next-Btn {
   width: 118px !important;
   height: 50px !important;
-  border-radius: 10px !important;
+  border-radius: 10px;
   padding: 8px, 20px, 8px, 20px !important;
   background: #ef5926;
   color: #ffffff !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
+  line-height: 24px;
+
+  @media (max-width: 1023px) {
+    width: 95px !important;
+    height: 40px !important;
+    border-radius: 5px !important;
+  }
 }
 .completeSetup-Btn {
   width: 175px !important;
@@ -663,12 +704,9 @@ export default {
     max-width: 480px;
   }
 }
-@media only screen and (max-width: 600px) {
+@media (max-width: 600px) {
   .q-mt-8 {
     margin-top: 6px;
-  }
-  .mt-24 {
-    margin-top: 20px;
   }
   .q-px-32 {
     padding-left: 15px;
@@ -808,32 +846,12 @@ export default {
     margin-top: 25px;
     // margin-left: 4px;
   }
-  .Back-Btn {
-    width: 81px !important;
-    height: 40px !important;
-    line-height: 24px;
-    border-radius: 5px !important;
-    border: 2px solid #ef5926;
-    color: #ef5926 !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;
-  }
   .align-start {
     align-items: flex-start;
   }
   .connectedGooglebtn {
     width: 345px;
     height: 45px;
-  }
-  .Next-Btn {
-    width: 95px !important;
-    height: 40px !important;
-    border-radius: 10px !important;
-    padding: 8px, 20px, 8px, 20px !important;
-    background: #ef5926;
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;
   }
 }
 

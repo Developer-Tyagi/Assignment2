@@ -7,9 +7,9 @@
       >
         <CustomSidebar step="3" />
       </div>
-      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12 bodyMinHeight">
         <q-separator class="seperator-color" />
-        <div class="q-px-xl">
+        <div class="photoIdContainer">
           <div class="column full-height">
             <div class="mx-15">
               <div class="photoId-Text">PhotoID Account Details</div>
@@ -51,21 +51,38 @@
                         placeholder="Company Email Address"
                         outlined
                         v-model="companyDetails.photoIdEmail"
+                        lazy-rules
+                        :rules="[
+                          val => !!val || 'Please fill your email address',
+                          val =>
+                            validateEmail(val) ||
+                            'Please enter valid email address'
+                        ]"
                       />
                     </div>
                     <div class="col q-pr-xl">
                       <div class="text-subheading mt30 q-mb-6">Api Key</div>
                       <q-input
-                        style="color: #667085"
+                        style="text-transform: uppercase"
                         class="PhotoId-input"
                         input-class="photoId-Inputtext"
                         outlined
                         placeholder="Account API Key"
                         v-model="companyDetails.photoIdAPIKey"
+                        :rules="[
+                          val => !!val.trim() || 'Please provide api key'
+                        ]"
                       >
                         <template v-slot:append>
-                          <q-avatar style="width: 13px; height: 13px">
+                          <q-avatar style="width: 16px; height: 16px">
                             <img :src="getImage('IconHelp.svg')" />
+                            <q-tooltip
+                              anchor="bottom middle"
+                              self="top middle"
+                              :offset="[10, 10]"
+                            >
+                              <strong>Enter API key in this field</strong>
+                            </q-tooltip>
                           </q-avatar>
                         </template>
                       </q-input>
@@ -97,6 +114,7 @@
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomSidebar from 'components/CustomSidebar';
 import MobileFooter from 'components/MobileFooter.vue';
+import { validateEmail, successMessage } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
 export default {
   meta() {
@@ -106,7 +124,7 @@ export default {
   },
   data() {
     return {
-      metaTitle: 'Step3 - claimguru',
+      metaTitle: 'PhotoID Account Details - claimguru',
       step: 0,
       companyDetails: {
         address: {
@@ -148,6 +166,18 @@ export default {
     },
     async NextStepperValue() {
       this.$router.push('/onboarding/step4');
+    },
+    validateEmail,
+    successMessage
+  },
+  watch: {
+    companyDetails: {
+      handler(val) {
+        if (val.photoIdAPIKey.trim() && val.photoIdEmail) {
+          this.successMessage('Details Updating');
+        }
+      },
+      deep: true
     }
   },
   computed: {
@@ -199,6 +229,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.photoIdContainer {
+  padding-left: 62px;
+  padding-right: 62px;
+  @media (max-width: 1024px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+::v-deep {
+  input {
+    color: #101828 !important;
+  }
+}
+
 .poppinsFont {
   font-family: poppins;
 }
@@ -309,6 +353,9 @@ export default {
 }
 .mt-60 {
   margin-top: 60px;
+}
+.text-orange {
+  color: #ef5926 !important;
 }
 .dropdowLogo {
   margin-top: 18px;
@@ -522,6 +569,7 @@ export default {
 .Back-Btn {
   width: 101px !important;
   height: 50px !important;
+  line-height: 24px;
   border-radius: 10px !important;
   padding: 10px, 30px, 10px, 30px !important;
   border: 2px solid #ef5926;
@@ -591,13 +639,7 @@ export default {
   line-height: 24px !important;
   display: flex;
   align-items: center;
-  color: #8a90a0 !important;
-}
-
-@media screen and (max-width: 1023px) {
-  .style-type-none {
-    list-style-type: none;
-  }
+  // color: #101828 !important;
 }
 
 @media screen and (max-width: 800px) {
@@ -701,10 +743,11 @@ export default {
     margin-left: 15px;
     margin-right: 15px;
   }
-  //   .PhotoId-input {
-  //     width: 345px;
-  //     height: 44px;
-  //   }
+  .q-field__native {
+    // width: 345px;
+    // height: 44px;
+    color: #101828 !important;
+  }
 
   .GoHome-btn {
     width: 157px;
@@ -775,7 +818,7 @@ export default {
     width: 81px !important;
     height: 40px !important;
     border-radius: 5px !important;
-    // padding: 8px 20px 8px 20px !important;
+    line-height: 24px;
     border: 2px solid #ef5926;
     color: #ef5926 !important;
     font-weight: 600 !important;
