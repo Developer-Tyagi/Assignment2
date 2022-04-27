@@ -41,7 +41,7 @@
                     src="../../assets/edit-logo.svg"
                     alt="Camera"
                   />
-                  <q-menu>
+                  <q-menu :offset="menuPosition" content-class="logo-menu">
                     <q-list class="text-subtitle1 line-height-24 q-pa-sm">
                       <q-item
                         clickable
@@ -127,7 +127,7 @@
                       input-class="details-content"
                       outlined
                       placeholder="000 000 0000"
-                      v-model="organizations.phoneNumber.number"
+                      v-model.trim="organizations.phoneNumber.number"
                       lazy-rules
                       :rules="[
                         val => val.length > 0 || 'Please fill contact number'
@@ -158,10 +158,10 @@
                       placeholder="Company Email"
                       lazy-rules
                       :rules="[
-                        val => val.length > 0 || 'Please fill company email',
                         val =>
-                          validateEmail(val) ||
-                          'Please enter valid email address'
+                          (organizations.companyDetails.contactEmail
+                            ? validateEmail(val)
+                            : true) || 'Please enter valid email address'
                       ]"
                     />
                   </div>
@@ -325,6 +325,7 @@
               @click="cancelCompanyDetailsUpdate"
             />
             <q-btn
+              flat
               no-caps
               class="text-subtitle1 fontWeight600 line-height-24 text-white bg-primary"
               :class="
@@ -481,6 +482,7 @@
               @click="cancelAccountDetailsUpdate"
             />
             <q-btn
+              flat
               no-caps
               class="text-subtitle1 fontWeight600 line-height-24 text-white bg-primary"
               :class="
@@ -647,6 +649,7 @@
               @click="cancelPhotoIDUpdate"
             />
             <q-btn
+              flat
               no-caps
               class="text-subtitle1 fontWeight600 line-height-24 text-white bg-primary"
               :class="
@@ -767,7 +770,8 @@ export default {
       errorMSG: '',
       maxlengthConstants: constants.maxLength,
       states: [],
-      country: ['United States']
+      country: ['United States'],
+      menuPosition: [-60, 50]
     };
   },
   computed: {
@@ -782,13 +786,14 @@ export default {
   watch: {
     organization(value) {
       if (this.organizations.logo !== value.logo) {
-        if (this.organizations.logo) {
-          this.deleteFileFromFirebase({
-            url: this.organizations.logo,
-            showMsg: false
-          });
-        }
         this.organizations.logo = value.logo;
+      }
+    },
+    isMobileResolution(value) {
+      if (value) {
+        this.menuPosition = [-40, 30];
+      } else {
+        this.menuPosition = [-60, 50];
       }
     }
   },
@@ -1009,10 +1014,22 @@ export default {
       this.$refs.uploadImageFileInput.$el.click();
     },
     async uploadLogo() {
-      await this.uploadCompanyLogo({
-        file: this.fileToUpload[0],
-        companyName: this.organization.name
-      });
+      if (
+        this.fileToUpload[0].type.includes('png') ||
+        this.fileToUpload[0].type.includes('jpg') ||
+        this.fileToUpload[0].type.includes('jpeg')
+      ) {
+        await this.uploadCompanyLogo({
+          file: this.fileToUpload[0],
+          companyName: this.organization.name
+        });
+      } else {
+        this.setNotification({
+          type: 'negative',
+          message: 'Only .png, .jpg and .jpeg file types are allowed'
+        });
+      }
+
       this.fileToUpload = [];
     },
     async validateEmailid(val) {

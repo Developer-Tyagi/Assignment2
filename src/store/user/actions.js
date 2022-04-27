@@ -772,9 +772,13 @@ export async function verifyPhotoidAccount({ dispatch, commit }, payload) {
         return true;
       },
       error => {
+        let msg = error.response.data.message;
+        if (error.response.status == 500) {
+          msg = 'The email or apiToken you have entered is invalid.';
+        }
         dispatch('setNotification', {
           type: 'negative',
-          message: error.response.data.message
+          message: msg
         });
         return false;
       }
