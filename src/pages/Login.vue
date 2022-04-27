@@ -601,4 +601,9 @@ export default {
   margin: 0 auto;
   max-width: 120rem;
 }
+
+.login-section {
+  margin: 90px auto 90px auto !important;
+  max-width: 630px !important;
+}
 </style>
