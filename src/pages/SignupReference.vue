@@ -1678,7 +1678,7 @@ a.term_of_use {
   }
 }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
 .q-checkbox__bg {
   border-radius: 6px !important;
 }
@@ -1883,10 +1883,24 @@ a.term_of_use {
 
   .term-policy-text {
     margin-bottom: 15px;
+
+    .q-checkbox__inner {
+      margin-left: -30px !important;
+    }
   }
 
   .signup-text {
     margin-top: 25px;
+  }
+
+  .aditional-licence,
+  .vendor-terms {
+    width: 220px;
+    margin: 0 auto;
+  }
+
+  .vendor-terms {
+    padding-bottom: 15px;
   }
 }
 </style>
