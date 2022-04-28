@@ -63,7 +63,6 @@
                     <div class="col q-pr-xl">
                       <div class="text-subheading mt30 q-mb-6">Api Key</div>
                       <q-input
-                        style="text-transform: uppercase"
                         class="PhotoId-input"
                         input-class="photoId-Inputtext"
                         outlined
@@ -241,8 +240,17 @@ export default {
   input {
     color: #101828 !important;
   }
+  .q-field__messages {
+    margin-top: 3px !important;
+  }
+  .q-field--with-bottom {
+    padding-bottom: 0px !important;
+  }
+  li.style-type-none::marker {
+    margin-right: 5px !important;
+    // width: 8px !important;
+  }
 }
-
 .poppinsFont {
   font-family: poppins;
 }
@@ -520,8 +528,14 @@ export default {
   background-color: white;
   border-top: none;
 }
-::v-deep .q-btn__wrapper:before {
-  box-shadow: none;
+
+::v-deep {
+  .q-btn__wrapper {
+    min-height: 1.572em;
+  }
+  .q-btn__wrapper:before {
+    box-shadow: none;
+  }
 }
 ::v-deep .q-field__messages {
   line-height: 4px;
@@ -623,6 +637,9 @@ export default {
   line-height: 20px;
   color: #667085;
   letter-spacing: 0.15px;
+  @media (max-width: 768px) {
+    letter-spacing: 0;
+  }
 }
 .text-subheading {
   letter-spacing: 00.15px;

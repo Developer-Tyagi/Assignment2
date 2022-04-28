@@ -12,7 +12,7 @@
         <div class="">
           <div class="column connectDriveContainer full-height">
             <div class="col-2 mt-40">
-              <div class="text-h5 fontWeight500 titleLetterSpacing">
+              <div class="text-h5 fontWeight600 titleLetterSpacing">
                 Connect With Google Drive
               </div>
               <div
@@ -42,7 +42,7 @@
               </div>
             </div>
 
-            <div class="row" style="justify-content: center">
+            <div class="row">
               <div class="mt-24 col-sm-12">
                 <q-btn
                   v-if="this.checkConnection == false"
@@ -76,7 +76,7 @@
                   "
                 >
                   <span
-                    class="text-center"
+                    class="text-center fontWeight500"
                     style="color: #039855; padding-top: 10px"
                     >Connected to Google Drive
                     <span>
@@ -96,7 +96,6 @@
               style="position: relative"
             >
               <q-btn
-                style="border-radius: 10px"
                 no-caps
                 class="Back-Btn fontWeight600"
                 @click="navigatePreviousStepper"
@@ -104,7 +103,6 @@
               >
 
               <q-btn
-                style="border-radius: 10px"
                 class="fontWeight600 Next-Btn"
                 no-caps
                 @click="NextStepperValue"
@@ -152,7 +150,7 @@ export default {
       },
       editCompanyDetails: true,
       dialCode: '',
-      checkConnection: true
+      checkConnection: false
     };
   },
   components: {
@@ -541,8 +539,13 @@ export default {
 ::v-deep .items-center {
   align-items: center;
 }
-::v-deep .q-btn__wrapper:before {
-  box-shadow: none;
+::v-deep {
+  .q-btn__wrapper {
+    min-height: 1.572em;
+  }
+  .q-btn__wrapper:before {
+    box-shadow: none;
+  }
 }
 ::v-deep .q-field__messages {
   line-height: 4px;
@@ -586,20 +589,30 @@ export default {
   width: 101px !important;
   height: 50px !important;
   border-radius: 10px;
-  padding: 10px, 30px, 10px, 30px !important;
+  // padding: 10px, 30px, 10px, 30px !important;
   border: 2px solid #ef5926;
   background: #ffffff;
   color: #ef5926 !important;
   font-weight: 600 !important;
   font-size: 16px !important;
   align-items: flex-start;
-  line-height: 24px;
+  line-height: 24px !important;
+
+  .q-btn__content {
+    top: 10px;
+    left: 30px;
+  }
 
   @media (max-width: 1023px) {
     width: 81px !important;
     height: 40px !important;
-    line-height: 24px;
+    // padding: 8px 20px !important;
     border-radius: 5px !important;
+    .q-btn__content {
+      line-height: 24px !important;
+      top: 8px !important;
+      left: 20px !important;
+    }
   }
 }
 .connectedGooglebtn {
@@ -620,6 +633,7 @@ export default {
   @media (max-width: 1023px) {
     width: 95px !important;
     height: 40px !important;
+    line-height: 24px !important;
     border-radius: 5px !important;
   }
 }
@@ -848,6 +862,11 @@ export default {
   }
   .align-start {
     align-items: flex-start;
+  }
+  ::v-deep {
+    .items-center {
+      align-content: center;
+    }
   }
   .connectedGooglebtn {
     width: 345px;

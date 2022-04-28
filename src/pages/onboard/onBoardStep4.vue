@@ -224,6 +224,10 @@ export default {
 .mx-40 {
   margin-left: 102px;
   margin-right: 70px;
+  @media (max-width: 1023px) {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 }
 .SubTextfontSize {
   color: #667085;
@@ -614,10 +618,6 @@ export default {
   }
   .q-pr-xl {
     padding-right: 0px;
-  }
-  .mx-40 {
-    margin-left: 15px;
-    margin-right: 15px;
   }
   .PhotoId-input {
     width: 345px;

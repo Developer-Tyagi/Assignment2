@@ -9,12 +9,10 @@
           <q-img size="1em" src="~assets/Logo.svg" class="LogoSize" />
         </div>
         <div class="justify-end pr-20">
-          <div class="row justify-end dFlex">
-            <q-img
-              size="1em"
-              src="~assets/Avatarforprofile.svg"
-              class="AvtarLogoSize"
-            />
+          <div class="row justify-end dFlex" style="cursor: pointer">
+            <div class="avatarContainer">
+              <img src="~assets/default-profile.svg" class="avatarImage" />
+            </div>
             <q-img src="~assets/Icondown.svg" class="dropdowLogo" />
           </div>
           <q-popup-proxy
@@ -25,10 +23,10 @@
           >
             <q-banner class="bg-white">
               <div class="userDetailContainer">
-                <p class="userEmail">jaconjones@gmail.com</p>
-                <p class="companyName">10X Incubator</p>
+                <p class="userEmail">{{ user.email }}</p>
+                <p class="companyName">{{ organization.name }}</p>
               </div>
-              <div class="logoutContainer">
+              <div class="logoutContainer" @click="logout()">
                 <h6 class="logoutText">Log Out</h6>
                 <q-img src="~assets/LogOutIcon.svg" class="logoutLogo" />
               </div>
@@ -70,18 +68,20 @@
                 v-if="step == 0"
                 size="md"
               />
-              <q-img
-                size="1em"
-                src="~assets/stepWorking.svg"
-                class="stepWorking"
-                v-if="step == 1"
-              />
-              <q-img
-                size="1em"
-                src="~assets/_Step1done.svg"
-                class="step1Logon"
-                v-if="step == 2 || step == 3 || step == 4"
-              />
+              <div class="stepWorking" v-if="step == 1">
+                <img
+                  size="1em"
+                  src="~assets/_Step-icon-base.svg"
+                  class="stepClass"
+                />
+              </div>
+              <div v-if="step == 2 || step == 3 || step == 4">
+                <q-img
+                  size="1em"
+                  src="~assets/_Step1done.svg"
+                  class="step1Logon"
+                />
+              </div>
 
               <div class="stepLabelContainer">
                 <div class="Step-text">Step 1</div>
@@ -102,18 +102,21 @@
                 size="md"
               />
               <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 2" class="step1Logon" /> -->
-              <q-img
-                size="1em"
-                src="~assets/_Stepiconbase.png"
-                class="stepWorking"
-                v-if="step == 2"
-              />
-              <q-img
-                size="1em"
-                src="~assets/_Step1done.svg"
-                class="step1Logon"
-                v-if="step == 3 || step == 4"
-              />
+              <div class="stepWorking" v-if="step == 2">
+                <img
+                  size="1em"
+                  src="~assets/_Step-icon-base.svg"
+                  class="stepWorking"
+                />
+              </div>
+              <div v-if="step == 3 || step == 4">
+                <q-img
+                  size="1em"
+                  src="~assets/_Step1done.svg"
+                  class="step1Logon"
+                />
+              </div>
+
               <div class="stepLabelContainer">
                 <div class="Step-text">Step 2</div>
                 <div class="Step-Subtext">Connect With Google Drive</div>
@@ -132,26 +135,34 @@
                 size="md"
                 v-if="step == 0 || step == 1 || step == 2"
               />
-              <q-img
-                size="1em"
-                src="~assets/stepWorking.svg"
-                class="stepWorking"
-                v-if="step == 3"
-              />
-              <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" class="step1Logon"  v-if="step == 3"/> -->
-              <q-img
-                size="1em"
-                src="~assets/_Step1done.svg"
-                class="step1Logon"
-                v-if="step == 4"
-              />
+              <div class="stepWorking" v-if="step == 3">
+                <img
+                  size="1em"
+                  src="~assets/_Step-icon-base.svg"
+                  class="stepWorking"
+                />
+              </div>
+              <div v-if="step == 4">
+                <q-img
+                  size="1em"
+                  src="~assets/_Step1done.svg"
+                  class="step1Logon"
+                />
+              </div>
               <div class="stepLabelContainer">
                 <div class="Step-text">Step 3</div>
                 <div class="Step-Subtext">
                   Add PhotoID Account Details
-                  <span v-if="width >= 1203">(optional)</span>
+                  <span v-if="width >= 1223 || (width > 767 && width < 1024)"
+                    >(optional)</span
+                  >
                 </div>
-                <div class="Step-Subtext" v-if="width < 1203">(optional)</div>
+                <div
+                  class="Step-Subtext"
+                  v-if="(width > 1023 && width < 1223) || width < 768"
+                >
+                  (optional)
+                </div>
               </div>
             </div>
           </div>
@@ -172,9 +183,19 @@
 </template>
 
 <script>
+import {
+  removeToken,
+  removeCurrentUser,
+  removeFCMToken,
+  getCurrentUser,
+  getFCMToken
+} from '@utils/auth';
+import { removeFirebaseToken } from '@utils/firebase';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
+      user: {},
       width: window.innerWidth
     };
   },
@@ -182,6 +203,7 @@ export default {
     step: String
   },
   computed: {
+    ...mapGetters(['userName', 'organization']),
     CurrentYear() {
       const d = new Date();
       let year = d.getFullYear();
@@ -189,11 +211,33 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['deletePushNotificationToken', 'getOrganization']),
+    async logout() {
+      if (this.getFCMToken()) {
+        await this.deletePushNotificationToken(this.getFCMToken());
+        await this.removeFCMToken();
+      }
+      await this.removeFirebaseToken();
+
+      this.removeToken();
+      this.removeCurrentUser();
+      location.reload();
+    },
+    removeToken,
+    removeCurrentUser,
+    removeFCMToken,
+    removeFirebaseToken,
+    getCurrentUser,
+    getFCMToken,
     onResize(e) {
       this.width = window.innerWidth;
     }
   },
-  created() {
+  async created() {
+    await this.getOrganization();
+    if (this.getCurrentUser().attributes) {
+      this.user = getCurrentUser().attributes;
+    }
     window.addEventListener('resize', this.onResize);
   },
   destroyed() {
@@ -204,17 +248,23 @@ export default {
 
 <style lang="scss" scoped>
 .q-banner {
+  border: 2px solid #e8e9ec;
   border-radius: 20px !important;
   top: 70px !important;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
 }
 .userDetailContainer {
   margin: 16px 39px 16px 16px;
+  color: #667085;
+  font-weight: 500;
   .userEmail {
     font-size: 12px;
+    line-height: 18px;
     margin: 0px;
   }
   .companyName {
     font-size: 10px;
+    line-height: 15px;
     margin-top: 4px;
   }
 }
@@ -226,11 +276,15 @@ export default {
   margin-right: 16px;
   margin-bottom: 16px;
   padding-top: 8px;
+  cursor: pointer;
 
   .logoutText {
     margin: 0px;
     padding: 0px;
     font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    color: #152141;
   }
   .logoutLogo {
     height: 15px;
@@ -252,11 +306,23 @@ export default {
   margin-left: 15px;
   margin-top: 15px;
 }
+.avatarContainer {
+  width: 40px !important;
+  height: 40px !important;
+  .avatarImage {
+    max-width: 100%;
+  }
+}
+
 .stepWorking {
   width: 32px !important;
   height: 32px !important;
-  border: 2px solid #ffff;
-  border-radius: 16px;
+  // border: 2px solid #EF5926;
+  border-radius: 50%;
+  .stepClass {
+    max-width: 100%;
+    border-radius: 50%;
+  }
 }
 .q-page-container {
   margin: 0 auto !important;
