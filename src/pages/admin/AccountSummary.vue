@@ -45,6 +45,7 @@
                     <q-list class="text-subtitle1 line-height-24 q-pa-sm">
                       <q-item
                         clickable
+                        v-ripple
                         v-close-popup
                         @click="initiateLogoUpload()"
                         class="flex-row items-center"
@@ -56,8 +57,10 @@
                         />
                         <q-item-section> Upload new logo </q-item-section>
                       </q-item>
+                      <q-separator class="q-mx-md" />
                       <q-item
                         clickable
+                        v-ripple
                         v-close-popup
                         @click="deleteLogo(organizations.logo)"
                         class="flex-row items-center"
@@ -122,7 +125,9 @@
                   placeholder="Company Name"
                   :maxlength="maxlengthConstants.companyName"
                   lazy-rules
-                  :rules="[val => val.length > 0 || 'Please fill company name']"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please fill company name'
+                  ]"
                 />
                 <div
                   class="flex-row-wrap"
@@ -141,7 +146,9 @@
                       v-model.trim="organizations.phoneNumber.number"
                       lazy-rules
                       :rules="[
-                        val => val.length > 0 || 'Please fill contact number'
+                        val =>
+                          (val && val.length > 0) ||
+                          'Please fill contact number'
                       ]"
                     >
                       <template v-slot:prepend input-class="q-pr-none">
@@ -189,7 +196,9 @@
                   v-model.trim="organizations.companyDetails.address.address1"
                   placeholder="Company Address"
                   lazy-rules
-                  :rules="[val => val.length > 0 || 'Please fill address']"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please fill address'
+                  ]"
                 />
 
                 <div
@@ -212,7 +221,7 @@
                       placeholder="Enter City Here"
                       lazy-rules
                       :rules="[
-                        val => val.length > 0 || 'Please fill city',
+                        val => (val && val.length > 0) || 'Please fill city',
                         val => validateText(val) || 'Please enter valid city'
                       ]"
                     />
@@ -273,7 +282,9 @@
                       v-model="organizations.companyDetails.address.postalCode"
                       lazy-rules
                       mask="#####"
-                      :rules="[val => val.length > 0 || 'Please fill zipcode']"
+                      :rules="[
+                        val => (val && val.length > 0) || 'Please fill zipcode'
+                      ]"
                     />
                   </div>
                   <div
@@ -373,7 +384,7 @@
             <div class="company-details q-ml-lg">
               <div class="flex-column full-width">
                 <div class="details-heading">Company Name</div>
-                <div class="details-content q-pt-sm">
+                <div class="details-content q-pt-sm ellipsis-3-lines">
                   {{ organizations.users.fname }}
                 </div>
                 <div
@@ -401,7 +412,7 @@
                 >
                   Company Address
                 </div>
-                <div class="details-content q-pt-sm">
+                <div class="details-content q-pt-sm ellipsis-3-lines">
                   {{ organizations.companyDetails.address.address1 }},
                   {{ organizations.companyDetails.address.addressLocality }},
                   {{ organizations.companyDetails.address.addressRegion }},
@@ -627,7 +638,7 @@
                 placeholder="PhotoID Email"
                 lazy-rules
                 :rules="[
-                  val => val.length > 0 || 'Please fill photoid email',
+                  val => (val && val.length > 0) || 'Please fill photoid email',
                   val =>
                     validateEmail(val) || 'Please enter valid email address'
                 ]"
@@ -644,7 +655,8 @@
                 placeholder="PhotoID API Key"
                 lazy-rules
                 :rules="[
-                  val => val.length > 0 || 'Please fill photoid api key'
+                  val =>
+                    (val && val.length > 0) || 'Please fill photoid api key'
                 ]"
               />
             </div>
@@ -1120,10 +1132,10 @@ export default {
   width: calc(100vw - 404px);
 }
 .quarter-container {
-  width: calc((100vw - 404px) / 4 - 0px);
+  width: calc((100vw - 428px) / 4 - 0px);
 }
 .half-container {
-  width: calc((100vw - 404px) / 2 - 0px);
+  width: calc((100vw - 428px) / 2 - 0px);
 }
 .google-drive {
   height: 44px;
