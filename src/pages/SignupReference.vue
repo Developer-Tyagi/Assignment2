@@ -118,8 +118,21 @@
               <div
                 class="text-subtitle1 text-center q-my-sm period-heading"
                 style="color: #ef5926"
+                v-if="firmPackages.plandata.length > 0"
               >
                 Start your {{ firmPackages.trialPeriodDays }} Day Free Trial
+              </div>
+              <div
+                v-if="firmPackages.plandata.length == 0"
+                class="firm-plan-details"
+              >
+                <q-card-actions align="center">
+                  <q-skeleton type="text" width="100%" class="q-mb-sm" />
+                  <q-skeleton type="text" width="80%" />
+                  <q-skeleton type="text" width="80%" />
+                  <q-skeleton type="text" width="80%" />
+                  <q-skeleton type="text" width="80%" />
+                </q-card-actions>
               </div>
               <div
                 class="q-ml-md text-subtitle1 pack-data fontWeight400 col-md-4 col-xs-12 col-sm-12"
@@ -202,9 +215,20 @@
               <div
                 class="text-subtitle1 text-center fontWeight600 q-my-sm period-heading"
                 style="font-family: Poppins; color: #ef5926"
+                v-if="individualPackages.plandata.length > 0"
               >
                 Start your {{ individualPackages.trialPeriodDays }} Day Free
                 Trial
+              </div>
+              <div
+                v-if="individualPackages.plandata.length == 0"
+                class="firm-plan-details"
+              >
+                <q-card-actions align="center">
+                  <q-skeleton type="text" width="100%" class="q-mb-sm" />
+                  <q-skeleton type="text" width="80%" />
+                  <q-skeleton type="text" width="80%" />
+                </q-card-actions>
               </div>
               <div
                 class="q-ml-md text-subtitle1 fontWeight400 pack-data"
@@ -762,7 +786,7 @@ export default {
       cardExpiry: '',
       cardCvc: '',
       isPackageSelected: {
-        id1: '',
+        id1: true,
         id2: ''
       },
       displayErrors: '',
