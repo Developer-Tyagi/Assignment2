@@ -66,3 +66,19 @@ input {
 input::placeholder {
   color: #8a90a0;
 }
+
+// Start of dropdown icon styles
+// To change dropdown icon as per design
+.q-select__dropdown-icon,
+.q-icon {
+  display: inline-block;
+  overflow: hidden;
+  text-indent: -9999px;
+  width: 12px;
+}
+.q-select__dropdown-icon::before {
+  content: 'keyboard_arrow_down';
+  text-indent: 0px;
+  color: #101828;
+}
+//End of dropdown icon styles
