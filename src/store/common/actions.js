@@ -1167,6 +1167,10 @@ export function fileUpload(
 ) {
   try {
     dispatch('setLoading', true);
+    if (url.includes('company') && url.includes('logo')) {
+      commit('setCompanyLogoUploadPercentage', 0);
+    }
+
     const ref = firebase.storage().ref(url);
     var metadata = {
       contentType: file.type
@@ -1178,6 +1182,9 @@ export function fileUpload(
         const progress = Math.floor(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
+        if (url.includes('company') && url.includes('logo')) {
+          commit('setCompanyLogoUploadPercentage', progress);
+        }
       },
       function (error) {},
       function () {
@@ -1193,6 +1200,7 @@ export function fileUpload(
                 companyName: companyName
               });
               await dispatch('getOrganization');
+              await dispatch('resetCompanyLogoPercentage');
               dispatch('setLoading', false);
               if (isUpdated) {
                 dispatch('setNotification', {
@@ -1206,6 +1214,7 @@ export function fileUpload(
     );
   } catch (e) {
     dispatch('setLoading', false);
+    dispatch('resetCompanyLogoPercentage');
   }
 }
 

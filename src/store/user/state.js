@@ -4,6 +4,7 @@ export default function () {
     user: {
       name: ''
     },
-    checkConnection: false
+    checkConnection: false,
+    companyLogoUploadPercentage: -1
   };
 }

@@ -41,10 +41,11 @@
                     src="../../assets/edit-logo.svg"
                     alt="Camera"
                   />
-                  <q-menu>
+                  <q-menu :offset="menuPosition" content-class="logo-menu">
                     <q-list class="text-subtitle1 line-height-24 q-pa-sm">
                       <q-item
                         clickable
+                        v-ripple
                         v-close-popup
                         @click="initiateLogoUpload()"
                         class="flex-row items-center"
@@ -56,8 +57,10 @@
                         />
                         <q-item-section> Upload new logo </q-item-section>
                       </q-item>
+                      <q-separator class="q-mx-md" />
                       <q-item
                         clickable
+                        v-ripple
                         v-close-popup
                         @click="deleteLogo(organizations.logo)"
                         class="flex-row items-center"
@@ -81,19 +84,30 @@
                   alt="Camera"
                 />
               </span>
-              <img
-                v-if="organizations && organizations.logo"
-                class="company-logo"
+              <q-skeleton
+                v-if="
+                  (companyLogoUploadPercentage > 0 &&
+                    companyLogoUploadPercentage <= 100) ||
+                  organization.logo !== organizations.logo
+                "
+                type="circle"
                 :class="isMobileResolution ? 'image-60' : 'image-80'"
-                :src="organizations.logo"
-                alt="Company logo"
               />
-              <img
-                v-else
-                :class="isMobileResolution ? 'image-60' : 'image-80'"
-                :src="getImage('empty-company-logo.svg')"
-                alt="Company logo"
-              />
+              <span v-else>
+                <img
+                  v-if="organization && organization.logo"
+                  class="company-logo"
+                  :class="isMobileResolution ? 'image-60' : 'image-80'"
+                  :src="organization.logo"
+                  alt="Company logo"
+                />
+                <img
+                  v-else
+                  :class="isMobileResolution ? 'image-60' : 'image-80'"
+                  :src="getImage('empty-company-logo.svg')"
+                  alt="Company logo"
+                />
+              </span>
             </span>
             <div
               :class="
@@ -111,7 +125,9 @@
                   placeholder="Company Name"
                   :maxlength="maxlengthConstants.companyName"
                   lazy-rules
-                  :rules="[val => val.length > 0 || 'Please fill company name']"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please fill company name'
+                  ]"
                 />
                 <div
                   class="flex-row-wrap"
@@ -127,10 +143,12 @@
                       input-class="details-content"
                       outlined
                       placeholder="000 000 0000"
-                      v-model="organizations.phoneNumber.number"
+                      v-model.trim="organizations.phoneNumber.number"
                       lazy-rules
                       :rules="[
-                        val => val.length > 0 || 'Please fill contact number'
+                        val =>
+                          (val && val.length > 0) ||
+                          'Please fill contact number'
                       ]"
                     >
                       <template v-slot:prepend input-class="q-pr-none">
@@ -158,10 +176,10 @@
                       placeholder="Company Email"
                       lazy-rules
                       :rules="[
-                        val => val.length > 0 || 'Please fill company email',
                         val =>
-                          validateEmail(val) ||
-                          'Please enter valid email address'
+                          (organizations.companyDetails.contactEmail
+                            ? validateEmail(val)
+                            : true) || 'Please enter valid email address'
                       ]"
                     />
                   </div>
@@ -178,7 +196,9 @@
                   v-model.trim="organizations.companyDetails.address.address1"
                   placeholder="Company Address"
                   lazy-rules
-                  :rules="[val => val.length > 0 || 'Please fill address']"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please fill address'
+                  ]"
                 />
 
                 <div
@@ -201,7 +221,7 @@
                       placeholder="Enter City Here"
                       lazy-rules
                       :rules="[
-                        val => val.length > 0 || 'Please fill city',
+                        val => (val && val.length > 0) || 'Please fill city',
                         val => validateText(val) || 'Please enter valid city'
                       ]"
                     />
@@ -262,7 +282,9 @@
                       v-model="organizations.companyDetails.address.postalCode"
                       lazy-rules
                       mask="#####"
-                      :rules="[val => val.length > 0 || 'Please fill zipcode']"
+                      :rules="[
+                        val => (val && val.length > 0) || 'Please fill zipcode'
+                      ]"
                     />
                   </div>
                   <div
@@ -325,6 +347,7 @@
               @click="cancelCompanyDetailsUpdate"
             />
             <q-btn
+              flat
               no-caps
               class="text-subtitle1 fontWeight600 line-height-24 text-white bg-primary"
               :class="
@@ -340,22 +363,28 @@
         <div v-else>
           <div class="flex-row full-width q-pt-lg">
             <img
-              v-if="organizations && organizations.logo"
+              v-if="organization && organization.logo"
               class="company-logo"
               :class="isMobileResolution ? 'image-60' : 'image-80'"
-              :src="organizations.logo"
+              :src="organization.logo"
               alt="Company logo"
             />
             <img
-              v-else
+              v-else-if="organization && organization.logo == ''"
               :class="isMobileResolution ? 'image-60' : 'image-80'"
               :src="getImage('empty-company-logo.svg')"
               alt="Company logo"
             />
+            <q-skeleton
+              v-else
+              type="circle"
+              :class="isMobileResolution ? 'image-60' : 'image-80'"
+            />
+
             <div class="company-details q-ml-lg">
               <div class="flex-column full-width">
                 <div class="details-heading">Company Name</div>
-                <div class="details-content q-pt-sm">
+                <div class="details-content q-pt-sm ellipsis-3-lines">
                   {{ organizations.users.fname }}
                 </div>
                 <div
@@ -383,7 +412,7 @@
                 >
                   Company Address
                 </div>
-                <div class="details-content q-pt-sm">
+                <div class="details-content q-pt-sm ellipsis-3-lines">
                   {{ organizations.companyDetails.address.address1 }},
                   {{ organizations.companyDetails.address.addressLocality }},
                   {{ organizations.companyDetails.address.addressRegion }},
@@ -481,6 +510,7 @@
               @click="cancelAccountDetailsUpdate"
             />
             <q-btn
+              flat
               no-caps
               class="text-subtitle1 fontWeight600 line-height-24 text-white bg-primary"
               :class="
@@ -608,7 +638,7 @@
                 placeholder="PhotoID Email"
                 lazy-rules
                 :rules="[
-                  val => val.length > 0 || 'Please fill photoid email',
+                  val => (val && val.length > 0) || 'Please fill photoid email',
                   val =>
                     validateEmail(val) || 'Please enter valid email address'
                 ]"
@@ -625,7 +655,8 @@
                 placeholder="PhotoID API Key"
                 lazy-rules
                 :rules="[
-                  val => val.length > 0 || 'Please fill photoid api key'
+                  val =>
+                    (val && val.length > 0) || 'Please fill photoid api key'
                 ]"
               />
             </div>
@@ -647,6 +678,7 @@
               @click="cancelPhotoIDUpdate"
             />
             <q-btn
+              flat
               no-caps
               class="text-subtitle1 fontWeight600 line-height-24 text-white bg-primary"
               :class="
@@ -767,7 +799,8 @@ export default {
       errorMSG: '',
       maxlengthConstants: constants.maxLength,
       states: [],
-      country: ['United States']
+      country: ['United States'],
+      menuPosition: [-60, 50]
     };
   },
   computed: {
@@ -776,19 +809,21 @@ export default {
       'organization',
       'allUsers',
       'paidUnpaidUserDetails',
-      'isMobileResolution'
+      'isMobileResolution',
+      'companyLogoUploadPercentage'
     ])
   },
   watch: {
     organization(value) {
       if (this.organizations.logo !== value.logo) {
-        if (this.organizations.logo) {
-          this.deleteFileFromFirebase({
-            url: this.organizations.logo,
-            showMsg: false
-          });
-        }
         this.organizations.logo = value.logo;
+      }
+    },
+    isMobileResolution(value) {
+      if (value) {
+        this.menuPosition = [-40, 30];
+      } else {
+        this.menuPosition = [-60, 50];
       }
     }
   },
@@ -1009,10 +1044,22 @@ export default {
       this.$refs.uploadImageFileInput.$el.click();
     },
     async uploadLogo() {
-      await this.uploadCompanyLogo({
-        file: this.fileToUpload[0],
-        companyName: this.organization.name
-      });
+      if (
+        this.fileToUpload[0].type.includes('png') ||
+        this.fileToUpload[0].type.includes('jpg') ||
+        this.fileToUpload[0].type.includes('jpeg')
+      ) {
+        await this.uploadCompanyLogo({
+          file: this.fileToUpload[0],
+          companyName: this.organization.name
+        });
+      } else {
+        this.setNotification({
+          type: 'negative',
+          message: 'Only .png, .jpg and .jpeg file types are allowed'
+        });
+      }
+
       this.fileToUpload = [];
     },
     async validateEmailid(val) {
@@ -1085,10 +1132,10 @@ export default {
   width: calc(100vw - 404px);
 }
 .quarter-container {
-  width: calc((100vw - 404px) / 4 - 0px);
+  width: calc((100vw - 428px) / 4 - 0px);
 }
 .half-container {
-  width: calc((100vw - 404px) / 2 - 0px);
+  width: calc((100vw - 428px) / 2 - 0px);
 }
 .google-drive {
   height: 44px;
