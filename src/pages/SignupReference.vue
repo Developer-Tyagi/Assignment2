@@ -566,7 +566,7 @@
                   />
                   <div
                     class="q-mt-sm text-subtitle1 text-bold"
-                    style="color: #5b647a"
+                    style="color: #5b647a; line-height: 24px; font-weight: 600"
                   >
                     Step 2. Payment
                   </div>
@@ -594,7 +594,7 @@
                     </div>
                     <div v-else class="">Individual Package</div>
                   </div>
-                  <div class="q-mt-lg"></div>
+                  <div style="margin-top: 30px"></div>
                   <div id="card-errors" class="q-my-lg"></div>
                   <label class="text-subtitle1 text-weight-bold input-label"
                     >Card Number</label
@@ -1191,14 +1191,12 @@ export default {
     font-size: 14px;
     line-height: 20px;
     margin: 62px 0px 38px 32px;
-    position: static;
     bottom: 0px;
   }
   @media only screen and (min-height: 1024px) {
     font-size: 14px;
     line-height: 20px;
     margin: 62px 0px 38px 32px;
-    position: absolute;
     bottom: 0px;
   }
 }
@@ -1531,7 +1529,7 @@ a.term_of_use {
   font-size: 16px;
   line-height: 24px;
   font-weight: 600;
-  margin: 20px 0 20px 0;
+  margin: 20px 0 18px 0;
 }
 .main-pack-heading {
   @media only screen and (min-width: 1024px) {
@@ -1840,12 +1838,102 @@ a {
     margin-left: 0;
     margin-right: 0;
   }
+
+  .card-container-enterprice .row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .col-md-9,
+    .col-md-1,
+    .col-md-11,
+    .col-md-3 {
+      width: 100% !important;
+    }
+    .col-md-3 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .col-md-11 {
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .col-md-1 {
+      text-align: center;
+      .enterprice-img {
+        width: 50px !important;
+        height: 50px !important;
+      }
+    }
+  }
+
+  .card-container-enterprice {
+    .col.col-md-3.col-sm-12.q-pt-sm.q-pr-md {
+      padding-top: 0 !important;
+    }
+  }
+
+  .custom-setup {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    margin-top: 0;
+  }
+
+  .pkg-details {
+    padding: 0 0 0 18px !important;
+    .check-img {
+      top: 3px !important;
+    }
+  }
+
+  .period-heading {
+    margin: 0;
+  }
+  .aditional-licence {
+    margin-bottom: 0;
+    padding-top: 0;
+  }
+
+  .manage-mob-width {
+    .row.justify-center.q-pt-md.q-pb-md {
+      margin: 0 !important;
+      padding: 5px 0 0 0 !important;
+    }
+  }
+
+  .manage-package-mob-width {
+    .row.justify-center.q-pt-md.q-pb-md {
+      margin: 0 !important;
+      padding: 5px 0 0 0 !important;
+    }
+  }
+
+  .vendor-terms {
+    margin-bottom: 10px;
+  }
+
+  .package-section .card-bottom {
+    margin-bottom: 10px;
+  }
+  .claimguru-copy {
+    margin: 15px 0px 15px 32px;
+  }
+
+  .signup {
+    padding-left: 35px;
+    padding-right: 35px;
+  }
 }
 
 @media (min-width: 320px) {
   .pkg-details {
     position: relative;
-    padding: 4px 0 4px 18px;
+    padding: 2px 0 2px 18px;
     left: 6px;
     top: 2px;
     .check-img {
