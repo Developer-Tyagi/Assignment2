@@ -11,16 +11,16 @@
           </a>
         </div>
         <div
-          class="mobile-view q-mt-md outer-padding package-section"
+          class="mobile-view outer-padding package-section"
           v-if="continueClick === false"
         >
           <q-linear-progress
             size="5px"
             :value="progress"
-            style="border-radius: 5px; margin-top: 9.5px"
+            style="border-radius: 5px; margin-top: 10px"
           />
           <div
-            class="q-mt-sm text-subtitle1 fontWeight600"
+            class="q-mt-sm text-subtitle1 fontWeight600 step-text"
             style="color: #5b647a"
           >
             Step 1. Create Account
@@ -35,7 +35,10 @@
             style="border-radius: 5px; margin-top: 9.5px"
             :value="progress1"
           />
-          <div class="q-mt-sm text-subtitle1 text-bold" style="color: #5b647a">
+          <div
+            class="q-mt-sm text-subtitle1 text-bold fontWeight600 step-text"
+            style="color: #5b647a"
+          >
             Step 2. Payment
           </div>
         </div>
@@ -83,7 +86,11 @@
                 border-radius: 10px 10px 0 0;
                 background-color: #f9dfc8;
                 height: 32px !important;
-                padding: 2px 0;
+                padding: 4px 0px;
+                font-size: 16px;
+                line-height: 24px;
+                color: #ef5926;
+                font-weight: 600;
               "
             >
               Selected Package
@@ -110,7 +117,15 @@
               </div>
               <div class="text-h6 fontWeight600 text-center pack-heading">
                 <span class="amt">$250</span>
-                <span class="text-grey fontWeight400 text-subtitle2"
+                <span
+                  class="text-grey fontWeight400 text-subtitle2"
+                  style="
+                    font-size: 14px;
+                    font-weight: 400 !important;
+                    line-height: 14px;
+                    color: #667085 !important;
+                    letter-spacing: 0.15px;
+                  "
                   >/ month</span
                 >
               </div>
@@ -182,7 +197,11 @@
                 border-radius: 10px 10px 0 0;
                 background-color: #f9dfc8;
                 height: 32px !important;
-                padding: 2px 0;
+                padding: 4px 0px;
+                font-size: 16px;
+                line-height: 24px;
+                color: #ef5926;
+                font-weight: 600;
               "
             >
               Selected Package
@@ -208,8 +227,16 @@
                 Individual Package
               </div>
               <div class="text-h6 fontWeight600 text-center pack-heading">
-                $125
-                <span class="text-grey fontWeight400 text-subtitle2"
+                <span class="amt">$125</span>
+                <span
+                  class="text-grey fontWeight400 text-subtitle2"
+                  style="
+                    font-size: 14px;
+                    font-weight: 400 !important;
+                    line-height: 14px;
+                    color: #667085 !important;
+                    letter-spacing: 0.15px;
+                  "
                   >/ month</span
                 >
               </div>
@@ -271,21 +298,22 @@
               >
                 <a
                   class="text-deep-orange float-right contact-us"
+                  style="font-family: Poppins; color: #ef5926"
                   href="mailto:subscription@claimguru.com"
                   target="_blank"
                   >Contact Us</a
                 >
               </div>
             </div>
-            <div class="col-auto row q-px-md q-mt-md q-ml-md">
-              <div class="col-1 text-center">
+            <div class="col-auto row q-px-md q-mt-md q-ml-md custom-setup">
+              <div class="text-center">
                 <q-img
                   class="q-mt-xs check-img"
                   :src="getImage('check.svg')"
                   width="40%"
                 />
               </div>
-              <div class="col q-pb-sm">
+              <div class="col custom-setup-text">
                 <span class="text-subtitle1 fontWeight400 pack-data"
                   >Custom setup for large firms with more than 8 paid roles
                   custom pricing
@@ -328,7 +356,7 @@
                 </a>
               </div>
               <div
-                class="q-ml-md text-subtitle1 fontWeight400 q-pb-md pack-data pkg-details"
+                class="text-subtitle1 fontWeight400 q-pb-md pack-data pkg-details"
               >
                 <q-img
                   class="q-mt-xs check-img"
@@ -336,7 +364,7 @@
                   width="8%"
                   height="8%"
                 />
-                <span class="q-ml-sm">
+                <span class="">
                   Custom setup for large firms with more than 8 paid roles
                   custom pricing
                 </span>
@@ -352,7 +380,7 @@
         <!-- signup form -->
         <div
           v-if="continueClick === false"
-          class="q-pt-xl content-center bg-white signup-main signup-section"
+          class="content-center bg-white signup-main signup-section"
         >
           <div class="signup-sub subscribe">
             <div class="col signup">
@@ -360,7 +388,7 @@
                 <q-linear-progress
                   size="5px"
                   :value="progress"
-                  style="border-radius: 5px"
+                  style="border-radius: 5px; margin-top: 10px"
                 />
                 <div
                   class="q-mt-sm text-subtitle1 fontWeight600"
@@ -1189,9 +1217,15 @@ export default {
   }
 }
 .aditional-licence {
-  font-size: 12px;
-  line-height: 14px;
-  margin-bottom: 25px;
+  font-size: 14px;
+  line-height: 26px;
+  margin-bottom: 30px;
+  color: #667085 !important;
+}
+
+.pkg-details {
+  padding: 0 0 0 20px;
+  color: #000;
 }
 .card-bottom {
   @media only screen and (max-width: 1023px) {
@@ -1206,11 +1240,13 @@ export default {
     font-size: 10px;
     line-height: 14px;
     margin-top: 10px;
+    color: #8a90a0 !important;
   }
   @media only screen and (min-width: 1024px) {
     font-size: 12px;
     line-height: 16px;
     margin-top: 2px;
+    color: #8a90a0 !important;
   }
 }
 .pack-data {
@@ -1383,7 +1419,7 @@ export default {
   font-size: 32px;
   line-height: 36px;
   margin-top: 70px;
-  margin-bottom: 35px;
+  margin-bottom: 30px;
 }
 .outer-padding {
   @media only screen and (max-width: 1023px) {
@@ -1405,16 +1441,7 @@ export default {
     height: 43px;
   }
 }
-.check-img {
-  // @media only screen and (min-width: 450px) and (max-width: 700px) {
-  //   width: 5% !important;
-  // }
-  // @media only screen and (min-width: 701px) and (max-width: 1023px) {
-  //   width: 3% !important;
-  // }
-  height: 20px !important;
-  width: 20px !important;
-}
+
 .custom-cols {
   @media only screen and (min-width: 1024px) {
     .col-md-2 {
@@ -1473,6 +1500,7 @@ a.term_of_use {
   }
 }
 .contact-us {
+  color: #ef5926 !important;
   @media only screen and (min-width: 1024px) {
     font-style: normal;
     font-weight: 500;
@@ -1496,21 +1524,14 @@ a.term_of_use {
 
   span.amt {
     font-size: 20px;
+    line-height: 24px;
   }
 }
 .period-heading {
-  @media only screen and (min-width: 1024px) {
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 600;
-    margin: 14px 0 17px 0;
-  }
-  @media only screen and (max-width: 1023px) {
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 600;
-    margin: 14px 0 17px 0;
-  }
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  margin: 20px 0 20px 0;
 }
 .main-pack-heading {
   @media only screen and (min-width: 1024px) {
@@ -1523,7 +1544,7 @@ a.term_of_use {
     font-weight: 600;
     font-size: 24px;
     line-height: 28px;
-    padding: 10px 0px 10px 15px;
+    padding: 10px 0px 20px 15px;
   }
 }
 .payment-pack-heading {
@@ -1751,7 +1772,25 @@ a.term_of_use {
 .claimguru-tagline {
   max-width: 600px;
   margin: 0 auto;
+  letter-spacing: 0.75px;
 }
+.main-pack-heading,
+.pack-heading,
+.period-heading,
+.signup-head {
+  letter-spacing: 0.75px;
+}
+
+.pack-data,
+.aditional-licence,
+.vendor-terms,
+.input-label,
+.term-policy-text,
+.signup-text,
+a {
+  letter-spacing: 0.15px;
+}
+
 .q-field {
   @media only screen and (min-width: 1024px) {
     //width: 431px;
@@ -1768,7 +1807,6 @@ a.term_of_use {
   .claimguru-tagline,
   .main-pack-heading {
     max-width: 460px;
-    font-size: 22px !important;
   }
 
   .pack-heading {
@@ -1777,10 +1815,6 @@ a.term_of_use {
 
   .pack-data {
     margin-left: 0 !important;
-    font-size: 14px;
-  }
-
-  .pack-data span {
     font-size: 14px;
   }
 
@@ -1805,6 +1839,34 @@ a.term_of_use {
   .signup-sub.subscribe .signup {
     margin-left: 0;
     margin-right: 0;
+  }
+}
+
+@media (min-width: 320px) {
+  .pkg-details {
+    position: relative;
+    padding: 4px 0 4px 18px;
+    left: 6px;
+    top: 2px;
+    .check-img {
+      height: 20px !important;
+      width: 20px !important;
+      position: absolute;
+      left: 0;
+      top: 6px;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .check-img {
+    height: 20px !important;
+    width: 20px !important;
+  }
+
+  .enterprise-mob-package .pkg-details {
+    display: flex;
+    padding: 2px 0 15px 30px;
   }
 }
 
@@ -1838,6 +1900,21 @@ a.term_of_use {
 .term-policy-text {
   margin-bottom: 30px;
 }
+
+.custom-setup .check-img {
+  height: 20px !important;
+  width: 20px !important;
+  margin: 0 10px 0 10px;
+}
+
+.custom-setup-text {
+  padding-bottom: 12px;
+}
+
+.step-text {
+  line-height: 24px;
+}
+
 @media (max-width: 576px) {
   .claimguru-tagline {
     max-width: 345px !important;
@@ -1867,11 +1944,12 @@ a.term_of_use {
 
     .period-heading {
       font-size: 14px !important;
-      margin: 10px 0 10px 0;
+      margin: 12px 0 8px 0;
+      line-height: 20px;
     }
     .pkg-details {
       margin: 0 auto !important;
-      width: 220px;
+      width: 240px;
     }
 
     .package-icon {
@@ -1888,11 +1966,17 @@ a.term_of_use {
       padding: 10px 0 0 0;
     }
     .pack-data.pkg-details {
-      padding: 0 0 15px 34px;
+      padding: 0 0 15px 0;
       .check-img {
         margin-left: -32px;
+        top: -2px;
       }
     }
+  }
+
+  .enterprise-mob-package .pkg-details {
+    margin: 0 auto !important;
+    width: 184px;
   }
 
   .signup-head {
@@ -1907,10 +1991,6 @@ a.term_of_use {
 
   .term-policy-text {
     margin-bottom: 15px;
-
-    .q-checkbox__inner {
-      margin-left: -30px !important;
-    }
   }
 
   .signup-text {
@@ -1925,6 +2005,15 @@ a.term_of_use {
 
   .vendor-terms {
     padding-bottom: 15px;
+  }
+
+  .pack-data span {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .pkg-details .check-img {
+    top: 4px;
   }
 }
 </style>

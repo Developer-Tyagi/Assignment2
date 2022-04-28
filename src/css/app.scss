@@ -202,3 +202,12 @@
     height: 100%;
   }
 }
+
+.btn-submit {
+  letter-spacing: 0.15px;
+}
+
+.btn-submit .q-btn__wrapper:before {
+  display: none !important;
+  letter-spacing: 0.15px;
+}
