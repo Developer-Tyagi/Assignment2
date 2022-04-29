@@ -23,39 +23,96 @@
             />
           </div>
         </div>
-        <q-form v-if="editCompanyDetails" ref="companyDetailsForm">
+        <q-form greedy v-if="editCompanyDetails" ref="companyDetailsForm">
           <div
-            class="flex-row full-width q-pt-lg"
+            class="flex-row full-width q-mt-20"
             :class="isMobileResolution ? 'flex-column' : ''"
           >
             <span>
               <span class="camera-container absolute-position">
+                <q-btn
+                  :ripple="false"
+                  round
+                  v-if="organizations && organizations.logo"
+                  style="width: 0px"
+                >
+                  <q-img
+                    class="camera-icon"
+                    src="../../assets/edit-logo.svg"
+                    alt="Camera"
+                  />
+                  <q-menu :offset="menuPosition" content-class="logo-menu">
+                    <q-list class="text-subtitle1 line-height-24 q-pa-sm">
+                      <q-item
+                        clickable
+                        v-ripple
+                        v-close-popup
+                        @click="initiateLogoUpload()"
+                        class="flex-row items-center"
+                      >
+                        <q-img
+                          class="icon-20 q-mr-md"
+                          src="../../assets/camera-flat.svg"
+                          alt="Camera"
+                        />
+                        <q-item-section> Upload new logo </q-item-section>
+                      </q-item>
+                      <q-separator class="q-mx-md" />
+                      <q-item
+                        clickable
+                        v-ripple
+                        v-close-popup
+                        @click="deleteLogo(organizations.logo)"
+                        class="flex-row items-center"
+                      >
+                        <q-img
+                          class="icon-20 q-mr-md"
+                          src="../../assets/delete.svg"
+                          alt="Camera"
+                        />
+                        <q-item-section> Remove logo </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-menu>
+                </q-btn>
+
                 <q-img
+                  v-else
                   @click="initiateLogoUpload()"
-                  class="camera-icon"
+                  class="camera-icon cursor-pointer"
                   src="../../assets/camera.svg"
                   alt="Camera"
                 />
               </span>
-              <img
-                v-if="organizations.logo"
+              <q-skeleton
+                v-if="
+                  (companyLogoUploadPercentage > 0 &&
+                    companyLogoUploadPercentage <= 100) ||
+                  organization.logo !== organizations.logo
+                "
+                type="circle"
                 :class="isMobileResolution ? 'image-60' : 'image-80'"
-                :src="organizations.logo"
-                alt="Company logo"
               />
-              <q-avatar
-                v-else
-                :class="isMobileResolution ? 'image-60' : 'image-80'"
-                icon="person"
-                font-size="2.5rem"
-                class="text-white bg-grey"
-              >
-              </q-avatar>
+              <span v-else>
+                <img
+                  v-if="organization && organization.logo"
+                  class="company-logo"
+                  :class="isMobileResolution ? 'image-60' : 'image-80'"
+                  :src="organization.logo"
+                  alt="Company logo"
+                />
+                <img
+                  v-else
+                  :class="isMobileResolution ? 'image-60' : 'image-80'"
+                  :src="getImage('empty-company-logo.svg')"
+                  alt="Company logo"
+                />
+              </span>
             </span>
             <div
               :class="
                 isMobileResolution
-                  ? 'details-container q-mt-lg'
+                  ? 'details-container q-mt-20'
                   : 'company-details q-ml-lg'
               "
             >
@@ -65,22 +122,217 @@
                   input-class="details-content"
                   outlined
                   v-model.trim="organizations.users.fname"
-                  placehoder="Company Name"
-                  maxlength="128"
+                  placeholder="Company Name"
+                  :maxlength="maxlengthConstants.companyName"
                   lazy-rules
-                  :rules="[val => val.length > 0 || 'Please add company name']"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please fill company name'
+                  ]"
                 />
+                <div
+                  class="flex-row-wrap"
+                  :class="isMobileResolution ? 'flex-column' : ''"
+                >
+                  <div
+                    :class="
+                      isMobileResolution ? '' : 'half-width q-pr-12 q-mt-xs'
+                    "
+                  >
+                    <div class="details-heading q-mb-6">Company Contact</div>
+                    <q-input
+                      input-class="details-content"
+                      outlined
+                      placeholder="000 000 0000"
+                      v-model.trim="organizations.phoneNumber.number"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) ||
+                          'Please fill contact number'
+                      ]"
+                    >
+                      <template v-slot:prepend input-class="q-pr-none">
+                        <vue-country-code
+                          @onSelect="onSelect"
+                          enabledCountryCode
+                          defaultCountry="us"
+                          :onlyCountries="['us']"
+                          style="border: none; height: 40px; font-size: 16px"
+                        >
+                        </vue-country-code>
+                      </template>
+                    </q-input>
+                  </div>
+                  <div
+                    :class="
+                      isMobileResolution ? '' : 'half-width q-pl-12 q-mt-xs'
+                    "
+                  >
+                    <div class="details-heading q-mb-6">Company Email</div>
+                    <q-input
+                      input-class="details-content"
+                      outlined
+                      v-model.trim="organizations.companyDetails.contactEmail"
+                      placeholder="Company Email"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (organizations.companyDetails.contactEmail
+                            ? validateEmail(val)
+                            : true) || 'Please enter valid email address'
+                      ]"
+                    />
+                  </div>
+                </div>
+                <div
+                  :class="isMobileResolution ? '' : 'q-mt-xs'"
+                  class="details-heading q-mb-6"
+                >
+                  Company Address
+                </div>
+                <q-input
+                  input-class="details-content"
+                  outlined
+                  v-model.trim="organizations.companyDetails.address.address1"
+                  placeholder="Company Address"
+                  lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please fill address'
+                  ]"
+                />
+
+                <div
+                  class="flex-row-wrap"
+                  :class="isMobileResolution ? 'flex-column' : ''"
+                >
+                  <div
+                    :class="
+                      isMobileResolution ? '' : 'half-width q-pr-12 q-mt-xs'
+                    "
+                  >
+                    <div class="details-heading q-mb-6">City</div>
+
+                    <q-input
+                      input-class="details-content"
+                      outlined
+                      v-model.trim="
+                        organizations.companyDetails.address.addressLocality
+                      "
+                      placeholder="Enter City Here"
+                      lazy-rules
+                      :rules="[
+                        val => (val && val.length > 0) || 'Please fill city',
+                        val => validateText(val) || 'Please enter valid city'
+                      ]"
+                    />
+                  </div>
+                  <div
+                    :class="
+                      isMobileResolution ? '' : 'half-width q-pl-12 q-mt-xs'
+                    "
+                  >
+                    <div class="details-heading q-mb-6">State</div>
+
+                    <q-select
+                      dense
+                      input-class="details-content"
+                      outlined
+                      v-model="
+                        organizations.companyDetails.address.addressRegion
+                      "
+                      placeholder="State"
+                      :options="states"
+                      lazy-rules
+                      :rules="[val => !!val || 'Please select the state']"
+                    >
+                      <template v-slot:selected>
+                        <template
+                          v-if="
+                            organizations.companyDetails.address.addressRegion
+                          "
+                        >
+                          <span class="details-content">
+                            {{
+                              organizations.companyDetails.address.addressRegion
+                            }}
+                          </span>
+                        </template>
+                        <template v-else>
+                          <span class="placeholder-color"> Select State </span>
+                        </template>
+                      </template>
+                    </q-select>
+                  </div>
+                </div>
+                <div
+                  class="flex-row-wrap"
+                  :class="isMobileResolution ? 'flex-column' : ''"
+                >
+                  <div
+                    :class="
+                      isMobileResolution ? '' : 'half-width q-pr-12 q-mt-xs'
+                    "
+                  >
+                    <div class="details-heading q-mb-6">Zipcode</div>
+
+                    <q-input
+                      input-class="details-content"
+                      outlined
+                      placeholder="Zipcode"
+                      v-model="organizations.companyDetails.address.postalCode"
+                      lazy-rules
+                      mask="#####"
+                      :rules="[
+                        val => (val && val.length > 0) || 'Please fill zipcode'
+                      ]"
+                    />
+                  </div>
+                  <div
+                    :class="
+                      isMobileResolution ? '' : 'half-width q-pl-12 q-mt-xs'
+                    "
+                  >
+                    <div class="details-heading q-mb-6">Country</div>
+                    <q-select
+                      dense
+                      input-class="details-content"
+                      outlined
+                      v-model="
+                        organizations.companyDetails.address.addressCountry
+                      "
+                      :options="country"
+                      behavior="menu"
+                      lazy-rules
+                      :rules="[val => !!val || 'Please select the country']"
+                    >
+                      <template v-slot:selected>
+                        <template
+                          v-if="
+                            organizations.companyDetails.address.addressCountry
+                          "
+                        >
+                          <span class="details-content">
+                            {{
+                              organizations.companyDetails.address
+                                .addressCountry
+                            }}
+                          </span>
+                        </template>
+                        <template v-else>
+                          <span class="placeholder-color">
+                            Select Country
+                          </span>
+                        </template>
+                      </template>
+                    </q-select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-
           <div
-            class="flex-row items-center"
-            :class="
-              isMobileResolution
-                ? 'justify-between q-mt-sm'
-                : 'justify-end q-mt-20'
-            "
+            class="flex-row items-center q-mt-sm"
+            :class="isMobileResolution ? 'justify-between' : 'justify-end'"
           >
             <q-btn
               no-caps
@@ -95,6 +347,7 @@
               @click="cancelCompanyDetailsUpdate"
             />
             <q-btn
+              flat
               no-caps
               class="text-subtitle1 fontWeight600 line-height-24 text-white bg-primary"
               :class="
@@ -103,138 +356,35 @@
                   : 'border-radius-10 height-50 q-px-md'
               "
               label="Save"
-              @click="onSaveEditedButtonOrganization"
+              @click="saveCompanyDetails"
             />
-          </div>
-
-          <div class="q-mt-xl">
-            <!-- <div class="row text-subtitle1 text-weight-bold">
-              Company Name<span class="text-red">*</span>
-            </div>
-
-            <div class="row">
-              <q-input
-                dense
-                class="full-width"
-                input-class="text-subtitle1"
-                outlined
-                v-model="organizations.users.fname"
-                :disable="!editCompanyDetails"
-                maxlength="128"
-                lazy-rules
-                :rules="[val => val.length > 0 || 'Please add company name']"
-              />
-            </div> -->
-
-            <div class="col q-mt-sm q-mr-md full-width">
-              <div class="row justify-between">
-                <div class="col text-subtitle1 text-weight-bold">
-                  Address<span class="text-red">*</span>
-                </div>
-              </div>
-              <div v-if="organizations.companyDetails.address">
-                <AutoCompleteAddress
-                  :id="'AddVendor1'"
-                  :address="organizations.companyDetails.address"
-                  :isDropBoxEnable="false"
-                  :isChecksEnable="false"
-                  :value="true"
-                  :view="'custom'"
-                  :readOnly="!editCompanyDetails"
-                />
-              </div>
-            </div>
-            <div class="col">
-              <div class="row"></div>
-            </div>
-
-            <div class="row q-mt-sm full-width">
-              <div class="col">
-                <div class="row text-subtitle1 text-weight-bold">
-                  Company website
-                </div>
-                <q-input
-                  dense
-                  class="full-width"
-                  input-class="text-subtitle1"
-                  outlined
-                  v-model.trim="organizations.website"
-                  :disable="!editCompanyDetails"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      validateUrl(val) || 'You have entered an invalid URL!'
-                  ]"
-                />
-              </div>
-            </div>
-            <div class="row q-mt-sm full-width">
-              <div class="col q-mr-md">
-                <div class="row text-subtitle1 text-weight-bold">
-                  Contact Name
-                </div>
-                <q-input
-                  dense
-                  class="full-width"
-                  input-class="text-subtitle1"
-                  outlined
-                  :disable="!editCompanyDetails"
-                />
-              </div>
-              <div class="col">
-                <div class="row text-subtitle1 text-weight-bold">
-                  Contact Email
-                </div>
-                <q-input
-                  dense
-                  class="full-width"
-                  input-class="text-subtitle1"
-                  outlined
-                  v-model.trim="organizations.companyDetails.contactEmail"
-                  :disable="!editCompanyDetails"
-                />
-              </div>
-            </div>
-
-            <!-- <div class="q-mt-lg row justify-end" v-if="editCompanyDetails">
-              <q-btn
-                class="col-1 q-mr-sm"
-                size="md"
-
-                color="white"
-                label="Cancel"
-                @click="cancelCompanyDetailsUpdate"
-              />
-              <q-btn
-                class="col-1"
-                size="md"
-                color="primary"
-                label="Save"
-                @click="onSaveEditedButtonOrganization"
-              />
-            </div> -->
           </div>
         </q-form>
         <div v-else>
           <div class="flex-row full-width q-pt-lg">
             <img
-              v-if="organizations.logo"
+              v-if="organization && organization.logo"
+              class="company-logo"
               :class="isMobileResolution ? 'image-60' : 'image-80'"
-              :src="organizations.logo"
+              :src="organization.logo"
               alt="Company logo"
             />
-            <q-avatar
-              v-else
+            <img
+              v-else-if="organization && organization.logo == ''"
               :class="isMobileResolution ? 'image-60' : 'image-80'"
-              icon="person"
-              font-size="2.5rem"
-              class="text-white bg-grey"
-            >
-            </q-avatar>
+              :src="getImage('empty-company-logo.svg')"
+              alt="Company logo"
+            />
+            <q-skeleton
+              v-else
+              type="circle"
+              :class="isMobileResolution ? 'image-60' : 'image-80'"
+            />
+
             <div class="company-details q-ml-lg">
               <div class="flex-column full-width">
                 <div class="details-heading">Company Name</div>
-                <div class="details-content q-pt-sm">
+                <div class="details-content q-pt-sm ellipsis-3-lines">
                   {{ organizations.users.fname }}
                 </div>
                 <div
@@ -245,7 +395,7 @@
                 </div>
                 <div class="details-content q-pt-sm">
                   {{ organizations.phoneNumber.code }}
-                  {{ organizations.phoneNumber.number }}
+                  {{ showPhoneNumber(organizations.phoneNumber.number) }}
                 </div>
                 <div
                   class="details-heading"
@@ -262,11 +412,11 @@
                 >
                   Company Address
                 </div>
-                <div class="details-content q-pt-sm">
+                <div class="details-content q-pt-sm ellipsis-3-lines">
                   {{ organizations.companyDetails.address.address1 }},
-                  {{ organizations.companyDetails.address.address2 }},
                   {{ organizations.companyDetails.address.addressLocality }},
-                  {{ organizations.companyDetails.address.addressRegion }}
+                  {{ organizations.companyDetails.address.addressRegion }},
+                  {{ organizations.companyDetails.address.addressCountry }}
                   - {{ organizations.companyDetails.address.postalCode }}
                 </div>
               </div>
@@ -296,7 +446,7 @@
             />
           </div>
         </div>
-        <q-form v-if="editAccountSummary" ref="accountSummaryForm">
+        <q-form greedy v-if="editAccountSummary" ref="accountDetailsForm">
           <div
             class="flex-row-wrap"
             :class="isMobileResolution ? 'flex-column' : ''"
@@ -310,10 +460,10 @@
                 input-class="details-content"
                 outlined
                 v-model.trim="users.fname"
-                placehoder="First Name"
-                maxlength="128"
+                placeholder="First Name"
+                :maxlength="maxlengthConstants.firstName"
                 lazy-rules
-                :rules="[val => !!val || 'Please fill your first name']"
+                :rules="[val => !!val || 'Please fill first name']"
               />
             </div>
             <div
@@ -324,10 +474,10 @@
                 input-class="details-content"
                 outlined
                 v-model.trim="users.lname"
-                placehoder="Last Name"
-                maxlength="128"
+                placeholder="Last Name"
+                :maxlength="maxlengthConstants.lastName"
                 lazy-rules
-                :rules="[val => !!val || 'Please fill your last name']"
+                :rules="[val => !!val || 'Please fill last name']"
               />
             </div>
             <div :class="isMobileResolution ? '' : 'full-width q-mt-sm'">
@@ -336,7 +486,7 @@
                 input-class="details-content"
                 outlined
                 v-model.trim="users.email"
-                placehoder="Email Address"
+                placeholder="Email Address"
                 lazy-rules
                 :rules="[val => validateEmailid(val)]"
               />
@@ -344,12 +494,8 @@
             </div>
           </div>
           <div
-            class="flex-row items-center"
-            :class="
-              isMobileResolution
-                ? 'justify-between q-mt-sm'
-                : 'justify-end q-mt-sm'
-            "
+            class="flex-row items-center q-mt-sm"
+            :class="isMobileResolution ? 'justify-between' : 'justify-end'"
           >
             <q-btn
               no-caps
@@ -361,9 +507,10 @@
                   : 'border-radius-10 height-50 q-px-md'
               "
               label="Cancel"
-              @click="cancelAccountSummaryUpdate"
+              @click="cancelAccountDetailsUpdate"
             />
             <q-btn
+              flat
               no-caps
               class="text-subtitle1 fontWeight600 line-height-24 text-white bg-primary"
               :class="
@@ -372,7 +519,7 @@
                   : 'border-radius-10 height-50 q-px-md'
               "
               label="Save"
-              @click="onSaveEditedButton()"
+              @click="saveAccountDetails()"
             />
           </div>
         </q-form>
@@ -425,26 +572,9 @@
       >
         <div class="flex-row justify-between items-center">
           <div class="details-title">Google Drive</div>
-          <div
-            v-if="organizations.isDriveConnected && !editingDriveDetails"
-            class="flex-row"
-          >
-            <q-btn
-              flat
-              no-caps
-              class="text-subtitle1 fontWeight600 primary-border flex-row items-center line-height-24"
-              :class="
-                isMobileResolution
-                  ? 'border-radius-5 height-40 q-px-xs'
-                  : 'border-radius-10 height-50 q-px-md'
-              "
-              color="primary"
-              label="Edit"
-              @click="editingDriveDetails = true"
-            />
-          </div>
+          <span></span>
         </div>
-        <div v-if="organizations.isDriveConnected && !editingDriveDetails">
+        <div v-if="organizations.isDriveConnected">
           <div class="flex-column details-container q-pt-lg">
             <div class="details-heading">Email</div>
             <div class="details-content q-pt-sm ellipsis">
@@ -459,35 +589,6 @@
                   <q-icon name="task_alt" color="teal" size="17px" /> </span
               ></span>
             </div>
-          </div>
-        </div>
-        <div v-else>
-          <div
-            class="flex-row justify-center items-center q-mt-lg connect-google-drive"
-          >
-            <q-img
-              class="drive-image"
-              :src="getImage('logos_google-drive.svg')"
-            />
-            <span class="text-center"> Connect Google Drive </span>
-          </div>
-          <div
-            v-if="editingDriveDetails"
-            class="flex-row items-center q-mt-20"
-            :class="isMobileResolution ? 'justify-start' : 'justify-end '"
-          >
-            <q-btn
-              no-caps
-              flat
-              class="text-subtitle1 fontWeight600 line-height-24 text-primary primary-border flex-row items-center"
-              :class="
-                isMobileResolution
-                  ? 'border-radius-5 height-40 q-px-xs'
-                  : 'border-radius-10 height-50 q-px-md'
-              "
-              label="Cancel"
-              @click="editingDriveDetails = false"
-            />
           </div>
         </div>
       </q-card>
@@ -520,7 +621,7 @@
             />
           </div>
         </div>
-        <q-form v-if="editPhotoIDDetails" ref="editPhotoIDForm">
+        <q-form greedy v-if="editPhotoIDDetails" ref="editPhotoIDForm">
           <div
             class="flex-row-wrap"
             :class="isMobileResolution ? 'flex-column' : ''"
@@ -534,10 +635,10 @@
                 input-class="details-content"
                 outlined
                 v-model.trim="organizations.photoIDEmail"
-                placehoder="PhotoID Email"
+                placeholder="PhotoID Email"
                 lazy-rules
                 :rules="[
-                  val => val.length > 0 || 'Please add PhotoID Email',
+                  val => (val && val.length > 0) || 'Please fill photoid email',
                   val =>
                     validateEmail(val) || 'Please enter valid email address'
                 ]"
@@ -551,19 +652,18 @@
                 input-class="details-content"
                 outlined
                 v-model.trim="organizations.photoIDAPIKey"
-                placehoder="PhotoID API Key"
+                placeholder="PhotoID API Key"
                 lazy-rules
-                :rules="[val => val.length > 0 || 'Please add PhotoID API Key']"
+                :rules="[
+                  val =>
+                    (val && val.length > 0) || 'Please fill photoid api key'
+                ]"
               />
             </div>
           </div>
           <div
-            class="flex-row items-center"
-            :class="
-              isMobileResolution
-                ? 'justify-between q-mt-sm'
-                : 'justify-end q-mt-sm'
-            "
+            class="flex-row items-center q-mt-sm"
+            :class="isMobileResolution ? 'justify-between' : 'justify-end'"
           >
             <q-btn
               no-caps
@@ -578,6 +678,7 @@
               @click="cancelPhotoIDUpdate"
             />
             <q-btn
+              flat
               no-caps
               class="text-subtitle1 fontWeight600 line-height-24 text-white bg-primary"
               :class="
@@ -586,7 +687,7 @@
                   : 'border-radius-10 height-50 q-px-md'
               "
               label="Save"
-              @click="onSavePhotoIDForm()"
+              @click="savePhotoIDDetails()"
             />
           </div>
         </q-form>
@@ -620,7 +721,7 @@
       </q-card>
       <q-input
         ref="uploadImageFileInput"
-        accept=".jpg,.png,.jpeg,image/*"
+        accept="image/jpg, image/png, image/jpeg"
         style="display: none"
         v-model="fileToUpload"
         type="file"
@@ -639,40 +740,21 @@ import {
   showPhoneNumber,
   sendPhoneNumber
 } from '@utils/clickable';
-import { validateEmail, validateUrl } from '@utils/validation';
-import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import { validateEmail, validateUrl, validateText } from '@utils/validation';
+import { constants } from '@utils/constant';
+import AddressService from '@utils/country';
+
+const addressService = new AddressService();
 
 export default {
   name: 'AccountSummary',
-  components: { AutoCompleteAddress },
 
   data() {
     return {
-      paid: false,
       editAccountSummary: false,
       editCompanyDetails: false,
       editPhotoIDDetails: false,
-      editingDriveDetails: false,
-      isEditable: false,
-      columns: [
-        {
-          name: 'paidUserName',
-          label: 'Paid Users',
-          align: 'left',
-          field: row => row.paidUserName
-        },
-        {
-          name: 'unPaidUserName',
-          label: 'UnPaid Users',
-          align: 'left',
-          field: row => row.unPaidUserName
-        }
-      ],
-      data: [],
-      assignee: '',
-      value: {},
       userId: '',
-      selectedRole: '',
       organizations: {
         name: '',
         companyDetails: {
@@ -681,7 +763,8 @@ export default {
             address2: '',
             addressLocality: '',
             addressRegion: '',
-            postalCode: ''
+            postalCode: '',
+            addressCountry: ''
           },
           contactEmail: ''
         },
@@ -699,20 +782,7 @@ export default {
           fname: '',
           lname: '',
           email: '',
-          roles: [],
-          mailingAddress: {
-            houseNumber: '',
-            addressLocality: '',
-            addressRegion: '',
-            postOfficeBoxNumber: '',
-            postalCode: '',
-            address1: '',
-            address2: '',
-            dropBox: {
-              info: '',
-              isPresent: false
-            }
-          }
+          roles: []
         }
       },
       users: {
@@ -723,23 +793,14 @@ export default {
           number: ''
         },
         email: '',
-        roles: [],
-        mailingAddress: {
-          houseNumber: '',
-          addressLocality: '',
-          addressRegion: '',
-          postOfficeBoxNumber: '',
-          postalCode: '',
-          address1: '',
-          address2: '',
-          dropBox: {
-            info: '',
-            isPresent: false
-          }
-        }
+        roles: []
       },
       fileToUpload: [],
-      errorMSG: ''
+      errorMSG: '',
+      maxlengthConstants: constants.maxLength,
+      states: [],
+      country: ['United States'],
+      menuPosition: [-60, 50]
     };
   },
   computed: {
@@ -748,8 +809,78 @@ export default {
       'organization',
       'allUsers',
       'paidUnpaidUserDetails',
-      'isMobileResolution'
+      'isMobileResolution',
+      'companyLogoUploadPercentage'
     ])
+  },
+  watch: {
+    organization(value) {
+      if (this.organizations.logo !== value.logo) {
+        this.organizations.logo = value.logo;
+      }
+    },
+    isMobileResolution(value) {
+      if (value) {
+        this.menuPosition = [-40, 30];
+      } else {
+        this.menuPosition = [-60, 50];
+      }
+    }
+  },
+
+  mounted() {
+    this.organizations.companyDetails.address.addressCountry = 'United States';
+    this.onCountrySelect(
+      this.organizations.companyDetails.address.addressCountry
+    );
+  },
+
+  async created() {
+    document.title = 'Account Summary - claimguru';
+    this.getAllUsers();
+
+    this.getAllConfigurationTableData({ name: 'phone_types' });
+    if (getCurrentUser().attributes) {
+      this.user = getCurrentUser().attributes;
+      this.userId = getCurrentUser().id;
+    }
+    // assign values to this.users
+    if (this.user) {
+      this.users.fname = this.user.contact.fname;
+      this.users.lname = this.user.contact.lname;
+      this.users.email = this.user.email;
+    }
+    await this.getOrganization();
+
+    if (this.organization) {
+      this.organizations.users.fname = this.organization.name;
+      this.organizations.photoIDAPIKey = this.organization.photoIDAPIKey;
+      this.organizations.photoIDEmail = this.organization.photoIDEmail;
+      this.organizations.isDriveConnected = this.organization.isDriveConnected;
+      this.organizations.driveEmail = this.organization.driveEmail;
+      this.organizations.logo = this.organization.logo;
+
+      this.organizations.users.email = this.organization.photoIDEmail;
+      if (this.organization.address) {
+        this.organizations.companyDetails.address.address1 =
+          this.organization.address.address1;
+        this.organizations.companyDetails.address.addressRegion =
+          this.organization.address.addressRegion;
+        this.organizations.companyDetails.address.postalCode =
+          this.organization.address.postalCode;
+        this.organizations.companyDetails.address.addressLocality =
+          this.organization.address.addressLocality;
+        this.organizations.companyDetails.address.addressCountry =
+          this.organization.address.addressCountry;
+      }
+      if (this.organization.email) {
+        this.organizations.companyDetails.contactEmail =
+          this.organization.email;
+      }
+      if (this.organization.phoneNumber) {
+        this.organizations.phoneNumber = this.organization.phoneNumber;
+      }
+    }
   },
 
   methods: {
@@ -772,13 +903,19 @@ export default {
       'getOrganization',
       'updateUserForOrganization',
       'updateAccessToken',
-      'checkExistingEmail'
+      'checkExistingEmail',
+      'uploadCompanyLogo',
+      'deleteFileFromFirebase',
+      'updateCompanyLogo',
+      'setNotification',
+      'verifyPhotoidAccount'
     ]),
     ...mapMutations(['webMenuSubOptionTab']),
     validateEmail,
     validateUrl,
+    validateText,
 
-    async onSaveEditedButtonOrganization() {
+    async saveCompanyDetails() {
       const success = await this.$refs.companyDetailsForm.validate();
       if (
         success &&
@@ -787,29 +924,31 @@ export default {
         const payload = {
           data: {
             name: this.organizations.users.fname,
-            // photoIDAPIKey: this.organizations.photoIDAPIKey,
-            // photoIDEmail: this.organizations.photoIDEmail,
             address: {
-              addressCountry: 'USA',
               address1: this.organizations.companyDetails.address.address1,
-              address2: this.organizations.companyDetails.address.address2,
               addressLocality:
                 this.organizations.companyDetails.address.addressLocality,
               addressRegion:
                 this.organizations.companyDetails.address.addressRegion,
+              addressCountry:
+                this.organizations.companyDetails.address.addressCountry,
               postalCode: this.organizations.companyDetails.address.postalCode
             },
-            email: this.organizations.companyDetails.email
+            email: this.organizations.companyDetails.contactEmail,
+            phoneNumber: {
+              code: this.organizations.phoneNumber.code,
+              number: this.organizations.phoneNumber.number,
+              type: 'pager'
+            }
           }
         };
         await this.updateUserForOrganization(payload);
         await this.getOrganization();
         this.editCompanyDetails = false;
-        // this.editPhotoIDDetails = false;
       }
     },
 
-    async onSavePhotoIDForm() {
+    async savePhotoIDDetails() {
       const success = await this.$refs.editPhotoIDForm.validate();
       if (success) {
         const payload = {
@@ -819,14 +958,17 @@ export default {
             photoIDAPIKey: this.organizations.photoIDAPIKey
           }
         };
-        await this.updateUserForOrganization(payload);
-        await this.getOrganization();
-        this.editPhotoIDDetails = false;
+        let accountExists = await this.verifyPhotoidAccount(payload.data);
+        if (accountExists) {
+          await this.updateUserForOrganization(payload);
+          await this.getOrganization();
+          this.editPhotoIDDetails = false;
+        }
       }
     },
 
-    async onSaveEditedButton() {
-      const success = await this.$refs.accountSummaryForm.validate();
+    async saveAccountDetails() {
+      const success = await this.$refs.accountDetailsForm.validate();
 
       if (success) {
         const payload = {
@@ -838,11 +980,6 @@ export default {
             },
             email: this.users.email,
             role: this.users.roles
-            // mailingAddress: this.users.mailingAddress,
-            // phoneNumber: {
-            //   type: this.users.contact.type,
-            //   number: sendPhoneNumber(this.users.contact.number)
-            // }
           }
         };
         this.editAccountSummary = false;
@@ -856,12 +993,6 @@ export default {
         this.users.lname = this.user.contact.lname;
         this.users.email = this.user.email;
         this.errorMSG = '';
-        // this.users.contact.type = this.user.phoneNumber.type;
-        // this.users.contact.number = showPhoneNumber(
-        //   this.user.phoneNumber.number
-        // );
-
-        // this.users.mailingAddress = this.user.mailingAddress;
       }
     },
 
@@ -875,51 +1006,30 @@ export default {
         this.editCompanyDetails = true;
       }
     },
-    cancelAccountSummaryUpdate() {
+    cancelAccountDetailsUpdate() {
       this.errorMSG = '';
       this.users.fname = this.user.contact.fname;
       this.users.lname = this.user.contact.lname;
       this.users.email = this.user.email;
-      // if (this.user.phoneNumber) {
-      //   this.users.contact.type = this.user.phoneNumber.type;
-      //   this.users.contact.number = this.user.phoneNumber.number;
-      // }
-
-      // if (this.user.mailingAddress) {
-      //   this.users.mailingAddress.addressRegion =
-      //     this.user.mailingAddress.addressRegion;
-      //   this.users.mailingAddress.addressLocality =
-      //     this.user.mailingAddress.addressLocality;
-      //   this.users.mailingAddress.houseNumber =
-      //     this.user.mailingAddress.houseNumber;
-      //   this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
-      //   this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-      //   this.users.mailingAddress.postalCode =
-      //     this.user.mailingAddress.postalCode;
-      // }
-
       this.editAccountSummary = false;
     },
     cancelCompanyDetailsUpdate() {
       this.editCompanyDetails = false;
       this.organizations.users.fname = this.organization.name;
-      // this.organizations.users.lname = this.organization.photoIDAPIKey;
+      this.organizations.companyDetails.contactEmail = this.organization.email;
+      this.organizations.phoneNumber = this.organization.phoneNumber;
 
-      // this.organizations.users.contact.number = this.organization.website;
-      //this.organizations.users.email = this.organization.photoIDEmail;
-      if (this.organization.billingInfo) {
-        this.organizations.users.mailingAddress.addressRegion =
-          this.organization.billingInfo.address.addressRegion;
-        this.organizations.users.mailingAddress.addressLocality =
-          this.organization.billingInfo.address.addressLocality;
-        this.organizations.users.mailingAddress.houseNumber =
-          this.organization.billingInfo.address.houseNumber;
-        this.organizations.users.mailingAddress.address1 =
-          this.organization.billingInfo.address.address1;
-        this.organizations.users.mailingAddress.address2 =
-          this.organization.billingInfo.address.address2;
-        this.organizations.users.mailingAddress.postalCode =
-          this.organization.billingInfo.address.postalCode;
+      if (this.organization.address) {
+        this.organizations.companyDetails.address.address1 =
+          this.organization.address.address1;
+        this.organizations.companyDetails.address.addressRegion =
+          this.organization.address.addressRegion;
+        this.organizations.companyDetails.address.addressLocality =
+          this.organization.address.addressLocality;
+        this.organizations.companyDetails.address.addressCountry =
+          this.organization.address.addressCountry;
+        this.organizations.companyDetails.address.postalCode =
+          this.organization.address.postalCode;
       }
     },
     cancelPhotoIDUpdate() {
@@ -927,19 +1037,29 @@ export default {
       this.organizations.photoIDAPIKey = this.organization.photoIDAPIKey;
       this.organizations.photoIDEmail = this.organization.photoIDEmail;
     },
-    copyUserAddress() {
-      this.organizations.users.mailingAddress = this.user.mailingAddress;
-    },
     getImage(icon) {
       return require('../../assets/' + icon);
     },
     initiateLogoUpload() {
       this.$refs.uploadImageFileInput.$el.click();
     },
-    uploadLogo() {
-      // TODO
-      // Add file this.fileToUpload[0]
-      // console.log(this.fileToUpload[0])
+    async uploadLogo() {
+      if (
+        this.fileToUpload[0].type.includes('png') ||
+        this.fileToUpload[0].type.includes('jpg') ||
+        this.fileToUpload[0].type.includes('jpeg')
+      ) {
+        await this.uploadCompanyLogo({
+          file: this.fileToUpload[0],
+          companyName: this.organization.name
+        });
+      } else {
+        this.setNotification({
+          type: 'negative',
+          message: 'Only .png, .jpg and .jpeg file types are allowed'
+        });
+      }
+
       this.fileToUpload = [];
     },
     async validateEmailid(val) {
@@ -976,76 +1096,21 @@ export default {
       } else {
         return false;
       }
-    }
-  },
-
-  async created() {
-    document.title = 'Account Summary - claimguru';
-    this.getAllUsers();
-
-    this.paidUnpaidUserDetails;
-
-    this.getAllConfigurationTableData({ name: 'phone_types' });
-    if (getCurrentUser().attributes) {
-      this.user = getCurrentUser().attributes;
-      this.userId = getCurrentUser().id;
-    }
-    // assign values to this.users
-    if (this.user) {
-      this.users.fname = this.user.contact.fname;
-      this.users.lname = this.user.contact.lname;
-      // if (this.user.phoneNumber) {
-      //   this.users.contact.type = this.user.phoneNumber.type;
-      //   this.users.contact.number = this.user.phoneNumber.number;
-      // }
-      // if (this.user.mailingAddress) {
-      //   this.users.mailingAddress.addressRegion =
-      //     this.user.mailingAddress.addressRegion;
-      //   this.users.mailingAddress.addressLocality =
-      //     this.user.mailingAddress.addressLocality;
-      //   this.users.mailingAddress.houseNumber =
-      //     this.user.mailingAddress.houseNumber;
-      //   this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
-      //   this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-      //   this.users.mailingAddress.postalCode =
-      //     this.user.mailingAddress.postalCode;
-      // }
-      this.users.email = this.user.email;
-    }
-    await this.getOrganization();
-
-    if (this.organization) {
-      this.organizations.users.fname = this.organization.name;
-      this.organizations.photoIDAPIKey = this.organization.photoIDAPIKey;
-      this.organizations.photoIDEmail = this.organization.photoIDEmail;
-      this.organizations.isDriveConnected = this.organization.isDriveConnected;
-      this.organizations.driveEmail = this.organization.driveEmail;
-      this.organizations.logo = this.organization.logo;
-
-      // this.organizations.users.contact.number = this.organization.website;
-      this.organizations.users.email = this.organization.photoIDEmail;
-      if (this.organization.address) {
-        this.organizations.companyDetails.address.address1 =
-          this.organization.address.address1;
-        this.organizations.companyDetails.address.address2 =
-          this.organization.address.address2;
-        this.organizations.companyDetails.address.addressRegion =
-          this.organization.address.addressRegion;
-        this.organizations.companyDetails.address.postalCode =
-          this.organization.address.postalCode;
-        this.organizations.companyDetails.address.addressLocality =
-          this.organization.address.addressLocality;
-      }
-      if (this.organization.email) {
-        this.organizations.companyDetails.contactEmail =
-          this.organization.email;
-      }
-      if (this.organization.phoneNumber) {
-        this.organizations.phoneNumber = this.organization.phoneNumber;
-        this.organizations.phoneNumber.number = showPhoneNumber(
-          this.organization.phoneNumber.number
-        );
-      }
+    },
+    async deleteLogo(logoUrl) {
+      await this.deleteFileFromFirebase({ url: logoUrl, showMsg: true });
+      await this.updateCompanyLogo({
+        logoURL: '',
+        companyName: this.organization.name
+      });
+      await this.getOrganization();
+    },
+    onSelect({ name, iso2, dialCode }) {
+      this.organizations.phoneNumber.code = '';
+      this.organizations.phoneNumber.code = '+' + dialCode;
+    },
+    async onCountrySelect(country) {
+      this.states = await addressService.getStates(country);
     }
   },
 
@@ -1067,10 +1132,10 @@ export default {
   width: calc(100vw - 404px);
 }
 .quarter-container {
-  width: calc((100vw - 404px) / 4 - 0px);
+  width: calc((100vw - 428px) / 4 - 0px);
 }
 .half-container {
-  width: calc((100vw - 404px) / 2 - 0px);
+  width: calc((100vw - 428px) / 2 - 0px);
 }
 .google-drive {
   height: 44px;
@@ -1083,23 +1148,6 @@ export default {
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  letter-spacing: 0.15px;
-}
-.drive-image {
-  height: 24px;
-  width: 27px;
-  margin-right: 10px;
-}
-.connect-google-drive {
-  height: 44px;
-  width: 331px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-  color: #0c0c0c;
-  border: 1px solid #0c0c0c;
-  box-sizing: border-box;
-  border-radius: 8px;
   letter-spacing: 0.15px;
 }
 .camera-container {
@@ -1121,6 +1169,10 @@ export default {
   margin-left: 8px;
   margin-top: -12px;
 }
+.company-logo {
+  border: 1px solid #000000;
+  border-radius: 75px;
+}
 
 @media screen and (max-width: 1023px) {
   .details-title {
@@ -1138,11 +1190,6 @@ export default {
     height: 40px;
     width: calc(100% - 0px);
     max-width: 313px;
-  }
-  .connect-google-drive {
-    height: 40px;
-    width: calc(100% - 0px);
-    max-width: 331px;
   }
   .details-container {
     width: calc(100vw - 62px);
