@@ -1930,6 +1930,13 @@ a {
   }
 }
 
+@media (min-width: 1300px) {
+  .manage-package-mob-width {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
 @media (min-width: 320px) {
   .pkg-details {
     position: relative;
@@ -1941,7 +1948,7 @@ a {
       width: 20px !important;
       position: absolute;
       left: 0;
-      top: 6px;
+      top: 3px;
     }
   }
 }
@@ -2056,7 +2063,7 @@ a {
     .pack-data.pkg-details {
       padding: 0 0 15px 0;
       .check-img {
-        margin-left: -32px;
+        margin-left: -28px;
         top: -2px;
       }
     }
@@ -2099,9 +2106,20 @@ a {
     font-size: 14px;
     line-height: 20px;
   }
-
-  .pkg-details .check-img {
-    top: 4px;
-  }
 }
+
+// .term-policy-text {
+//   .q-checkbox__inner {
+//     width: 20px;
+//     min-width: 20px;
+//     height: 20px;
+//     margin-right: 15px;
+//   }
+//   .q-checkbox__inner::before {
+//     height: 20px;
+//     width: 20px;
+//     top: 5px !important;
+//     left: 5px !important;
+//   }
+// }
 </style>
