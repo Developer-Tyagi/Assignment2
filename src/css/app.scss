@@ -162,7 +162,6 @@
   box-sizing: border-box;
   border-radius: 8px;
 }
-
 .logo-menu {
   border: 2px solid #e8e9ec;
   box-sizing: border-box;
@@ -180,4 +179,17 @@
 }
 .header-logo {
   border-radius: 75px;
+}
+
+.btn-submit {
+  letter-spacing: 0.15px;
+}
+
+.btn-submit .q-btn__wrapper:before {
+  display: none !important;
+  letter-spacing: 0.15px;
+}
+
+.term-policy-text .q-checkbox__bg {
+  border-radius: 6px;
 }

@@ -391,12 +391,12 @@ export default {
   @media only screen and (max-width: 1023px) {
     border-radius: 5px;
     height: 40px;
-    margin-top: 4px;
+    margin-top: 8px;
   }
   @media only screen and (min-width: 1024px) {
     border-radius: 10px;
     height: 50px;
-    margin-top: 14px;
+    margin-top: 8px;
   }
 }
 .web-menu-claim-guru-logo {
@@ -550,7 +550,7 @@ export default {
   }
 }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
 .q-checkbox__bg {
   border-radius: 6px !important;
 }
@@ -600,5 +600,14 @@ export default {
 .q-page-container {
   margin: 0 auto;
   max-width: 120rem;
+}
+
+.login-section {
+  margin: 90px auto 0 auto !important;
+  max-width: 630px !important;
+}
+
+.login-up .q-field--with-bottom {
+  padding-bottom: 25px !important;
 }
 </style>
