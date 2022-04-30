@@ -2,12 +2,12 @@
   <q-page class="poppinsFont min-height">
     <div class="row">
       <div
-        class="col-md-4 col-sm-12 col-xs-12"
+        class="col-xl-3 col-md-4 col-sm-12 col-xs-12 max-width"
         style="background-color: #f9e7d8"
       >
         <CustomSidebar step="4" />
       </div>
-      <div class="col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12 bodyMinHeight">
         <q-separator class="seperator-color" />
         <div class="q-px-xl">
           <div>
@@ -43,21 +43,14 @@
         </div>
       </div>
     </div>
-    <div class="row border-top">
-      <!-- <q-separator class="q-mt-md " /> -->
-      <div
-        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer"
-        style="background-color: white"
-      >
-        © ClaimGuru<span> {{ CurrentYear }} </span>
-      </div>
-    </div>
+    <MobileFooter />
   </q-page>
 </template>
 
 <script>
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomSidebar from 'components/CustomSidebar';
+import MobileFooter from 'components/MobileFooter.vue';
 import { mapGetters, mapActions } from 'vuex';
 import { LocalStorage } from 'quasar';
 export default {
@@ -68,7 +61,7 @@ export default {
   },
   data() {
     return {
-      metaTitle: 'Step4 - claimguru',
+      metaTitle: 'Account Setup Successfull - claimguru',
       step: 0,
       companyDetails: {
         address: {
@@ -91,7 +84,8 @@ export default {
   },
   components: {
     AutoCompleteAddress,
-    CustomSidebar
+    CustomSidebar,
+    MobileFooter
   },
   methods: {
     ...mapActions(['getUserInfo', 'getOrganization']),
@@ -102,10 +96,10 @@ export default {
       this.dialCode = dialCode;
     },
     getStarted() {
-      this.$router.push('/onBoarding/step1');
+      this.$router.push('/onboarding/step1');
     },
     async NextStepperValue() {
-      this.$router.push('/onBoarding/step3');
+      this.$router.push('/onboarding/step3');
     },
     goToHome() {
       this.$router.push('/admin');
@@ -125,7 +119,6 @@ export default {
     await this.getOrganization();
     if (this.organization) {
       this.companyDetails.name = this.organization.name;
-      // console.log(685,this.organization.address.address1, "addresss111", );
       if (this.organization) {
         this.companyDetails.address.address1 = this.organization.address
           ? this.organization.address.address1
@@ -153,7 +146,6 @@ export default {
       } else {
         let data = await this.getUserInfo();
         if (data.attributes.onboard.isCompleted == true) {
-          // console.log("6755555");
           this.$router.push('/dashboard');
           // if (isMobile()) {
           //   this.$router.push('/dashboard');
@@ -232,6 +224,10 @@ export default {
 .mx-40 {
   margin-left: 102px;
   margin-right: 70px;
+  @media (max-width: 1023px) {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 }
 .SubTextfontSize {
   color: #667085;
@@ -428,14 +424,6 @@ export default {
   width: 390px;
   height: 44px;
 }
-.text-footer {
-  font-weight: 400;
-  color: #667085;
-  font-size: 14px;
-}
-.border-top {
-  border-top: 0px;
-}
 ::v-deep .q-layout__section--marginal {
   background-color: white;
   border-top: none;
@@ -455,9 +443,6 @@ export default {
 }
 .q-pl-32 {
   padding-left: 15px;
-}
-.ml-31 {
-  padding-left: 16px !important;
 }
 .q-pb-19 {
   padding-bottom: 19px;
@@ -550,24 +535,10 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (max-width: 1022px) {
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-  }
-  .ml-31 {
-    padding-left: 31px !important;
-    margin-top: 19px;
-    margin-bottom: 19px;
-  }
-}
-
 @media screen and (max-width: 800px) {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 0px;
-  }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
   }
   .q-pr-lg {
     padding-right: 0px;
@@ -648,10 +619,6 @@ export default {
   .q-pr-xl {
     padding-right: 0px;
   }
-  .mx-40 {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
   .PhotoId-input {
     width: 345px;
     height: 44px;
@@ -661,9 +628,9 @@ export default {
     width: 157px;
     height: 40px;
     background: #ef5926;
-    border-radius: 10px;
+    border-radius: 5px;
     font-weight: 600;
-    font-size: 14px !important;
+    font-size: 16px !important;
     line-height: 24px;
     color: #ffffff;
     margin-bottom: 100px;
@@ -681,11 +648,6 @@ export default {
   }
   .pr-50 {
     padding-right: 15px;
-  }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
   }
   .mx-15 {
     margin-left: 15px;
@@ -750,10 +712,6 @@ export default {
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  // .border-top {
-  //   border-top: 1px solid #e5e5e5;
-  // }
-  // .q-px-32 {padding-left: 15px;}
   .q-px-32 {
     padding-left: 15px;
     padding-top: 15px;
@@ -776,18 +734,17 @@ export default {
   }
   // .height-40px {height: 24px;}
 }
-
-@media only screen and (max-width: 1023px) {
+@media only screen and (min-width: 1440px) {
+  .max-width {
+    max-width: 480px;
+  }
+}
+@media only screen and (max-width: 1024px) {
   .q-mt-100 {
     margin-top: 40px;
   }
 }
 @media only screen and (min-width: 1024px) {
-  .ml-31 {
-    padding-left: 31px !important;
-    margin-top: 19px;
-    margin-bottom: 19px;
-  }
   .q-mt-100 {
     margin-top: 100px;
   }
@@ -800,9 +757,6 @@ export default {
   .q-px-52 {
     padding-left: 60px;
     padding-right: 60px;
-  }
-  .border-top {
-    border-top: 0px;
   }
 }
 </style>

@@ -7,153 +7,156 @@
       >
         <CustomSidebar step="1" />
       </div>
-      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12 bodyMinHeight">
         <q-separator class="seperator-color" />
-        <div class="q-px-xl">
-          <div>
-            <div class="pt-40 px-15 pr-50" style="border-radius: 20px">
-              <div class="q-mt-sm justify-between">
-                <div class="text-h5 fontWeight600">Company Details</div>
-                <div
-                  class="text-subtitle2 fontWeight400"
-                  style="color: #667085"
-                >
-                  Fill out the form below with the information about your
-                  company.
-                </div>
-              </div>
-              <div class="formHeight">
-                <q-form ref="companyDetailsForm">
-                  <div class="mt-30">
-                    <div
-                      class="row text-subtitle1 fontWeight600"
-                      style="margin-bottom: 8px"
-                    >
-                      Company Name
-                    </div>
+        <div class="q-px-xl px-15 pr-50">
+          <div class="justify-between">
+            <div class="text-h5 fontWeight600 mt-40 titleLetterSpacing">
+              Company Details
+            </div>
+            <div
+              class="text-subtitle2 fontWeight400 normalLetterSpacing"
+              style="color: #667085"
+            >
+              Fill out the form below with the information about your company.
+            </div>
+          </div>
 
-                    <div class="row">
-                      <q-input
-                        dense
-                        class="full-width companyNameInput"
-                        input-class="input-subtitle1"
-                        style="background: #e8edf2; font-size: 16px"
-                        outlined
-                        v-model="companyDetails.name"
-                        maxlength="128"
-                        disable
-                      />
-                    </div>
-                    <div class="row mt-30">
-                      <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg">
-                        <!-- company adminstrator changed to contact name -->
-                        <div class="row text-subtitle1 fontWeight600">
-                          Company Contact
-                        </div>
+          <div class="row">
+            <div class="col-lg-1 col-md-2 col-sm-12">
+              <div style="width: 80px; height: 80px; margin-top: 30px">
+                <q-img src="~assets/companyDefaultImageUpload.svg"></q-img>
+              </div>
+            </div>
+            <div class="col-lg-11 col-md-10 col-sm-12">
+              <div class="formContainer">
+                <div class="formHeight">
+                  <q-form ref="companyDetailsForm">
+                    <div class="mt-30">
+                      <div
+                        class="row text-subtitle1 fontWeight600"
+                        style="margin-bottom: 8px"
+                      >
+                        Company Name
+                      </div>
+
+                      <div class="row">
                         <q-input
                           dense
-                          class=""
-                          input-class="inside-text"
+                          class="full-width companyNameInput"
+                          input-class="input-subtitle1"
+                          style="font-size: 16px"
                           outlined
-                          v-model="companyDetails.contactNumber"
-                          lazy-rules
-                          :rules="[
-                            val => val.length > 0 || 'Please add contact number'
-                          ]"
+                          v-model="companyDetails.name"
+                          maxlength="128"
+                          disable
+                        />
+                      </div>
+                      <div class="row mt-30">
+                        <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg">
+                          <!-- company adminstrator changed to contact name -->
+                          <div class="row text-subtitle1 fontWeight600">
+                            Company Contact
+                          </div>
+                          <q-input
+                            dense
+                            class=""
+                            input-class="inside-text"
+                            outlined
+                            v-model="companyDetails.contactNumber"
+                            lazy-rules
+                            :rules="[
+                              val =>
+                                val.length > 0 || 'Please add contact number'
+                            ]"
+                          >
+                            <template v-slot:prepend>
+                              <vue-country-code
+                                @onSelect="onSelect"
+                                :preferredCountries="['us']"
+                                enabledCountryCode
+                                defaultCountry="us"
+                                enableSearchField
+                                style="border: none; height: 40px"
+                              >
+                              </vue-country-code>
+                            </template>
+                          </q-input>
+                        </div>
+                        <div
+                          class="col-xl-6 col-lg-6 col-xs-12 col-sm-12 col-md-6"
                         >
-                          <template v-slot:prepend>
-                            <vue-country-code
-                              @onSelect="onSelect"
-                              :preferredCountries="['us']"
-                              enabledCountryCode
-                              defaultCountry="us"
-                              enableSearchField
-                              style="border: none; height: 40px"
-                            >
-                            </vue-country-code>
-                          </template>
-                        </q-input>
+                          <!-- company adminstrator changed to contact name -->
+                          <div class="row text-subtitle1 fontWeight600">
+                            Company Email
+                          </div>
+                          <q-input
+                            dense
+                            class=""
+                            input-class=" inside-text"
+                            style="border-radius: 8px"
+                            placeholder="Company Email"
+                            lazy-rules
+                            outlined
+                            v-model="companyDetails.email"
+                            :rules="[
+                              val =>
+                                (val && val.length > 0) ||
+                                'Please add email address',
+                              val =>
+                                validateEmail(val) ||
+                                'You have entered an invalid email address!'
+                            ]"
+                          />
+                        </div>
                       </div>
                       <div
-                        class="col-xl-6 col-lg-6 col-xs-12 col-sm-12 col-md-6"
+                        class="col-xs-12 col-sm-12 com-md-12 mt-25 q-mr-md full-width"
                       >
-                        <!-- company adminstrator changed to contact name -->
-                        <div class="row text-subtitle1 fontWeight600">
-                          Company Email
+                        <div class="row justify-between">
+                          <div class="col text-subtitle1 fontWeight600">
+                            Company Address
+                          </div>
                         </div>
-                        <q-input
-                          dense
-                          class=""
-                          input-class=" inside-text"
-                          style="border-radius: 8px"
-                          placeholder="Company Email"
-                          lazy-rules
-                          outlined
-                          v-model="companyDetails.email"
-                          :rules="[
-                            val =>
-                              (val && val.length > 0) ||
-                              'Please add email address',
-                            val =>
-                              validateEmail(val) ||
-                              'You have entered an invalid email address!'
-                          ]"
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="col-xs-12 col-sm-12 com-md-12 mt-25 q-mr-md full-width"
-                    >
-                      <div class="row justify-between">
-                        <div class="col text-subtitle1 fontWeight600">
-                          Company Address
+                        <div v-if="companyDetails">
+                          <AutoCompleteAddress
+                            :id="'AddVendor1'"
+                            :address="companyDetails.address"
+                            :isDropBoxEnable="false"
+                            :isChecksEnable="false"
+                            :value="true"
+                            :view="'custom'"
+                            :readOnly="!editCompanyDetails"
+                          />
                         </div>
                       </div>
-                      <div v-if="companyDetails">
-                        <AutoCompleteAddress
-                          :id="'AddVendor1'"
-                          :address="companyDetails.address"
-                          :isDropBoxEnable="false"
-                          :isChecksEnable="false"
-                          :value="true"
-                          :view="'custom'"
-                          :readOnly="!editCompanyDetails"
-                        />
-                      </div>
-                    </div>
 
-                    <div class="row justify-end mtAndBottom">
-                      <q-btn
-                        class="col-1 Next-Btn"
-                        size="md"
-                        color="primary"
-                        label="Next"
-                        no-caps
-                        @click="NextStepperValue"
-                      />
+                      <div class="row justify-end">
+                        <q-btn
+                          class="col-1 Next-Btn"
+                          size="md"
+                          color="primary"
+                          label="Next"
+                          no-caps
+                          @click="NextStepperValue"
+                        />
+                      </div>
                     </div>
-                  </div>
-                </q-form>
+                  </q-form>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row border-top">
-      <!-- <q-separator class="q-mt-md " /> -->
-      <div
-        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer"
-        style="background-color: white"
-      >
-        © ClaimGuru<span> {{ CurrentYear }} </span>
-      </div>
-    </div>
+    <MobileFooter />
   </q-page>
 </template>
 
 <script>
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import MobileFooter from 'components/MobileFooter.vue';
 import CustomSidebar from 'components/CustomSidebar';
 import { validateEmail } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
@@ -165,7 +168,7 @@ export default {
   },
   data() {
     return {
-      metaTitle: 'Step1 - claimguru',
+      metaTitle: 'Company Details - claimguru',
       width: window.innerWidth,
       step: 0,
       companyDetails: {
@@ -189,7 +192,8 @@ export default {
   },
   components: {
     AutoCompleteAddress,
-    CustomSidebar
+    CustomSidebar,
+    MobileFooter
   },
   methods: {
     ...mapActions([
@@ -205,7 +209,7 @@ export default {
       this.dialCode = dialCode;
     },
     getStarted() {
-      this.$router.push('/onBoarding/step1');
+      this.$router.push('/onboarding/step1');
     },
     validateEmailManually(val) {
       if (val.length < 2) {
@@ -242,7 +246,7 @@ export default {
 
           await this.updateUserForOrganization(payload);
           await this.getOrganization();
-          this.$router.push('/onBoarding/step2');
+          this.$router.push('/onboarding/step2');
         }
       }
     },
@@ -297,6 +301,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep {
+  input {
+    color: #101828 !important;
+  }
+  input::placeholder {
+    color: #8a90a0;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+  }
+}
 .poppinsFont {
   font-family: poppins;
 }
@@ -362,9 +376,9 @@ export default {
 .companyNameInput {
   border-radius: 8px;
 }
-::v-deep.companyNameInput.q-field--outlined .q-field__control::before {
-  border: none !important;
-}
+// ::v-deep.companyNameInput.q-field--outlined .q-field__control::before {
+//   border: none !important;
+// }
 .SubTextfontSize {
   color: #667085;
   font-size: 14px;
@@ -438,6 +452,13 @@ export default {
 }
 .overflowhidden {
   overflow-x: hidden;
+}
+.formContainer {
+  margin-left: 24px;
+  @media (max-width: 1439px) {
+    margin-left: 12px;
+    // max-width: 700px;
+  }
 }
 .setup-success-text {
   font-family: 'Poppins';
@@ -554,14 +575,6 @@ export default {
   width: 390px;
   height: 44px;
 }
-.text-footer {
-  font-weight: 400;
-  color: #667085;
-  font-size: 14px;
-}
-.border-top {
-  border-top: 0px;
-}
 ::v-deep .q-layout__section--marginal {
   background-color: white;
   border-top: none;
@@ -630,12 +643,23 @@ export default {
 .Next-Btn {
   width: 118px !important;
   height: 50px !important;
-  border-radius: 10px !important;
+  border-radius: 10px;
   padding: 8px, 20px, 8px, 20px !important;
   background: rgba(239, 89, 38, 0.5);
   color: #ffffff !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
+  margin-top: 40px;
+  margin-bottom: 15px;
+  line-height: 24px;
+
+  @media (max-width: 1024px) {
+    width: 95px !important;
+    height: 40px !important;
+    border-radius: 5px !important;
+    margin-top: 42px;
+    margin-bottom: 15px;
+  }
 }
 .completeSetup-Btn {
   width: 175px !important;
@@ -683,15 +707,7 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (max-width: 1022px) {
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-  }
-  .ml-31 {
-    padding-left: 31px !important;
-    margin-top: 19px;
-    margin-bottom: 19px;
-  }
+@media screen and (max-width: 1024px) {
   .mb-30 {
     margin-bottom: 30px;
   }
@@ -702,15 +718,6 @@ export default {
 }
 
 @media screen and (min-width: 1024px) {
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-  }
-  .ml-31 {
-    margin-left: 31px !important;
-    margin-top: 19px;
-    margin-bottom: 19px;
-  }
-
   ::v-deep .vue-country-select .dropdown-list {
     width: 25vw !important;
   }
@@ -821,9 +828,6 @@ export default {
     width: 345px;
     height: 44px !important;
   }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-  }
   .mx-15 {
     margin-left: 15px;
     margin-right: 15px;
@@ -874,24 +878,10 @@ export default {
     font-weight: 600 !important;
     font-size: 16px !important;
   }
-  .Next-Btn {
-    width: 95px !important;
-    height: 40px !important;
-    border-radius: 10px !important;
-    padding: 8px, 20px, 8px, 20px !important;
-    background: #ef5926;
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;
-  }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  // .border-top {
-  //   border-top: 1px solid #e5e5e5;
-  // }
-  // .q-px-32 {padding-left: 15px;}
   .q-px-32 {
     padding-left: 15px;
     padding-top: 15px;
@@ -908,9 +898,8 @@ export default {
     padding-left: 40px;
     padding-right: 40px;
   }
-  // .height-40px {height: 24px;}
 }
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: 1024px) {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 18px;
@@ -921,8 +910,8 @@ export default {
   .q-pr-lg {
     padding-right: 0px;
   }
-  .pt-40 {
-    padding-top: 40px;
+  .mt-40 {
+    margin-top: 40px;
   }
   .mt-25 {
     margin-top: 0px;
@@ -933,10 +922,6 @@ export default {
   }
   .heighT {
     // height: -webkit-fill-available
-  }
-  .mtAndBottom {
-    margin-top: 10px;
-    margin-bottom: 101px;
   }
 }
 
@@ -957,8 +942,8 @@ export default {
   .formHeight {
     height: 580px;
   }
-  .pt-40 {
-    padding-top: 40px;
+  .mt-40 {
+    margin-top: 40px;
   }
   .mt-25 {
     margin-top: 10px;
@@ -969,13 +954,6 @@ export default {
   .q-px-xl {
     padding-left: 62px;
     padding-right: 60px;
-  }
-  .border-top {
-    border-top: 0px;
-  }
-  .mtAndBottom {
-    margin-top: 60px;
-    margin-bottom: 10px;
   }
 }
 </style>

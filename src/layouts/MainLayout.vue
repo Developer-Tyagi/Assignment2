@@ -25,7 +25,7 @@
             $route.name != 'configuration' &&
             $route.name != 'manage users' &&
             $route.name != 'admin' &&
-            $route.name != 'onBoarding' &&
+            $route.name != 'onboarding' &&
             $route.name != 'reports' &&
             $route.name != 'signup' &&
             $route.name != 'set-password' &&
@@ -64,13 +64,14 @@
       >
         <AddOptions />
       </q-dialog>
-      <div class="row" v-if="$route.name == 'onBoarding'">
+      <div class="row" v-if="$route.name == 'onboarding'">
         <div
-          class="col-xl-3 col-md-4 max-width sm-hide xs-hide text-footer q-py-38 mt-125"
+          class="col-xl-3 col-md-4 max-width sm-hide xs-hide text-footer q-py-38"
           style="background-color: #f9e7d8; margin-left: 0px !important"
         >
-          <span class="px-32" style="color: #0c0c0c"> © ClaimGuru</span>
-          <span class="q-px-sm" style="color: #0c0c0c">{{ CurrentYear }}</span>
+          <span class="px-32" style="color: #0c0c0c">
+            © ClaimGuru <span class="yearLabel">{{ CurrentYear }}</span></span
+          >
         </div>
         <div class="col-lg-9 col-md-8 bg-white"></div>
       </div>
@@ -98,7 +99,7 @@
             $route.name != 'configuration' &&
             $route.name != 'manage users' &&
             $route.name != 'admin' &&
-            $route.name != 'onBoarding' &&
+            $route.name != 'onboarding' &&
             $route.name != 'reports' &&
             $route.name != 'signup' &&
             $route.name != 'set-password' &&
@@ -137,7 +138,7 @@
       >
         <AddOptions />
       </q-dialog>
-      <q-footer class="row" v-show="$route.name == 'onBoarding'">
+      <q-footer class="row" v-show="$route.name == 'onboarding'">
         <div
           class="col-md-4 col-lg-3 col-xl-4 text-footer px-32 q-pb-sm q-pl-xl"
           style="background-color: #f9e7d8"
@@ -173,9 +174,9 @@ export default {
     let data = await this.getUserInfo();
     if (
       data.attributes.onboard.isCompleted == false &&
-      this.$route.name != 'onBoarding'
+      this.$route.name != 'onboarding'
     ) {
-      this.$router.push('/onBoarding');
+      this.$router.push('/onboarding');
     }
   },
   methods: {
@@ -269,6 +270,9 @@ export default {
 };
 </script>
 <style lang="scss">
+body {
+  overflow-x: hidden;
+}
 .icon-width {
   width: 100px;
 }
@@ -289,11 +293,25 @@ export default {
   background-color: white;
   border-top: none;
 }
+.bodyMinHeight {
+  @media (max-width: 1024px) {
+    min-height: calc(100vh - 419px);
+  }
+}
+.titleLetterSpacing {
+  letter-spacing: 0.75px;
+}
+.normalLetterSpacing {
+  letter-spacing: 0.15px;
+}
 .text-footer {
   font-weight: 400;
   color: #667085;
   font-size: 14px;
   // padding-bottom: 28px;
+}
+.yearLabel {
+  padding-left: 4px;
 }
 .px-32 {
   margin-left: 32px !important;
@@ -310,9 +328,6 @@ export default {
 }
 
 @media (min-width: 1024px) {
-  .mt-125 {
-    // margin-top: 125px;
-  }
   .max-width {
     max-width: 480px !important;
   }
