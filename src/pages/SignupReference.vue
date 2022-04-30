@@ -329,6 +329,7 @@
                 class="text-subtitle1 text-center fontWeight600 q-my-sm period-heading text-primary"
               >
                 <a
+                  class="text-primary"
                   style="font-family: Poppins; text-decoration: none"
                   href="mailto:subscription@claimguru.com"
                   target="_blank"
@@ -546,8 +547,8 @@
                     :value="progress1"
                   />
                   <div
-                    class="q-mt-sm text-subtitle1 text-bold"
-                    style="color: #5b647a; line-height: 24px; font-weight: 600"
+                    class="q-mt-sm text-subtitle1 text-bold 138,2: lineHeight24 {"
+                    style="color: #5b647a; font-weight: 600"
                   >
                     Step 2. Payment
                   </div>
@@ -1938,7 +1939,7 @@ a {
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .check-img {
     height: 20px !important;
     width: 20px !important;
@@ -1947,6 +1948,10 @@ a {
   .enterprise-mob-package .pkg-details {
     display: flex;
     padding: 2px 0 15px 30px;
+  }
+
+  .contact-us {
+    color: $primary !important;
   }
 }
 
