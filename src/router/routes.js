@@ -12,7 +12,6 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/Login.vue')
       },
-
       {
         path: 'signup',
         name: 'signup',
@@ -51,7 +50,18 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/AccessDenied.vue')
       },
-
+      {
+        path: 'terms-conditions',
+        name: 'terms-conditions',
+        caseSensitive: true,
+        component: () => import('pages/term.vue')
+      },
+      {
+        path: 'privacy-policy',
+        name: 'privacy-policy',
+        caseSensitive: true,
+        component: () => import('pages/privacyPolicy.vue')
+      },
       { path: '', redirect: 'login' }
     ]
   },
