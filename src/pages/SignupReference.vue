@@ -79,17 +79,14 @@
           >
             <div
               v-if="isPackageSelected.id1"
-              class="text-center fontWeight500 text-subtitle1"
+              class="text-center fontWeight500 text-subtitle1 text-primary bg-sidePanel"
               style="
                 border-bottom: 1px solid #ef5926 !important;
-                color: #ef5926;
                 border-radius: 10px 10px 0 0;
-                background-color: #f9dfc8;
                 height: 32px !important;
                 padding: 4px 0px;
                 font-size: 16px;
                 line-height: 24px;
-                color: #ef5926;
                 font-weight: 600;
               "
             >
@@ -97,12 +94,8 @@
             </div>
             <div
               v-else
-              class="text-center fontWeight500 text-subtitle1"
-              style="
-                color: #ef5926;
-                border-radius: 10px 10px 0 0;
-                height: 32px !important; ;
-              "
+              class="text-center fontWeight500 text-subtitle1 text-primary"
+              style="border-radius: 10px 10px 0 0; height: 32px !important"
             ></div>
             <div class="q-px-lg manage-mob-width">
               <div class="row justify-center q-pt-md q-pb-md">
@@ -130,8 +123,7 @@
                 >
               </div>
               <div
-                class="text-subtitle1 text-center period-heading"
-                style="color: #ef5926"
+                class="text-subtitle1 text-center period-heading text-primary"
                 v-if="firmPackages.plandata.length > 0"
               >
                 Start your {{ firmPackages.trialPeriodDays }} Day Free Trial
@@ -190,17 +182,14 @@
           >
             <div
               v-if="isPackageSelected.id2"
-              class="text-center fontWeight500 text-subtitle1"
+              class="text-center fontWeight500 text-subtitle1 text-primary bg-sidePanel"
               style="
                 border-bottom: 1px solid #ef5926 !important;
-                color: #ef5926;
                 border-radius: 10px 10px 0 0;
-                background-color: #f9dfc8;
                 height: 32px !important;
                 padding: 4px 0px;
                 font-size: 16px;
                 line-height: 24px;
-                color: #ef5926;
                 font-weight: 600;
               "
             >
@@ -208,12 +197,8 @@
             </div>
             <div
               v-else
-              class="text-center fontWeight600 text-subtitle1"
-              style="
-                color: #ef5926;
-                border-radius: 10px 10px 0 0;
-                height: 32px !important;
-              "
+              class="text-center fontWeight600 text-subtitle1 text-primary"
+              style="border-radius: 10px 10px 0 0; height: 32px !important"
             ></div>
             <div class="q-px-lg q-pb-lg manage-package-mob-width">
               <div class="row justify-center q-pt-md q-pb-md">
@@ -241,8 +226,8 @@
                 >
               </div>
               <div
-                class="text-subtitle1 text-center fontWeight600 q-my-sm period-heading"
-                style="font-family: Poppins; color: #ef5926"
+                class="text-subtitle1 text-center fontWeight600 q-my-sm period-heading text-primary"
+                style="font-family: Poppins"
                 v-if="individualPackages.plandata.length > 0"
               >
                 Start your {{ individualPackages.trialPeriodDays }} Day Free
@@ -297,8 +282,8 @@
                 class="col text-subtitle1 fontWeight500 col-md-3 col-sm-12 q-pt-sm q-pr-md"
               >
                 <a
-                  class="text-deep-orange float-right contact-us"
-                  style="font-family: Poppins; color: #ef5926"
+                  class="text-deep-orange float-right contact-us text-primary"
+                  style="font-family: Poppins"
                   href="mailto:subscription@claimguru.com"
                   target="_blank"
                   >Contact Us</a
@@ -341,14 +326,10 @@
                 Enterprise Package
               </div>
               <div
-                class="text-subtitle1 text-center fontWeight600 q-my-sm period-heading"
+                class="text-subtitle1 text-center fontWeight600 q-my-sm period-heading text-primary"
               >
                 <a
-                  style="
-                    font-family: Poppins;
-                    color: #ef5926;
-                    text-decoration: none;
-                  "
+                  style="font-family: Poppins; text-decoration: none"
                   href="mailto:subscription@claimguru.com"
                   target="_blank"
                 >
@@ -573,10 +554,9 @@
                 </div>
                 <div
                   v-if="showSeeAllPackages"
-                  class="text-subtitle1 text-right fontWeight500 q-my-sm mobile-view"
+                  class="text-subtitle1 text-right fontWeight500 q-my-sm mobile-view text-primary"
                   style="
                     font-family: Poppins;
-                    color: #ef5926;
                     text-decoration: underline;
                     font-size: 16px;
                     line-height: 20px;
@@ -669,7 +649,10 @@
                   </div>
                   <div class="row q-mt-sm">
                     <div class="col-6">
-                      <label class="text-h6 fontWeight600">After 30 days</label>
+                      <label
+                        class="text-h6 fontWeight600 after_30_days lineHeight24"
+                        >After 30 days</label
+                      >
                     </div>
                     <div class="col-6 q-mt-xs text-right">
                       <div
@@ -695,10 +678,10 @@
                       style=""
                     />
                   </div>
-                  <div class="q-mt-md"></div>
+
                   <div
                     class="fontWeight400"
-                    style="font-size: 12px; line-height: 18px"
+                    style="font-size: 12px; line-height: 18px; margin-top: 20px"
                   >
                     By clicking the ‘Subscribe’ button, you allow ClaimGuru to
                     charge your card for this payment, and you agree to
@@ -1180,10 +1163,12 @@ export default {
   @media only screen and (max-width: 1023px) {
     border-radius: 5px;
     height: 40px;
+    background-color: $primary !important;
   }
   @media only screen and (min-width: 1024px) {
     border-radius: 10px;
     height: 50px;
+    background-color: $primary !important;
   }
 }
 .claimguru-copy {
@@ -1498,7 +1483,7 @@ a.term_of_use {
   }
 }
 .contact-us {
-  color: #ef5926 !important;
+  color: $primary !important;
   @media only screen and (min-width: 1024px) {
     font-style: normal;
     font-weight: 500;
@@ -1648,7 +1633,7 @@ a.term_of_use {
 }
 .card-highlighter {
   border-radius: 10px;
-  border: 1px solid #ef5926 !important;
+  border: 1px solid $primary !important;
 }
 .cardItems {
   width: 30%;
@@ -1695,7 +1680,7 @@ a.term_of_use {
   .StripeElement--focus {
     height: 44px;
     max-width: 100%;
-    border: 2px solid #ef5926 !important;
+    border: 2px solid $primary !important;
     outline: none;
     border-radius: 8px;
     padding: 0 12px;
@@ -2107,19 +2092,4 @@ a {
     line-height: 20px;
   }
 }
-
-// .term-policy-text {
-//   .q-checkbox__inner {
-//     width: 20px;
-//     min-width: 20px;
-//     height: 20px;
-//     margin-right: 15px;
-//   }
-//   .q-checkbox__inner::before {
-//     height: 20px;
-//     width: 20px;
-//     top: 5px !important;
-//     left: 5px !important;
-//   }
-// }
 </style>
