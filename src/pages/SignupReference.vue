@@ -1005,7 +1005,7 @@ export default {
         this.data.stripeToken = token;
         const res = await this.createUserForOrganization(this.data);
         if (res) {
-          this.$router.push('/setup');
+          this.$router.push('/onBoarding');
         }
       }
       // } else {

@@ -5,6 +5,9 @@ export default class AddressService {
     return countryRegionData.map(item => item.countryName);
   }
 
+  getCountriesList() {
+    return countryRegionData;
+  }
   getStates(country) {
     return countryRegionData
       .filter(item => item.countryName === country)[0]

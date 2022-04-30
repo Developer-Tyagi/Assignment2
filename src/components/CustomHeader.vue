@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- header -->
-    <div v-if="$route.name != 'setup' && $route.name !== 'admin'">
+    <div v-if="$route.name != 'onBoarding' && $route.name !== 'admin'">
       <q-header class="bg-white">
         <q-toolbar
           class="row bg-primary rounded-header"
@@ -48,8 +48,11 @@
             />
           </div>
           <div class="text-uppercase text-bold q-mx-auto">
-            <!--Here By default the Page should be Active Lead, we change the header name based on the user routing, if user click on converted Lead then we land it to converted lead page and show the converted lead data, if user click on
-          Dead lead then we land on Dead Lead page and show Dead Lead Datamfrom lead Dashboard page-->
+            Here By default the Page should be Active Lead, we change the header
+            name based on the user routing, if user click on converted Lead then
+            we land it to converted lead page and show the converted lead data,
+            if user click on Dead lead then we land on Dead Lead page and show
+            Dead Lead Datamfrom lead Dashboard page
             <span v-if="$route.name == 'Leads'">{{
               converted ? converted : 'Active'
             }}</span>
@@ -93,33 +96,68 @@
       </q-header>
     </div>
 
-    <q-header class="bg-white">
+    <div
+      class="bg-white ht-83 sm-hide xs-hide bigScreen"
+      :reveal-offset="false"
+    >
+      <!-- <q-header class="bg-white"> -->
       <!-- setup header -->
-      <div class="row" v-if="$route.name == 'setup'">
+      <div class="row" v-if="$route.name == 'onBoarding'">
         <div
-          class="col-3 q-px-xl q-pt-md q-pb-md"
-          v-if="$route.name == 'setup'"
-          style="background-color: #f9e7d8"
+          class="col-xl-3 col-md-4 q-pb-md max-width"
+          style="background-color: #f9e7d8; padding-top: 22px"
         >
-          <q-img src="~assets/Logo.svg" width="50%" />
+          <q-img size="1em" src="~assets/Logo.svg" class="LogoSize q-ml-32" />
         </div>
-        <div class="col bg-white q-pt-md">
+        <div
+          class="col-xl-9 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
+        >
           <div class="row justify-end q-pr-xl">
-            <q-avatar
-              size="4em"
+            <!-- <q-avatar
+              size="3em"
               font-size="2.5rem"
               icon="person"
               class="text-white bg-grey q-mr-md"
             >
-            </q-avatar>
+            </q-avatar> -->
+            <q-img
+              size="1em"
+              src="~assets/Avatarforprofile.svg"
+              class="AvtarLogoSize"
+            />
 
-            <div
-              class="q-pt-md text-capitalize text-weight-bold text-black text-subtitle1"
+            <div class="q-pt-sm text-capitalize" style="margin-left: 5px">
+              <span v-if="isMobile" class="userNameStyle">
+                {{ userName ? userName : updatedUserName }}</span
+              >
+              <q-img
+                size="1em"
+                src="~assets/Icondown.svg"
+                class="dropdownLogo"
+              />
+            </div>
+            <div class="">
+              <!-- <q-btn-dropdown
             >
-              {{ userName ? userName : updatedUserName }}
+              <div class="row no-wrap">
+                <div class="column items-center" style="padding:10px">
+                  <div class="text-subtitle1 q-mt-md q-mb-xs">
+                                  <span v-if="isMobile" class="">
+                {{ userName ? userName : updatedUserName }}</span
+              >
+                  </div>
+          <q-btn
+            class="full-width q-mt-md menu-bar-style text-subtitle1 text-bold"
+            label="LOGOUT"
+            style="border-radius: 25px; width: 100%; height: 50px"
+            @click="logout()"
+          />
+                </div>
+              </div>
+            </q-btn-dropdown> -->
             </div>
           </div>
-          <q-separator class="q-mt-md" />
+          <!-- <q-separator class="q-mt-md" /> -->
         </div>
       </div>
       <!-- admin header -->
@@ -177,20 +215,14 @@
           </div>
         </div>
       </div>
-      <q-separator />
-
+      <!-- <q-separator /> -->
       <div
-        v-if="$route.name !== 'setup' && !$q.screen.lt.sm"
+        v-if="!isMobile() && $route.name !== 'onBoarding' && !$q.screen.lt.sm"
         class="q-px-xl q-ml-lg q-mt-sm q-pt-xs"
       >
         <q-breadcrumbs style="color: #667085" active-color="#667085">
           <template v-slot:separator>
-            <q-icon
-              size="sm"
-              name="chevron_right"
-              color="#D0D5DD"
-              style="color: #d0d5dd"
-            />
+            <q-icon size="sm" name="chevron_right" color="#D0D5DD" />
           </template>
           <q-breadcrumbs-el
             class="cursor-pointer"
@@ -211,11 +243,122 @@
           />
         </q-breadcrumbs>
       </div>
-    </q-header>
+    </div>
 
     <!-- menu -->
-    <div v-if="$route.name !== 'setup'">
+    <div v-if="$route.name !== 'onBoarding'">
       <!-- Menu Drawer for Mobile application-->
+      <q-drawer
+        v-if="isMobile()"
+        v-model="isLeftSidePanelOpen"
+        :width="intViewportWidth"
+        :breakpoint="992"
+        content-class="bg-side-panel"
+        @hide="onMenuHide()"
+      >
+        <div class="q-px-sm q-pt-lg menu-bar-style q-pb-sm">
+          <div class="row q-pl-lg q-pr-md">
+            <div class="q-pt-sm col-3">
+              <q-avatar
+                size="4.5em"
+                color="white"
+                text-color="primary"
+                font-size="2.5rem"
+                icon="person"
+              />
+            </div>
+            <div
+              class="col column text-weight-bold text-white q-pa-sm q-ml-md text-h6"
+              style="width: calc(100% - 54px)"
+            >
+              <div
+                class="text-capitalize ellipsis-2-lines"
+                style="width: 100%; line-height: 1.2"
+              >
+                {{
+                  user.roles[0].machineValue == 'vendor'
+                    ? user.companyName
+                    : user.name
+                }}
+              </div>
+
+              <div class="text-weight-medium text-subtitle2">
+                {{ user.contact.fname ? user.contact.fname : '' }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <q-scroll-area style="height: calc(100% - 265px)">
+          <div class="q-pr-sm">
+            <q-list separator dark>
+              <q-item
+                clickable
+                v-ripple
+                v-for="link in sidebarItems"
+                :key="link.title"
+                @click="routeTo(link)"
+                v-bind="link"
+                class="q-mt-lg bg-white rounded-sidebar q-pa-none q-pb-xs"
+                v-if="
+                  (link.title != 'Dashboard' || isMobile()) &&
+                  (link.title != 'Claims' || isMobile()) &&
+                  (link.title != 'Clients' || isMobile()) &&
+                  (link.title != 'Leads' || isMobile()) &&
+                  (link.title != 'Vendors' || isMobile()) &&
+                  (link.title != 'Carriers' || isMobile()) &&
+                  (link.title != 'Mortgages' || isMobile()) &&
+                  (link.title != 'Vendors' || isMobile()) &&
+                  (link.title != 'Carriers' || isMobile()) &&
+                  (link.title != 'Mortgages' || isMobile()) &&
+                  (link.title != 'Manage Users' || !isMobile()) &&
+                  (link.title != 'Configuration' || !isMobile()) &&
+                  (link.title != 'Admin' || !isMobile())
+                "
+              >
+                <q-item-section @click="onClickMenuItem(link.title)">
+                  <div
+                    class="row text-primary q-mb-sm"
+                    style="max-height: 68px"
+                  >
+                    <div class="q-ml-lg col-2 q-mr-sm q-pt-xs">
+                      <q-icon
+                        :size="link.title == 'Reports' ? '2rem' : '2.5rem'"
+                        :style="
+                          link.title == 'Reports' ? 'padding-top:10px' : ''
+                        "
+                        class="q-mt-sm q-mb-sm"
+                      >
+                        <q-img :src="getImage(link.icon)" color="primary" />
+                      </q-icon>
+                    </div>
+                    <div class="col-8">
+                      <div class="text-subtitle1 text-bold q-pt-sm">
+                        {{ link.title }}
+                      </div>
+
+                      <div style="font-size: 10px">
+                        {{ link.description }}
+                      </div>
+                    </div>
+                  </div>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </div>
+        </q-scroll-area>
+        <div class="q-px-lg q-mt-sm">
+          <q-btn
+            class="full-width q-mt-md menu-bar-style text-subtitle1 text-bold"
+            label="LOGOUT"
+            style="border-radius: 25px; width: 100%; height: 50px"
+            @click="logout()"
+          />
+        </div>
+        <!-- <q-separator class="q-mt-md q-mb-sm bg-primary" style="padding: none" /> -->
+        <p class="text-black q-ml-md" style="opacity: 50%; font-size: 12px">
+          Claimguru Version {{ this.version }}
+        </p>
+      </q-drawer>
 
       <!--Menu Drawer for Web Applicaiton-->
       <q-drawer
@@ -842,7 +985,11 @@ export default {
       'editSelectedClient',
       'isOfflineClientEdit',
       'userName'
-    ])
+    ]),
+    userName() {
+      // currentUser = getCurrentUser().attributes.contact
+      // let fullName = this.userName
+    }
   },
   async created() {
     if (window.innerWidth * 0.9 < 300) {
@@ -868,6 +1015,17 @@ export default {
 <style lang="scss">
 .q-toolbar {
   padding: 0;
+}
+.AvtarLogoSize {
+  width: 40px;
+  height: 40px;
+}
+.q-header {
+  margin: 0 auto !important;
+  max-width: 120rem;
+}
+.q-pt-22 {
+  padding-top: 22px;
 }
 .button-50 {
   width: 50px;
@@ -910,7 +1068,9 @@ export default {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
 }
-
+.q-pt-22 {
+  margin-top: 22px;
+}
 .menu-item-styling {
   width: 270px;
   background: #ffffff;
@@ -920,6 +1080,12 @@ export default {
   left: 38%;
   padding-left: 45px;
   margin-left: -118px;
+}
+
+@media only screen and (min-width: 1440px) {
+  .max-width {
+    max-width: 480px;
+  }
 }
 .header-color {
   @media only screen and (max-width: 1023px) {
@@ -939,7 +1105,10 @@ export default {
   padding-left: 28px;
   margin-left: -16px;
 }
-
+.bigScreen {
+  margin: 0 auto !important;
+  max-width: 120rem !important;
+}
 //style for web menu top claimguru logo
 .web-menu-claim-guru-logo {
   width: 151px;
@@ -956,7 +1125,10 @@ export default {
   background: #f9e7d8;
   height: 50px;
 }
-
+::v-deep .q-layout__section--marginal {
+  background-color: white;
+  border-top: none;
+}
 .breadcrumbs-style {
   color: #667085;
 }
@@ -967,5 +1139,47 @@ export default {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-decoration-color: #ef5926;
+}
+.ht-83 {
+  height: 83px !important;
+}
+.mt-5 {
+  margin-top: 5px;
+}
+.q-ml-32 {
+  margin-left: 32px;
+}
+.padding-top-20 {
+  padding-top: 20px;
+}
+.dropdownLogo {
+  width: 12px;
+  margin-top: -17px;
+  height: 6;
+  margin-left: 10px;
+}
+.LogoSize {
+  width: 151px;
+  height: 51px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.userNameStyle {
+  color: #151821;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  display: inline-block;
+  width: 70px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+@media (min-width: 1024px) {
+  .max-width {
+    max-width: 480px !important;
+  }
 }
 </style>

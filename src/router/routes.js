@@ -1,23 +1,59 @@
 import { guardMyroute } from '@utils/auth.js';
 import { isMobile } from 'src/utils/common';
+import { LocalStorage } from 'quasar';
+
+const tokenName = 'access_token';
 
 const routes = [
   {
     path: '',
     component: () => import('layouts/AuthLayout.vue'),
     children: [
+      // {
+      //   path: 'login',
+      //   name: 'login',
+      //   caseSensitive: true,
+      //   component: () => import('pages/Login.vue')
+      // },
       {
         path: 'login',
         name: 'login',
         caseSensitive: true,
-        component: () => import('pages/Login.vue')
+        component: () => import('pages/Login.vue'),
+        beforeEnter: (to, from, next) => {
+          let token = LocalStorage.getItem(tokenName);
+          if (!token) {
+            next();
+          } else if (token && to.name == 'login') {
+            next('onBoarding');
+          }
+        }
       },
       {
         path: 'signup',
         name: 'signup',
         caseSensitive: true,
-        component: () => import('pages/SignupReference.vue')
+        component: () => import('pages/SignupReference.vue'),
+        beforeEnter: (to, from, next) => {
+          let token = LocalStorage.getItem(tokenName);
+          if (!token) {
+            next();
+          } else if (
+            from.name == 'onBoarding' ||
+            from.name == 'login' ||
+            to.name == 'signup'
+          ) {
+            next('onBoarding');
+          }
+        }
       },
+
+      // {
+      //   path: 'signup',
+      //   name: 'signup',
+      //   caseSensitive: true,
+      //   component: () => import('pages/SignupReference.vue')
+      // },
 
       {
         path: 'set-password',
@@ -71,11 +107,48 @@ const routes = [
     beforeEnter: guardMyroute,
     children: [
       {
-        path: 'setup',
-        name: 'setup',
+        path: 'onBoarding',
+        name: 'onBoarding',
         caseSensitive: true,
-        component: () => import('pages/OnBoard.vue')
+        component: () => import('pages/onboard/onBoardStart.vue')
       },
+      {
+        path: 'onBoarding/step1',
+        name: 'onBoarding',
+        caseSensitive: true,
+        component: () => import('pages/onboard/onBoardStep1.vue')
+      },
+      {
+        path: 'onBoarding/step2',
+        name: 'onBoarding',
+        caseSensitive: true,
+        component: () => import('pages/onboard/onBoardStep2.vue')
+      },
+      {
+        path: 'onBoarding/step3',
+        name: 'onBoarding',
+        caseSensitive: true,
+        component: () => import('pages/onboard/onBoardStep3.vue')
+      },
+      {
+        path: 'onBoarding/step4',
+        name: 'onBoarding',
+        caseSensitive: true,
+        component: () => import('pages/onboard/onBoardStep4.vue')
+      },
+      // {
+      //   path: 'signup',
+      //   name: 'signup',
+      //   caseSensitive: true,
+      //   component: () => import('pages/SignupReference.vue'),
+      //   beforeEnter: (to, from, next) => {
+      //     let token  = LocalStorage.getItem(tokenName)
+      //     console.log(token);
+      //     if (token && next('signup')) {
+      //       next('/setup')
+      //     }
+      //   }
+      // },
       {
         path: 'dashboard',
         name: 'dashboard',

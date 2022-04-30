@@ -48,7 +48,7 @@
     <q-input
       dense
       borderless
-      class="input-style input-overlay"
+      class="input-style input-overlay mt-30"
       style="height: 60px"
       v-model="address.address2"
       label="Address 2"
@@ -119,19 +119,30 @@
       <input
         required
         type="text"
-        borderless
+        outlined
         :id="'id' + id"
-        class="full-width input-autocomplete"
+        class="full-width inside-text"
         v-model="address.address1"
         v-bind:disabled="this.readOnly"
-        style="border: 1px solid #d3d3d3; border-radius: 4px; height: 40px"
+        style="
+          border: 1px solid #b9bcc6;
+          border-radius: 8px;
+          height: 44px;
+          padding-left: 10px;
+        "
         @keydown="validateAddress(address.address1)"
         @blur="validateAddress(address.address1)"
+        placeholder="Company Address"
+        lazy-rules
+        :rules="[
+          val => val.length > 0 || 'Please fill address',
+          val => validateAddress(val) || 'You have entered an invalid address!'
+        ]"
       />
       <span class="q-pl-sm" style="color: #c10015 !important; font-size: 11px">
         {{ errorMSG }}
       </span>
-      <q-input
+      <!-- <q-input
         type="text"
         outlined
         class="q-mt-sm"
@@ -139,18 +150,19 @@
         :disable="this.readOnly"
         style="border-radius: 4px; height: 46px"
         v-model="address.address2"
-      />
+      /> -->
     </div>
-    <div class="row q-mt-sm">
-      <div class="col q-mr-md">
-        <div class="row text-subtitle1 text-weight-bold">
-          City<span class="text-red">*</span>
-        </div>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg mt-16">
+        <div class="row text-subtitle1 text-weight-bold">City</div>
         <q-input
           dense
           outlined
+          class=""
+          input-class="inside-text"
           :class="{ required: isAsteriskMark }"
           v-model="address.addressLocality"
+          placeholder="Enter City Here"
           :disable="this.readOnly"
           lazy-rules
           :rules="[
@@ -159,30 +171,32 @@
           ]"
         />
       </div>
-      <div class="col q-mr-md">
-        <div class="row text-subtitle1 text-weight-bold">
-          State<span class="text-red">*</span>
-        </div>
+      <div class="col-12 col-lg-6 col-xl-6 col-md-6 mt-16">
+        <div class="row text-subtitle1 text-weight-bold">State</div>
         <q-select
           dense
           outlined
           :disable="this.readOnly"
           :class="{ required: isAsteriskMark }"
+          input-class="inside-text"
           v-model="address.addressRegion"
           :options="states"
           behavior="menu"
+          label="Select State"
           lazy-rules
           :rules="[val => val.length > 0 || 'Please fill the state']"
         />
       </div>
-      <div class="col q-mr-sm">
-        <div class="row text-subtitle1 text-weight-bold">
-          ZIP Code<span class="text-red">*</span>
-        </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg mt-30">
+        <div class="row text-subtitle1 text-weight-bold">ZIP Code</div>
         <q-input
           outlined
           dense
           :disable="this.readOnly"
+          input-class="inside-text"
+          placeholder="Zipcode"
           :class="{ required: isAsteriskMark }"
           v-model="address.postalCode"
           lazy-rules
@@ -191,6 +205,23 @@
             val =>
               validateAlphaNumericText(val) || 'Please enter valid ZIP code'
           ]"
+        />
+      </div>
+      <!-- <div class="col-12 col-md-2">      </div> -->
+      <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12 col-xs-12 mt-30">
+        <div class="row text-subtitle1 text-weight-bold">Country</div>
+        <q-select
+          dense
+          outlined
+          :disable="this.readOnly"
+          input-class="inside-text"
+          :class="{ required: isAsteriskMark }"
+          v-model="address.country"
+          label="Select Country"
+          :options="country"
+          behavior="menu"
+          lazy-rules
+          :rules="[val => val.length > 0 || 'Please fill the Country']"
         />
       </div>
     </div>
@@ -439,6 +470,7 @@
 </template>
 <script>
 import AddressService from '@utils/country';
+import countryRegionData from 'country-region-data';
 const addressService = new AddressService();
 import {
   validateEmail,
@@ -494,6 +526,7 @@ export default {
       autocomplete2: {},
       countries: [],
       states: [],
+      country: [],
       errorMSG: ''
     };
   },
@@ -512,7 +545,19 @@ export default {
     );
     this['obj' + this.id].addListener('place_changed', this.fillInAddress);
   },
-
+  watch: {
+    'address.addressRegion'(newVal) {
+      const arr = [];
+      countryRegionData.forEach(element => {
+        element.regions.forEach(region => {
+          if (region.name === newVal) {
+            arr.push(element);
+          }
+        });
+      });
+      this.country = arr.map(item => item.countryName);
+    }
+  },
   methods: {
     validateText,
     validateAlphaNumericText,
@@ -590,8 +635,9 @@ export default {
       }
     },
 
-    onCountrySelect(country) {
-      this.states = addressService.getStates(country);
+    async onCountrySelect(country) {
+      this.states = await addressService.getStates(country);
+      //  this.country = country
     }
   }
 };
@@ -620,14 +666,57 @@ export default {
   }
 }
 
+.inside-text {
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  align-items: center !important;
+  color: #8a90a0 !important;
+  padding: 10px, 14px, 10px, 14px !important;
+}
+.input-size {
+  width: 390px !important;
+  height: 44px !important;
+}
+.spacearound {
+  align-content: space-around;
+}
+.text-subtitle1 {
+  margin-bottom: 6px;
+}
 .pac-container {
   z-index: 10000000;
 }
-
 .pac-icon {
   display: none;
 }
 
+::v-deep .q-field__native {
+  color: #8a90a0 !important;
+}
+
+@media only screen and (min-width: 1024px) {
+  .mt-30 {
+    margin-top: 10px;
+  }
+  .mt-16 {
+    margin-top: 30px;
+  }
+}
+@media screen and (max-width: 1023px) {
+  .q-pr-lg {
+    padding-right: 0px;
+  }
+  .mt-30 {
+    margin-top: 0px;
+  }
+  .mt-16 {
+    margin-top: 16px;
+  }
+  .mt-25 {
+    margin-top: 0px;
+  }
+}
 .pac-item {
   font-size: 16px;
   padding: 4px 10px;
