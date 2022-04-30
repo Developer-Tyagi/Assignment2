@@ -7,24 +7,30 @@
         <div class="">
           <a @click="goHome" style="cursor: pointer">
             <q-img
+              spinner-color="primary"
               src="~assets/Logo.svg"
               class="web-menu-claim-guru-logo"
             ></q-img>
           </a>
         </div>
         <div class="text-h5 text-center fontWeight600 content-center">
-          <div class="claimguru-tagline login-section">
+          <div class="claimguru-tagline login-section login-main-title">
             The First and Only Catastrophe-Proof Claim Management System For
             Public Adjusters
           </div>
         </div>
         <div class="desktop-footer">
           <q-img
+            spinner-color="primary"
+            spinner-size="82px"
             src="~assets/login_banner.svg"
-            style="margin-top: 84px; margin-right: 184px; width: 75%"
+            style="width: 75%"
           />
         </div>
-        <div class="claimguru-copy desktop-footer fontWeight400" style="">
+        <div
+          class="claimguru-copy desktop-footer fontWeight400 footer-fix"
+          style=""
+        >
           <span class=""> © ClaimGuru {{ new Date().getFullYear() }}</span>
         </div>
       </div>
@@ -38,7 +44,7 @@
               <div class="text-h4 fontWeight600 login-head">Login</div>
               <q-form class="" @submit="onUserLogin" ref="orgInfo">
                 <label class="text-subtitle1 fontWeight600 input-label"
-                  >Email Address</label
+                  >Email</label
                 >
                 <q-input
                   v-model="login.email"
@@ -96,14 +102,12 @@
                 </div>
                 <div class="row justify-center">
                   <div
-                    class="col-lg-12 col-md-12 col-sm-12 q-ml-md text-center signup-text"
+                    class="col-lg-12 col-md-12 col-sm-12 q-ml-md text-center signup-text lineHeight24"
                   >
-                    <label class="text-subtitle1"
+                    <label class="text-subtitle1 lineHeight24"
                       >Don’t have an account?
                     </label>
-                    <a
-                      href="/signup"
-                      class="text-deep-orange text-subtitle1 fontWeight500"
+                    <a href="/signup" class="text-subtitle1 fontWeight500"
                       >Sign Up</a
                     >
                   </div>
@@ -309,17 +313,11 @@ export default {
 }
 .signup-text {
   font-size: 16px !important;
-  line-height: 24px;
+  margin-top: 40px;
 
   @media only screen and (min-height: 500px) and (max-height: 800px) {
     margin-bottom: 20px;
     margin-top: 20px;
-  }
-  @media only screen and (min-height: 1024px) {
-    margin-top: 20px;
-  }
-  @media only screen and (max-height: 1023px) {
-    margin-top: 40px;
   }
 }
 .login-section {
@@ -391,7 +389,7 @@ export default {
   @media only screen and (max-width: 1023px) {
     border-radius: 5px;
     height: 40px;
-    margin-top: 8px;
+    margin-top: 6px;
   }
   @media only screen and (min-width: 1024px) {
     border-radius: 10px;
@@ -456,13 +454,7 @@ export default {
 //     padding-right: 48px;
 //   }
 // }
-.login-up {
-  @media only screen and (max-width: 1023px) {
-  }
-  @media only screen and (min-width: 1024px) {
-    margin-top: 25vh;
-  }
-}
+
 .test {
   @media only screen and (max-width: 1500px) {
     padding-left: 48px;
@@ -603,11 +595,71 @@ export default {
 }
 
 .login-section {
-  margin: 90px auto 0 auto !important;
+  margin: 0 auto !important;
   max-width: 630px !important;
 }
 
 .login-up .q-field--with-bottom {
-  padding-bottom: 25px !important;
+  padding-bottom: 24px !important;
+}
+
+.loginform-mobile-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-main-title {
+  padding: 100px 0 84px 0;
+}
+
+.footer-fix {
+  position: fixed;
+  width: 100%;
+}
+
+.btn-submit {
+  background-color: #ef5926 !important;
+}
+
+.signup-text a {
+  color: #ef5926 !important;
+  margin-left: 10px;
+}
+
+@media (max-width: 767px) {
+  .web-menu-claim-guru-logo {
+    margin-top: 15px !important;
+  }
+  .login-mobile-banner {
+    height: 278px;
+  }
+  .login-main-title {
+    padding: 27px 0 40px 0;
+    font-size: 24px;
+    line-height: 36px;
+    width: 310px;
+  }
+
+  .loginform-mobile-banner {
+    display: block;
+  }
+
+  .loginform-mobile-banner .login-up .login-head {
+    padding-top: 0;
+    margin-top: -110px;
+  }
+
+  .btn-submit {
+    margin-top: 0;
+  }
+
+  .login-up .q-field--with-bottom {
+    padding-bottom: 16px !important;
+  }
+
+  .signup-text {
+    margin-top: 20px;
+  }
 }
 </style>
