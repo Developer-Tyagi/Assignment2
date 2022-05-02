@@ -21,130 +21,17 @@
               Fill out the form below with the information about your company.
             </div>
           </div>
-
-          <div class="row">
-            <div class="col-lg-1 col-md-2 col-sm-12">
-              <div style="width: 80px; height: 80px; margin-top: 30px">
-                <q-img src="~assets/companyDefaultImageUpload.svg"></q-img>
-              </div>
-            </div>
-            <div class="col-lg-11 col-md-10 col-sm-12">
-              <div class="formContainer">
-                <div class="formHeight">
-                  <q-form ref="companyDetailsForm">
-                    <div class="mt-30">
-                      <div
-                        class="row text-subtitle1 fontWeight600"
-                        style="margin-bottom: 8px"
-                      >
-                        Company Name
-                      </div>
-
-                      <div class="row">
-                        <q-input
-                          dense
-                          class="full-width companyNameInput"
-                          input-class="input-subtitle1"
-                          style="font-size: 16px"
-                          outlined
-                          v-model="companyDetails.name"
-                          maxlength="128"
-                          disable
-                        />
-                      </div>
-                      <div class="row mt-30">
-                        <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg">
-                          <!-- company adminstrator changed to contact name -->
-                          <div class="row text-subtitle1 fontWeight600">
-                            Company Contact
-                          </div>
-                          <q-input
-                            dense
-                            class=""
-                            input-class="inside-text"
-                            outlined
-                            v-model="companyDetails.contactNumber"
-                            lazy-rules
-                            :rules="[
-                              val =>
-                                val.length > 0 || 'Please add contact number'
-                            ]"
-                          >
-                            <template v-slot:prepend>
-                              <vue-country-code
-                                @onSelect="onSelect"
-                                :preferredCountries="['us']"
-                                enabledCountryCode
-                                defaultCountry="us"
-                                enableSearchField
-                                style="border: none; height: 40px"
-                              >
-                              </vue-country-code>
-                            </template>
-                          </q-input>
-                        </div>
-                        <div
-                          class="col-xl-6 col-lg-6 col-xs-12 col-sm-12 col-md-6"
-                        >
-                          <!-- company adminstrator changed to contact name -->
-                          <div class="row text-subtitle1 fontWeight600">
-                            Company Email
-                          </div>
-                          <q-input
-                            dense
-                            class=""
-                            input-class=" inside-text"
-                            style="border-radius: 8px"
-                            placeholder="Company Email"
-                            lazy-rules
-                            outlined
-                            v-model="companyDetails.email"
-                            :rules="[
-                              val =>
-                                (val && val.length > 0) ||
-                                'Please add email address',
-                              val =>
-                                validateEmail(val) ||
-                                'You have entered an invalid email address!'
-                            ]"
-                          />
-                        </div>
-                      </div>
-                      <div
-                        class="col-xs-12 col-sm-12 com-md-12 mt-25 q-mr-md full-width"
-                      >
-                        <div class="row justify-between">
-                          <div class="col text-subtitle1 fontWeight600">
-                            Company Address
-                          </div>
-                        </div>
-                        <div v-if="companyDetails">
-                          <AutoCompleteAddress
-                            :id="'AddVendor1'"
-                            :address="companyDetails.address"
-                            :isDropBoxEnable="false"
-                            :isChecksEnable="false"
-                            :value="true"
-                            :view="'custom'"
-                            :readOnly="!editCompanyDetails"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="row justify-end">
-                        <q-btn
-                          class="col-1 Next-Btn"
-                          size="md"
-                          color="primary"
-                          label="Next"
-                          no-caps
-                          @click="NextStepperValue"
-                        />
-                      </div>
-                    </div>
-                  </q-form>
-                </div>
-              </div>
+          <div>
+            <CompanyDetails :companyDetails.sync="companyDetails" />
+            <div class="row justify-end">
+              <q-btn
+                class="col-1 Next-Btn"
+                size="md"
+                color="primary"
+                label="Next"
+                no-caps
+                @click="NextStepperValue"
+              />
             </div>
           </div>
         </div>
@@ -155,6 +42,7 @@
 </template>
 
 <script>
+import CompanyDetails from 'components/CompanyDetails';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import MobileFooter from 'components/MobileFooter.vue';
 import CustomSidebar from 'components/CustomSidebar';
@@ -172,18 +60,20 @@ export default {
       width: window.innerWidth,
       step: 0,
       companyDetails: {
+        name: '',
         address: {
           address1: '',
           addressLocality: '',
           addressRegion: '',
-          country: '',
+          addressCountry: '',
           postalCode: ''
         },
-        isDropBoxEnable: false,
-        photoIdEmail: '',
-        photoIdAPIKey: '',
-        contactNumber: '',
-        email: ''
+        email: '',
+        phoneNumber: {
+          code: '',
+          number: '',
+          type: 'pager'
+        }
       },
       editCompanyDetails: true,
       dialCode: '',
@@ -191,6 +81,7 @@ export default {
     };
   },
   components: {
+    CompanyDetails,
     AutoCompleteAddress,
     CustomSidebar,
     MobileFooter
@@ -222,32 +113,14 @@ export default {
     },
     async NextStepperValue() {
       {
-        const success = await this.$refs.companyDetailsForm.validate();
-        if (success) {
-          let dc = '+' + this.dialCode;
-          var payload = {
-            data: {
-              name: this.organization.name,
-              address: {
-                addressCountry: this.companyDetails.address.country,
-                address1: this.companyDetails.address.address1,
-                addressLocality: this.companyDetails.address.addressLocality,
-                addressRegion: this.companyDetails.address.addressRegion,
-                postalCode: this.companyDetails.address.postalCode
-              },
-              phoneNumber: {
-                type: 'pager',
-                code: dc,
-                number: this.companyDetails.contactNumber
-              },
-              email: this.companyDetails.email
-            }
-          };
+        var payload = {
+          data: this.companyDetails
+        };
 
-          await this.updateUserForOrganization(payload);
-          await this.getOrganization();
-          this.$router.push('/onboarding/step2');
-        }
+        await this.updateUserForOrganization(payload);
+        await this.getOrganization();
+        this.$router.push('/onboarding/step2');
+        // }
       }
     },
     onResize(e) {
@@ -282,8 +155,8 @@ export default {
       this.companyDetails.address.postalCode = this.organization.address
         ? this.organization.address.postalCode
         : '';
-      this.companyDetails.contactNumber = this.organization.phoneNumber
-        ? this.organization.phoneNumber.number
+      this.companyDetails.phoneNumber = this.organization.phoneNumber
+        ? this.organization.phoneNumber
         : '';
       this.companyDetails.address.country = this.organization.address
         ? this.organization.address.addressCountry
