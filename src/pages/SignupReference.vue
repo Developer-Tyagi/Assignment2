@@ -20,8 +20,8 @@
             style="border-radius: 5px; margin-top: 10px"
           />
           <div
-            class="q-mt-sm text-subtitle1 fontWeight600 step-text"
-            style="color: #5b647a"
+            class="text-subtitle1 fontWeight600 step-text lineHeight24"
+            style="color: #5b647a; margin-top: 10px"
           >
             Step 1. Create Account
           </div>
@@ -50,7 +50,7 @@
         </div>
         <div class="">
           <div
-            class="text-h6 fontWeight600 outer-padding main-pack-heading package-section"
+            class="text-h6 fontWeight600 outer-padding main-pack-heading package-section signup-package-selected"
             style="justify-content: left !important"
           >
             <span
@@ -98,14 +98,16 @@
               style="border-radius: 10px 10px 0 0; height: 32px !important"
             ></div>
             <div class="q-px-lg manage-mob-width">
-              <div class="row justify-center q-pt-md q-pb-md">
+              <div class="row justify-center q-pt-md">
                 <q-img
                   :src="getImage('Featured icon (1).svg')"
                   width="20%"
                   class="package-icon"
                 />
               </div>
-              <div class="text-h6 fontWeight600 text-center pack-heading">
+              <div
+                class="text-h6 fontWeight600 text-center pack-heading package-title"
+              >
                 Firm Package
               </div>
               <div class="text-h6 fontWeight600 text-center pack-heading">
@@ -201,14 +203,16 @@
               style="border-radius: 10px 10px 0 0; height: 32px !important"
             ></div>
             <div class="q-px-lg q-pb-lg manage-package-mob-width">
-              <div class="row justify-center q-pt-md q-pb-md">
+              <div class="row justify-center q-pt-md">
                 <q-img
                   :src="getImage('Featured icon (2).svg')"
                   width="20%"
                   class="package-icon"
                 />
               </div>
-              <div class="text-h6 fontWeight600 text-center pack-heading">
+              <div
+                class="text-h6 fontWeight600 text-center pack-heading package-title"
+              >
                 Individual Package
               </div>
               <div class="text-h6 fontWeight600 text-center pack-heading">
@@ -263,23 +267,22 @@
         </div>
         <div class="test desktop-view outer-padding package-section">
           <div class="card-border bg-white card-container-enterprice">
-            <div class="row q-px-lg q-pt-md q-mx-md">
+            <div class="row q-px-lg q-mx-md">
               <div class="col-md-9 col-sm-12 text-h6 text-left row">
-                <div class="col-md-1 col-sm-12">
+                <div
+                  class="col-md-12 col-sm-12 fontWeight500 text-left pack-heading enterprise-title"
+                >
                   <q-img
                     :src="getImage('enterprice.svg')"
-                    width="130%"
+                    width="50px"
                     class="enterprice-img"
                   />
-                </div>
-                <div
-                  class="col-md-11 col-sm-12 fontWeight500 text-left q-pl-lg q-pt-sm pack-heading"
-                >
-                  Enterprise Package
+
+                  <span class="package-title">Enterprise Package</span>
                 </div>
               </div>
               <div
-                class="col text-subtitle1 fontWeight500 col-md-3 col-sm-12 q-pt-sm q-pr-md"
+                class="col text-subtitle1 fontWeight500 col-md-3 col-sm-12 q-pr-md"
               >
                 <a
                   class="text-deep-orange float-right contact-us text-primary"
@@ -322,11 +325,13 @@
                   class="package-icon"
                 />
               </div>
-              <div class="text-h6 fontWeight500 text-center pack-heading">
+              <div
+                class="text-h6 fontWeight500 text-center pack-heading enterprise-mob-title"
+              >
                 Enterprise Package
               </div>
               <div
-                class="text-subtitle1 text-center fontWeight600 q-my-sm period-heading text-primary"
+                class="text-subtitle1 text-center fontWeight600 mob-contact-us text-primary"
               >
                 <a
                   class="text-primary"
@@ -373,7 +378,7 @@
                   style="border-radius: 5px; margin-top: 10px"
                 />
                 <div
-                  class="q-mt-sm text-subtitle1 fontWeight600"
+                  class="q-mt-sm text-subtitle1 fontWeight600 lineHeight24"
                   style="color: #5b647a"
                 >
                   Step 1. Create Account
@@ -502,7 +507,7 @@
                   >
                 </div>
 
-                <div class="row justify-center q-mt-lg">
+                <div class="row justify-center">
                   <q-btn
                     label="Continue"
                     no-caps
@@ -518,12 +523,10 @@
                   <div
                     class="col-lg-12 col-md-12 col-sm-12 col-xm-12 q-ml-md text-center signup-text"
                   >
-                    <label class="text-subtitle1"
-                      >Already have an account?
-                    </label>
+                    <label>Already have an account?</label>
                     <a
                       href="/login"
-                      class="text-deep-orange text-subtitle1 fontWeight500"
+                      class="text-primary text-subtitle1 fontWeight500 lineHeight24"
                       >Login</a
                     >
                   </div>
@@ -555,12 +558,13 @@
                 </div>
                 <div
                   v-if="showSeeAllPackages"
-                  class="text-subtitle1 text-right fontWeight500 q-my-sm mobile-view text-primary"
+                  class="text-subtitle1 text-right fontWeight500 q-my-sm mobile-view text-primary see-all-package"
                   style="
                     font-family: Poppins;
                     text-decoration: underline;
                     font-size: 16px;
                     line-height: 20px;
+                    cursor: pointer;
                   "
                   @click="showAllPlans"
                 >
@@ -1178,12 +1182,14 @@ export default {
     line-height: 20px;
     margin: 62px 0px 38px 32px;
     bottom: 0px;
+    letter-spacing: 0.15px;
   }
   @media only screen and (min-height: 1024px) {
     font-size: 14px;
     line-height: 20px;
     margin: 62px 0px 38px 32px;
     bottom: 0px;
+    letter-spacing: 0.15px;
   }
 }
 .input-label {
@@ -1290,6 +1296,9 @@ export default {
 .signup-text {
   font-size: 16px !important;
   line-height: 24px;
+  a {
+    margin-left: 10px;
+  }
 
   @media only screen and (min-height: 500px) and (max-height: 800px) {
     margin-bottom: 20px;
@@ -1377,25 +1386,18 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    max-width: 480px;
+    max-width: 510px;
     margin-left: auto;
     margin-right: auto;
   }
-  @media only screen and (max-width: 700px) {
+  @media only screen and (max-width: 600px) {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    max-width: 480px;
+    max-width: 510px;
     margin-left: auto;
     margin-right: auto;
-  }
-  @media only screen and (max-width: 500px) {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    max-width: 480px;
   }
 }
 .signup-head {
@@ -1485,6 +1487,7 @@ a.term_of_use {
 }
 .contact-us {
   color: $primary !important;
+  margin-top: 23px;
   @media only screen and (min-width: 1024px) {
     font-style: normal;
     font-weight: 500;
@@ -1522,13 +1525,13 @@ a.term_of_use {
     font-weight: 600;
     font-size: 24px;
     line-height: 32px;
-    padding: 16px 0px 16px 48px;
+    padding: 16px 15px 20px 48px;
   }
   @media only screen and (max-width: 1023px) {
     font-weight: 600;
     font-size: 24px;
     line-height: 28px;
-    padding: 10px 0px 20px 15px;
+    padding: 10px 0 20px 0;
   }
 }
 .payment-pack-heading {
@@ -1601,10 +1604,10 @@ a.term_of_use {
 }
 .signup {
   @media only screen and (min-width: 1024px) {
-    margin-left: 48px;
-    margin-right: 48px;
-    padding-left: 48px;
-    padding-right: 48px;
+    padding-left: 0;
+    padding-right: 0;
+    max-width: 430px;
+    margin: 0 auto;
   }
   @media only screen and (max-width: 1023px) {
     margin-left: 0px;
@@ -1762,7 +1765,7 @@ a.term_of_use {
 .pack-heading,
 .period-heading,
 .signup-head {
-  letter-spacing: 0.75px;
+  letter-spacing: 0.75px !important;
 }
 
 .pack-data,
@@ -1772,7 +1775,7 @@ a.term_of_use {
 .term-policy-text,
 .signup-text,
 a {
-  letter-spacing: 0.15px;
+  letter-spacing: 0.15px !important;
 }
 
 .q-field {
@@ -1784,6 +1787,17 @@ a {
 .signup-sub.subscribe {
   .q-field--with-bottom {
     padding-bottom: 25px !important;
+  }
+}
+
+.package-title {
+  padding-top: 10px;
+}
+
+.enterprise-title {
+  margin-top: 16px;
+  span {
+    margin-left: 10px;
   }
 }
 
@@ -1812,7 +1826,7 @@ a {
   }
 }
 
-@media (min-width: 1024px) and (max-width: 1200px) {
+@media (min-width: 1024px) and (max-width: 1300px) {
   .package-section {
     flex-direction: column;
     .col-md-5 {
@@ -1832,7 +1846,7 @@ a {
     align-items: center;
     .col-md-9,
     .col-md-1,
-    .col-md-11,
+    .col-md-12,
     .col-md-3 {
       width: 100% !important;
     }
@@ -1841,18 +1855,22 @@ a {
       justify-content: center;
       align-items: center;
     }
-    .col-md-11 {
+    .col-md-12 {
       text-align: center;
       margin: 0;
       padding: 0;
     }
 
-    .col-md-1 {
-      text-align: center;
-      .enterprice-img {
-        width: 50px !important;
-        height: 50px !important;
-      }
+    .enterprise-title {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .enterprice-img {
+      width: 50px !important;
+      height: 50px !important;
     }
   }
 
@@ -1914,6 +1932,18 @@ a {
     padding-left: 35px;
     padding-right: 35px;
   }
+
+  .package-title {
+    padding-top: 0;
+  }
+
+  .enterprice-img {
+    margin-top: 10px;
+  }
+
+  .contact-us {
+    margin-top: 0;
+  }
 }
 
 @media (min-width: 1300px) {
@@ -1953,12 +1983,23 @@ a {
   .contact-us {
     color: $primary !important;
   }
+
+  .enterprise-mob-title {
+    margin-top: 10px;
+  }
+
+  .mob-contact-us {
+    padding: 12px 0;
+  }
 }
 
+input {
+  font-size: 16px !important;
+}
 .subscribe input::placeholder {
   font-family: Poppins;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 16px !important;
   line-height: 24px;
   color: #8a90a0 !important;
   opacity: 1; /* Firefox */
@@ -1968,7 +2009,7 @@ a {
   /* Internet Explorer 10-11 */
   font-family: Poppins;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 16px !important;
   line-height: 24px;
   color: #8a90a0 !important;
 }
@@ -1977,7 +2018,7 @@ a {
   /* Microsoft Edge */
   font-family: Poppins;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 16px !important;
   line-height: 24px;
   color: #8a90a0 !important;
 }
@@ -2000,7 +2041,7 @@ a {
   line-height: 24px;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 600px) {
   .claimguru-tagline {
     max-width: 345px !important;
     padding: 25px 0 10px 0;
@@ -2047,9 +2088,6 @@ a {
   }
 
   .enterprise-mob-package {
-    .pack-heading {
-      padding: 10px 0 0 0;
-    }
     .pack-data.pkg-details {
       padding: 0 0 15px 0;
       .check-img {
@@ -2075,11 +2113,24 @@ a {
   }
 
   .term-policy-text {
-    margin-bottom: 15px;
+    margin-top: 10px;
+    position: relative;
+    margin-bottom: 20px;
+    padding: 0 0 0 32px;
+    .q-checkbox {
+      position: absolute;
+      left: -7px;
+      top: -10px;
+    }
+
+    a,
+    label {
+      margin-top: 0 !important;
+    }
   }
 
   .signup-text {
-    margin-top: 25px;
+    margin-top: 30px;
   }
 
   .aditional-licence,
@@ -2095,6 +2146,27 @@ a {
   .pack-data span {
     font-size: 14px;
     line-height: 20px;
+  }
+
+  .pack-heading span.amt {
+    line-height: 20px;
+  }
+
+  .pack-heading span.text-grey {
+    font-size: 12px !important;
+    line-height: 12px !important;
+  }
+
+  .signup-package-selected {
+    padding: 10px 15px 20px 15px;
+  }
+  // .outer-padding.package-section {
+  //   padding-left: 0;
+  //   padding-right: 0;
+  // }
+
+  .see-all-package {
+    margin: 22px 0 30px 0 !important;
   }
 }
 </style>

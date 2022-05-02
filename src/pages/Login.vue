@@ -1,5 +1,5 @@
 <template>
-  <q-page class="column poppinsFont">
+  <q-page class="column poppinsFont page-content">
     <div class="col row">
       <div
         class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary login-mobile-banner"
@@ -414,15 +414,15 @@ export default {
     font-size: 14px;
     line-height: 20px;
     margin: 62px 0px 38px 32px;
-    position: static;
-    bottom: 0px;
+    // position: static;
+    // bottom: 0px;
   }
   @media only screen and (min-height: 1024px) {
     font-size: 14px;
     line-height: 20px;
     margin: 62px 0px 38px 32px;
-    position: absolute;
-    bottom: 0px;
+    // position: absolute;
+    // bottom: 0px;
   }
 }
 .mobile-footer {
@@ -594,6 +594,11 @@ export default {
   max-width: 120rem;
 }
 
+.page-content {
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
 .login-section {
   margin: 0 auto !important;
   max-width: 630px !important;
@@ -611,11 +616,6 @@ export default {
 
 .login-main-title {
   padding: 100px 0 84px 0;
-}
-
-.footer-fix {
-  position: fixed;
-  width: 100%;
 }
 
 .btn-submit {
