@@ -2,7 +2,7 @@
   <q-page class="column poppinsFont page-content">
     <div class="col row custom-cols">
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary">
-        <div class="q-pb-md">
+        <div class="q-pb-md signup-logo-space">
           <a @click="goHome" style="cursor: pointer">
             <q-img
               src="~assets/Logo.svg"
@@ -144,7 +144,7 @@
                 </q-card-actions>
               </div>
               <div
-                class="q-ml-md text-subtitle1 pack-data fontWeight400 col-md-4 col-xs-12 col-sm-12 pkg-details"
+                class="q-ml-md pack-data fontWeight400 col-md-4 col-xs-12 col-sm-12 pkg-details"
                 v-for="key in firmPackages.plandata"
                 :key="key.tempkey"
               >
@@ -248,7 +248,7 @@
                 </q-card-actions>
               </div>
               <div
-                class="q-ml-md text-subtitle1 fontWeight400 pack-data pkg-details"
+                class="q-ml-md fontWeight400 pack-data pkg-details"
                 v-for="key2 in individualPackages.plandata"
                 :key="key2.tempkey2"
               >
@@ -521,7 +521,7 @@
                 </div>
                 <div class="row justify-center">
                   <div
-                    class="col-lg-12 col-md-12 col-sm-12 col-xm-12 q-ml-md text-center signup-text"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xm-12 text-center signup-text"
                   >
                     <label>Already have an account?</label>
                     <a
@@ -1211,6 +1211,10 @@ export default {
   line-height: 26px;
   margin-bottom: 30px;
   color: #667085 !important;
+
+  @media only screen and (max-width: 1023px) {
+    margin-bottom: 0;
+  }
 }
 
 .pkg-details {
@@ -1417,6 +1421,17 @@ export default {
     padding-right: 48px;
   }
 }
+.package-section {
+  @media only screen and (max-width: 1023px) {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  @media only screen and (max-width: 576px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
 .secure-logo {
   @media only screen and (max-width: 1023px) {
     width: 83.72px;
@@ -1970,6 +1985,9 @@ a {
 }
 
 @media (max-width: 1023px) {
+  .signup-main.payment-section {
+    padding: 0 15px;
+  }
   .check-img {
     height: 20px !important;
     width: 20px !important;
@@ -2042,6 +2060,9 @@ input {
 }
 
 @media (max-width: 600px) {
+  .signup-logo-space {
+    padding-bottom: 0;
+  }
   .claimguru-tagline {
     max-width: 345px !important;
     padding: 25px 0 10px 0;
@@ -2167,6 +2188,12 @@ input {
 
   .see-all-package {
     margin: 22px 0 30px 0 !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .signup-main.payment-section {
+    padding: 0;
   }
 }
 </style>

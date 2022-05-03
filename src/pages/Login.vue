@@ -1,6 +1,6 @@
 <template>
   <q-page class="column poppinsFont page-content">
-    <div class="col row">
+    <div class="col row login-main">
       <div
         class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary login-mobile-banner"
       >
@@ -102,7 +102,7 @@
                 </div>
                 <div class="row justify-center">
                   <div
-                    class="col-lg-12 col-md-12 col-sm-12 q-ml-md text-center signup-text lineHeight24"
+                    class="col-lg-12 col-md-12 col-sm-12 text-center signup-text lineHeight24"
                   >
                     <label class="text-subtitle1 lineHeight24"
                       >Don’t have an account?
@@ -579,16 +579,30 @@ export default {
 }
 
 .q-field {
-  @media only screen and (min-width: 365px) and (max-width: 379px) {
-    width: 347px;
-  }
+  // @media only screen and (min-width: 365px) and (max-width: 379px) {
+  //   width: 347px;
+  // }
   @media only screen and (min-width: 380px) and (max-width: 1023px) {
-    width: 357px;
+    max-width: 357px;
   }
   @media only screen and (min-width: 1024px) {
     width: 431px;
   }
 }
+
+.login-main-title,
+.login-head {
+  letter-spacing: 0.75px;
+}
+
+.input-label,
+.login-section .signup-text label,
+.login-section .signup-text a,
+.login-section .btn-submit,
+.desktop-footer span {
+  letter-spacing: 0.15px;
+}
+
 .q-page-container {
   margin: 0 auto;
   max-width: 120rem;
@@ -615,7 +629,7 @@ export default {
 }
 
 .login-main-title {
-  padding: 100px 0 84px 0;
+  padding: 100px 15px 84px 15px;
 }
 
 .btn-submit {
@@ -627,6 +641,32 @@ export default {
   margin-left: 10px;
 }
 
+@media (min-width: 1200px) {
+  .loginform-mobile-banner {
+    max-height: 950px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .loginform-mobile-banner {
+    max-height: 950px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .login-mobile-banner {
+    height: 400px;
+  }
+
+  .loginform-mobile-banner {
+    padding: 0 0 40px 0;
+  }
+
+  .login-main.col {
+    display: block;
+  }
+}
+
 @media (max-width: 767px) {
   .web-menu-claim-guru-logo {
     margin-top: 15px !important;
@@ -635,19 +675,19 @@ export default {
     height: 278px;
   }
   .login-main-title {
-    padding: 27px 0 40px 0;
+    padding: 40px 0 40px 0;
     font-size: 24px;
     line-height: 36px;
-    width: 310px;
+    max-width: 75% !important;
   }
 
   .loginform-mobile-banner {
     display: block;
+    padding: 50px 0 50px 0;
   }
 
   .loginform-mobile-banner .login-up .login-head {
     padding-top: 0;
-    margin-top: -110px;
   }
 
   .btn-submit {
@@ -660,6 +700,34 @@ export default {
 
   .signup-text {
     margin-top: 20px;
+    margin-left: 0;
+  }
+  .login-section .btn-submit {
+    margin-top: 10px;
   }
 }
+
+@media (max-width: 600px) {
+  .login-main-title {
+    padding: 27px 15px 40px 15px;
+    line-height: 28px;
+    max-width: 420px !important;
+    height: 210px;
+  }
+
+  .loginform-mobile-banner {
+    padding: 40px 15px 50px 15px;
+  }
+}
+
+// @media (max-width: 400px) {
+//     .loginform-mobile-banner{
+//       .q-field{
+//         width: 100% !important;
+//       }
+//       .login-up{
+//         width: 100% !important;
+//       }
+//     }
+//   }
 </style>
