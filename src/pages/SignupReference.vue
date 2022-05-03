@@ -386,7 +386,12 @@
               </div>
 
               <div class="text-h4 fontWeight600 signup-head">Subscribe Now</div>
-              <q-form class="q-mt-lg" @submit="onContinue()" ref="orgInfo">
+              <q-form
+                class="q-mt-lg"
+                @submit="onContinue()"
+                ref="orgInfo"
+                autocomplete="off"
+              >
                 <label class="text-subtitle1 fontWeight600 input-label"
                   >First Name</label
                 >
@@ -396,15 +401,12 @@
                   color="primary"
                   placeholder="Enter Your First Name"
                   outlined
+                  @blur="removeWhiteSpace($event, 'fname')"
+                  autocomplete="off"
                   class="required"
                   :maxlength="maxlengthConstants.firstName"
                   lazy-rules
-                  :rules="[
-                    val => !!val || 'Please fill your first name',
-                    val =>
-                      validateNames(val) ||
-                      'Only alphabets and $ . - characters allowed!'
-                  ]"
+                  :rules="[val => !!val || 'Please fill your first name']"
                 />
 
                 <label class="text-subtitle1 fontWeight600 input-label"
@@ -414,17 +416,14 @@
                   v-model="data.user.contact.lname"
                   name="lastName"
                   color="primary"
+                  @blur="removeWhiteSpace($event, 'lname')"
                   placeholder="Enter Your Last Name"
                   outlined
+                  autocomplete="off"
                   class="required"
                   :maxlength="maxlengthConstants.lastName"
                   lazy-rules
-                  :rules="[
-                    val => !!val || 'Please fill your last name',
-                    val =>
-                      validateNames(val) ||
-                      'Only alphabets and $ . - characters allowed!'
-                  ]"
+                  :rules="[val => !!val || 'Please fill your last name']"
                 />
 
                 <label class="text-subtitle1 fontWeight600 input-label"
@@ -436,6 +435,8 @@
                   color="primary"
                   placeholder="Enter Email Address"
                   outlined
+                  @blur="removeWhiteSpace($event, 'email')"
+                  autocomplete="new-password"
                   class="required"
                   lazy-rules
                   :rules="[val => validateEmailid(val)]"
@@ -449,8 +450,10 @@
                   color="primary"
                   class="required full-width"
                   placeholder="Enter Your Password"
+                  @blur="removeWhiteSpace($event, 'password')"
                   v-model="data.user.password"
                   outlined
+                  autocomplete="new-password"
                   :type="isPwd ? 'password' : 'text'"
                   :rules="[
                     val => (val && val.length > 0) || 'Please fill password',
@@ -475,8 +478,10 @@
                   v-model="data.company.name"
                   name="businessName"
                   color="primary"
+                  @blur="removeWhiteSpace($event, 'cname')"
                   placeholder="Enter Your Company Name"
                   outlined
+                  autocomplete="off"
                   class="required"
                   :maxlength="maxlengthConstants.companyName"
                   lazy-rules
@@ -570,7 +575,12 @@
                 >
                   See all package
                 </div>
-                <q-form class="" @submit="onPaymentClick()" ref="orgInfo">
+                <q-form
+                  class=""
+                  @submit="onPaymentClick()"
+                  ref="orgInfo"
+                  autocomplete="off"
+                >
                   <div>{{ displayErrors }}</div>
                   <div class="payment-pack-heading fontWeight600 signup-head">
                     <div class="">Pay with card for</div>
@@ -600,13 +610,12 @@
                     v-model="cardName"
                     placeholder="Enter Name on Card"
                     outlined
+                    autocomplete="off"
                     class="required full-width"
+                    @blur="removeWhiteSpace($event, 'cardname')"
+                    :maxlength="maxlengthConstants.cardName"
                     lazy-rules
-                    :rules="[
-                      val =>
-                        validateNames(val) ||
-                        'Only alphabets and $ . - characters allowed!'
-                    ]"
+                    :rules="[val => validateCardNames(val) || '']"
                   />
                   <!-- <q-input
                   borderless
@@ -737,7 +746,11 @@ const stripe = Stripe(`${process.env.STRIPE_API_KEY}`);
 const home_page = process.env.HOME_PAGE_URL;
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { constants } from '@utils/constant';
-import { validateEmail, validateNames } from '@utils/validation';
+import {
+  validateEmail,
+  validateNames,
+  validateCardNames
+} from '@utils/validation';
 import { isMobile } from '@utils/common';
 
 export default {
@@ -824,6 +837,43 @@ export default {
       'createUserForOrganization',
       'checkExistingEmail'
     ]),
+    removeWhiteSpace(event, elementName) {
+      const value = event.target.value;
+      let result = '';
+      if (String(value).length >= 0) {
+        let wsRegex = /^\s+|\s+$/g;
+        result = value.replace(wsRegex, '');
+        if (elementName == 'fname') {
+          this.data.user.contact.fname = result;
+        } else if (elementName == 'lname') {
+          this.data.user.contact.lname = result;
+        } else if (elementName == 'email') {
+          this.data.user.email = result;
+        } else if (elementName == 'cname') {
+          this.data.company.name = result;
+        } else if (elementName == 'password') {
+          this.data.user.password = result;
+        } else if (elementName == 'cardname') {
+          this.cardName = result;
+        }
+      } else {
+        if (elementName == 'fname') {
+          this.data.user.contact.fname = event.target.value;
+        } else if (elementName == 'lname') {
+          this.data.user.contact.lname = event.target.value;
+        } else if (elementName == 'email') {
+          this.data.user.email = event.target.value;
+        } else if (elementName == 'cname') {
+          this.data.company.name = event.target.value;
+        } else if (elementName == 'password') {
+          this.data.user.password = event.target.value;
+        } else if (elementName == 'cardname') {
+          this.cardName = event.target.value;
+        }
+      }
+
+      this.$forceUpdate();
+    },
     goHome() {
       window.location.href = home_page;
     },
@@ -869,6 +919,7 @@ export default {
     },
     validateEmail,
     validateNames,
+    validateCardNames,
     async onContinue() {
       if (
         !(
@@ -1260,7 +1311,7 @@ export default {
   font-size: 12px !important;
   line-height: 12px !important;
   margin-left: 8px;
-  margin-top: -12px;
+  margin-top: -14px !important;
 }
 .enterprice-img {
   @media only screen and (min-width: 1475px) {

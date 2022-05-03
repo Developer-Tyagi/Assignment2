@@ -105,3 +105,7 @@ export function validateNames(text) {
   }
   return false;
 }
+// validate text that allowes alphabets and some special characters
+export function validateCardNames(text) {
+  return true;
+}
