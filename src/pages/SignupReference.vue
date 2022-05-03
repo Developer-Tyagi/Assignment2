@@ -2,7 +2,7 @@
   <q-page class="column poppinsFont page-content">
     <div class="col row custom-cols">
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary">
-        <div class="q-pb-md">
+        <div class="q-pb-md signup-logo-space">
           <a @click="goHome" style="cursor: pointer">
             <q-img
               src="~assets/Logo.svg"
@@ -521,7 +521,7 @@
                 </div>
                 <div class="row justify-center">
                   <div
-                    class="col-lg-12 col-md-12 col-sm-12 col-xm-12 q-ml-md text-center signup-text"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xm-12 text-center signup-text"
                   >
                     <label>Already have an account?</label>
                     <a
@@ -1211,6 +1211,10 @@ export default {
   line-height: 26px;
   margin-bottom: 30px;
   color: #667085 !important;
+
+  @media only screen and (max-width: 1023px) {
+    margin-bottom: 0;
+  }
 }
 
 .pkg-details {
@@ -2042,6 +2046,9 @@ input {
 }
 
 @media (max-width: 600px) {
+  .signup-logo-space {
+    padding-bottom: 0;
+  }
   .claimguru-tagline {
     max-width: 345px !important;
     padding: 25px 0 10px 0;

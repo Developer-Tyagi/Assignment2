@@ -102,7 +102,7 @@
                 </div>
                 <div class="row justify-center">
                   <div
-                    class="col-lg-12 col-md-12 col-sm-12 q-ml-md text-center signup-text lineHeight24"
+                    class="col-lg-12 col-md-12 col-sm-12 text-center signup-text lineHeight24"
                   >
                     <label class="text-subtitle1 lineHeight24"
                       >Don’t have an account?
@@ -598,7 +598,8 @@ export default {
 .input-label,
 .login-section .signup-text label,
 .login-section .signup-text a,
-.login-section .btn-submit {
+.login-section .btn-submit,
+.desktop-footer span {
   letter-spacing: 0.15px;
 }
 
@@ -715,7 +716,7 @@ export default {
   }
 
   .loginform-mobile-banner {
-    padding: 40px 0 50px 0;
+    padding: 40px 15px 50px 15px;
   }
 }
 </style>
