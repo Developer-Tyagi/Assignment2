@@ -615,7 +615,6 @@
                     @blur="removeWhiteSpace($event, 'cardname')"
                     :maxlength="maxlengthConstants.cardName"
                     lazy-rules
-                    :rules="[val => validateCardNames(val) || '']"
                   />
                   <!-- <q-input
                   borderless
@@ -837,6 +836,11 @@ export default {
       'createUserForOrganization',
       'checkExistingEmail'
     ]),
+
+    handleBackButtonPressed() {
+      alert('Clicked');
+      return false;
+    },
     removeWhiteSpace(event, elementName) {
       const value = event.target.value;
       let result = '';
@@ -853,8 +857,6 @@ export default {
           this.data.company.name = result;
         } else if (elementName == 'password') {
           this.data.user.password = result;
-        } else if (elementName == 'cardname') {
-          this.cardname = result;
         }
       } else {
         if (elementName == 'fname') {
@@ -867,8 +869,6 @@ export default {
           this.data.company.name = event.target.value;
         } else if (elementName == 'password') {
           this.data.user.password = event.target.value;
-        } else if (elementName == 'cardname') {
-          this.cardname = vent.target.value;
         }
       }
 
@@ -1316,7 +1316,7 @@ export default {
   font-size: 12px !important;
   line-height: 12px !important;
   margin-left: 8px;
-  margin-top: -12px;
+  margin-top: -14px !important;
 }
 .enterprice-img {
   @media only screen and (min-width: 1475px) {
