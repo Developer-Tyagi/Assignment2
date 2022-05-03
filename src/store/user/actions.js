@@ -683,6 +683,23 @@ export async function toRedirectGoogleAuth1({ commit, dispatch }) {
   }
 }
 
+export async function toRedirectGoogleAuth2({ commit, dispatch }, redirectURL) {
+  dispatch('setLoading', true);
+  try {
+    const result = await request.get(
+      `users/google-oauth2?fe_redirect_url=${redirectURL}`
+    );
+    window.location = result.oauth2URL;
+    dispatch('setLoading', false);
+  } catch (e) {
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response
+    });
+  }
+}
+
 // Get card details
 export async function getCardInfo({ dispatch, state }) {
   // dispatch('setLoading', true);

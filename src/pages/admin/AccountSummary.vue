@@ -287,6 +287,9 @@
             </div>
           </div>
         </div>
+        <div v-else class="q-mt-lg">
+          <ConnectGoogleDrive />
+        </div>
       </q-card>
       <q-card
         :class="
@@ -439,13 +442,15 @@ import {
 import { validateEmail, validateUrl, validateText } from '@utils/validation';
 import { constants } from '@utils/constant';
 import CompanyDetails from 'components/CompanyDetails';
+import ConnectGoogleDrive from 'components/ConnectGoogleDrive';
+
 // import AddressService from '@utils/country';
 
 // const addressService = new AddressService();
 
 export default {
   name: 'AccountSummary',
-  components: { CompanyDetails },
+  components: { CompanyDetails, ConnectGoogleDrive },
   data() {
     return {
       editAccountSummary: false,
