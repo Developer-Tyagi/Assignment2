@@ -51,6 +51,7 @@
                   name="email"
                   color="primary"
                   placeholder="Enter Registered Email Address"
+                  @blur="removeWhiteSpace($event, 'email')"
                   outlined
                   class="required input-class"
                   lazy-rules
@@ -70,6 +71,7 @@
                   color="primary"
                   class="required full-width input-class"
                   placeholder="Enter Your Password"
+                  @blur="removeWhiteSpace($event, 'password')"
                   v-model="login.password"
                   outlined
                   :type="isPwd ? 'password' : 'text'"
@@ -198,6 +200,27 @@ export default {
   methods: {
     ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
     ...mapMutations(['setSelectedClaimId', 'setNotificationRouteTo']),
+    removeWhiteSpace(event, elementName) {
+      const value = event.target.value;
+      let result = '';
+      if (String(value).length >= 0) {
+        let wsRegex = /^\s+|\s+$/g;
+        result = value.replace(wsRegex, '');
+        if (elementName == 'email') {
+          this.login.email = result;
+        } else if (elementName == 'password') {
+          this.login.password = result;
+        }
+      } else {
+        if (elementName == 'email') {
+          this.login.email = event.target.value;
+        } else if (elementName == 'password') {
+          this.login.password = event.target.value;
+        }
+      }
+
+      this.$forceUpdate();
+    },
     goHome() {
       window.location.href = home_page;
     },
@@ -259,11 +282,7 @@ export default {
           }
 
           //below function is use for checking login routing for mobile and web screen,
-          if (isMobile()) {
-            this.$router.push('/dashboard');
-          } else {
-            this.$router.push('/admin');
-          }
+          this.$router.push('/admin');
         }
       }
     },
