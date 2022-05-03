@@ -255,6 +255,7 @@
       style="display: none"
       v-model="fileToUpload"
       @input="uploadLogo()"
+      @rejected="logoError()"
     />
   </div>
 </template>
@@ -339,13 +340,15 @@ export default {
           file: this.fileToUpload,
           companyName: this.organization.name
         });
-      } else {
-        this.setNotification({
-          type: 'negative',
-          message: 'Only .png, .jpg and .jpeg file types are allowed'
-        });
       }
       this.fileToUpload = null;
+    },
+
+    logoError() {
+      this.setNotification({
+        type: 'negative',
+        message: 'Only .png, .jpg and .jpeg file types are allowed'
+      });
     },
     async deleteLogo(logoUrl) {
       await this.deleteFileFromFirebase({ url: logoUrl, showMsg: true });
