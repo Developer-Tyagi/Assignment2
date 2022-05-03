@@ -50,6 +50,6 @@ export const constants = {
     firstName: 128,
     lastName: 128,
     companyName: 256,
-    cardName: 256
+    cardName: 128
   }
 };
