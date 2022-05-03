@@ -7,6 +7,7 @@
     <CustomHeader @backButton="onBackButtonClick" />
 
     <q-page-container
+      style="margin: 0 0"
       :style="`${
         $route.name === 'dashboard' ? 'background-color: #8f8f8f;' : ''
       }`"
@@ -24,7 +25,7 @@
             $route.name != 'configuration' &&
             $route.name != 'manage users' &&
             $route.name != 'admin' &&
-            $route.name != 'setup' &&
+            $route.name != 'onboarding' &&
             $route.name != 'reports' &&
             $route.name != 'signup' &&
             $route.name != 'set-password' &&
@@ -63,16 +64,18 @@
       >
         <AddOptions />
       </q-dialog>
-    </q-page-container>
-    <q-footer class="row" v-if="!isMobile() && $route.name == 'setup'">
-      <div
-        class="col-3 text-black text-subtitle1 q-pb-sm q-pl-xl"
-        style="background-color: #f9e7d8"
-      >
-        © ClaimGuru 2022
+      <div class="row" v-if="$route.name == 'onboarding'">
+        <div
+          class="col-xl-3 col-md-4 max-width sm-hide xs-hide text-footer q-py-38"
+          style="background-color: #f9e7d8; margin-left: 0px !important"
+        >
+          <span class="px-32" style="color: #0c0c0c">
+            © ClaimGuru <span class="yearLabel">{{ CurrentYear }}</span></span
+          >
+        </div>
+        <div class="col-lg-9 col-md-8 bg-white"></div>
       </div>
-      <div class="col bg-white"></div>
-    </q-footer>
+    </q-page-container>
   </q-layout>
   <q-layout v-else :view="$q.screen.lt.sm ? 'hHh LpR lFf' : 'lHh LpR lFf'">
     <!--this is used because the theming of web and mob is different-->
@@ -96,7 +99,7 @@
             $route.name != 'configuration' &&
             $route.name != 'manage users' &&
             $route.name != 'admin' &&
-            $route.name != 'setup' &&
+            $route.name != 'onboarding' &&
             $route.name != 'reports' &&
             $route.name != 'signup' &&
             $route.name != 'set-password' &&
@@ -135,16 +138,16 @@
       >
         <AddOptions />
       </q-dialog>
+      <q-footer class="row" v-show="$route.name == 'onboarding'">
+        <div
+          class="col-md-4 col-lg-3 col-xl-4 text-footer px-32 q-pb-sm q-pl-xl"
+          style="background-color: #f9e7d8"
+        >
+          © ClaimGuru<span class="q-px-md">{{ CurrentYear }}</span>
+        </div>
+        <div class="col-md-8 col-lg-9 col-xl-8 bg-white"></div>
+      </q-footer>
     </q-page-container>
-    <q-footer class="row" v-if="!isMobile() && $route.name == 'setup'">
-      <div
-        class="col-3 text-black text-subtitle1 q-pb-sm q-pl-xl"
-        style="background-color: #f9e7d8"
-      >
-        © ClaimGuru 2022
-      </div>
-      <div class="col bg-white"></div>
-    </q-footer>
   </q-layout>
 </template>
 <script>
@@ -160,15 +163,20 @@ export default {
     return { openDialog: false };
   },
   computed: {
-    ...mapGetters(['isEdit', 'routeFromLeadDashboad'])
+    ...mapGetters(['isEdit', 'routeFromLeadDashboad']),
+    CurrentYear() {
+      const d = new Date();
+      let year = d.getFullYear();
+      return year;
+    }
   },
   async mounted() {
     let data = await this.getUserInfo();
     if (
       data.attributes.onboard.isCompleted == false &&
-      this.$route.name != 'setup'
+      this.$route.name != 'onboarding'
     ) {
-      this.$router.push('/setup');
+      this.$router.push('/onboarding');
     }
   },
   methods: {
@@ -262,13 +270,66 @@ export default {
 };
 </script>
 <style lang="scss">
+body {
+  overflow-x: hidden;
+}
 .icon-width {
   width: 100px;
 }
-
+.q-page-container {
+  margin: 0 auto !important;
+  max-width: 120rem;
+}
+.q-page-bottom {
+  margin: 0 auto !important;
+  max-width: 120rem !important;
+}
 .card {
   max-width: 100%;
   height: 40px;
   border-radius: 5px;
+}
+::v-deep .q-layout__section--marginal {
+  background-color: white;
+  border-top: none;
+}
+.bodyMinHeight {
+  @media (max-width: 1024px) {
+    min-height: calc(100vh - 419px);
+  }
+}
+.titleLetterSpacing {
+  letter-spacing: 0.75px;
+}
+.normalLetterSpacing {
+  letter-spacing: 0.15px;
+}
+.text-footer {
+  font-weight: 400;
+  color: #667085;
+  font-size: 14px;
+  // padding-bottom: 28px;
+}
+.yearLabel {
+  padding-left: 4px;
+}
+.px-32 {
+  margin-left: 32px !important;
+}
+.q-py-38 {
+  padding-top: 38px;
+  padding-bottom: 38px;
+}
+.mb-38 {
+  margin-bottom: 38px;
+}
+.ml-1 {
+  margin-left: 2px;
+}
+
+@media (min-width: 1024px) {
+  .max-width {
+    max-width: 480px !important;
+  }
 }
 </style>
