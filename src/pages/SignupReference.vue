@@ -1104,11 +1104,6 @@ export default {
   },
 
   async created() {
-    document.addEventListener(
-      'backbutton',
-      this.handleBackButtonPressed,
-      false
-    );
     // if (getToken() && getCurrentUser()) {
     //   if (isMobile()) {
     //     this.$router.push('/dashboard');
