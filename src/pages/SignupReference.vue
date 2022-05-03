@@ -575,7 +575,12 @@
                 >
                   See all package
                 </div>
-                <q-form class="" @submit="onPaymentClick()" ref="orgInfo">
+                <q-form
+                  class=""
+                  @submit="onPaymentClick()"
+                  ref="orgInfo"
+                  autocomplete="off"
+                >
                   <div>{{ displayErrors }}</div>
                   <div class="payment-pack-heading fontWeight600 signup-head">
                     <div class="">Pay with card for</div>
@@ -607,7 +612,10 @@
                     outlined
                     autocomplete="off"
                     class="required full-width"
+                    @blur="removeWhiteSpace($event, 'cardname')"
+                    :maxlength="maxlengthConstants.cardName"
                     lazy-rules
+                    :rules="[val => validateCardNames(val) || '']"
                   />
                   <!-- <q-input
                   borderless
@@ -738,7 +746,11 @@ const stripe = Stripe(`${process.env.STRIPE_API_KEY}`);
 const home_page = process.env.HOME_PAGE_URL;
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { constants } from '@utils/constant';
-import { validateEmail, validateNames } from '@utils/validation';
+import {
+  validateEmail,
+  validateNames,
+  validateCardNames
+} from '@utils/validation';
 import { isMobile } from '@utils/common';
 
 export default {
@@ -825,10 +837,6 @@ export default {
       'createUserForOrganization',
       'checkExistingEmail'
     ]),
-    handleBackButtonPressed() {
-      alert('Clicked');
-      return false;
-    },
     removeWhiteSpace(event, elementName) {
       const value = event.target.value;
       let result = '';
@@ -845,6 +853,8 @@ export default {
           this.data.company.name = result;
         } else if (elementName == 'password') {
           this.data.user.password = result;
+        } else if (elementName == 'cardname') {
+          this.cardname = result;
         }
       } else {
         if (elementName == 'fname') {
@@ -857,6 +867,8 @@ export default {
           this.data.company.name = event.target.value;
         } else if (elementName == 'password') {
           this.data.user.password = event.target.value;
+        } else if (elementName == 'cardname') {
+          this.cardname = vent.target.value;
         }
       }
 
@@ -907,6 +919,7 @@ export default {
     },
     validateEmail,
     validateNames,
+    validateCardNames,
     async onContinue() {
       if (
         !(
@@ -1303,7 +1316,7 @@ export default {
   font-size: 12px !important;
   line-height: 12px !important;
   margin-left: 8px;
-  margin-top: -14px !important;
+  margin-top: -12px;
 }
 .enterprice-img {
   @media only screen and (min-width: 1475px) {
