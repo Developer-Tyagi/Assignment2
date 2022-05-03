@@ -579,9 +579,9 @@ export default {
 }
 
 .q-field {
-  @media only screen and (min-width: 365px) and (max-width: 379px) {
-    width: 347px;
-  }
+  // @media only screen and (min-width: 365px) and (max-width: 379px) {
+  //   width: 347px;
+  // }
   @media only screen and (min-width: 380px) and (max-width: 1023px) {
     width: 357px;
   }
@@ -719,4 +719,15 @@ export default {
     padding: 40px 15px 50px 15px;
   }
 }
+
+// @media (max-width: 400px) {
+//     .loginform-mobile-banner{
+//       .q-field{
+//         width: 100% !important;
+//       }
+//       .login-up{
+//         width: 100% !important;
+//       }
+//     }
+//   }
 </style>
