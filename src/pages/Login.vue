@@ -583,10 +583,10 @@ export default {
   //   width: 347px;
   // }
   @media only screen and (min-width: 380px) and (max-width: 1023px) {
-    width: 357px;
+    max-width: 357px;
   }
   @media only screen and (min-width: 1024px) {
-    width: 431px;
+    max-width: 431px;
   }
 }
 

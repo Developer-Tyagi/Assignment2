@@ -1421,6 +1421,17 @@ export default {
     padding-right: 48px;
   }
 }
+.package-section {
+  @media only screen and (max-width: 1023px) {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  @media only screen and (max-width: 576px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
 .secure-logo {
   @media only screen and (max-width: 1023px) {
     width: 83.72px;
@@ -1974,6 +1985,9 @@ a {
 }
 
 @media (max-width: 1023px) {
+  .signup-main.payment-section {
+    padding: 0 15px;
+  }
   .check-img {
     height: 20px !important;
     width: 20px !important;
@@ -2174,6 +2188,12 @@ input {
 
   .see-all-package {
     margin: 22px 0 30px 0 !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .signup-main.payment-section {
+    padding: 0;
   }
 }
 </style>
