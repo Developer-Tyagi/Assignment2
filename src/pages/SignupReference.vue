@@ -854,7 +854,7 @@ export default {
         } else if (elementName == 'password') {
           this.data.user.password = result;
         } else if (elementName == 'cardname') {
-          this.cardname = result;
+          this.cardName = result;
         }
       } else {
         if (elementName == 'fname') {
@@ -868,7 +868,7 @@ export default {
         } else if (elementName == 'password') {
           this.data.user.password = event.target.value;
         } else if (elementName == 'cardname') {
-          this.cardname = vent.target.value;
+          this.cardName = event.target.value;
         }
       }
 
