@@ -270,24 +270,7 @@
           <div class="details-title">Google Drive</div>
           <span></span>
         </div>
-        <div v-if="organizations.isDriveConnected">
-          <div class="flex-column details-container q-pt-lg">
-            <div class="details-heading">Email</div>
-            <div class="details-content q-pt-sm ellipsis">
-              {{ organizations.driveEmail }}
-            </div>
-            <div
-              class="flex-row justify-center items-center q-mt-lg google-drive"
-            >
-              <span class="text-center"
-                >Connected to Google Drive
-                <span>
-                  <q-icon name="task_alt" color="teal" size="17px" /> </span
-              ></span>
-            </div>
-          </div>
-        </div>
-        <div v-else class="q-mt-lg">
+        <div class="q-pt-lg">
           <ConnectGoogleDrive />
         </div>
       </q-card>
@@ -418,14 +401,6 @@
           </div>
         </div>
       </q-card>
-      <!-- <q-input
-        ref="uploadImageFileInput"
-        accept="image/jpg, image/png, image/jpeg"
-        style="display: none"
-        v-model="fileToUpload"
-        type="file"
-        @change="uploadLogo()"
-      /> -->
     </div>
   </q-page>
 </template>
@@ -459,22 +434,6 @@ export default {
       userId: '',
       organizations: {
         name: '',
-        // companyDetails: {
-        //   address: {
-        //     address1: '',
-        //     address2: '',
-        //     addressLocality: '',
-        //     addressRegion: '',
-        //     postalCode: '',
-        //     addressCountry: ''
-        //   },
-        //   contactEmail: ''
-        // },
-        // phoneNumber: {
-        //   code: '',
-        //   number: '',
-        //   type: ''
-        // },
         photoIDAPIKey: '',
         photoIDEmail: '',
         isDriveConnected: false,
@@ -537,21 +496,7 @@ export default {
         this.organizations.logo = value.logo;
       }
     }
-    // isMobileResolution(value) {
-    //   if (value) {
-    //     this.menuPosition = [-40, 30];
-    //   } else {
-    //     this.menuPosition = [-60, 50];
-    //   }
-    // }
   },
-
-  // mounted() {
-  //   this.companyDetails.address.addressCountry = 'United States';
-  //   this.onCountrySelect(
-  //     this.companyDetails.address.addressCountry
-  //   );
-  // },
 
   async created() {
     document.title = 'Account Summary - claimguru';
@@ -629,22 +574,6 @@ export default {
       if (success && this.companyDetails.address.address1.length > 0) {
         const payload = {
           data: this.companyDetails
-          // {
-          //   name: this.companyDetails.name,
-          //   address: {
-          //     address1: this.companyDetails.address.address1,
-          //     addressLocality: this.companyDetails.address.addressLocality,
-          //     addressRegion: this.companyDetails.address.addressRegion,
-          //     addressCountry: this.companyDetails.address.addressCountry,
-          //     postalCode: this.companyDetails.address.postalCode
-          //   },
-          //   email: this.companyDetails.email,
-          //   phoneNumber: {
-          //     code: this.companyDetails.phoneNumber.code,
-          //     number: this.companyDetails.phoneNumber.number,
-          //     type: 'pager'
-          //   }
-          // }
         };
         await this.updateUserForOrganization(payload);
         await this.getOrganization();
@@ -725,16 +654,6 @@ export default {
 
       if (this.organization.address) {
         this.companyDetails.address = this.organization.address;
-        // this.companyDetails.address.address1 =
-        //   this.organization.address.address1;
-        // this.companyDetails.address.addressRegion =
-        //   this.organization.address.addressRegion;
-        // this.companyDetails.address.addressLocality =
-        //   this.organization.address.addressLocality;
-        // this.companyDetails.address.addressCountry =
-        //   this.organization.address.addressCountry;
-        // this.companyDetails.address.postalCode =
-        //   this.organization.address.postalCode;
       }
     },
     cancelPhotoIDUpdate() {
@@ -802,21 +721,6 @@ export default {
         return false;
       }
     }
-    // async deleteLogo(logoUrl) {
-    //   await this.deleteFileFromFirebase({ url: logoUrl, showMsg: true });
-    //   await this.updateCompanyLogo({
-    //     logoURL: '',
-    //     companyName: this.organization.name
-    //   });
-    //   await this.getOrganization();
-    // },
-    // onSelect({ name, iso2, dialCode }) {
-    //   this.companyDetails.phoneNumber.code = '';
-    //   this.companyDetails.phoneNumber.code = '+' + dialCode;
-    // },
-    // async onCountrySelect(country) {
-    //   this.states = await addressService.getStates(country);
-    // }
   },
 
   destroyed() {
@@ -836,19 +740,6 @@ export default {
 .half-container {
   width: calc((100vw - 428px) / 2 - 0px);
 }
-.google-drive {
-  height: 44px;
-  width: 351px;
-  border: solid 1px #039855;
-  color: #039855;
-  background-color: #d1fadf;
-  border-radius: 8px;
-  box-sizing: border-box;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.15px;
-}
 .error-msg {
   position: absolute;
   color: #c10015 !important;
@@ -863,11 +754,6 @@ export default {
   .account-details {
     display: flex;
     flex-direction: column;
-  }
-  .google-drive {
-    height: 40px;
-    width: calc(100% - 0px);
-    max-width: 313px;
   }
 }
 </style>
