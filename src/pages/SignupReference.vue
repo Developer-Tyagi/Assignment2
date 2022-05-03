@@ -144,7 +144,7 @@
                 </q-card-actions>
               </div>
               <div
-                class="q-ml-md text-subtitle1 pack-data fontWeight400 col-md-4 col-xs-12 col-sm-12 pkg-details"
+                class="q-ml-md pack-data fontWeight400 col-md-4 col-xs-12 col-sm-12 pkg-details"
                 v-for="key in firmPackages.plandata"
                 :key="key.tempkey"
               >
@@ -248,7 +248,7 @@
                 </q-card-actions>
               </div>
               <div
-                class="q-ml-md text-subtitle1 fontWeight400 pack-data pkg-details"
+                class="q-ml-md fontWeight400 pack-data pkg-details"
                 v-for="key2 in individualPackages.plandata"
                 :key="key2.tempkey2"
               >
