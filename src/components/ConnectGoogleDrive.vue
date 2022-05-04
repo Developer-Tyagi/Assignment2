@@ -33,6 +33,19 @@ export default {
   data() {
     return {};
   },
+  props: {
+    isPreviousClicked: {
+      Boolean,
+      default: false
+    }
+  },
+  watch: {
+    isPreviousClicked() {
+      if (this.isPreviousClicked) {
+        this.organization.isDriveConnected = false;
+      }
+    }
+  },
   computed: {
     ...mapGetters(['organization'])
   },
@@ -49,6 +62,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.details-container {
+  width: 100% !important;
+}
 .drive-image {
   height: 24px;
   width: 27px;

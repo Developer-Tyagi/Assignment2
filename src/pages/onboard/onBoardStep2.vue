@@ -24,70 +24,11 @@
                 files with your Google Drive so you will retain full ownership
                 over your data.
               </div>
-              <div class="mt-30" v-if="this.checkConnection == true">
-                <span style="font-weight: 600; font-size: 16px; color: #101828"
-                  >Email</span
-                ><br />
-                <span
-                  class="mt-8"
-                  style="
-                    font-weight: 400;
-                    font-size: 16px;
-                    color: #151821;
-                    letter-spacing: 00.15px;
-                    font-family: 'Poppins';
-                  "
-                  >{{ this.emailId }}</span
-                >
-              </div>
             </div>
 
             <div class="row">
               <div class="mt-24 col-sm-12">
-                <q-btn
-                  v-if="this.checkConnection == false"
-                  @click="onRedirectToGoogleAuth()"
-                  class="row connectWithGoogle"
-                >
-                  <q-avatar>
-                    <q-img
-                      class="col"
-                      style="
-                        width: 26px;
-                        height: 24px;
-                        margin-top: -15px;
-                        margin-left: 20px;
-                      "
-                      :src="getImage('logos_google-drive.svg')"
-                    />
-                  </q-avatar>
-                  <span class="col q-ml-xs mb-15 fontWeight500 connectDriveText"
-                    >Connect Google Drive</span
-                  >
-                </q-btn>
-                <div
-                  v-else
-                  class="row justify-center connectedGooglebtn"
-                  style="
-                    font-size: 16px;
-                    border: solid 1px #039855;
-                    background-color: #d1fadf;
-                    border-radius: 8px;
-                  "
-                >
-                  <span
-                    class="text-center fontWeight500"
-                    style="color: #039855; padding-top: 10px"
-                    >Connected to Google Drive
-                    <span>
-                      <q-icon
-                        name="task_alt"
-                        color="teal"
-                        size="sm"
-                        class="ticIcon"
-                      /> </span
-                  ></span>
-                </div>
+                <ConnectGoogleDrive :isPreviousClicked="isPreviousClicked" />
               </div>
             </div>
 
@@ -101,12 +42,11 @@
                 @click="navigatePreviousStepper"
                 >Back</q-btn
               >
-
               <q-btn
                 class="fontWeight600 Next-Btn"
                 no-caps
                 @click="NextStepperValue"
-                :disable="!checkConnection"
+                :disable="!(organization && organization.isDriveConnected)"
                 >Next</q-btn
               >
             </div>
@@ -119,10 +59,10 @@
 </template>
 
 <script>
-import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomSidebar from 'components/CustomSidebar';
 import MobileFooter from 'components/MobileFooter.vue';
 import { mapGetters, mapActions } from 'vuex';
+import ConnectGoogleDrive from 'components/ConnectGoogleDrive';
 export default {
   meta() {
     return {
@@ -132,55 +72,25 @@ export default {
   data() {
     return {
       metaTitle: 'Connect With Google Drive - claimguru',
-      emailId: '',
-      step: 0,
-      companyDetails: {
-        address: {
-          address1: '',
-          addressLocality: '',
-          addressRegion: '',
-          country: '',
-          postalCode: ''
-        },
-        isDropBoxEnable: false,
-        photoIdEmail: '',
-        photoIdAPIKey: '',
-        contactNumber: '',
-        email: ''
-      },
-      editCompanyDetails: true,
-      dialCode: '',
-      checkConnection: false
+      isPreviousClicked: false
     };
   },
   components: {
-    AutoCompleteAddress,
     CustomSidebar,
+    ConnectGoogleDrive,
     MobileFooter
   },
   methods: {
-    ...mapActions(['getUserInfo', 'getOrganization', 'toRedirectGoogleAuth1']),
-    getImage(icon) {
-      return require('../../assets/' + icon);
-    },
-    onSelect({ name, iso2, dialCode }) {
-      this.dialCode = dialCode;
-    },
-    getStarted() {
-      this.$router.push('/onboarding/step1');
-    },
+    ...mapActions(['getUserInfo']),
     async NextStepperValue() {
-      this.checkConnection = true;
+      // this.checkConnection = true;
       this.$router.push('/onboarding/step3');
     },
-    onRedirectToGoogleAuth() {
-      this.toRedirectGoogleAuth1();
-    },
     navigatePreviousStepper() {
-      if (this.checkConnection) {
-        this.checkConnection = false;
+      if (this.organization.isDriveConnected) {
+        this.isPreviousClicked = true;
       } else {
-        this.$router.push('./step1');
+        this.$router.push('/onboarding/step1');
       }
     }
   },
@@ -193,45 +103,12 @@ export default {
     }
   },
   async created() {
-    this.step = 0;
-    await this.getOrganization();
-    if (this.organization) {
-      this.companyDetails.name = this.organization.name;
-      if (this.organization) {
-        this.companyDetails.address.address1 = this.organization.address
-          ? this.organization.address.address1
-          : '';
-        this.companyDetails.address.addressLocality = this.organization.address
-          ? this.organization.address.addressLocality
-          : '';
-        this.companyDetails.address.addressRegion = this.organization.address
-          ? this.organization.address.addressRegion
-          : '';
-        this.companyDetails.address.postalCode = this.organization.address
-          ? this.organization.address.postalCode
-          : '';
-        this.companyDetails.contactNumber = this.organization.phoneNumber
-          ? this.organization.phoneNumber.number
-          : '';
-        this.companyDetails.email = this.organization.email;
-        this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
-        this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
-      }
-      this.step = 0;
+    if (this.$route.query.googleConnect == 'true') {
       // this.checkConnection = true;
-      if (this.$route.query.googleConnect == 'true') {
-        this.checkConnection = true;
-      } else {
-        let data = await this.getUserInfo();
-        this.emailId = data.attributes.email;
-        if (data.attributes.onboard.isCompleted == true) {
-          this.$router.push('/dashboard');
-          // if (isMobile()) {
-          //   this.$router.push('/dashboard');
-          // } else {
-          //   this.$router.push('/admin');
-          // }
-        }
+    } else {
+      let data = await this.getUserInfo();
+      if (data.attributes.onboard.isCompleted == true) {
+        this.$router.push('/dashboard');
       }
     }
   }
@@ -242,6 +119,7 @@ export default {
 .connectDriveContainer {
   margin-left: 62px;
   margin-right: 110px;
+  max-width: 120rem !important;
   @media (max-width: 1023px) {
     margin-left: 15px;
     margin-right: 15px;
@@ -267,7 +145,7 @@ export default {
 }
 .q-page-container {
   margin: 0 auto !important;
-  max-width: 120rem;
+  max-width: 120rem !important;
 }
 .min-height {
   min-height: auto !important;
