@@ -87,11 +87,7 @@ export default {
       this.$router.push('/onboarding/step3');
     },
     navigatePreviousStepper() {
-      if (this.organization.isDriveConnected) {
-        this.isPreviousClicked = true;
-      } else {
-        this.$router.push('/onboarding/step1');
-      }
+      this.$router.push('/onboarding/step1');
     }
   },
   computed: {
