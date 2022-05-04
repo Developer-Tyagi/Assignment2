@@ -50,7 +50,7 @@
                         input-class="photoId-Inputtext"
                         placeholder="Company Email Address"
                         outlined
-                        v-model="companyDetails.photoIdEmail"
+                        v-model.trim="companyDetails.photoIdEmail"
                         lazy-rules
                         :rules="[
                           val =>
@@ -68,7 +68,7 @@
                         input-class="photoId-Inputtext"
                         outlined
                         placeholder="Account API Key"
-                        v-model="companyDetails.photoIdAPIKey"
+                        v-model.trim="companyDetails.photoIdAPIKey"
                         :rules="[
                           val =>
                             (val && val.length > 0) ||
@@ -115,7 +115,7 @@
 <script>
 import CustomSidebar from 'components/CustomSidebar';
 import MobileFooter from 'components/MobileFooter.vue';
-import { validateEmail, successMessage } from '@utils/validation';
+import { validateEmail, successMessage, errorMessage } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
 export default {
   meta() {
@@ -155,8 +155,10 @@ export default {
       this.$router.push('/onboarding/step2');
     },
     async NextStepperValue() {
-      const success = await this.$refs.editPhotoIDForm.validate();
-      if (success) {
+      if (
+        this.companyDetails.photoIdEmail &&
+        this.companyDetails.photoIdAPIKey
+      ) {
         const payload = {
           data: {
             name: this.organization.name,
@@ -170,10 +172,19 @@ export default {
           this.successMessage('PhotoID account details updated');
           this.$router.push('/onboarding/step4');
         }
+      } else if (
+        (!this.companyDetails.photoIdEmail &&
+          this.companyDetails.photoIdAPIKey) ||
+        (!this.companyDetails.photoIdAPIKey && this.companyDetails.photoIdEmail)
+      ) {
+        this.errorMessage('Please provide all details');
+      } else {
+        this.$router.push('/onboarding/step4');
       }
     },
     validateEmail,
-    successMessage
+    successMessage,
+    errorMessage
   },
   computed: {
     ...mapGetters(['organization']),
@@ -642,6 +653,9 @@ export default {
   .q-px-xl {
     padding-left: 0px;
     padding-right: 0px;
+  }
+  ::v-deep .q-field__marginal {
+    font-size: 18px !important;
   }
 
   .Account-setup-text {
