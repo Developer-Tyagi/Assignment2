@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      metaTitle: 'Account Setup Successfull - claimguru',
+      metaTitle: 'Account Setup Successful - claimguru',
       step: 0,
       companyDetails: {
         address: {
@@ -103,7 +103,7 @@ export default {
     },
     goToHome() {
       this.$router.push('/admin');
-      LocalStorage.clear(tokenName);
+      LocalStorage.clear('access_token');
     }
   },
   computed: {

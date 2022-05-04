@@ -76,6 +76,9 @@ export default {
       return require('../../assets/' + icon);
     },
     getStarted() {
+      // let arr = []
+      // arr.push({step1: true})
+      // localStorage.setItem('completedSteps', JSON.stringify(arr))
       this.$router.push('/onboarding/step1');
     }
   },
