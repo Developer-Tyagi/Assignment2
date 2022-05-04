@@ -22,17 +22,19 @@
             </div>
           </div>
           <div>
-            <CompanyDetails :companyDetails.sync="companyDetails" />
-            <div class="row justify-end">
-              <q-btn
-                class="col-1 Next-Btn"
-                size="md"
-                color="primary"
-                label="Next"
-                no-caps
-                @click="NextStepperValue"
-              />
-            </div>
+            <q-form greedy v-if="editCompanyDetails" ref="companyDetailsForm">
+              <CompanyDetails :companyDetails.sync="companyDetails" />
+              <div class="row justify-end">
+                <q-btn
+                  class="col-1 Next-Btn"
+                  size="md"
+                  color="primary"
+                  label="Next"
+                  no-caps
+                  @click="NextStepperValue"
+                />
+              </div>
+            </q-form>
           </div>
         </div>
       </div>
@@ -112,7 +114,9 @@ export default {
       }
     },
     async NextStepperValue() {
-      {
+      const success = await this.$refs.companyDetailsForm.validate();
+
+      if (success && this.companyDetails.address.address1.length > 0) {
         var payload = {
           data: this.companyDetails
         };
@@ -155,9 +159,9 @@ export default {
       this.companyDetails.address.postalCode = this.organization.address
         ? this.organization.address.postalCode
         : '';
-      this.companyDetails.phoneNumber = this.organization.phoneNumber
-        ? this.organization.phoneNumber
-        : '';
+      if (this.organization.phoneNumber) {
+        this.companyDetails.phoneNumber = this.organization.phoneNumber;
+      }
       this.companyDetails.address.country = this.organization.address
         ? this.organization.address.addressCountry
         : '';

@@ -139,7 +139,9 @@
               lazy-rules
               :rules="[
                 val =>
-                  (companyDetailsObj.email ? validateEmail(val) : true) ||
+                  (companyDetailsObj.email
+                    ? validateEmail(val)
+                    : 'Please fill email address') ||
                   'Please enter valid email address'
               ]"
             />
