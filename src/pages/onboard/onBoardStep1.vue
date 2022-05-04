@@ -162,12 +162,10 @@ export default {
       if (this.organization.phoneNumber) {
         this.companyDetails.phoneNumber = this.organization.phoneNumber;
       }
-      this.companyDetails.address.country = this.organization.address
+      this.companyDetails.address.addressCountry = this.organization.address
         ? this.organization.address.addressCountry
         : '';
       this.companyDetails.email = this.organization.email;
-      this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
-      this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
     }
     window.addEventListener('resize', this.onResize);
   },
