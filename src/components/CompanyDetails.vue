@@ -354,7 +354,7 @@ export default {
       await this.deleteFileFromFirebase({ url: logoUrl, showMsg: true });
       await this.updateCompanyLogo({
         logoURL: '',
-        companyName: this.companyDetailsObj.name
+        companyName: this.organization.name
       });
       await this.getOrganization();
     },
