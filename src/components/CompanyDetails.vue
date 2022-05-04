@@ -157,9 +157,7 @@
           v-model.trim="companyDetailsObj.address.address1"
           placeholder="Company Address"
           lazy-rules
-          :rules="[
-            val => (val && val.length > 0) || 'Please add company address'
-          ]"
+          :rules="[val => (val && val.length > 0) || 'Please fill address']"
         />
 
         <div
