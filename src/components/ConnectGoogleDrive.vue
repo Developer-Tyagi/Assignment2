@@ -17,7 +17,7 @@
     <div
       v-else
       @click="onRedirectToGoogleAuth()"
-      class="flex-row justify-center items-center connect-google-drive"
+      class="flex-row justify-center items-center connect-google-drive cursor-pointer"
     >
       <img class="drive-image" :src="getImage('logos_google-drive.svg')" />
       <span class="text-center"> Connect Google Drive </span>

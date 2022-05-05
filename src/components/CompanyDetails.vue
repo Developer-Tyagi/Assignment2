@@ -249,13 +249,13 @@
         </div>
       </div>
     </div>
-    <q-input
+    <q-file
       ref="uploadImageFileInput"
       accept="image/jpg, image/png, image/jpeg"
       style="display: none"
       v-model="fileToUpload"
-      type="file"
-      @change="uploadLogo()"
+      @input="uploadLogo()"
+      @rejected="logoError()"
     />
   </div>
 </template>
@@ -273,7 +273,7 @@ export default {
   data() {
     return {
       maxlengthConstants: constants.maxLength,
-      fileToUpload: [],
+      fileToUpload: null,
       menuPosition: [-60, 50],
       states: [],
       country: ['United States']
@@ -331,27 +331,29 @@ export default {
     },
     async uploadLogo() {
       if (
-        this.fileToUpload[0].type.includes('png') ||
-        this.fileToUpload[0].type.includes('jpg') ||
-        this.fileToUpload[0].type.includes('jpeg')
+        this.fileToUpload.type.includes('png') ||
+        this.fileToUpload.type.includes('jpg') ||
+        this.fileToUpload.type.includes('jpeg')
       ) {
         await this.uploadCompanyLogo({
-          file: this.fileToUpload[0],
+          file: this.fileToUpload,
           companyName: this.organization.name
         });
-      } else {
-        this.setNotification({
-          type: 'negative',
-          message: 'Only .png, .jpg and .jpeg file types are allowed'
-        });
       }
-      this.fileToUpload = [];
+      this.fileToUpload = null;
+    },
+
+    logoError() {
+      this.setNotification({
+        type: 'negative',
+        message: 'Only .png, .jpg and .jpeg file types are allowed'
+      });
     },
     async deleteLogo(logoUrl) {
       await this.deleteFileFromFirebase({ url: logoUrl, showMsg: true });
       await this.updateCompanyLogo({
         logoURL: '',
-        companyName: this.companyDetailsObj.name
+        companyName: this.organization.name
       });
       await this.getOrganization();
     },
