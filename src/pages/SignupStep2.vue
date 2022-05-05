@@ -413,7 +413,7 @@
                     v-model="cardName"
                     placeholder="Enter Name on Card"
                     outlined
-                    autocomplete="off"
+                    autocomplete="new-password"
                     class="required full-width"
                     @blur="removeWhiteSpace($event, 'cardname')"
                     :maxlength="maxlengthConstants.cardName"

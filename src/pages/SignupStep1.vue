@@ -368,7 +368,7 @@
                 class="q-mt-lg"
                 @submit="onContinue()"
                 ref="orgInfo"
-                autocomplete="off"
+                autocomplete="new-password"
               >
                 <label class="text-subtitle1 fontWeight600 input-label"
                   >First Name</label
@@ -380,7 +380,7 @@
                   placeholder="Enter Your First Name"
                   outlined
                   @blur="removeWhiteSpace($event, 'fname')"
-                  autocomplete="off"
+                  autocomplete="new-password"
                   class="required"
                   :maxlength="maxlengthConstants.firstName"
                   lazy-rules
@@ -397,7 +397,7 @@
                   @blur="removeWhiteSpace($event, 'lname')"
                   placeholder="Enter Your Last Name"
                   outlined
-                  autocomplete="off"
+                  autocomplete="new-password"
                   class="required"
                   :maxlength="maxlengthConstants.lastName"
                   lazy-rules
@@ -459,7 +459,7 @@
                   @blur="removeWhiteSpace($event, 'cname')"
                   placeholder="Enter Your Company Name"
                   outlined
-                  autocomplete="off"
+                  autocomplete="new-password"
                   class="required"
                   :maxlength="maxlengthConstants.companyName"
                   lazy-rules
@@ -678,7 +678,7 @@ export default {
       } else if (!(await this.validateEmail(val))) {
         return 'You have entered an invalid email address';
       } else if (await this.checkExistingEmail(val)) {
-        return 'This email is already in use. Please choose another';
+        return 'This email is already in use.';
       }
 
       return;
