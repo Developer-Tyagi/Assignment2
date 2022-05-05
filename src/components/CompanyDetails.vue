@@ -310,8 +310,7 @@ export default {
     }
   },
   mounted() {
-    this.companyDetailsObj.address.addressCountry = 'United States';
-    this.onCountrySelect(this.companyDetailsObj.address.addressCountry);
+    this.onCountrySelect('United States');
   },
   methods: {
     validateEmail,
