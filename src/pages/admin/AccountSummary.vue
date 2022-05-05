@@ -570,7 +570,9 @@ export default {
     await this.getOrganization();
 
     if (this.organization) {
-      this.companyDetails.name = this.organization.name;
+      this.companyDetails.name = JSON.parse(
+        JSON.stringify(this.organization.name)
+      );
       this.organizations.photoIDAPIKey = this.organization.photoIDAPIKey;
       this.organizations.photoIDEmail = this.organization.photoIDEmail;
       this.organizations.isDriveConnected = this.organization.isDriveConnected;
@@ -580,13 +582,19 @@ export default {
       // this.organizations.users.email = this.organization.photoIDEmail;
 
       if (this.organization.address) {
-        this.companyDetails.address = this.organization.address;
+        this.companyDetails.address = JSON.parse(
+          JSON.stringify(this.organization.address)
+        );
       }
       if (this.organization.email) {
-        this.companyDetails.email = this.organization.email;
+        this.companyDetails.email = JSON.parse(
+          JSON.stringify(this.organization.email)
+        );
       }
       if (this.organization.phoneNumber) {
-        this.companyDetails.phoneNumber = this.organization.phoneNumber;
+        this.companyDetails.phoneNumber = JSON.parse(
+          JSON.stringify(this.organization.phoneNumber)
+        );
       }
     }
   },
@@ -702,12 +710,20 @@ export default {
     },
     cancelCompanyDetailsUpdate() {
       this.editCompanyDetails = false;
-      this.companyDetails.name = this.organization.name;
-      this.companyDetails.email = this.organization.email;
-      this.companyDetails.phoneNumber = this.organization.phoneNumber;
+      this.companyDetails.name = JSON.parse(
+        JSON.stringify(this.organization.name)
+      );
+      this.companyDetails.email = JSON.parse(
+        JSON.stringify(this.organization.email)
+      );
+      this.companyDetails.phoneNumber = JSON.parse(
+        JSON.stringify(this.organization.phoneNumber)
+      );
 
       if (this.organization.address) {
-        this.companyDetails.address = this.organization.address;
+        this.companyDetails.address = JSON.parse(
+          JSON.stringify(this.organization.address)
+        );
       }
     },
     cancelPhotoIDUpdate() {
