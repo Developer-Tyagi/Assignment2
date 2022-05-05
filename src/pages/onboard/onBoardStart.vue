@@ -76,8 +76,6 @@ export default {
       return require('../../assets/' + icon);
     },
     getStarted() {
-      // let arr = []
-      // arr.push({step1: true})
       localStorage.setItem('onBoardingStep', 'start');
       this.$router.push('/onboarding/step1');
     }
