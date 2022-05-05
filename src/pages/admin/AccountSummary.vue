@@ -80,8 +80,14 @@
             <div class="company-details q-ml-lg">
               <div class="flex-column full-width">
                 <div class="details-heading">Company Name</div>
-                <div class="details-content q-pt-sm ellipsis-3-lines">
-                  {{ companyDetails.name }}
+                <div
+                  class="details-content q-pt-sm ellipsis-3-lines"
+                  v-if="organization && Object.keys(organization).length === 0"
+                >
+                  <q-skeleton type="text" width="20%" />
+                </div>
+                <div class="details-content q-pt-sm ellipsis-3-lines" v-else>
+                  {{ organization.name }}
                 </div>
                 <div
                   class="details-heading"
@@ -89,9 +95,15 @@
                 >
                   Mobile
                 </div>
-                <div class="details-content q-pt-sm">
-                  {{ companyDetails.phoneNumber.code }}
-                  {{ showPhoneNumber(companyDetails.phoneNumber.number) }}
+                <div
+                  class="details-content q-pt-sm"
+                  v-if="organization && Object.keys(organization).length === 0"
+                >
+                  <q-skeleton type="text" width="20%" />
+                </div>
+                <div class="details-content q-pt-sm" v-else>
+                  {{ organization.phoneNumber.code }}
+                  {{ showPhoneNumber(organization.phoneNumber.number) }}
                 </div>
                 <div
                   class="details-heading"
@@ -99,8 +111,14 @@
                 >
                   Email Address
                 </div>
-                <div class="details-content q-pt-sm ellipsis">
-                  {{ companyDetails.email }}
+                <div
+                  class="details-content q-pt-sm ellipsis"
+                  v-if="organization && Object.keys(organization).length === 0"
+                >
+                  <q-skeleton type="text" width="20%" />
+                </div>
+                <div class="details-content q-pt-sm ellipsis" v-else>
+                  {{ organization.email }}
                 </div>
                 <div
                   class="details-heading"
@@ -108,12 +126,18 @@
                 >
                   Company Address
                 </div>
-                <div class="details-content q-pt-sm ellipsis-3-lines">
-                  {{ companyDetails.address.address1 }},
-                  {{ companyDetails.address.addressLocality }},
-                  {{ companyDetails.address.addressRegion }},
-                  {{ companyDetails.address.addressCountry }}
-                  - {{ companyDetails.address.postalCode }}
+                <div
+                  class="details-content q-pt-sm ellipsis-3-lines"
+                  v-if="organization && Object.keys(organization).length === 0"
+                >
+                  <q-skeleton type="text" width="30%" />
+                </div>
+                <div class="details-content q-pt-sm ellipsis-3-lines" v-else>
+                  {{ organization.address.address1 }},
+                  {{ organization.address.addressLocality }},
+                  {{ organization.address.addressRegion }},
+                  {{ organization.address.addressCountry }}
+                  - {{ organization.address.postalCode }}
                 </div>
               </div>
             </div>
@@ -230,7 +254,13 @@
               "
             >
               <div class="details-heading">First Name</div>
-              <div class="details-content q-pt-sm ellipsis">
+              <div
+                class="details-content q-pt-sm ellipsis"
+                v-if="users && Object.keys(users).length === 0"
+              >
+                <q-skeleton type="text" width="20%" />
+              </div>
+              <div class="details-content q-pt-sm ellipsis" v-else>
                 {{ users.fname }}
               </div>
             </div>
@@ -242,7 +272,13 @@
               "
             >
               <div class="details-heading">Last Name</div>
-              <div class="details-content q-pt-sm ellipsis">
+              <div
+                class="details-content q-pt-sm ellipsis"
+                v-if="users && Object.keys(users).length === 0"
+              >
+                <q-skeleton type="text" width="20%" />
+              </div>
+              <div class="details-content q-pt-sm ellipsis" v-else>
                 {{ users.lname }}
               </div>
             </div>
@@ -254,7 +290,13 @@
               "
             >
               <div class="details-heading">Email Address</div>
-              <div class="details-content q-pt-sm ellipsis">
+              <div
+                class="details-content q-pt-sm ellipsis"
+                v-if="users && Object.keys(users).length === 0"
+              >
+                <q-skeleton type="text" width="20%" />
+              </div>
+              <div class="details-content q-pt-sm ellipsis" v-else>
                 {{ users.email }}
               </div>
             </div>
@@ -382,7 +424,13 @@
               "
             >
               <div class="details-heading">PhotoID Email</div>
-              <div class="details-content q-pt-sm text-primary ellipsis">
+              <div
+                class="details-content q-pt-sm text-primary ellipsis"
+                v-if="organizations && Object.keys(organization).length === 0"
+              >
+                <q-skeleton type="text" width="30%" />
+              </div>
+              <div class="details-content q-pt-sm text-primary ellipsis" v-else>
                 {{ organizations.photoIDEmail }}
               </div>
             </div>
@@ -394,7 +442,13 @@
               "
             >
               <div class="details-heading">PhotoID API Key</div>
-              <div class="details-content q-pt-sm text-primary ellipsis">
+              <div
+                class="details-content q-pt-sm text-primary ellipsis"
+                v-if="organizations && Object.keys(organization).length === 0"
+              >
+                <q-skeleton type="text" width="30%" />
+              </div>
+              <div class="details-content q-pt-sm text-primary ellipsis" v-else>
                 {{ organizations.photoIDAPIKey }}
               </div>
             </div>
