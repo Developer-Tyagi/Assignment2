@@ -76,6 +76,7 @@ export default {
       return require('../../assets/' + icon);
     },
     getStarted() {
+      localStorage.setItem('onBoardingStep', 'start');
       this.$router.push('/onboarding/step1');
     }
   },

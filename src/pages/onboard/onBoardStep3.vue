@@ -169,6 +169,7 @@ export default {
         let accountExists = await this.verifyPhotoidAccount(payload.data);
         if (accountExists) {
           await this.updateUserForOrganization(payload);
+          localStorage.setItem('onBoardingStep', '3');
           this.$router.push('/onboarding/step4');
         }
       } else if (
@@ -178,6 +179,7 @@ export default {
       ) {
         this.errorMessage('Please provide all details');
       } else {
+        localStorage.setItem('onBoardingStep', '3');
         this.$router.push('/onboarding/step4');
       }
     },
@@ -194,6 +196,10 @@ export default {
     }
   },
   async created() {
+    let checkRoute = localStorage.getItem('onBoardingStep');
+    if ((checkRoute < '3' && checkRoute !== '2') || checkRoute === 'start') {
+      this.$router.push(`/onboarding/step${checkRoute}`).catch(() => {});
+    }
     await this.getOrganization();
     if (this.organization) {
       if (this.organization) {

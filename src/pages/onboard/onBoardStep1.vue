@@ -123,6 +123,7 @@ export default {
 
         await this.updateUserForOrganization(payload);
         await this.getOrganization();
+        localStorage.setItem('onBoardingStep', '1');
         this.$router.push('/onboarding/step2');
         // }
       }
@@ -140,6 +141,10 @@ export default {
     }
   },
   async created() {
+    let checkRoute = localStorage.getItem('onBoardingStep');
+    if (!checkRoute) {
+      this.$router.push(`/onboarding/step${checkRoute}`);
+    }
     let data = await this.getUserInfo();
     await this.getOrganization();
     if (data.attributes.onboard.isCompleted == true) {

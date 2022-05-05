@@ -60,7 +60,7 @@ export default {
   },
   data() {
     return {
-      metaTitle: 'Account Setup Successfull - claimguru'
+      metaTitle: 'Account Setup Successful - claimguru'
     };
   },
   components: {
@@ -68,28 +68,27 @@ export default {
     MobileFooter
   },
   methods: {
-    ...mapActions(['getUserInfo']),
+    ...mapActions(['getUserInfo', 'setOnboard']),
     getImage(icon) {
       return require('../../assets/' + icon);
     },
-    goToHome() {
+    async goToHome() {
+      const payload = {
+        isCompleted: true
+      };
+      await this.setOnboard(payload);
+      localStorage.removeItem('onBoardingStep');
       this.$router.push('/admin');
-      LocalStorage.clear(tokenName);
     }
   },
   async created() {
-    if (this.$route.query.googleConnect == 'true') {
-      // this.checkConnection = true;
-    } else {
-      let data = await this.getUserInfo();
-      if (data.attributes.onboard.isCompleted == true) {
-        this.$router.push('/dashboard');
-        // if (isMobile()) {
-        //   this.$router.push('/dashboard');
-        // } else {
-        //   this.$router.push('/admin');
-        // }
-      }
+    let checkRoute = localStorage.getItem('onBoardingStep');
+    if (checkRoute !== '3') {
+      this.$router.push('/onboarding');
+    }
+    let data = await this.getUserInfo();
+    if (data.attributes.onboard.isCompleted == true) {
+      this.$router.push('/dashboard');
     }
   }
 };

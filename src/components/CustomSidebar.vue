@@ -6,7 +6,12 @@
           v-if="$route.name == 'onboarding'"
           style="background-color: #f9e7d8"
         >
-          <q-img size="1em" src="~assets/Logo.svg" class="LogoSize" />
+          <q-img
+            size="1em"
+            src="~assets/Logo.svg"
+            class="LogoSize"
+            @click="clickedLogo"
+          />
         </div>
         <div class="justify-end pr-20">
           <div class="row justify-end dFlex" style="cursor: pointer">
@@ -222,6 +227,9 @@ export default {
       this.removeToken();
       this.removeCurrentUser();
       location.reload();
+    },
+    clickedLogo() {
+      window.location.href = 'https://claimguru.cilalabs.dev/';
     },
     removeToken,
     removeCurrentUser,
