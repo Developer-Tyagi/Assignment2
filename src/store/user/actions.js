@@ -122,11 +122,7 @@ export async function checkExistingEmail({ dispatch }, email) {
   try {
     const { data } = await request.get(`/users/email?email=${email}`);
     //dispatch('setLoading', false);
-    if (data.attributes.exists) {
-      return false;
-    } else {
-      return true;
-    }
+    return data.attributes.exists;
   } catch (e) {
     // //console.log(e);
     // dispatch('setLoading', false);

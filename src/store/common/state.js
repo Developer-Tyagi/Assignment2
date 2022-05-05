@@ -37,6 +37,7 @@ export default function () {
     isOfflineClientEdit: false,
     planInfo: [],
     webSubOptionMenuTab: '', // by default we open the Account Summary page when login the page first  time.
-    isMobileResolution: false
+    isMobileResolution: false,
+    tempUser: []
   };
 }

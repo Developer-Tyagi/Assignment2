@@ -10,10 +10,7 @@
             ></q-img>
           </a>
         </div>
-        <div
-          class="mobile-view outer-padding package-section"
-          v-if="continueClick === false"
-        >
+        <div class="mobile-view outer-padding package-section">
           <q-linear-progress
             size="5px"
             :value="progress"
@@ -24,22 +21,6 @@
             style="color: #5b647a; margin-top: 10px"
           >
             Step 1. Create Account
-          </div>
-        </div>
-        <div
-          class="mobile-view q-mt-md payment-section"
-          v-if="continueClick === true"
-        >
-          <q-linear-progress
-            size="5px"
-            style="border-radius: 5px; margin-top: 9.5px"
-            :value="progress1"
-          />
-          <div
-            class="q-mt-sm text-subtitle1 text-bold fontWeight600 step-text"
-            style="color: #5b647a"
-          >
-            Step 2. Payment
           </div>
         </div>
         <div
@@ -365,10 +346,7 @@
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 q-pb-lg">
         <!-- signup form -->
-        <div
-          v-if="continueClick === false"
-          class="content-center bg-white signup-main signup-section"
-        >
+        <div class="content-center bg-white signup-main signup-section">
           <div class="signup-sub subscribe">
             <div class="col signup">
               <div class="desktop-view">
@@ -402,7 +380,7 @@
                   placeholder="Enter Your First Name"
                   outlined
                   @blur="removeWhiteSpace($event, 'fname')"
-                  autocomplete="off"
+                  autocomplete="new-password"
                   class="required"
                   :maxlength="maxlengthConstants.firstName"
                   lazy-rules
@@ -419,7 +397,7 @@
                   @blur="removeWhiteSpace($event, 'lname')"
                   placeholder="Enter Your Last Name"
                   outlined
-                  autocomplete="off"
+                  autocomplete="new-password"
                   class="required"
                   :maxlength="maxlengthConstants.lastName"
                   lazy-rules
@@ -481,7 +459,7 @@
                   @blur="removeWhiteSpace($event, 'cname')"
                   placeholder="Enter Your Company Name"
                   outlined
-                  autocomplete="off"
+                  autocomplete="new-password"
                   class="required"
                   :maxlength="maxlengthConstants.companyName"
                   lazy-rules
@@ -539,191 +517,6 @@
               </q-form>
             </div>
             <div class="col-2"></div>
-          </div>
-        </div>
-        <div
-          v-else
-          class="q-pt-xl content-center bg-white signup-main payment-section"
-        >
-          <div class="signup-sub">
-            <div class="signup">
-              <div class="">
-                <div class="desktop-view">
-                  <q-linear-progress
-                    size="5px"
-                    style="border-radius: 5px"
-                    :value="progress1"
-                  />
-                  <div
-                    class="q-mt-sm text-subtitle1 text-bold 138,2: lineHeight24 {"
-                    style="color: #5b647a; font-weight: 600"
-                  >
-                    Step 2. Payment
-                  </div>
-                </div>
-                <div
-                  v-if="showSeeAllPackages"
-                  class="text-subtitle1 text-right fontWeight500 q-my-sm mobile-view text-primary see-all-package"
-                  style="
-                    font-family: Poppins;
-                    text-decoration: underline;
-                    font-size: 16px;
-                    line-height: 20px;
-                    cursor: pointer;
-                  "
-                  @click="showAllPlans"
-                >
-                  See all package
-                </div>
-                <q-form
-                  class=""
-                  @submit="onPaymentClick()"
-                  ref="orgInfo"
-                  autocomplete="off"
-                >
-                  <div>{{ displayErrors }}</div>
-                  <div class="payment-pack-heading fontWeight600 signup-head">
-                    <div class="">Pay with card for</div>
-                    <div v-if="isPackageSelected.id1 === true" class="">
-                      Firm Package
-                    </div>
-                    <div v-else class="">Individual Package</div>
-                  </div>
-                  <div style="margin-top: 30px"></div>
-                  <div id="card-errors" class="q-my-lg"></div>
-                  <label class="text-subtitle1 text-weight-bold input-label"
-                    >Card Number</label
-                  >
-                  <div
-                    id="card-number"
-                    class="cardInfo f-w-500 text-body1 border-top-left-right q-mt-xs q-mb-lg"
-                  >
-                    <!-- a Stripe Element will be inserted. -->
-                  </div>
-
-                  <label class="text-subtitle1 fontWeight600 input-label"
-                    >Name on Card</label
-                  >
-                  <q-input
-                    ref="cardName"
-                    name="name"
-                    v-model="cardName"
-                    placeholder="Enter Name on Card"
-                    outlined
-                    autocomplete="off"
-                    class="required full-width"
-                    @blur="removeWhiteSpace($event, 'cardname')"
-                    :maxlength="maxlengthConstants.cardName"
-                    lazy-rules
-                    :rules="[val => validateCardNames(val) || '']"
-                  />
-                  <!-- <q-input
-                  borderless
-                  class="bg-white cardInfo text-body1 q-mt-xs q-mb-lg required"
-                  lazy-rules
-                  ref="cardName"
-                  name="name"
-                  color="primary"
-                  v-model="cardName"
-                  maxlength="50"
-                  id="card-name"
-                  placeholder="Enter Name on Card"
-                /> -->
-
-                  <div class="row">
-                    <div class="col q-pr-md">
-                      <label class="text-subtitle1 fontWeight600 input-label"
-                        >Expiry Date</label
-                      >
-                      <div
-                        id="card-expiry"
-                        class="cardInfo text-body1 border-bottom-right q-mt-xs"
-                      >
-                        <!-- a Stripe Element will be inserted. -->
-                      </div>
-                    </div>
-                    <div class="col q-pl-xs">
-                      <label class="text-subtitle1 fontWeight600 input-label"
-                        >CVC</label
-                      >
-                      <div
-                        id="card-cvc"
-                        class="cardInfo text-body1 border-bottom-right q-mt-xs"
-                      >
-                        <!-- a Stripe Element will be inserted. -->
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="duration-text"></div>
-                  <div class="row">
-                    <label class="column text-h5 fontWeight600"
-                      >30 Days Free</label
-                    >
-                  </div>
-                  <div class="row q-mt-sm">
-                    <div class="col-6">
-                      <label
-                        class="text-h6 fontWeight600 after_30_days lineHeight24"
-                        >After 30 days</label
-                      >
-                    </div>
-                    <div class="col-6 q-mt-xs text-right">
-                      <div
-                        v-if="isPackageSelected.id1 === true"
-                        class="text-subtitle1 text-grey-white"
-                      >
-                        $250/month*
-                      </div>
-                      <div v-else class="text-subtitle1 text-grey-white">
-                        $125/month*
-                      </div>
-                    </div>
-                  </div>
-                  <div class="q-mt-md"></div>
-                  <div class="row justify-center">
-                    <q-btn
-                      label="Subscribe"
-                      no-caps
-                      type="submit"
-                      color="deep-orange"
-                      size="16px"
-                      class="full-width fontWeight600 btn-submit"
-                      style=""
-                    />
-                  </div>
-
-                  <div
-                    class="fontWeight400"
-                    style="font-size: 12px; line-height: 18px; margin-top: 20px"
-                  >
-                    By clicking the ‘Subscribe’ button, you allow ClaimGuru to
-                    charge your card for this payment, and you agree to
-                    ClaimGuru’s
-                    <a
-                      href="/terms-conditions"
-                      class="text-deep-orange fontWeight600"
-                      target="_blank"
-                      >Terms of Use</a
-                    >
-                    and
-                    <a
-                      href="/privacy-policy"
-                      class="text-deep-orange fontWeight600"
-                      target="_blank"
-                      >Privacy Policy.</a
-                    >
-                  </div>
-                </q-form>
-                <div
-                  class="row justify-center q-my-md"
-                  style="margin-top: 30px"
-                >
-                  <q-img src="~assets/secure.svg" class="secure-logo" />
-                </div>
-              </div>
-              <div class="col-2"></div>
-            </div>
           </div>
         </div>
       </div>
@@ -853,8 +646,6 @@ export default {
           this.data.company.name = result;
         } else if (elementName == 'password') {
           this.data.user.password = result;
-        } else if (elementName == 'cardname') {
-          this.cardName = result;
         }
       } else {
         if (elementName == 'fname') {
@@ -867,8 +658,6 @@ export default {
           this.data.company.name = event.target.value;
         } else if (elementName == 'password') {
           this.data.user.password = event.target.value;
-        } else if (elementName == 'cardname') {
-          this.cardName = event.target.value;
         }
       }
 
@@ -878,44 +667,21 @@ export default {
       window.location.href = home_page;
     },
     isMobile,
-    ...mapMutations(['setLoading', 'setNotifications']),
+    ...mapMutations(['setLoading', 'setNotifications', 'setTempUser']),
     getImage(icon) {
       return require('../assets/' + icon);
     },
 
     async validateEmailid(val) {
-      let email_exist = await this.checkExistingEmail(val);
-      let email_valid = await this.validateEmail(val);
-      let go_exist = false;
-      let go_valid = false;
-      let go_empty = false;
-
-      if (email_exist) {
-        go_exist = true;
-      } else {
-        go_exist = false;
-        this.errorMSG = 'This email is already in use. Please choose another';
-      }
-      if (email_valid) {
-        go_valid = true;
-      } else {
-        go_valid = false;
-        this.errorMSG = 'You have entered an invalid email address';
-      }
       if (val == '') {
-        go_empty = false;
-        this.errorMSG = 'Please fill your email address';
-      } else {
-        go_empty = true;
-      }
-      if (go_exist && go_valid && go_empty) {
-        this.errorMSG = '';
-        return true;
-      } else {
-        return false;
+        return 'Please fill your email address';
+      } else if (!(await this.validateEmail(val))) {
+        return 'You have entered an invalid email address';
+      } else if (await this.checkExistingEmail(val)) {
+        return 'This email is already in use.';
       }
 
-      //return true
+      return;
     },
     validateEmail,
     validateNames,
@@ -933,34 +699,15 @@ export default {
           position: 'top'
         });
       } else {
-        if (this.isPackageSelected.id1 === true) {
-          this.div1 = true;
-          this.div2 = false;
-          this.div3 = false;
-        }
-        if (this.isPackageSelected.id2 === true) {
-          this.div1 = false;
-          this.div2 = true;
-          this.div3 = false;
-        }
-        this.continueClick = true;
-        this.metaTitle = 'Payment - claimguru';
         this.data.isTermsAccepted = true;
-        let interval = setTimeout(() => {
-          this.setPaymentPage();
-          clearTimeout(interval);
-        }, 0);
+        this.setTempUser(this.data);
+        this.$router.push('/payment');
       }
     },
     onPackageSelection(id) {
       if (id === 'Firm') {
         this.isPackageSelected.id1 = true;
         this.isPackageSelected.id2 = false;
-        // if(this.continueClick == true){
-        //   this.div1 = true;
-        //   this.div2 = false;
-        //   this.div3 = false;
-        // }
         this.data.company.plan = {
           value: 'Firm Package',
           machineValue: 'firm_package',
@@ -969,11 +716,6 @@ export default {
           trialPeriodDays: 30
         };
       } else {
-        // if(this.continueClick == true){
-        //   this.div1 = false;
-        //   this.div2 = true;
-        //   this.div3 = false;
-        // }
         this.isPackageSelected.id1 = false;
         this.isPackageSelected.id2 = true;
         this.data.company.plan = {
@@ -984,100 +726,6 @@ export default {
           trialPeriodDays: 30
         };
       }
-    },
-    setPaymentPage() {
-      const elements = stripe.elements();
-      const style = {
-        base: {
-          iconColor: '#0057d2',
-          color: '#525151',
-          fontWeight: 500,
-          fontSize: '16px',
-          fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-          fontSmoothing: 'antialiased',
-          '::placeholder': {
-            color: '#aaaaaa'
-          }
-        },
-        complete: {
-          color: '#525151'
-        },
-        invalid: {
-          color: 'red',
-          iconColor: 'red'
-        }
-      };
-      this.cardNumber = elements.create('cardNumber', {
-        style: style,
-        showIcon: true
-      });
-      this.cardNumber.mount('#card-number');
-
-      this.cardExpiry = elements.create('cardExpiry', {
-        style: style
-      });
-
-      this.cardExpiry.mount('#card-expiry');
-
-      this.cardCvc = elements.create('cardCvc', {
-        style: style
-      });
-      this.cardCvc.mount('#card-cvc');
-
-      const displayErrors = document.getElementById('card-errors', {
-        style: style
-      });
-
-      this.contentClass = '';
-    },
-    onPaymentClick() {
-      this.checkCardValidity();
-    },
-    async checkCardValidity() {
-      //this.setLoading(true);
-      var token = '';
-      var displayError;
-      // if (this.cardName != '') {
-      await this.createToken().then(function (result) {
-        if (result.error) {
-          displayError = document.getElementById('card-errors');
-          if (result.error) {
-            displayError.textContent = result.error.message;
-          } else {
-            displayError.textContent = '';
-          }
-        } else {
-          // Send the token to your server
-          token = result.token.id;
-        }
-      });
-      // console.log('TEst', displayError);
-      if (displayError !== undefined) {
-        //this.setLoading(false);
-        return;
-      }
-      if (token) {
-        this.data.stripeToken = token;
-        const res = await this.createUserForOrganization(this.data);
-        if (res) {
-          this.$router.push('/onboarding');
-        }
-      }
-      // } else {
-      //   this.$q.notify({
-      //     type: 'negative',
-      //     message: 'Please Enter Name on Card',
-      //     position: 'top'
-      //   });
-      // }
-
-      //this.setLoading(false);
-    },
-    createToken() {
-      // Gather additional customer data we may have collected in our form.
-      var additionalData = { name: this.cardName };
-      // Important: Although we're submitting several fields, use cardNumber here instead of 'elements'.
-      return stripe.createToken(this.cardNumber, additionalData);
     },
     showAllPlans() {
       this.div1 = true;
@@ -1100,7 +748,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['plans', 'contactTypes', 'planInfo', 'setPlans'])
+    ...mapGetters(['plans', 'contactTypes', 'planInfo', 'setPlans', 'tempUser'])
   },
 
   async created() {
@@ -1111,6 +759,19 @@ export default {
     //     this.$router.push('/admin');
     //   }
     // }
+
+    //this is used to populate input fields from State data
+
+    if (!(Object.keys(this.tempUser).length === 0)) {
+      this.data = this.tempUser;
+      if (this.data.company.plan.machineValue == 'individual_package') {
+        this.isPackageSelected.id1 = false;
+        this.isPackageSelected.id2 = true;
+      } else {
+        this.isPackageSelected.id1 = true;
+        this.isPackageSelected.id2 = false;
+      }
+    }
 
     await this.getAllPlans();
     this.plans_fetched = this.plans;
