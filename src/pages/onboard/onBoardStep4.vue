@@ -48,10 +48,9 @@
 </template>
 
 <script>
-import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomSidebar from 'components/CustomSidebar';
 import MobileFooter from 'components/MobileFooter.vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import { LocalStorage } from 'quasar';
 export default {
   meta() {
@@ -61,98 +60,35 @@ export default {
   },
   data() {
     return {
-      metaTitle: 'Account Setup Successful - claimguru',
-      step: 0,
-      companyDetails: {
-        address: {
-          address1: '',
-          addressLocality: '',
-          addressRegion: '',
-          country: '',
-          postalCode: ''
-        },
-        isDropBoxEnable: false,
-        photoIdEmail: '',
-        photoIdAPIKey: '',
-        contactNumber: '',
-        email: ''
-      },
-      editCompanyDetails: true,
-      dialCode: '',
-      checkConnection: false
+      metaTitle: 'Account Setup Successfull - claimguru'
     };
   },
   components: {
-    AutoCompleteAddress,
     CustomSidebar,
     MobileFooter
   },
   methods: {
-    ...mapActions(['getUserInfo', 'getOrganization']),
+    ...mapActions(['getUserInfo']),
     getImage(icon) {
       return require('../../assets/' + icon);
-    },
-    onSelect({ name, iso2, dialCode }) {
-      this.dialCode = dialCode;
-    },
-    getStarted() {
-      this.$router.push('/onboarding/step1');
-    },
-    async NextStepperValue() {
-      this.$router.push('/onboarding/step3');
     },
     goToHome() {
       this.$router.push('/admin');
       LocalStorage.clear('access_token');
     }
   },
-  computed: {
-    ...mapGetters(['organization']),
-    CurrentYear() {
-      const d = new Date();
-      let year = d.getFullYear();
-      return year;
-    }
-  },
   async created() {
-    this.step = 0;
-    await this.getOrganization();
-    if (this.organization) {
-      this.companyDetails.name = this.organization.name;
-      if (this.organization) {
-        this.companyDetails.address.address1 = this.organization.address
-          ? this.organization.address.address1
-          : '';
-        this.companyDetails.address.addressLocality = this.organization.address
-          ? this.organization.address.addressLocality
-          : '';
-        this.companyDetails.address.addressRegion = this.organization.address
-          ? this.organization.address.addressRegion
-          : '';
-        this.companyDetails.address.postalCode = this.organization.address
-          ? this.organization.address.postalCode
-          : '';
-        this.companyDetails.contactNumber = this.organization.phoneNumber
-          ? this.organization.phoneNumber.number
-          : '';
-        this.companyDetails.email = this.organization.email;
-        this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
-        this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
-      }
-      this.step = 0;
-      this.checkConnection = true;
-      if (this.$route.query.googleConnect == 'true') {
-        // this.checkConnection = true;
-      } else {
-        let data = await this.getUserInfo();
-        if (data.attributes.onboard.isCompleted == true) {
-          this.$router.push('/dashboard');
-          // if (isMobile()) {
-          //   this.$router.push('/dashboard');
-          // } else {
-          //   this.$router.push('/admin');
-          // }
-        }
+    if (this.$route.query.googleConnect == 'true') {
+      // this.checkConnection = true;
+    } else {
+      let data = await this.getUserInfo();
+      if (data.attributes.onboard.isCompleted == true) {
+        this.$router.push('/dashboard');
+        // if (isMobile()) {
+        //   this.$router.push('/dashboard');
+        // } else {
+        //   this.$router.push('/admin');
+        // }
       }
     }
   }

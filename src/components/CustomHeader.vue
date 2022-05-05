@@ -1069,12 +1069,6 @@ export default {
     display: block;
   }
 }
-.q-menu {
-  border: 2px solid #e8e9ec;
-  border-radius: 20px !important;
-  top: 70px !important;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-}
 .userDetailContainer {
   margin: 16px 39px 16px 16px;
   color: #667085;

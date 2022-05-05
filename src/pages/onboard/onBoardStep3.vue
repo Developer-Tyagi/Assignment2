@@ -41,7 +41,7 @@
             </div>
             <div>
               <div class="q-mt-30 mx-15">
-                <q-form ref="editPhotoIDForm">
+                <q-form greedy ref="editPhotoIDForm">
                   <div class="">
                     <div class="col q-pr-xl">
                       <div class="text-subheading q-mb-6">Account Email</div>
@@ -50,10 +50,11 @@
                         input-class="photoId-Inputtext"
                         placeholder="Company Email Address"
                         outlined
-                        v-model="companyDetails.photoIdEmail"
+                        v-model.trim="companyDetails.photoIdEmail"
                         lazy-rules
                         :rules="[
-                          val => !!val || 'Please fill your email address',
+                          val =>
+                            !!val || 'Please fill your photoid email address',
                           val =>
                             validateEmail(val) ||
                             'Please enter valid email address'
@@ -67,9 +68,11 @@
                         input-class="photoId-Inputtext"
                         outlined
                         placeholder="Account API Key"
-                        v-model="companyDetails.photoIdAPIKey"
+                        v-model.trim="companyDetails.photoIdAPIKey"
                         :rules="[
-                          val => !!val.trim() || 'Please provide api key'
+                          val =>
+                            (val && val.length > 0) ||
+                            'Please fill photoid api key'
                         ]"
                       >
                         <template v-slot:append>
@@ -110,10 +113,9 @@
 </template>
 
 <script>
-import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomSidebar from 'components/CustomSidebar';
 import MobileFooter from 'components/MobileFooter.vue';
-import { validateEmail, successMessage } from '@utils/validation';
+import { validateEmail, successMessage, errorMessage } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
 export default {
   meta() {
@@ -124,20 +126,9 @@ export default {
   data() {
     return {
       metaTitle: 'PhotoID Account Details - claimguru',
-      step: 0,
       companyDetails: {
-        address: {
-          address1: '',
-          addressLocality: '',
-          addressRegion: '',
-          country: '',
-          postalCode: ''
-        },
-        isDropBoxEnable: false,
         photoIdEmail: '',
-        photoIdAPIKey: '',
-        contactNumber: '',
-        email: ''
+        photoIdAPIKey: ''
       },
       editCompanyDetails: true,
       dialCode: '',
@@ -145,39 +136,54 @@ export default {
     };
   },
   components: {
-    AutoCompleteAddress,
     CustomSidebar,
     MobileFooter
   },
   methods: {
-    ...mapActions(['getUserInfo', 'getOrganization']),
+    ...mapActions([
+      'getUserInfo',
+      'getOrganization',
+      'updateUserForOrganization',
+      'verifyPhotoidAccount'
+    ]),
     getImage(icon) {
       return require('../../assets/' + icon);
     },
-    onSelect({ name, iso2, dialCode }) {
-      this.dialCode = dialCode;
-    },
-    getStarted() {
-      this.$router.push('/onboarding/step1');
-    },
     navigatePreviousStepper() {
+      this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
+      this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
       this.$router.push('/onboarding/step2');
     },
     async NextStepperValue() {
-      this.$router.push('/onboarding/step4');
+      if (
+        this.companyDetails.photoIdEmail &&
+        this.companyDetails.photoIdAPIKey
+      ) {
+        const payload = {
+          data: {
+            name: this.organization.name,
+            photoIDEmail: this.companyDetails.photoIdEmail,
+            photoIDAPIKey: this.companyDetails.photoIdAPIKey
+          }
+        };
+        let accountExists = await this.verifyPhotoidAccount(payload.data);
+        if (accountExists) {
+          await this.updateUserForOrganization(payload);
+          this.$router.push('/onboarding/step4');
+        }
+      } else if (
+        (!this.companyDetails.photoIdEmail &&
+          this.companyDetails.photoIdAPIKey) ||
+        (!this.companyDetails.photoIdAPIKey && this.companyDetails.photoIdEmail)
+      ) {
+        this.errorMessage('Please provide all details');
+      } else {
+        this.$router.push('/onboarding/step4');
+      }
     },
     validateEmail,
-    successMessage
-  },
-  watch: {
-    companyDetails: {
-      handler(val) {
-        if (val.photoIdAPIKey.trim() && val.photoIdEmail) {
-          this.successMessage('Details Updating');
-        }
-      },
-      deep: true
-    }
+    successMessage,
+    errorMessage
   },
   computed: {
     ...mapGetters(['organization']),
@@ -188,40 +194,16 @@ export default {
     }
   },
   async created() {
-    this.step = 0;
     await this.getOrganization();
     if (this.organization) {
-      this.companyDetails.name = this.organization.name;
       if (this.organization) {
-        this.companyDetails.address.address1 = this.organization.address
-          ? this.organization.address.address1
-          : '';
-        this.companyDetails.address.addressLocality = this.organization.address
-          ? this.organization.address.addressLocality
-          : '';
-        this.companyDetails.address.addressRegion = this.organization.address
-          ? this.organization.address.addressRegion
-          : '';
-        this.companyDetails.address.postalCode = this.organization.address
-          ? this.organization.address.postalCode
-          : '';
-        this.companyDetails.contactNumber = this.organization.phoneNumber
-          ? this.organization.phoneNumber.number
-          : '';
-        this.companyDetails.email = this.organization.email;
         this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
         this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       }
-      // this.step = 0;
-      //   this.checkConnection = true;
-      // if (this.$route.query.googleConnect == 'true') {
-      //   this.checkConnection = true;
-      // } else {
       //   let data = await this.getUserInfo();
       //   if (data.attributes.onboard.isCompleted == true) {
       //     this.$router.push('/dashboard');
       //   }
-      // }
     }
   }
 };
@@ -670,6 +652,9 @@ export default {
   .q-px-xl {
     padding-left: 0px;
     padding-right: 0px;
+  }
+  ::v-deep .q-field__marginal {
+    font-size: 18px !important;
   }
 
   .Account-setup-text {
