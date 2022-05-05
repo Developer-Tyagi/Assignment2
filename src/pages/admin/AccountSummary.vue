@@ -757,39 +757,17 @@ export default {
       this.fileToUpload = [];
     },
     async validateEmailid(val) {
-      let email_exist = true;
-      if (this.user.email !== this.users.email && val) {
-        email_exist = await this.checkExistingEmail(val);
-      }
-      let email_valid = await this.validateEmail(val);
-      let go_exist = false;
-      let go_valid = false;
-      let go_empty = false;
-
-      if (email_exist) {
-        go_exist = true;
-      } else {
-        go_exist = false;
-        this.errorMSG = 'This email is already in use.';
-      }
-      if (email_valid) {
-        go_valid = true;
-      } else {
-        go_valid = false;
-        this.errorMSG = 'Please enter valid email address';
-      }
       if (val == '') {
-        go_empty = false;
-        this.errorMSG = 'Please fill your email address';
-      } else {
-        go_empty = true;
+        return 'Please fill your email address';
+      } else if (!(await this.validateEmail(val))) {
+        return 'You have entered an invalid email address';
+      } else if (this.user.email !== this.users.email && val) {
+        if (await this.checkExistingEmail(val)) {
+          return 'This email is already in use.';
+        }
       }
-      if (go_exist && go_valid && go_empty) {
-        this.errorMSG = '';
-        return true;
-      } else {
-        return false;
-      }
+
+      return;
     }
   },
 
