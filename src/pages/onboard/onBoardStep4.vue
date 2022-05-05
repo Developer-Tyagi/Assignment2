@@ -68,17 +68,24 @@ export default {
     MobileFooter
   },
   methods: {
-    ...mapActions(['getUserInfo']),
+    ...mapActions(['getUserInfo', 'setOnboard']),
     getImage(icon) {
       return require('../../assets/' + icon);
     },
-    goToHome() {
+    async goToHome() {
+      const payload = {
+        isCompleted: true
+      };
+      await this.setOnboard(payload);
       localStorage.removeItem('onBoardingStep');
       this.$router.push('/admin');
-      LocalStorage.clear('access_token');
     }
   },
   async created() {
+    let checkRoute = localStorage.getItem('onBoardingStep');
+    if (checkRoute !== '3') {
+      this.$router.push('/onboarding');
+    }
     let data = await this.getUserInfo();
     if (data.attributes.onboard.isCompleted == true) {
       this.$router.push('/dashboard');

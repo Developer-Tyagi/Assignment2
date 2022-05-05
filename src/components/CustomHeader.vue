@@ -114,7 +114,7 @@
           class="col-xl-9 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
         >
           <div
-            class="row justify-end q-pr-xl"
+            class="row justify-end q-pr-lg"
             @click="openDropdown = !openDropdown"
           >
             <div style="position: relative">

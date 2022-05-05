@@ -198,7 +198,7 @@ export default {
   async created() {
     let checkRoute = localStorage.getItem('onBoardingStep');
     if ((checkRoute < '3' && checkRoute !== '2') || checkRoute === 'start') {
-      this.$router.push(`/onboarding/step${checkRoute}`);
+      this.$router.push(`/onboarding/step${checkRoute}`).catch(() => {});
     }
     await this.getOrganization();
     if (this.organization) {
