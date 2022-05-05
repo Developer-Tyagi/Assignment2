@@ -78,7 +78,7 @@ export default {
     getStarted() {
       // let arr = []
       // arr.push({step1: true})
-      // localStorage.setItem('completedSteps', JSON.stringify(arr))
+      localStorage.setItem('onBoardingStep', 'start');
       this.$router.push('/onboarding/step1');
     }
   },

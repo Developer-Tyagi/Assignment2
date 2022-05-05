@@ -83,7 +83,7 @@ export default {
   methods: {
     ...mapActions(['getUserInfo']),
     async NextStepperValue() {
-      // this.checkConnection = true;
+      localStorage.setItem('onBoardingStep', '2');
       this.$router.push('/onboarding/step3');
     },
     navigatePreviousStepper() {
@@ -99,6 +99,10 @@ export default {
     }
   },
   async created() {
+    let checkRoute = localStorage.getItem('onBoardingStep');
+    if ((checkRoute < '3' && checkRoute !== '1') || checkRoute === 'start') {
+      this.$router.push(`/onboarding/step${checkRoute}`);
+    }
     if (this.$route.query.googleConnect == 'true') {
       // this.checkConnection = true;
     } else {

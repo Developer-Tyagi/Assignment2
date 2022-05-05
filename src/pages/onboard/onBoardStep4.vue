@@ -73,23 +73,15 @@ export default {
       return require('../../assets/' + icon);
     },
     goToHome() {
+      localStorage.removeItem('onBoardingStep');
       this.$router.push('/admin');
       LocalStorage.clear('access_token');
     }
   },
   async created() {
-    if (this.$route.query.googleConnect == 'true') {
-      // this.checkConnection = true;
-    } else {
-      let data = await this.getUserInfo();
-      if (data.attributes.onboard.isCompleted == true) {
-        this.$router.push('/dashboard');
-        // if (isMobile()) {
-        //   this.$router.push('/dashboard');
-        // } else {
-        //   this.$router.push('/admin');
-        // }
-      }
+    let data = await this.getUserInfo();
+    if (data.attributes.onboard.isCompleted == true) {
+      this.$router.push('/dashboard');
     }
   }
 };
