@@ -169,7 +169,6 @@ export default {
         let accountExists = await this.verifyPhotoidAccount(payload.data);
         if (accountExists) {
           await this.updateUserForOrganization(payload);
-          this.successMessage('PhotoID account details updated');
           this.$router.push('/onboarding/step4');
         }
       } else if (
