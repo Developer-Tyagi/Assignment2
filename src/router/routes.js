@@ -33,7 +33,7 @@ const routes = [
         path: 'signup',
         name: 'signup',
         caseSensitive: true,
-        component: () => import('pages/SignupReference.vue'),
+        component: () => import('pages/SignupStep1.vue'),
         beforeEnter: (to, from, next) => {
           let token = LocalStorage.getItem(tokenName);
           if (!token) {
@@ -47,14 +47,24 @@ const routes = [
           }
         }
       },
-
-      // {
-      //   path: 'signup',
-      //   name: 'signup',
-      //   caseSensitive: true,
-      //   component: () => import('pages/SignupReference.vue')
-      // },
-
+      {
+        path: '/payment',
+        name: 'payment',
+        caseSensitive: true,
+        component: () => import('pages/SignupStep2.vue'),
+        beforeEnter: (to, from, next) => {
+          let token = LocalStorage.getItem(tokenName);
+          if (!token) {
+            next();
+          } else if (
+            from.name == 'onboarding' ||
+            from.name == 'login' ||
+            to.name == 'payment'
+          ) {
+            next('onboarding');
+          }
+        }
+      },
       {
         path: 'set-password',
         name: 'set-password',
@@ -136,19 +146,6 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/onboard/onBoardStep4.vue')
       },
-      // {
-      //   path: 'signup',
-      //   name: 'signup',
-      //   caseSensitive: true,
-      //   component: () => import('pages/SignupReference.vue'),
-      //   beforeEnter: (to, from, next) => {
-      //     let token  = LocalStorage.getItem(tokenName)
-      //     console.log(token);
-      //     if (token && next('signup')) {
-      //       next('/setup')
-      //     }
-      //   }
-      // },
       {
         path: 'dashboard',
         name: 'dashboard',
