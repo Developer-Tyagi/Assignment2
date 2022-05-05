@@ -60,7 +60,7 @@ export default {
   },
   data() {
     return {
-      metaTitle: 'Account Setup Successfull - claimguru'
+      metaTitle: 'Account Setup Successful - claimguru'
     };
   },
   components: {
