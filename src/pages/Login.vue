@@ -1,30 +1,36 @@
 <template>
-  <q-page class="column poppinsFont">
-    <div class="col row">
+  <q-page class="column poppinsFont page-content">
+    <div class="col row login-main">
       <div
         class="col-lg-6 col-md-6 col-sm-12 col-xs-12 bgNewPrimary login-mobile-banner"
       >
         <div class="">
           <a @click="goHome" style="cursor: pointer">
             <q-img
+              spinner-color="primary"
               src="~assets/Logo.svg"
               class="web-menu-claim-guru-logo"
             ></q-img>
           </a>
         </div>
         <div class="text-h5 text-center fontWeight600 content-center">
-          <div class="claimguru-tagline login-section">
+          <div class="claimguru-tagline login-section login-main-title">
             The First and Only Catastrophe-Proof Claim Management System For
             Public Adjusters
           </div>
         </div>
         <div class="desktop-footer">
           <q-img
+            spinner-color="primary"
+            spinner-size="82px"
             src="~assets/login_banner.svg"
-            style="margin-top: 84px; margin-right: 184px; width: 75%"
+            style="width: 75%"
           />
         </div>
-        <div class="claimguru-copy desktop-footer fontWeight400" style="">
+        <div
+          class="claimguru-copy desktop-footer fontWeight400 footer-fix"
+          style=""
+        >
           <span class=""> © ClaimGuru {{ new Date().getFullYear() }}</span>
         </div>
       </div>
@@ -38,13 +44,14 @@
               <div class="text-h4 fontWeight600 login-head">Login</div>
               <q-form class="" @submit="onUserLogin" ref="orgInfo">
                 <label class="text-subtitle1 fontWeight600 input-label"
-                  >Email Address</label
+                  >Email</label
                 >
                 <q-input
                   v-model="login.email"
                   name="email"
                   color="primary"
                   placeholder="Enter Registered Email Address"
+                  @blur="removeWhiteSpace($event, 'email')"
                   outlined
                   class="required input-class"
                   lazy-rules
@@ -64,6 +71,7 @@
                   color="primary"
                   class="required full-width input-class"
                   placeholder="Enter Your Password"
+                  @blur="removeWhiteSpace($event, 'password')"
                   v-model="login.password"
                   outlined
                   :type="isPwd ? 'password' : 'text'"
@@ -96,14 +104,12 @@
                 </div>
                 <div class="row justify-center">
                   <div
-                    class="col-lg-12 col-md-12 col-sm-12 q-ml-md text-center signup-text"
+                    class="col-lg-12 col-md-12 col-sm-12 text-center signup-text lineHeight24"
                   >
-                    <label class="text-subtitle1"
+                    <label class="text-subtitle1 lineHeight24"
                       >Don’t have an account?
                     </label>
-                    <a
-                      href="/signup"
-                      class="text-deep-orange text-subtitle1 fontWeight500"
+                    <a href="/signup" class="text-subtitle1 fontWeight500"
                       >Sign Up</a
                     >
                   </div>
@@ -194,6 +200,27 @@ export default {
   methods: {
     ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
     ...mapMutations(['setSelectedClaimId', 'setNotificationRouteTo']),
+    removeWhiteSpace(event, elementName) {
+      const value = event.target.value;
+      let result = '';
+      if (String(value).length >= 0) {
+        let wsRegex = /^\s+|\s+$/g;
+        result = value.replace(wsRegex, '');
+        if (elementName == 'email') {
+          this.login.email = result;
+        } else if (elementName == 'password') {
+          this.login.password = result;
+        }
+      } else {
+        if (elementName == 'email') {
+          this.login.email = event.target.value;
+        } else if (elementName == 'password') {
+          this.login.password = event.target.value;
+        }
+      }
+
+      this.$forceUpdate();
+    },
     goHome() {
       window.location.href = home_page;
     },
@@ -255,11 +282,7 @@ export default {
           }
 
           //below function is use for checking login routing for mobile and web screen,
-          if (isMobile()) {
-            this.$router.push('/dashboard');
-          } else {
-            this.$router.push('/admin');
-          }
+          this.$router.push('/admin');
         }
       }
     },
@@ -309,17 +332,11 @@ export default {
 }
 .signup-text {
   font-size: 16px !important;
-  line-height: 24px;
+  margin-top: 40px;
 
   @media only screen and (min-height: 500px) and (max-height: 800px) {
     margin-bottom: 20px;
     margin-top: 20px;
-  }
-  @media only screen and (min-height: 1024px) {
-    margin-top: 20px;
-  }
-  @media only screen and (max-height: 1023px) {
-    margin-top: 40px;
   }
 }
 .login-section {
@@ -391,12 +408,12 @@ export default {
   @media only screen and (max-width: 1023px) {
     border-radius: 5px;
     height: 40px;
-    margin-top: 4px;
+    margin-top: 6px;
   }
   @media only screen and (min-width: 1024px) {
     border-radius: 10px;
     height: 50px;
-    margin-top: 14px;
+    margin-top: 8px;
   }
 }
 .web-menu-claim-guru-logo {
@@ -416,15 +433,15 @@ export default {
     font-size: 14px;
     line-height: 20px;
     margin: 62px 0px 38px 32px;
-    position: static;
-    bottom: 0px;
+    // position: static;
+    // bottom: 0px;
   }
   @media only screen and (min-height: 1024px) {
     font-size: 14px;
     line-height: 20px;
     margin: 62px 0px 38px 32px;
-    position: absolute;
-    bottom: 0px;
+    // position: absolute;
+    // bottom: 0px;
   }
 }
 .mobile-footer {
@@ -456,13 +473,7 @@ export default {
 //     padding-right: 48px;
 //   }
 // }
-.login-up {
-  @media only screen and (max-width: 1023px) {
-  }
-  @media only screen and (min-width: 1024px) {
-    margin-top: 25vh;
-  }
-}
+
 .test {
   @media only screen and (max-width: 1500px) {
     padding-left: 48px;
@@ -550,7 +561,7 @@ export default {
   }
 }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
 .q-checkbox__bg {
   border-radius: 6px !important;
 }
@@ -587,18 +598,155 @@ export default {
 }
 
 .q-field {
-  @media only screen and (min-width: 365px) and (max-width: 379px) {
-    width: 347px;
-  }
+  // @media only screen and (min-width: 365px) and (max-width: 379px) {
+  //   width: 347px;
+  // }
   @media only screen and (min-width: 380px) and (max-width: 1023px) {
-    width: 357px;
+    max-width: 357px;
   }
   @media only screen and (min-width: 1024px) {
     width: 431px;
   }
 }
+
+.login-main-title,
+.login-head {
+  letter-spacing: 0.75px;
+}
+
+.input-label,
+.login-section .signup-text label,
+.login-section .signup-text a,
+.login-section .btn-submit,
+.desktop-footer span {
+  letter-spacing: 0.15px;
+}
+
 .q-page-container {
   margin: 0 auto;
   max-width: 120rem;
 }
+
+.page-content {
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+.login-section {
+  margin: 0 auto !important;
+  max-width: 630px !important;
+}
+
+.login-up .q-field--with-bottom {
+  padding-bottom: 24px !important;
+}
+
+.loginform-mobile-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-main-title {
+  padding: 100px 15px 84px 15px;
+}
+
+.btn-submit {
+  background-color: #ef5926 !important;
+}
+
+.signup-text a {
+  color: #ef5926 !important;
+  margin-left: 10px;
+}
+
+@media (min-width: 1200px) {
+  .loginform-mobile-banner {
+    max-height: 950px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .loginform-mobile-banner {
+    max-height: 950px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .login-mobile-banner {
+    height: 400px;
+  }
+
+  .loginform-mobile-banner {
+    padding: 0 0 40px 0;
+  }
+
+  .login-main.col {
+    display: block;
+  }
+}
+
+@media (max-width: 767px) {
+  .web-menu-claim-guru-logo {
+    margin-top: 15px !important;
+  }
+  .login-mobile-banner {
+    height: 278px;
+  }
+  .login-main-title {
+    padding: 40px 0 40px 0;
+    font-size: 24px;
+    line-height: 36px;
+    max-width: 75% !important;
+  }
+
+  .loginform-mobile-banner {
+    display: block;
+    padding: 50px 0 50px 0;
+  }
+
+  .loginform-mobile-banner .login-up .login-head {
+    padding-top: 0;
+  }
+
+  .btn-submit {
+    margin-top: 0;
+  }
+
+  .login-up .q-field--with-bottom {
+    padding-bottom: 16px !important;
+  }
+
+  .signup-text {
+    margin-top: 20px;
+    margin-left: 0;
+  }
+  .login-section .btn-submit {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .login-main-title {
+    padding: 27px 15px 40px 15px;
+    line-height: 28px;
+    max-width: 420px !important;
+    height: 210px;
+  }
+
+  .loginform-mobile-banner {
+    padding: 40px 15px 50px 15px;
+  }
+}
+
+// @media (max-width: 400px) {
+//     .loginform-mobile-banner{
+//       .q-field{
+//         width: 100% !important;
+//       }
+//       .login-up{
+//         width: 100% !important;
+//       }
+//     }
+//   }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- header -->
-    <div v-if="$route.name != 'onBoarding' && $route.name !== 'admin'">
+    <div v-if="$route.name != 'onboarding' && $route.name !== 'admin'">
       <q-header class="bg-white">
         <q-toolbar
           class="row bg-primary rounded-header"
@@ -100,61 +100,63 @@
       class="bg-white ht-83 sm-hide xs-hide bigScreen"
       :reveal-offset="false"
     >
-      <!-- <q-header class="bg-white"> -->
       <!-- setup header -->
-      <div class="row" v-if="$route.name == 'onBoarding'">
-        <div
-          class="col-xl-4 col-lg-4 col-md-4 q-pt-lg q-pb-md"
-          style="background-color: #f9e7d8"
-        >
-          <q-img size="1em" src="~assets/Logo.svg" class="LogoSize q-ml-32" />
+      <div class="row" v-if="$route.name == 'onboarding'">
+        <div class="col-xl-3 col-md-4 q-pb-md max-width logoContainer" style="">
+          <q-img
+            size="1em"
+            src="~assets/Logo.svg"
+            class="LogoSize"
+            @click="clickedLogo"
+          />
         </div>
         <div
-          class="col-xl-9 col-lg-8 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
+          class="col-xl-9 padding-top-20 col-md-8 bg-white ht-83 justify-end q-pt-md"
         >
-          <div class="row justify-end q-pr-xl">
-            <!-- <q-avatar
-              size="3em"
-              font-size="2.5rem"
-              icon="person"
-              class="text-white bg-grey q-mr-md"
-            >
-            </q-avatar> -->
+          <div
+            class="row justify-end q-pr-lg"
+            @click="openDropdown = !openDropdown"
+          >
+            <div style="position: relative">
+              <div style="display: flex; cursor: pointer">
+                <q-img
+                  size="1em"
+                  style="height: 40px"
+                  src="~assets/default-profile.svg"
+                  class="AvtarLogoSize"
+                />
 
-            <q-img src="~assets/Avatarforprofile.svg" class="ProfileLogoSize" />
-
-            <div class="q-pt-sm text-capitalize" style="margin-left: 10px">
-              <span v-if="isMobile" class="userNameStyle">
-                {{ userName ? userName : updatedUserName }}</span
-              >
-              <q-img
-                size="1em"
-                src="~assets/Icondown.svg"
-                class="dropdownLogo"
-              />
-            </div>
-            <div class="">
-              <!-- <q-btn-dropdown
-            >
-              <div class="row no-wrap">
-                <div class="column items-center" style="padding:10px">
-                  <div class="text-subtitle1 q-mt-md q-mb-xs">
-                                  <span v-if="isMobile" class="">
-                {{ userName ? userName : updatedUserName }}</span
-              >
-                  </div>
-          <q-btn
-            class="full-width q-mt-md menu-bar-style text-subtitle1 text-bold"
-            label="LOGOUT"
-            style="border-radius: 25px; width: 100%; height: 50px"
-            @click="logout()"
-          />
+                <div class="q-pt-sm text-capitalize" style="margin-left: 5px">
+                  <span v-if="isMobile" class="userNameStyle">
+                    {{ userName ? userName : updatedUserName }}</span
+                  >
+                  <q-img
+                    size="1em"
+                    src="~assets/Icondown.svg"
+                    class="dropdownLogo"
+                  />
                 </div>
               </div>
-            </q-btn-dropdown> -->
+
+              <q-popup-proxy
+                ref="logoutProxy"
+                class="bannerContainer"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-banner class="bg-white">
+                  <div class="userDetailContainer">
+                    <p class="userEmail">{{ user.email }}</p>
+                    <p class="companyName">{{ organization.name }}</p>
+                  </div>
+                  <div class="logoutContainer" @click="logout()">
+                    <h6 class="logoutText">Log Out</h6>
+                    <q-img src="~assets/LogOutIcon.svg" class="logoutLogo" />
+                  </div>
+                </q-banner>
+              </q-popup-proxy>
             </div>
           </div>
-          <!-- <q-separator class="q-mt-md" /> -->
         </div>
       </div>
       <!-- admin header -->
@@ -219,7 +221,7 @@
       </div>
       <!-- <q-separator /> -->
       <div
-        v-if="!isMobile() && $route.name !== 'onBoarding' && !$q.screen.lt.sm"
+        v-if="!isMobile() && $route.name !== 'onboarding' && !$q.screen.lt.sm"
         class="q-px-xl q-ml-lg q-mt-sm q-pt-xs"
       >
         <q-breadcrumbs style="color: #667085" active-color="#667085">
@@ -248,7 +250,7 @@
     </div>
 
     <!-- menu -->
-    <div v-if="$route.name !== 'onBoarding'">
+    <div v-if="$route.name !== 'onboarding'">
       <!-- Menu Drawer for Mobile application-->
       <q-drawer
         v-if="isMobile()"
@@ -577,14 +579,18 @@ import {
 } from '@utils/auth';
 import { isMobile } from '@utils/common';
 import { Capacitor } from '@capacitor/core';
+// import QPopover from 'quasar-framework/src/components/popover/QPopover.js'
 import { removeFirebaseToken } from '@utils/firebase';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { appVersion } from '../Version';
 export default {
   name: 'CustomHeader',
-
+  components: {
+    // QPopover
+  },
   data() {
     return {
+      openDropdown: false,
       version: appVersion,
       webDrawer: true,
       miniState: false,
@@ -770,7 +776,8 @@ export default {
       'getActiveLeadsList',
       'getArchivedLeadsList',
       'getClients',
-      'getAccess'
+      'getAccess',
+      'getOrganization'
     ]),
     //function is used to collapse the web-drawer in the
 
@@ -972,6 +979,9 @@ export default {
           this.sidebarItems.push(this.linksDataForMobileDrawer[i]);
         }
       }
+    },
+    clickedLogo() {
+      window.location.href = 'https://claimguru.cilalabs.dev/';
     }
   },
 
@@ -986,12 +996,12 @@ export default {
       'isOnline',
       'editSelectedClient',
       'isOfflineClientEdit',
-      'userName'
+      'userName',
+      'organization'
     ]),
     userName() {
       // currentUser = getCurrentUser().attributes.contact
       // let fullName = this.userName
-      // console.log(currentUser, "wqfretrshrhthththth");
     }
   },
   async created() {
@@ -1000,6 +1010,7 @@ export default {
     } else {
       this.intViewportWidth = 300;
     }
+    await this.getOrganization();
     if (this.getCurrentUser().attributes) {
       let currentUser = getCurrentUser().attributes.contact;
       const firstName = currentUser.fname;
@@ -1019,13 +1030,27 @@ export default {
 .q-toolbar {
   padding: 0;
 }
-.ProfileLogoSize {
+.logoContainer {
+  background-color: #f9e7d8;
+  .LogoSize {
+    width: 151px;
+    height: 51px;
+    margin-left: 32px;
+    margin-top: 22px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+}
+.AvtarLogoSize {
   width: 40px;
   height: 40px;
 }
 .q-header {
   margin: 0 auto !important;
   max-width: 120rem;
+}
+.q-pt-22 {
+  padding-top: 22px;
 }
 .button-50 {
   width: 50px;
@@ -1047,6 +1072,45 @@ export default {
   }
   @media only screen and (min-width: 1024px) {
     display: block;
+  }
+}
+.userDetailContainer {
+  margin: 16px 39px 16px 16px;
+  color: #667085;
+  font-weight: 500;
+  .userEmail {
+    font-size: 12px;
+    line-height: 18px;
+    margin: 0px;
+  }
+  .companyName {
+    font-size: 10px;
+    line-height: 15px;
+    margin-top: 4px;
+  }
+}
+.logoutContainer {
+  display: flex;
+  justify-content: space-between;
+  border-top: 2px solid #ccc;
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+  cursor: pointer;
+
+  .logoutText {
+    margin: 0px;
+    padding: 0px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    color: #152141;
+  }
+  .logoutLogo {
+    height: 15px;
+    width: 15px;
+    margin-top: 5px;
   }
 }
 .title {
@@ -1080,6 +1144,12 @@ export default {
   left: 38%;
   padding-left: 45px;
   margin-left: -118px;
+}
+
+@media only screen and (min-width: 1440px) {
+  .max-width {
+    max-width: 480px;
+  }
 }
 .header-color {
   @media only screen and (max-width: 1023px) {
@@ -1152,12 +1222,6 @@ export default {
   height: 6;
   margin-left: 10px;
 }
-.LogoSize {
-  width: 151px;
-  height: 51px;
-  margin-right: 10px;
-  cursor: pointer;
-}
 .userNameStyle {
   color: #151821;
   font-family: 'Poppins';
@@ -1166,9 +1230,14 @@ export default {
   font-size: 16px;
   line-height: 24px;
   display: inline-block;
-  width: 70px;
+  max-width: 170px;
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
+}
+@media (min-width: 1024px) {
+  .max-width {
+    max-width: 480px !important;
+  }
 }
 </style>

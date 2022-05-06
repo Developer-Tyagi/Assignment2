@@ -24,312 +24,8 @@
           </div>
         </div>
         <q-form greedy v-if="editCompanyDetails" ref="companyDetailsForm">
-          <div
-            class="flex-row full-width q-mt-20"
-            :class="isMobileResolution ? 'flex-column' : ''"
-          >
-            <span>
-              <span class="camera-container absolute-position">
-                <q-btn
-                  :ripple="false"
-                  round
-                  v-if="organizations && organizations.logo"
-                  style="width: 0px"
-                >
-                  <q-img
-                    class="camera-icon"
-                    src="../../assets/edit-logo.svg"
-                    alt="Camera"
-                  />
-                  <q-menu :offset="menuPosition" content-class="logo-menu">
-                    <q-list class="text-subtitle1 line-height-24 q-pa-sm">
-                      <q-item
-                        clickable
-                        v-ripple
-                        v-close-popup
-                        @click="initiateLogoUpload()"
-                        class="flex-row items-center"
-                      >
-                        <q-img
-                          class="icon-20 q-mr-md"
-                          src="../../assets/camera-flat.svg"
-                          alt="Camera"
-                        />
-                        <q-item-section> Upload new logo </q-item-section>
-                      </q-item>
-                      <q-separator class="q-mx-md" />
-                      <q-item
-                        clickable
-                        v-ripple
-                        v-close-popup
-                        @click="deleteLogo(organizations.logo)"
-                        class="flex-row items-center"
-                      >
-                        <q-img
-                          class="icon-20 q-mr-md"
-                          src="../../assets/delete.svg"
-                          alt="Camera"
-                        />
-                        <q-item-section> Remove logo </q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-btn>
+          <CompanyDetails :companyDetails.sync="companyDetails" />
 
-                <q-img
-                  v-else
-                  @click="initiateLogoUpload()"
-                  class="camera-icon cursor-pointer"
-                  src="../../assets/camera.svg"
-                  alt="Camera"
-                />
-              </span>
-              <q-skeleton
-                v-if="
-                  (companyLogoUploadPercentage > 0 &&
-                    companyLogoUploadPercentage <= 100) ||
-                  organization.logo !== organizations.logo
-                "
-                type="circle"
-                :class="isMobileResolution ? 'image-60' : 'image-80'"
-              />
-              <span v-else>
-                <img
-                  v-if="organization && organization.logo"
-                  class="company-logo"
-                  :class="isMobileResolution ? 'image-60' : 'image-80'"
-                  :src="organization.logo"
-                  alt="Company logo"
-                />
-                <img
-                  v-else
-                  :class="isMobileResolution ? 'image-60' : 'image-80'"
-                  :src="getImage('empty-company-logo.svg')"
-                  alt="Company logo"
-                />
-              </span>
-            </span>
-            <div
-              :class="
-                isMobileResolution
-                  ? 'details-container q-mt-20'
-                  : 'company-details q-ml-lg'
-              "
-            >
-              <div class="flex-column full-width">
-                <div class="details-heading q-mb-6">Company Name</div>
-                <q-input
-                  input-class="details-content"
-                  outlined
-                  v-model.trim="organizations.users.fname"
-                  placeholder="Company Name"
-                  :maxlength="maxlengthConstants.companyName"
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please fill company name'
-                  ]"
-                />
-                <div
-                  class="flex-row-wrap"
-                  :class="isMobileResolution ? 'flex-column' : ''"
-                >
-                  <div
-                    :class="
-                      isMobileResolution ? '' : 'half-width q-pr-12 q-mt-xs'
-                    "
-                  >
-                    <div class="details-heading q-mb-6">Company Contact</div>
-                    <q-input
-                      input-class="details-content"
-                      outlined
-                      placeholder="000 000 0000"
-                      v-model.trim="organizations.phoneNumber.number"
-                      lazy-rules
-                      :rules="[
-                        val =>
-                          (val && val.length > 0) ||
-                          'Please fill contact number'
-                      ]"
-                    >
-                      <template v-slot:prepend input-class="q-pr-none">
-                        <vue-country-code
-                          @onSelect="onSelect"
-                          enabledCountryCode
-                          defaultCountry="us"
-                          :onlyCountries="['us']"
-                          style="border: none; height: 40px; font-size: 16px"
-                        >
-                        </vue-country-code>
-                      </template>
-                    </q-input>
-                  </div>
-                  <div
-                    :class="
-                      isMobileResolution ? '' : 'half-width q-pl-12 q-mt-xs'
-                    "
-                  >
-                    <div class="details-heading q-mb-6">Company Email</div>
-                    <q-input
-                      input-class="details-content"
-                      outlined
-                      v-model.trim="organizations.companyDetails.contactEmail"
-                      placeholder="Company Email"
-                      lazy-rules
-                      :rules="[
-                        val =>
-                          (organizations.companyDetails.contactEmail
-                            ? validateEmail(val)
-                            : true) || 'Please enter valid email address'
-                      ]"
-                    />
-                  </div>
-                </div>
-                <div
-                  :class="isMobileResolution ? '' : 'q-mt-xs'"
-                  class="details-heading q-mb-6"
-                >
-                  Company Address
-                </div>
-                <q-input
-                  input-class="details-content"
-                  outlined
-                  v-model.trim="organizations.companyDetails.address.address1"
-                  placeholder="Company Address"
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please fill address'
-                  ]"
-                />
-
-                <div
-                  class="flex-row-wrap"
-                  :class="isMobileResolution ? 'flex-column' : ''"
-                >
-                  <div
-                    :class="
-                      isMobileResolution ? '' : 'half-width q-pr-12 q-mt-xs'
-                    "
-                  >
-                    <div class="details-heading q-mb-6">City</div>
-
-                    <q-input
-                      input-class="details-content"
-                      outlined
-                      v-model.trim="
-                        organizations.companyDetails.address.addressLocality
-                      "
-                      placeholder="Enter City Here"
-                      lazy-rules
-                      :rules="[
-                        val => (val && val.length > 0) || 'Please fill city',
-                        val => validateText(val) || 'Please enter valid city'
-                      ]"
-                    />
-                  </div>
-                  <div
-                    :class="
-                      isMobileResolution ? '' : 'half-width q-pl-12 q-mt-xs'
-                    "
-                  >
-                    <div class="details-heading q-mb-6">State</div>
-
-                    <q-select
-                      dense
-                      input-class="details-content"
-                      outlined
-                      v-model="
-                        organizations.companyDetails.address.addressRegion
-                      "
-                      placeholder="State"
-                      :options="states"
-                      lazy-rules
-                      :rules="[val => !!val || 'Please select the state']"
-                    >
-                      <template v-slot:selected>
-                        <template
-                          v-if="
-                            organizations.companyDetails.address.addressRegion
-                          "
-                        >
-                          <span class="details-content">
-                            {{
-                              organizations.companyDetails.address.addressRegion
-                            }}
-                          </span>
-                        </template>
-                        <template v-else>
-                          <span class="placeholder-color"> Select State </span>
-                        </template>
-                      </template>
-                    </q-select>
-                  </div>
-                </div>
-                <div
-                  class="flex-row-wrap"
-                  :class="isMobileResolution ? 'flex-column' : ''"
-                >
-                  <div
-                    :class="
-                      isMobileResolution ? '' : 'half-width q-pr-12 q-mt-xs'
-                    "
-                  >
-                    <div class="details-heading q-mb-6">Zipcode</div>
-
-                    <q-input
-                      input-class="details-content"
-                      outlined
-                      placeholder="Zipcode"
-                      v-model="organizations.companyDetails.address.postalCode"
-                      lazy-rules
-                      mask="#####"
-                      :rules="[
-                        val => (val && val.length > 0) || 'Please fill zipcode'
-                      ]"
-                    />
-                  </div>
-                  <div
-                    :class="
-                      isMobileResolution ? '' : 'half-width q-pl-12 q-mt-xs'
-                    "
-                  >
-                    <div class="details-heading q-mb-6">Country</div>
-                    <q-select
-                      dense
-                      input-class="details-content"
-                      outlined
-                      v-model="
-                        organizations.companyDetails.address.addressCountry
-                      "
-                      :options="country"
-                      behavior="menu"
-                      lazy-rules
-                      :rules="[val => !!val || 'Please select the country']"
-                    >
-                      <template v-slot:selected>
-                        <template
-                          v-if="
-                            organizations.companyDetails.address.addressCountry
-                          "
-                        >
-                          <span class="details-content">
-                            {{
-                              organizations.companyDetails.address
-                                .addressCountry
-                            }}
-                          </span>
-                        </template>
-                        <template v-else>
-                          <span class="placeholder-color">
-                            Select Country
-                          </span>
-                        </template>
-                      </template>
-                    </q-select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <div
             class="flex-row items-center q-mt-sm"
             :class="isMobileResolution ? 'justify-between' : 'justify-end'"
@@ -384,8 +80,14 @@
             <div class="company-details q-ml-lg">
               <div class="flex-column full-width">
                 <div class="details-heading">Company Name</div>
-                <div class="details-content q-pt-sm ellipsis-3-lines">
-                  {{ organizations.users.fname }}
+                <div
+                  class="details-content q-pt-sm ellipsis-3-lines"
+                  v-if="organization && Object.keys(organization).length === 0"
+                >
+                  <q-skeleton type="text" width="20%" />
+                </div>
+                <div class="details-content q-pt-sm ellipsis-3-lines" v-else>
+                  {{ organization.name }}
                 </div>
                 <div
                   class="details-heading"
@@ -393,9 +95,15 @@
                 >
                   Mobile
                 </div>
-                <div class="details-content q-pt-sm">
-                  {{ organizations.phoneNumber.code }}
-                  {{ showPhoneNumber(organizations.phoneNumber.number) }}
+                <div
+                  class="details-content q-pt-sm"
+                  v-if="organization && Object.keys(organization).length === 0"
+                >
+                  <q-skeleton type="text" width="20%" />
+                </div>
+                <div class="details-content q-pt-sm" v-else>
+                  {{ organization.phoneNumber.code }}
+                  {{ showPhoneNumber(organization.phoneNumber.number) }}
                 </div>
                 <div
                   class="details-heading"
@@ -403,8 +111,14 @@
                 >
                   Email Address
                 </div>
-                <div class="details-content q-pt-sm ellipsis">
-                  {{ organizations.companyDetails.contactEmail }}
+                <div
+                  class="details-content q-pt-sm ellipsis"
+                  v-if="organization && Object.keys(organization).length === 0"
+                >
+                  <q-skeleton type="text" width="20%" />
+                </div>
+                <div class="details-content q-pt-sm ellipsis" v-else>
+                  {{ organization.email }}
                 </div>
                 <div
                   class="details-heading"
@@ -412,12 +126,18 @@
                 >
                   Company Address
                 </div>
-                <div class="details-content q-pt-sm ellipsis-3-lines">
-                  {{ organizations.companyDetails.address.address1 }},
-                  {{ organizations.companyDetails.address.addressLocality }},
-                  {{ organizations.companyDetails.address.addressRegion }},
-                  {{ organizations.companyDetails.address.addressCountry }}
-                  - {{ organizations.companyDetails.address.postalCode }}
+                <div
+                  class="details-content q-pt-sm ellipsis-3-lines"
+                  v-if="organization && Object.keys(organization).length === 0"
+                >
+                  <q-skeleton type="text" width="30%" />
+                </div>
+                <div class="details-content q-pt-sm ellipsis-3-lines" v-else>
+                  {{ organization.address.address1 }},
+                  {{ organization.address.addressLocality }},
+                  {{ organization.address.addressRegion }},
+                  {{ organization.address.addressCountry }}
+                  - {{ organization.address.postalCode }}
                 </div>
               </div>
             </div>
@@ -534,7 +254,13 @@
               "
             >
               <div class="details-heading">First Name</div>
-              <div class="details-content q-pt-sm ellipsis">
+              <div
+                class="details-content q-pt-sm ellipsis"
+                v-if="users && Object.keys(users).length === 0"
+              >
+                <q-skeleton type="text" width="20%" />
+              </div>
+              <div class="details-content q-pt-sm ellipsis" v-else>
                 {{ users.fname }}
               </div>
             </div>
@@ -546,7 +272,13 @@
               "
             >
               <div class="details-heading">Last Name</div>
-              <div class="details-content q-pt-sm ellipsis">
+              <div
+                class="details-content q-pt-sm ellipsis"
+                v-if="users && Object.keys(users).length === 0"
+              >
+                <q-skeleton type="text" width="20%" />
+              </div>
+              <div class="details-content q-pt-sm ellipsis" v-else>
                 {{ users.lname }}
               </div>
             </div>
@@ -558,7 +290,13 @@
               "
             >
               <div class="details-heading">Email Address</div>
-              <div class="details-content q-pt-sm ellipsis">
+              <div
+                class="details-content q-pt-sm ellipsis"
+                v-if="users && Object.keys(users).length === 0"
+              >
+                <q-skeleton type="text" width="20%" />
+              </div>
+              <div class="details-content q-pt-sm ellipsis" v-else>
                 {{ users.email }}
               </div>
             </div>
@@ -574,22 +312,8 @@
           <div class="details-title">Google Drive</div>
           <span></span>
         </div>
-        <div v-if="organizations.isDriveConnected">
-          <div class="flex-column details-container q-pt-lg">
-            <div class="details-heading">Email</div>
-            <div class="details-content q-pt-sm ellipsis">
-              {{ organizations.driveEmail }}
-            </div>
-            <div
-              class="flex-row justify-center items-center q-mt-lg google-drive"
-            >
-              <span class="text-center"
-                >Connected to Google Drive
-                <span>
-                  <q-icon name="task_alt" color="teal" size="17px" /> </span
-              ></span>
-            </div>
-          </div>
+        <div class="q-pt-lg">
+          <ConnectGoogleDrive />
         </div>
       </q-card>
       <q-card
@@ -700,7 +424,13 @@
               "
             >
               <div class="details-heading">PhotoID Email</div>
-              <div class="details-content q-pt-sm text-primary ellipsis">
+              <div
+                class="details-content q-pt-sm text-primary ellipsis"
+                v-if="organizations && Object.keys(organization).length === 0"
+              >
+                <q-skeleton type="text" width="30%" />
+              </div>
+              <div class="details-content q-pt-sm text-primary ellipsis" v-else>
                 {{ organizations.photoIDEmail }}
               </div>
             </div>
@@ -712,21 +442,19 @@
               "
             >
               <div class="details-heading">PhotoID API Key</div>
-              <div class="details-content q-pt-sm text-primary ellipsis">
+              <div
+                class="details-content q-pt-sm text-primary ellipsis"
+                v-if="organizations && Object.keys(organization).length === 0"
+              >
+                <q-skeleton type="text" width="30%" />
+              </div>
+              <div class="details-content q-pt-sm text-primary ellipsis" v-else>
                 {{ organizations.photoIDAPIKey }}
               </div>
             </div>
           </div>
         </div>
       </q-card>
-      <q-input
-        ref="uploadImageFileInput"
-        accept="image/jpg, image/png, image/jpeg"
-        style="display: none"
-        v-model="fileToUpload"
-        type="file"
-        @change="uploadLogo()"
-      />
     </div>
   </q-page>
 </template>
@@ -742,13 +470,16 @@ import {
 } from '@utils/clickable';
 import { validateEmail, validateUrl, validateText } from '@utils/validation';
 import { constants } from '@utils/constant';
-import AddressService from '@utils/country';
+import CompanyDetails from 'components/CompanyDetails';
+import ConnectGoogleDrive from 'components/ConnectGoogleDrive';
 
-const addressService = new AddressService();
+// import AddressService from '@utils/country';
+
+// const addressService = new AddressService();
 
 export default {
   name: 'AccountSummary',
-
+  components: { CompanyDetails, ConnectGoogleDrive },
   data() {
     return {
       editAccountSummary: false,
@@ -757,22 +488,6 @@ export default {
       userId: '',
       organizations: {
         name: '',
-        companyDetails: {
-          address: {
-            address1: '',
-            address2: '',
-            addressLocality: '',
-            addressRegion: '',
-            postalCode: '',
-            addressCountry: ''
-          },
-          contactEmail: ''
-        },
-        phoneNumber: {
-          code: '',
-          number: '',
-          type: ''
-        },
         photoIDAPIKey: '',
         photoIDEmail: '',
         isDriveConnected: false,
@@ -800,7 +515,23 @@ export default {
       maxlengthConstants: constants.maxLength,
       states: [],
       country: ['United States'],
-      menuPosition: [-60, 50]
+      // menuPosition: [-60, 50]
+      companyDetails: {
+        name: '',
+        address: {
+          address1: '',
+          addressLocality: '',
+          addressRegion: '',
+          addressCountry: '',
+          postalCode: ''
+        },
+        email: '',
+        phoneNumber: {
+          code: '',
+          number: '',
+          type: 'pager'
+        }
+      }
     };
   },
   computed: {
@@ -809,8 +540,8 @@ export default {
       'organization',
       'allUsers',
       'paidUnpaidUserDetails',
-      'isMobileResolution',
-      'companyLogoUploadPercentage'
+      'isMobileResolution'
+      // 'companyLogoUploadPercentage'
     ])
   },
   watch: {
@@ -818,21 +549,7 @@ export default {
       if (this.organizations.logo !== value.logo) {
         this.organizations.logo = value.logo;
       }
-    },
-    isMobileResolution(value) {
-      if (value) {
-        this.menuPosition = [-40, 30];
-      } else {
-        this.menuPosition = [-60, 50];
-      }
     }
-  },
-
-  mounted() {
-    this.organizations.companyDetails.address.addressCountry = 'United States';
-    this.onCountrySelect(
-      this.organizations.companyDetails.address.addressCountry
-    );
   },
 
   async created() {
@@ -853,32 +570,31 @@ export default {
     await this.getOrganization();
 
     if (this.organization) {
-      this.organizations.users.fname = this.organization.name;
+      this.companyDetails.name = JSON.parse(
+        JSON.stringify(this.organization.name)
+      );
       this.organizations.photoIDAPIKey = this.organization.photoIDAPIKey;
       this.organizations.photoIDEmail = this.organization.photoIDEmail;
       this.organizations.isDriveConnected = this.organization.isDriveConnected;
       this.organizations.driveEmail = this.organization.driveEmail;
       this.organizations.logo = this.organization.logo;
 
-      this.organizations.users.email = this.organization.photoIDEmail;
+      // this.organizations.users.email = this.organization.photoIDEmail;
+
       if (this.organization.address) {
-        this.organizations.companyDetails.address.address1 =
-          this.organization.address.address1;
-        this.organizations.companyDetails.address.addressRegion =
-          this.organization.address.addressRegion;
-        this.organizations.companyDetails.address.postalCode =
-          this.organization.address.postalCode;
-        this.organizations.companyDetails.address.addressLocality =
-          this.organization.address.addressLocality;
-        this.organizations.companyDetails.address.addressCountry =
-          this.organization.address.addressCountry;
+        this.companyDetails.address = JSON.parse(
+          JSON.stringify(this.organization.address)
+        );
       }
       if (this.organization.email) {
-        this.organizations.companyDetails.contactEmail =
-          this.organization.email;
+        this.companyDetails.email = JSON.parse(
+          JSON.stringify(this.organization.email)
+        );
       }
       if (this.organization.phoneNumber) {
-        this.organizations.phoneNumber = this.organization.phoneNumber;
+        this.companyDetails.phoneNumber = JSON.parse(
+          JSON.stringify(this.organization.phoneNumber)
+        );
       }
     }
   },
@@ -917,30 +633,9 @@ export default {
 
     async saveCompanyDetails() {
       const success = await this.$refs.companyDetailsForm.validate();
-      if (
-        success &&
-        this.organizations.companyDetails.address.address1.length > 0
-      ) {
+      if (success && this.companyDetails.address.address1.length > 0) {
         const payload = {
-          data: {
-            name: this.organizations.users.fname,
-            address: {
-              address1: this.organizations.companyDetails.address.address1,
-              addressLocality:
-                this.organizations.companyDetails.address.addressLocality,
-              addressRegion:
-                this.organizations.companyDetails.address.addressRegion,
-              addressCountry:
-                this.organizations.companyDetails.address.addressCountry,
-              postalCode: this.organizations.companyDetails.address.postalCode
-            },
-            email: this.organizations.companyDetails.contactEmail,
-            phoneNumber: {
-              code: this.organizations.phoneNumber.code,
-              number: this.organizations.phoneNumber.number,
-              type: 'pager'
-            }
-          }
+          data: this.companyDetails
         };
         await this.updateUserForOrganization(payload);
         await this.getOrganization();
@@ -1015,21 +710,20 @@ export default {
     },
     cancelCompanyDetailsUpdate() {
       this.editCompanyDetails = false;
-      this.organizations.users.fname = this.organization.name;
-      this.organizations.companyDetails.contactEmail = this.organization.email;
-      this.organizations.phoneNumber = this.organization.phoneNumber;
+      this.companyDetails.name = JSON.parse(
+        JSON.stringify(this.organization.name)
+      );
+      this.companyDetails.email = JSON.parse(
+        JSON.stringify(this.organization.email)
+      );
+      this.companyDetails.phoneNumber = JSON.parse(
+        JSON.stringify(this.organization.phoneNumber)
+      );
 
       if (this.organization.address) {
-        this.organizations.companyDetails.address.address1 =
-          this.organization.address.address1;
-        this.organizations.companyDetails.address.addressRegion =
-          this.organization.address.addressRegion;
-        this.organizations.companyDetails.address.addressLocality =
-          this.organization.address.addressLocality;
-        this.organizations.companyDetails.address.addressCountry =
-          this.organization.address.addressCountry;
-        this.organizations.companyDetails.address.postalCode =
-          this.organization.address.postalCode;
+        this.companyDetails.address = JSON.parse(
+          JSON.stringify(this.organization.address)
+        );
       }
     },
     cancelPhotoIDUpdate() {
@@ -1063,54 +757,17 @@ export default {
       this.fileToUpload = [];
     },
     async validateEmailid(val) {
-      let email_exist = true;
-      if (this.user.email !== this.users.email && val) {
-        email_exist = await this.checkExistingEmail(val);
-      }
-      let email_valid = await this.validateEmail(val);
-      let go_exist = false;
-      let go_valid = false;
-      let go_empty = false;
-
-      if (email_exist) {
-        go_exist = true;
-      } else {
-        go_exist = false;
-        this.errorMSG = 'This email is already in use.';
-      }
-      if (email_valid) {
-        go_valid = true;
-      } else {
-        go_valid = false;
-        this.errorMSG = 'Please enter valid email address';
-      }
       if (val == '') {
-        go_empty = false;
-        this.errorMSG = 'Please fill your email address';
-      } else {
-        go_empty = true;
+        return 'Please fill your email address';
+      } else if (!(await this.validateEmail(val))) {
+        return 'You have entered an invalid email address';
+      } else if (this.user.email !== this.users.email && val) {
+        if (await this.checkExistingEmail(val)) {
+          return 'This email is already in use.';
+        }
       }
-      if (go_exist && go_valid && go_empty) {
-        this.errorMSG = '';
-        return true;
-      } else {
-        return false;
-      }
-    },
-    async deleteLogo(logoUrl) {
-      await this.deleteFileFromFirebase({ url: logoUrl, showMsg: true });
-      await this.updateCompanyLogo({
-        logoURL: '',
-        companyName: this.organization.name
-      });
-      await this.getOrganization();
-    },
-    onSelect({ name, iso2, dialCode }) {
-      this.organizations.phoneNumber.code = '';
-      this.organizations.phoneNumber.code = '+' + dialCode;
-    },
-    async onCountrySelect(country) {
-      this.states = await addressService.getStates(country);
+
+      return;
     }
   },
 
@@ -1125,40 +782,11 @@ export default {
     0px 2px 4px -2px rgba(16, 24, 40, 0.06);
   border-radius: 20px;
 }
-.company-details {
-  width: calc(100vw - 508px);
-}
-.details-container {
-  width: calc(100vw - 404px);
-}
-.quarter-container {
+.quarter-conta iner {
   width: calc((100vw - 428px) / 4 - 0px);
 }
 .half-container {
   width: calc((100vw - 428px) / 2 - 0px);
-}
-.google-drive {
-  height: 44px;
-  width: 351px;
-  border: solid 1px #039855;
-  color: #039855;
-  background-color: #d1fadf;
-  border-radius: 8px;
-  box-sizing: border-box;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.15px;
-}
-.camera-container {
-  position: absolute;
-  .camera-icon {
-    z-index: 1;
-    top: 50px;
-    left: 50px;
-    height: 30px;
-    width: 30px;
-  }
 }
 .error-msg {
   position: absolute;
@@ -1169,36 +797,11 @@ export default {
   margin-left: 8px;
   margin-top: -12px;
 }
-.company-logo {
-  border: 1px solid #000000;
-  border-radius: 75px;
-}
 
 @media screen and (max-width: 1023px) {
-  .details-title {
-    font-size: 20px;
-    line-height: 24px;
-  }
-  .company-details {
-    width: calc(100vw - 146px);
-  }
   .account-details {
     display: flex;
     flex-direction: column;
-  }
-  .google-drive {
-    height: 40px;
-    width: calc(100% - 0px);
-    max-width: 313px;
-  }
-  .details-container {
-    width: calc(100vw - 62px);
-  }
-  .camera-container {
-    .camera-icon {
-      top: 30px;
-      left: 30px;
-    }
   }
 }
 </style>

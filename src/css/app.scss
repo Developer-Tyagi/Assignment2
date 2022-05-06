@@ -135,34 +135,14 @@
   width: 50%;
 }
 
-.details-title {
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 32px;
-  letter-spacing: 0.75px;
-}
-
-.details-heading {
-  font-weight: 600;
-  font-size: 16px;
+.lineHeight24 {
   line-height: 24px;
-  color: $font-heading;
-  letter-spacing: 0.75px;
-}
-
-.details-content {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: $font-content;
-  letter-spacing: 0.15px;
 }
 
 .text-input {
   box-sizing: border-box;
   border-radius: 8px;
 }
-
 .logo-menu {
   border: 2px solid #e8e9ec;
   box-sizing: border-box;
@@ -180,4 +160,92 @@
 }
 .header-logo {
   border-radius: 75px;
+}
+
+.company-logo {
+  border: 1px solid #000000;
+  border-radius: 75px;
+}
+.company-details {
+  width: calc(100vw - 508px);
+}
+.details-title {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: 0.75px;
+}
+.details-heading {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: $font-heading;
+  letter-spacing: 0.75px;
+}
+.details-content {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: $font-content;
+  letter-spacing: 0.15px;
+}
+.details-container {
+  width: calc(100vw - 404px);
+}
+@media screen and (max-width: 1023px) {
+  .details-title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+  .company-details {
+    width: calc(100vw - 146px);
+  }
+  .details-container {
+    width: calc(100vw - 62px);
+  }
+}
+.btn-submit {
+  letter-spacing: 0.15px;
+}
+
+.btn-submit .q-btn__wrapper:before {
+  display: none !important;
+  letter-spacing: 0.15px;
+}
+
+.term-policy-text .q-checkbox__bg {
+  border-radius: 6px;
+}
+
+input::-webkit-input-placeholder {
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 16px !important;
+  line-height: 24px;
+  color: #8a90a0 !important;
+  opacity: 1; /* Firefox */
+}
+
+input:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 16px !important;
+  line-height: 24px;
+  color: #8a90a0 !important;
+}
+
+input::placeholder {
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 16px !important;
+  line-height: 24px;
+  color: #8a90a0 !important;
+}
+
+.bg-sidePanel {
+  background-color: $sidePanel;
+}
+.signup-sub.subscribe .q-field--outlined .q-field__control {
+  margin-top: 4px;
 }

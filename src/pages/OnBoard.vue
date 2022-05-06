@@ -549,7 +549,6 @@ export default {
     await this.getOrganization();
     if (this.organization) {
       this.companyDetails.name = this.organization.name;
-      // console.log(685,this.organization.address.address1, "addresss111", );
       if (this.organization) {
         this.companyDetails.address.address1 = this.organization.address
           ? this.organization.address.address1
@@ -577,7 +576,6 @@ export default {
       } else {
         let data = await this.getUserInfo();
         if (data.attributes.onboard.isCompleted == true) {
-          // console.log("6755555");
           this.$router.push('/dashboard');
           // if (isMobile()) {
           //   this.$router.push('/dashboard');
@@ -639,6 +637,9 @@ export default {
 }
 .mt-120 {
   margin-top: 120px;
+  @media (max-width: 768px) {
+    margin-top: 40px !important;
+  }
 }
 .px-15 {
   padding-left: 0px;
@@ -967,7 +968,7 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (max-width: 1022px) {
+@media (max-width: 1023px) {
   .border-top {
     border-top: 1px solid #e5e5e5;
     margin-left: -50px;
@@ -1007,7 +1008,7 @@ export default {
     color: #0c0c0c;
   }
 }
-@media only screen and (max-width: 600px) {
+@media (max-width: 768px) {
   .q-px-32 {
     padding-left: 15px;
     padding-top: 15px;
@@ -1046,10 +1047,6 @@ export default {
   .px-15 {
     padding-left: 15px;
     padding-right: 15px;
-  }
-
-  .mt-120 {
-    margin-top: 40px;
   }
   .completeSetup-Btn {
     margin-right: -30px;

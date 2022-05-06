@@ -1,14 +1,14 @@
 <template>
   <q-page class="poppinsFont min-height">
-    <div class="row" style="height: calc(100vh - 119px)">
+    <div class="row">
       <div
-        class="col-md-4 col-sm-12 col-xs-12"
+        class="col-xl-3 col-md-4 col-sm-12 col-xs-12 max-width"
         style="background-color: #f9e7d8"
       >
         <CustomSidebar step="0" />
       </div>
 
-      <div class="col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12 bodyMinHeight">
         <q-separator class="seperator-color" />
         <div class="q-px-xl">
           <div>
@@ -23,12 +23,15 @@
             >
               Set Up Your Account
             </div>
-            <div
-              class="text-center fontWeight400 text-subtitle1 letter-spacing-15 q-mx-xl q-px-xl SubTextfontSize"
-            >
-              Congratulations, you have successfully created your account! Next,
-              we will collect some pertinent information to complete your
-              account so you can get the most out of our system.
+            <div style="display: flex; justify-content: center">
+              <div
+                class="text-center fontWeight400 text-subtitle1 letter-spacing-15"
+                style="width: 517px"
+              >
+                Congratulations, you have successfully created your account!
+                Next, we will collect some pertinent information to complete
+                your account so you can get the most out of our system.
+              </div>
             </div>
             <div class="row justify-center rounded">
               <q-btn
@@ -40,35 +43,32 @@
                 @click="getStarted"
               />
             </div>
-            <div class="row border-top">
-              <!-- <q-separator class="q-mt-md " /> -->
-              <div
-                class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer q-px-32 q-pb-18"
-                style="background-color: white"
-              >
-                © ClaimGuru<span> {{ CurrentYear }} </span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
-    <div>
-      <!-- <customFooterMain /> -->
-    </div>
+    <MobileFooter />
   </q-page>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CustomSidebar from 'components/CustomSidebar';
-
+import MobileFooter from 'components/MobileFooter.vue';
 export default {
+  meta() {
+    return {
+      title: this.metaTitle
+    };
+  },
   data() {
-    return {};
+    return {
+      metaTitle: 'Set Up Your Account - claimguru'
+    };
   },
   components: {
-    CustomSidebar
+    CustomSidebar,
+    MobileFooter
   },
   methods: {
     ...mapActions(['getUserInfo']),
@@ -76,7 +76,8 @@ export default {
       return require('../../assets/' + icon);
     },
     getStarted() {
-      this.$router.push('/onBoarding/step1');
+      localStorage.setItem('onBoardingStep', 'start');
+      this.$router.push('/onboarding/step1');
     }
   },
   computed: {
@@ -145,6 +146,9 @@ export default {
 }
 .mt-120 {
   margin-top: 120px;
+  @media (max-width: 768px) {
+    margin-top: 40px;
+  }
 }
 .px-15 {
   padding-left: 0px;
@@ -156,15 +160,6 @@ export default {
 .mx-40 {
   margin-left: 102px;
   margin-right: 70px;
-}
-.SubTextfontSize {
-  color: #667085;
-  font-size: 14px;
-  margin-top: 5px;
-  line-height: 20px;
-  // max-width: 517px;
-  padding-left: 40px;
-  padding-right: 40px;
 }
 .input-subtitle1 {
   font-weight: 500;
@@ -318,7 +313,14 @@ export default {
   margin-top: 30px;
 }
 .text-subtitle1 {
-  margin-bottom: 6px;
+  color: #667085;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 6px 15px;
+  width: 517px;
+  @media (max-width: 1023px) {
+    width: 345px;
+  }
 }
 .connectWithGoogle {
   width: 331px !important;
@@ -352,14 +354,6 @@ export default {
   width: 390px;
   height: 44px;
 }
-.text-footer {
-  font-weight: 400;
-  color: #667085;
-  font-size: 14px;
-}
-.border-top {
-  border-top: 0px;
-}
 ::v-deep .q-layout__section--marginal {
   background-color: white;
   border-top: none;
@@ -378,9 +372,6 @@ export default {
 }
 .q-pl-32 {
   padding-left: 15px;
-}
-.ml-31 {
-  padding-left: 16px !important;
 }
 .q-pb-18 {
   padding-bottom: 18px;
@@ -473,26 +464,10 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (max-width: 1022px) {
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    margin-left: -50px;
-    margin-right: -50px;
-  }
-  .ml-31 {
-    margin-left: 15px !important;
-  }
-}
-
 @media screen and (max-width: 800px) {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 0px;
-  }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    margin-left: -50px;
-    margin-right: -50px;
   }
   .q-pr-lg {
     padding-right: 0px;
@@ -531,6 +506,7 @@ export default {
   }
   .q-mt-43 {
     margin-top: 24px;
+    margin-bottom: 0px !important;
   }
   .mt-30 {
     margin-top: 16px;
@@ -552,10 +528,6 @@ export default {
   .px-15 {
     padding-left: 15px;
     padding-right: 15px;
-  }
-
-  .mt-120 {
-    margin-top: 40px;
   }
   .completeSetup-Btn {
     margin-right: -30px;
@@ -607,11 +579,6 @@ export default {
   }
   .pr-50 {
     padding-right: 15px;
-  }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
   }
   .mx-15 {
     margin-left: 15px;
@@ -677,10 +644,6 @@ export default {
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  // .border-top {
-  //   border-top: 1px solid #e5e5e5;
-  // }
-  // .q-px-32 {padding-left: 15px;}
   .q-px-32 {
     padding-left: 15px;
     padding-top: 15px;
@@ -703,26 +666,18 @@ export default {
   }
   // .height-40px {height: 24px;}
 }
-@media only screen and (min-width: 1024px) {
+
+@media only screen and (min-width: 1440px) {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 0px;
   }
-  .max-width-480px {
-    max-width: 453px;
-  }
-}
-@media only screen and (width: 1440px) {
-  .q-px-32 {
-    padding-left: 32px;
-    padding-top: 0px;
-  }
+  // .max-width {
+  //   max-width: 480px;
+  // }
   .q-px-xl {
     padding-left: 60px;
     padding-right: 60px;
-  }
-  .border-top {
-    border-top: 0px;
   }
 }
 </style>

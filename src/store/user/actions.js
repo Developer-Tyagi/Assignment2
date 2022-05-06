@@ -122,11 +122,7 @@ export async function checkExistingEmail({ dispatch }, email) {
   try {
     const { data } = await request.get(`/users/email?email=${email}`);
     //dispatch('setLoading', false);
-    if (data.attributes.exists) {
-      return false;
-    } else {
-      return true;
-    }
+    return data.attributes.exists;
   } catch (e) {
     // //console.log(e);
     // dispatch('setLoading', false);
@@ -673,6 +669,23 @@ export async function toRedirectGoogleAuth1({ commit, dispatch }) {
     const result = await request.get('users/google-oauth2');
     window.location = result.oauth2URL;
     //commit('setCheckGoogleDriveConnect', true);
+    dispatch('setLoading', false);
+  } catch (e) {
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response
+    });
+  }
+}
+
+export async function toRedirectGoogleAuth2({ commit, dispatch }, redirectURL) {
+  dispatch('setLoading', true);
+  try {
+    const result = await request.get(
+      `users/google-oauth2?fe_redirect_url=${redirectURL}`
+    );
+    window.location = result.oauth2URL;
     dispatch('setLoading', false);
   } catch (e) {
     dispatch('setLoading', false);

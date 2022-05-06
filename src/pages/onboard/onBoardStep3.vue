@@ -2,14 +2,14 @@
   <q-page class="poppinsFont min-height">
     <div class="row">
       <div
-        class="col-md-4 col-sm-12 col-xs-12"
+        class="col-xl-3 col-md-4 col-sm-12 col-xs-12 max-width"
         style="background-color: #f9e7d8"
       >
         <CustomSidebar step="3" />
       </div>
-      <div class="col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12 bodyMinHeight">
         <q-separator class="seperator-color" />
-        <div class="q-px-xl">
+        <div class="photoIdContainer">
           <div class="column full-height">
             <div class="mx-15">
               <div class="photoId-Text">PhotoID Account Details</div>
@@ -41,7 +41,7 @@
             </div>
             <div>
               <div class="q-mt-30 mx-15">
-                <q-form ref="editPhotoIDForm">
+                <q-form greedy ref="editPhotoIDForm">
                   <div class="">
                     <div class="col q-pr-xl">
                       <div class="text-subheading q-mb-6">Account Email</div>
@@ -50,22 +50,41 @@
                         input-class="photoId-Inputtext"
                         placeholder="Company Email Address"
                         outlined
-                        v-model="companyDetails.photoIdEmail"
+                        v-model.trim="companyDetails.photoIdEmail"
+                        lazy-rules
+                        :rules="[
+                          val =>
+                            !!val || 'Please fill your photoid email address',
+                          val =>
+                            validateEmail(val) ||
+                            'Please enter valid email address'
+                        ]"
                       />
                     </div>
                     <div class="col q-pr-xl">
                       <div class="text-subheading mt30 q-mb-6">Api Key</div>
                       <q-input
-                        style="color: #667085"
                         class="PhotoId-input"
                         input-class="photoId-Inputtext"
                         outlined
                         placeholder="Account API Key"
-                        v-model="companyDetails.photoIdAPIKey"
+                        v-model.trim="companyDetails.photoIdAPIKey"
+                        :rules="[
+                          val =>
+                            (val && val.length > 0) ||
+                            'Please fill photoid api key'
+                        ]"
                       >
                         <template v-slot:append>
-                          <q-avatar style="width: 13px; height: 13px">
+                          <q-avatar style="width: 16px; height: 16px">
                             <img :src="getImage('IconHelp.svg')" />
+                            <q-tooltip
+                              anchor="bottom middle"
+                              self="top middle"
+                              :offset="[10, 10]"
+                            >
+                              <strong>Enter API key in this field</strong>
+                            </q-tooltip>
                           </q-avatar>
                         </template>
                       </q-input>
@@ -89,21 +108,14 @@
         </div>
       </div>
     </div>
-    <div class="row border-top">
-      <!-- <q-separator class="q-mt-md " /> -->
-      <div
-        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer"
-        style="background-color: white"
-      >
-        © ClaimGuru<span> {{ CurrentYear }} </span>
-      </div>
-    </div>
+    <MobileFooter />
   </q-page>
 </template>
 
 <script>
-import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomSidebar from 'components/CustomSidebar';
+import MobileFooter from 'components/MobileFooter.vue';
+import { validateEmail, successMessage, errorMessage } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
 export default {
   meta() {
@@ -113,21 +125,10 @@ export default {
   },
   data() {
     return {
-      metaTitle: 'Step3 - claimguru',
-      step: 0,
+      metaTitle: 'PhotoID Account Details - claimguru',
       companyDetails: {
-        address: {
-          address1: '',
-          addressLocality: '',
-          addressRegion: '',
-          country: '',
-          postalCode: ''
-        },
-        isDropBoxEnable: false,
         photoIdEmail: '',
-        photoIdAPIKey: '',
-        contactNumber: '',
-        email: ''
+        photoIdAPIKey: ''
       },
       editCompanyDetails: true,
       dialCode: '',
@@ -135,26 +136,56 @@ export default {
     };
   },
   components: {
-    AutoCompleteAddress,
-    CustomSidebar
+    CustomSidebar,
+    MobileFooter
   },
   methods: {
-    ...mapActions(['getUserInfo', 'getOrganization']),
+    ...mapActions([
+      'getUserInfo',
+      'getOrganization',
+      'updateUserForOrganization',
+      'verifyPhotoidAccount'
+    ]),
     getImage(icon) {
       return require('../../assets/' + icon);
     },
-    onSelect({ name, iso2, dialCode }) {
-      this.dialCode = dialCode;
-    },
-    getStarted() {
-      this.$router.push('/onBoarding/step1');
-    },
     navigatePreviousStepper() {
-      this.$router.push('/onBoarding/step2');
+      this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
+      this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
+      this.$router.push('/onboarding/step2');
     },
     async NextStepperValue() {
-      this.$router.push('/onBoarding/step4');
-    }
+      if (
+        this.companyDetails.photoIdEmail &&
+        this.companyDetails.photoIdAPIKey
+      ) {
+        const payload = {
+          data: {
+            name: this.organization.name,
+            photoIDEmail: this.companyDetails.photoIdEmail,
+            photoIDAPIKey: this.companyDetails.photoIdAPIKey
+          }
+        };
+        let accountExists = await this.verifyPhotoidAccount(payload.data);
+        if (accountExists) {
+          await this.updateUserForOrganization(payload);
+          localStorage.setItem('onBoardingStep', '3');
+          this.$router.push('/onboarding/step4');
+        }
+      } else if (
+        (!this.companyDetails.photoIdEmail &&
+          this.companyDetails.photoIdAPIKey) ||
+        (!this.companyDetails.photoIdAPIKey && this.companyDetails.photoIdEmail)
+      ) {
+        this.errorMessage('Please provide all details');
+      } else {
+        localStorage.setItem('onBoardingStep', '3');
+        this.$router.push('/onboarding/step4');
+      }
+    },
+    validateEmail,
+    successMessage,
+    errorMessage
   },
   computed: {
     ...mapGetters(['organization']),
@@ -165,47 +196,49 @@ export default {
     }
   },
   async created() {
-    this.step = 0;
+    let checkRoute = localStorage.getItem('onBoardingStep');
+    if ((checkRoute < '3' && checkRoute !== '2') || checkRoute === 'start') {
+      this.$router.push(`/onboarding/step${checkRoute}`).catch(() => {});
+    }
     await this.getOrganization();
     if (this.organization) {
-      this.companyDetails.name = this.organization.name;
-      // console.log(685,this.organization.address.address1, "addresss111", );
       if (this.organization) {
-        this.companyDetails.address.address1 = this.organization.address
-          ? this.organization.address.address1
-          : '';
-        this.companyDetails.address.addressLocality = this.organization.address
-          ? this.organization.address.addressLocality
-          : '';
-        this.companyDetails.address.addressRegion = this.organization.address
-          ? this.organization.address.addressRegion
-          : '';
-        this.companyDetails.address.postalCode = this.organization.address
-          ? this.organization.address.postalCode
-          : '';
-        this.companyDetails.contactNumber = this.organization.phoneNumber
-          ? this.organization.phoneNumber.number
-          : '';
-        this.companyDetails.email = this.organization.email;
         this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
         this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
       }
-      // this.step = 0;
-      //   this.checkConnection = true;
-      // if (this.$route.query.googleConnect == 'true') {
-      //   this.checkConnection = true;
-      // } else {
       //   let data = await this.getUserInfo();
       //   if (data.attributes.onboard.isCompleted == true) {
       //     this.$router.push('/dashboard');
       //   }
-      // }
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.photoIdContainer {
+  padding-left: 62px;
+  padding-right: 62px;
+  @media (max-width: 1024px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+::v-deep {
+  input {
+    color: #101828 !important;
+  }
+  .q-field__messages {
+    margin-top: 3px !important;
+  }
+  .q-field--with-bottom {
+    padding-bottom: 0px !important;
+  }
+  li.style-type-none::marker {
+    margin-right: 5px !important;
+    // width: 8px !important;
+  }
+}
 .poppinsFont {
   font-family: poppins;
 }
@@ -316,6 +349,9 @@ export default {
 }
 .mt-60 {
   margin-top: 60px;
+}
+.text-orange {
+  color: #ef5926 !important;
 }
 .dropdowLogo {
   margin-top: 18px;
@@ -476,20 +512,18 @@ export default {
   width: 390px;
   height: 44px;
 }
-.text-footer {
-  font-weight: 400;
-  color: #667085;
-  font-size: 14px;
-}
-.border-top {
-  border-top: 0px;
-}
 ::v-deep .q-layout__section--marginal {
   background-color: white;
   border-top: none;
 }
-::v-deep .q-btn__wrapper:before {
-  box-shadow: none;
+
+::v-deep {
+  .q-btn__wrapper {
+    min-height: 1.572em;
+  }
+  .q-btn__wrapper:before {
+    box-shadow: none;
+  }
 }
 ::v-deep .q-field__messages {
   line-height: 4px;
@@ -537,6 +571,7 @@ export default {
 .Back-Btn {
   width: 101px !important;
   height: 50px !important;
+  line-height: 24px;
   border-radius: 10px !important;
   padding: 10px, 30px, 10px, 30px !important;
   border: 2px solid #ef5926;
@@ -590,6 +625,9 @@ export default {
   line-height: 20px;
   color: #667085;
   letter-spacing: 0.15px;
+  @media (max-width: 768px) {
+    letter-spacing: 0;
+  }
 }
 .text-subheading {
   letter-spacing: 00.15px;
@@ -606,21 +644,7 @@ export default {
   line-height: 24px !important;
   display: flex;
   align-items: center;
-  color: #8a90a0 !important;
-}
-
-@media screen and (max-width: 1022px) {
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-  }
-  .style-type-none {
-    list-style-type: none;
-  }
-  .ml-31 {
-    padding-left: 31px !important;
-    margin-top: 19px;
-    margin-bottom: 19px;
-  }
+  // color: #101828 !important;
 }
 
 @media screen and (max-width: 800px) {
@@ -628,15 +652,15 @@ export default {
     padding-left: 32px;
     padding-top: 0px;
   }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-  }
   .q-pr-lg {
     padding-right: 0px;
   }
   .q-px-xl {
     padding-left: 0px;
     padding-right: 0px;
+  }
+  ::v-deep .q-field__marginal {
+    font-size: 18px !important;
   }
 
   .Account-setup-text {
@@ -648,6 +672,11 @@ export default {
     display: flex;
     align-items: center;
     color: #0c0c0c;
+  }
+}
+@media only screen and (min-width: 1440px) {
+  .max-width {
+    max-width: 480px;
   }
 }
 @media only screen and (max-width: 600px) {
@@ -722,10 +751,11 @@ export default {
     margin-left: 15px;
     margin-right: 15px;
   }
-  //   .PhotoId-input {
-  //     width: 345px;
-  //     height: 44px;
-  //   }
+  .q-field__native {
+    // width: 345px;
+    // height: 44px;
+    color: #101828 !important;
+  }
 
   .GoHome-btn {
     width: 157px;
@@ -751,11 +781,6 @@ export default {
   }
   .pr-50 {
     padding-right: 15px;
-  }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
   }
   .mx-15 {
     margin-left: 15px;
@@ -801,7 +826,7 @@ export default {
     width: 81px !important;
     height: 40px !important;
     border-radius: 5px !important;
-    // padding: 8px 20px 8px 20px !important;
+    line-height: 24px;
     border: 2px solid #ef5926;
     color: #ef5926 !important;
     font-weight: 600 !important;
@@ -822,11 +847,6 @@ export default {
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  // .border-top {
-  //   border-top: 1px solid #e5e5e5;
-  // }
-  // .q-px-32 {padding-left: 15px;}
-
   .mt30 {
     margin-top: 30px;
   }
@@ -860,11 +880,6 @@ export default {
     padding-left: 32px;
     padding-top: 0px;
   }
-  .ml-31 {
-    margin-left: 31px !important;
-    margin-top: 19px;
-    margin-bottom: 19px;
-  }
 }
 @media only screen and (width: 1440px) {
   .q-px-32 {
@@ -874,9 +889,6 @@ export default {
   .q-px-xl {
     padding-left: 60px;
     padding-right: 60px;
-  }
-  .border-top {
-    border-top: 0px;
   }
 }
 </style>

@@ -2,19 +2,21 @@
   <q-page class="poppinsFont min-height">
     <div class="row">
       <div
-        class="col-md-4 col-sm-12 col-xs-12"
+        class="col-xl-3 col-md-4 col-sm-12 col-xs-12 max-width"
         style="background-color: #f9e7d8"
       >
         <CustomSidebar step="2" />
       </div>
-      <div class="col-md-8 cols-sm-12 col-xs-12">
+      <div class="col-xl-9 col-md-8 cols-sm-12 col-xs-12 bodyMinHeight">
         <q-separator class="seperator-color" />
-        <div class="q-px-xl">
-          <div class="column pl-62 pr-110 full-height">
+        <div class="">
+          <div class="column connectDriveContainer full-height">
             <div class="col-2 mt-40">
-              <div class="text-h5 fontWeight600">Connect With Google Drive</div>
+              <div class="text-h5 fontWeight600 titleLetterSpacing">
+                Connect With Google Drive
+              </div>
               <div
-                class="q-mt-8 fontWeight400 subtitle2"
+                class="q-mt-8 fontWeight400 subtitle2 normalLetterSpacing"
                 style="color: #667085"
               >
                 In order to provide full access to ClaimGuru, we need permission
@@ -22,71 +24,11 @@
                 files with your Google Drive so you will retain full ownership
                 over your data.
               </div>
-              <div class="mt-30" v-if="this.checkConnection == true">
-                <span style="font-weight: 600; font-size: 16px; color: #101828"
-                  >Email</span
-                ><br />
-                <span
-                  class="mt-8"
-                  style="
-                    font-weight: 400;
-                    font-size: 16px;
-                    color: #151821;
-                    letter-spacing: 00.15px;
-                    font-family: 'Poppins';
-                  "
-                  >{{ this.emailId }}</span
-                >
-              </div>
             </div>
 
-            <div class="row" style="justify-content: center">
+            <div class="row">
               <div class="mt-24 col-sm-12">
-                <q-btn
-                  v-if="this.checkConnection == false"
-                  @click="onRedirectToGoogleAuth()"
-                  class="row connectWithGoogle"
-                >
-                  <q-avatar>
-                    <q-img
-                      class="col"
-                      style="
-                        width: 26px;
-                        height: 24px;
-                        margin-top: -15px;
-                        margin-left: 20px;
-                      "
-                      :src="getImage('logos_google-drive.svg')"
-                    />
-                  </q-avatar>
-                  <span
-                    class="col q-ml-xs mb-15 fontWeight500"
-                    style="
-                      margin-bottom: 15px;
-                      margin-left: 10px;
-                      color: #0c0c0c;
-                    "
-                    >Connect Google Drive</span
-                  >
-                </q-btn>
-                <div
-                  v-else
-                  class="row justify-center connectedGooglebtn"
-                  style="
-                    font-size: 16px;
-                    border: solid 1px #039855;
-                    background-color: #d1fadf;
-                    border-radius: 8px;
-                  "
-                >
-                  <span
-                    class="text-center"
-                    style="color: #039855; padding-top: 10px"
-                    >Connected to Google Drive
-                    <span>
-                      <q-icon name="task_alt" color="teal" size="sm" /> </span
-                  ></span>
-                </div>
+                <ConnectGoogleDrive :isPreviousClicked="isPreviousClicked" />
               </div>
             </div>
 
@@ -95,19 +37,16 @@
               style="position: relative"
             >
               <q-btn
-                style="border-radius: 10px"
                 no-caps
-                class="Back-Btn"
+                class="Back-Btn fontWeight600"
                 @click="navigatePreviousStepper"
                 >Back</q-btn
               >
-
               <q-btn
-                style="border-radius: 10px"
                 class="fontWeight600 Next-Btn"
                 no-caps
                 @click="NextStepperValue"
-                :disable="checkConnection"
+                :disable="!(organization && organization.isDriveConnected)"
                 >Next</q-btn
               >
             </div>
@@ -115,23 +54,15 @@
         </div>
       </div>
     </div>
-
-    <div class="row border-top">
-      <!-- <q-separator class="q-mt-md " /> -->
-      <div
-        class="col-sm-12 md-hide lg-hide xl-hide ml-31 text-footer"
-        style="background-color: white"
-      >
-        © ClaimGuru<span> {{ CurrentYear }} </span>
-      </div>
-    </div>
+    <MobileFooter />
   </q-page>
 </template>
 
 <script>
-import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomSidebar from 'components/CustomSidebar';
+import MobileFooter from 'components/MobileFooter.vue';
 import { mapGetters, mapActions } from 'vuex';
+import ConnectGoogleDrive from 'components/ConnectGoogleDrive';
 export default {
   meta() {
     return {
@@ -140,52 +71,23 @@ export default {
   },
   data() {
     return {
-      metaTitle: 'Step2 - claimguru',
-      emailId: '',
-      step: 0,
-      companyDetails: {
-        address: {
-          address1: '',
-          addressLocality: '',
-          addressRegion: '',
-          country: '',
-          postalCode: ''
-        },
-        isDropBoxEnable: false,
-        photoIdEmail: '',
-        photoIdAPIKey: '',
-        contactNumber: '',
-        email: ''
-      },
-      editCompanyDetails: true,
-      dialCode: '',
-      checkConnection: false
+      metaTitle: 'Connect With Google Drive - claimguru',
+      isPreviousClicked: false
     };
   },
   components: {
-    AutoCompleteAddress,
-    CustomSidebar
+    CustomSidebar,
+    ConnectGoogleDrive,
+    MobileFooter
   },
   methods: {
-    ...mapActions(['getUserInfo', 'getOrganization', 'toRedirectGoogleAuth1']),
-    getImage(icon) {
-      return require('../../assets/' + icon);
-    },
-    onSelect({ name, iso2, dialCode }) {
-      this.dialCode = dialCode;
-    },
-    getStarted() {
-      this.$router.push('/onBoarding/step1');
-    },
+    ...mapActions(['getUserInfo']),
     async NextStepperValue() {
-      this.checkConnection = true;
-      // this.$router.push('/onBoarding/step3');
-    },
-    onRedirectToGoogleAuth() {
-      this.toRedirectGoogleAuth1();
+      localStorage.setItem('onBoardingStep', '2');
+      this.$router.push('/onboarding/step3');
     },
     navigatePreviousStepper() {
-      this.$router.push('./step1');
+      this.$router.push('/onboarding/step1');
     }
   },
   computed: {
@@ -197,47 +99,16 @@ export default {
     }
   },
   async created() {
-    this.step = 0;
-    await this.getOrganization();
-    if (this.organization) {
-      this.companyDetails.name = this.organization.name;
-      // console.log(685,this.organization.address.address1, "addresss111", );
-      if (this.organization) {
-        this.companyDetails.address.address1 = this.organization.address
-          ? this.organization.address.address1
-          : '';
-        this.companyDetails.address.addressLocality = this.organization.address
-          ? this.organization.address.addressLocality
-          : '';
-        this.companyDetails.address.addressRegion = this.organization.address
-          ? this.organization.address.addressRegion
-          : '';
-        this.companyDetails.address.postalCode = this.organization.address
-          ? this.organization.address.postalCode
-          : '';
-        this.companyDetails.contactNumber = this.organization.phoneNumber
-          ? this.organization.phoneNumber.number
-          : '';
-        this.companyDetails.email = this.organization.email;
-        this.companyDetails.photoIdEmail = this.organization.photoIDEmail;
-        this.companyDetails.photoIdAPIKey = this.organization.photoIDAPIKey;
-      }
-      this.step = 0;
+    let checkRoute = localStorage.getItem('onBoardingStep');
+    if ((checkRoute < '3' && checkRoute !== '1') || checkRoute === 'start') {
+      this.$router.push(`/onboarding/step${checkRoute}`).catch(() => {});
+    }
+    if (this.$route.query.googleConnect == 'true') {
       // this.checkConnection = true;
-      if (this.$route.query.googleConnect == 'true') {
-        this.checkConnection = true;
-      } else {
-        let data = await this.getUserInfo();
-        this.emailId = data.attributes.email;
-        if (data.attributes.onboard.isCompleted == true) {
-          // console.log("6755555");
-          this.$router.push('/dashboard');
-          // if (isMobile()) {
-          //   this.$router.push('/dashboard');
-          // } else {
-          //   this.$router.push('/admin');
-          // }
-        }
+    } else {
+      let data = await this.getUserInfo();
+      if (data.attributes.onboard.isCompleted == true) {
+        this.$router.push('/dashboard');
       }
     }
   }
@@ -245,6 +116,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.connectDriveContainer {
+  margin-left: 62px;
+  margin-right: 110px;
+  max-width: 120rem !important;
+  @media (max-width: 1023px) {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+.ticIcon {
+  height: 20px;
+  width: 20px;
+  margin-left: 10px;
+}
+.connectDriveText {
+  margin-bottom: 15px;
+  margin-left: 10px;
+  color: #0c0c0c;
+  text-transform: capitalize !important;
+}
 .poppinsFont {
   font-family: poppins;
 }
@@ -254,7 +145,7 @@ export default {
 }
 .q-page-container {
   margin: 0 auto !important;
-  max-width: 120rem;
+  max-width: 120rem !important;
 }
 .min-height {
   min-height: auto !important;
@@ -292,7 +183,10 @@ export default {
   margin-top: 43px;
 }
 .mt-24 {
-  margin-top: 24px;
+  margin-top: 30px;
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+  }
 }
 .mb-15 {
   margin-bottom: 15px;
@@ -516,14 +410,6 @@ export default {
   width: 390px;
   height: 44px;
 }
-.text-footer {
-  font-weight: 400;
-  color: #667085;
-  font-size: 14px;
-}
-.border-top {
-  border-top: 0px;
-}
 ::v-deep .q-layout__section--marginal {
   background-color: white;
   border-top: none;
@@ -531,8 +417,13 @@ export default {
 ::v-deep .items-center {
   align-items: center;
 }
-::v-deep .q-btn__wrapper:before {
-  box-shadow: none;
+::v-deep {
+  .q-btn__wrapper {
+    min-height: 1.572em;
+  }
+  .q-btn__wrapper:before {
+    box-shadow: none;
+  }
 }
 ::v-deep .q-field__messages {
   line-height: 4px;
@@ -561,25 +452,46 @@ export default {
   height: 46px;
 }
 .pl-62 {
-  // padding-left: 2px;
+  padding-left: 2px;
 }
 .pr-110 {
   padding-right: 50px;
 }
 .mt-404 {
-  margin-top: 404px;
+  margin-top: 484px;
+  @media (max-width: 768px) {
+    margin-top: 60px;
+  }
 }
 .Back-Btn {
   width: 101px !important;
   height: 50px !important;
-  border-radius: 10px !important;
-  padding: 10px, 30px, 10px, 30px !important;
+  border-radius: 10px;
+  // padding: 10px, 30px, 10px, 30px !important;
   border: 2px solid #ef5926;
   background: #ffffff;
   color: #ef5926 !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
   align-items: flex-start;
+  line-height: 24px !important;
+
+  .q-btn__content {
+    top: 10px;
+    left: 30px;
+  }
+
+  @media (max-width: 1023px) {
+    width: 81px !important;
+    height: 40px !important;
+    // padding: 8px 20px !important;
+    border-radius: 5px !important;
+    .q-btn__content {
+      line-height: 24px !important;
+      top: 8px !important;
+      left: 20px !important;
+    }
+  }
 }
 .connectedGooglebtn {
   width: 351px;
@@ -588,12 +500,20 @@ export default {
 .Next-Btn {
   width: 118px !important;
   height: 50px !important;
-  border-radius: 10px !important;
+  border-radius: 10px;
   padding: 8px, 20px, 8px, 20px !important;
   background: #ef5926;
   color: #ffffff !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-size: 16px !important;
+  line-height: 24px;
+
+  @media (max-width: 1023px) {
+    width: 95px !important;
+    height: 40px !important;
+    line-height: 24px !important;
+    border-radius: 5px !important;
+  }
 }
 .completeSetup-Btn {
   width: 175px !important;
@@ -641,19 +561,9 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (max-width: 1022px) {
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    // margin-left: -50px;
-    // margin-right: -50px;
-  }
+@media (max-width: 1023px) {
   .q-mb-100 {
     margin-bottom: 100px;
-  }
-  .ml-31 {
-    padding-left: 31px !important;
-    margin-top: 19px;
-    margin-bottom: 19px;
   }
 }
 
@@ -661,11 +571,6 @@ export default {
   .q-px-32 {
     padding-left: 32px;
     padding-top: 0px;
-  }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    // margin-left: -50px;
-    // margin-right: -50px;
   }
   .q-pr-lg {
     padding-right: 0px;
@@ -686,12 +591,14 @@ export default {
     color: #0c0c0c;
   }
 }
-@media only screen and (max-width: 600px) {
+@media only screen and (min-width: 1440px) {
+  .max-width {
+    max-width: 480px;
+  }
+}
+@media (max-width: 600px) {
   .q-mt-8 {
     margin-top: 6px;
-  }
-  .mt-24 {
-    margin-top: 16px;
   }
   .q-px-32 {
     padding-left: 15px;
@@ -793,11 +700,6 @@ export default {
   .pr-50 {
     padding-right: 15px;
   }
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-  }
   .mx-15 {
     margin-left: 15px;
     margin-right: 15px;
@@ -832,47 +734,26 @@ export default {
   .pr-110 {
     padding-right: 15px;
   }
-  .mt-404 {
-    margin-top: 60px;
-  }
   .mt-40 {
     margin-top: 25px;
     // margin-left: 4px;
   }
-  .Back-Btn {
-    width: 81px !important;
-    height: 40px !important;
-    border-radius: 5px !important;
-    border: 2px solid #ef5926;
-    color: #ef5926 !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;
-  }
   .align-start {
     align-items: flex-start;
+  }
+  ::v-deep {
+    .items-center {
+      align-content: center;
+    }
   }
   .connectedGooglebtn {
     width: 345px;
     height: 45px;
   }
-  .Next-Btn {
-    width: 95px !important;
-    height: 40px !important;
-    border-radius: 10px !important;
-    padding: 8px, 20px, 8px, 20px !important;
-    background: #ef5926;
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;
-  }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  // .border-top {
-  //   border-top: 1px solid #e5e5e5;
-  // }
-  // .q-px-32 {padding-left: 15px;}
   .q-mt-8 {
     margin-top: 8px !important;
   }
@@ -880,10 +761,6 @@ export default {
     padding-left: 15px;
     padding-top: 15px;
   }
-  // .q-px-xl {
-  //   padding-left: 15px;
-  //   padding-right: 15px;
-  // }
   .q-mx-xl {
     padding-left: 0px;
     padding-right: 0px;
@@ -896,7 +773,6 @@ export default {
     padding-left: 15px;
     padding-right: 15px;
   }
-  // .height-40px {height: 24px;}
 }
 @media only screen and (width: 320px) {
   .connectedGooglebtn {
@@ -927,11 +803,6 @@ export default {
     padding-left: 32px;
     padding-top: 0px;
   }
-  .ml-31 {
-    margin-left: 31px !important;
-    margin-top: 19px;
-    margin-bottom: 19px;
-  }
 }
 @media only screen and (width: 1440px) {
   .q-px-32 {
@@ -941,9 +812,6 @@ export default {
   .q-px-xl {
     padding-left: 60px;
     padding-right: 60px;
-  }
-  .border-top {
-    border-top: 0px;
   }
 }
 </style>

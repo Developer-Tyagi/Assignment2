@@ -1,139 +1,172 @@
 <template>
-  <q-page class="poppinsFont min-height">
-    <div class="row">
-      <div style="width: 100%">
-        <div class="dFlex justify-between lg-hide xl-hide md-hide">
-          <div
-            class="pr-15"
-            v-if="$route.name == 'onBoarding'"
-            style="background-color: #f9e7d8"
-          >
-            <q-img size="1em" src="~assets/Logo.svg" class="LogoSize" />
-          </div>
-          <div class="justify-end">
-            <div class="row justify-end dFlex pr-20">
-              <q-avatar
-                size="3em"
-                font-size="2.5rem"
-                icon="person"
-                class="text-white bg-grey"
-                style=""
-              >
-              </q-avatar>
-              <q-img src="~assets/Icondown.svg" class="dropdowLogo" />
-            </div>
-          </div>
+  <q-page class="poppinsFont min-height max-width">
+    <div>
+      <div class="dFlex justify-between lg-hide xl-hide md-hide">
+        <div
+          v-if="$route.name == 'onboarding'"
+          style="background-color: #f9e7d8"
+        >
+          <q-img
+            size="1em"
+            src="~assets/Logo.svg"
+            class="LogoSize"
+            @click="clickedLogo"
+          />
         </div>
-        <q-separator
-          class="md-hide lg-hide xl-hide"
-          style="background-color: #f9dfc8; margin-left: -14px"
-        />
-        <div class="ml-32 mt-34">
-          <div
-            class="Account-setup-text"
-            v-if="step == 0 || step == 1 || step == 2"
-          >
-            Account Setup
+        <div class="justify-end pr-20">
+          <div class="row justify-end dFlex" style="cursor: pointer">
+            <div class="avatarContainer">
+              <img src="~assets/default-profile.svg" class="avatarImage" />
+            </div>
+            <q-img src="~assets/Icondown.svg" class="dropdowLogo" />
           </div>
-          <!-- custom stepper -->
-          <div class="column q-mt-43">
-            <div class="col">
-              <div class="row">
-                <!-- <q-icon
+          <q-popup-proxy
+            ref="logoutProxy"
+            class="bannerContainer"
+            transition-show="scale"
+            transition-hide="scale"
+          >
+            <q-banner class="bg-white">
+              <div class="userDetailContainer">
+                <p class="userEmail">{{ user.email }}</p>
+                <p class="companyName">{{ organization.name }}</p>
+              </div>
+              <div class="logoutContainer" @click="logout()">
+                <h6 class="logoutText">Log Out</h6>
+                <q-img src="~assets/LogOutIcon.svg" class="logoutLogo" />
+              </div>
+            </q-banner>
+          </q-popup-proxy>
+        </div>
+      </div>
+      <q-separator
+        class="md-hide lg-hide xl-hide"
+        style="background-color: #f9dfc8; margin-left: -14px"
+      />
+      <div class="ml-32 mt-34">
+        <div
+          class="Account-setup-text"
+          :style="
+            step == 0 || step == 1 || step == 2
+              ? 'display: block;'
+              : (step == 3 || step == 4) && width < 1024
+              ? 'display: block;'
+              : 'display:none;'
+          "
+        >
+          Account Setup
+        </div>
+        <!-- custom stepper -->
+        <div class="column q-mt-43">
+          <div class="col">
+            <div class="row">
+              <!-- <q-icon
                 name="adjust"
                 color="primary"
                 size="md"
               /> -->
 
-                <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 1" class="step1Logon" /> -->
-                <q-icon
-                  name="adjust"
-                  color="primary"
-                  v-if="step == 0"
-                  size="md"
-                />
-                <q-img
+              <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 1" class="step1Logon" /> -->
+              <q-icon
+                name="adjust"
+                color="primary"
+                v-if="step == 0"
+                size="md"
+              />
+              <div class="stepWorking" v-if="step == 1">
+                <img
                   size="1em"
-                  src="~assets/stepWorking.svg"
-                  class="stepWorking"
-                  v-if="step == 1"
+                  src="~assets/_Step-icon-base.svg"
+                  class="stepClass"
                 />
+              </div>
+              <div v-if="step == 2 || step == 3 || step == 4">
                 <q-img
                   size="1em"
                   src="~assets/_Step1done.svg"
                   class="step1Logon"
-                  v-if="step == 2 || step == 3 || step == 4"
                 />
+              </div>
 
-                <div class="q-ml-sm">
-                  <div class="Step-text">Step 1</div>
-                  <div class="Step-Subtext">Add Your Company Details</div>
-                </div>
+              <div class="stepLabelContainer">
+                <div class="Step-text">Step 1</div>
+                <div class="Step-Subtext">Add Your Company Details</div>
               </div>
-              <div
-                class="q-ml-md height-40px"
-                style="border-left: 2px solid #ef5926; margin-top: -14px"
-              ></div>
             </div>
-            <div class="col">
-              <div class="row">
-                <q-icon
-                  name="adjust"
-                  color="primary"
-                  v-if="step == 1 || step == 0"
-                  size="md"
-                />
-                <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 2" class="step1Logon" /> -->
-                <q-img
+            <div
+              class="q-ml-md height-40px"
+              style="border-left: 2px solid #ef5926; margin-top: -14px"
+            ></div>
+          </div>
+          <div class="col">
+            <div class="row">
+              <q-icon
+                name="adjust"
+                color="primary"
+                v-if="step == 1 || step == 0"
+                size="md"
+              />
+              <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" v-if="step == 2" class="step1Logon" /> -->
+              <div class="stepWorking" v-if="step == 2">
+                <img
                   size="1em"
-                  src="~assets/stepWorking.svg"
+                  src="~assets/_Step-icon-base.svg"
                   class="stepWorking"
-                  v-if="step == 2"
                 />
+              </div>
+              <div v-if="step == 3 || step == 4">
                 <q-img
                   size="1em"
                   src="~assets/_Step1done.svg"
                   class="step1Logon"
-                  v-if="step == 3 || step == 4"
                 />
-                <div class="q-ml-sm">
-                  <div class="Step-text">Step 2</div>
-                  <div class="Step-Subtext">Connect With Google Drive</div>
-                </div>
               </div>
-              <div
-                class="q-ml-md height-40px"
-                style="border-left: 2px solid #ef5926; margin-top: -14px"
-              ></div>
+
+              <div class="stepLabelContainer">
+                <div class="Step-text">Step 2</div>
+                <div class="Step-Subtext">Connect With Google Drive</div>
+              </div>
             </div>
-            <div class="col">
-              <div class="row">
-                <q-icon
-                  name="adjust"
-                  color="primary"
-                  size="md"
-                  v-if="step == 0 || step == 1 || step == 2"
-                />
-                <q-img
+            <div
+              class="q-ml-md height-40px"
+              style="border-left: 2px solid #ef5926; margin-top: -14px"
+            ></div>
+          </div>
+          <div class="col">
+            <div class="row">
+              <q-icon
+                name="adjust"
+                color="primary"
+                size="md"
+                v-if="step == 0 || step == 1 || step == 2"
+              />
+              <div class="stepWorking" v-if="step == 3">
+                <img
                   size="1em"
-                  src="~assets/stepWorking.svg"
+                  src="~assets/_Step-icon-base.svg"
                   class="stepWorking"
-                  v-if="step == 3"
                 />
-                <!-- <q-img size="1em" src="~assets/_StepIconWithBorder.svg" class="step1Logon"  v-if="step == 3"/> -->
+              </div>
+              <div v-if="step == 4">
                 <q-img
                   size="1em"
                   src="~assets/_Step1done.svg"
                   class="step1Logon"
-                  v-if="step == 4"
                 />
-                <div class="q-ml-sm">
-                  <div class="Step-text">Step 3</div>
-                  <div class="Step-Subtext">
-                    Add PhotoID Account Details
-                    <span v-if="width >= 1203">(optional)</span>
-                  </div>
-                  <div class="Step-Subtext" v-if="width < 1203">(optional)</div>
+              </div>
+              <div class="stepLabelContainer">
+                <div class="Step-text">Step 3</div>
+                <div class="Step-Subtext">
+                  Add PhotoID Account Details
+                  <span v-if="width >= 1223 || (width > 767 && width < 1024)"
+                    >(optional)</span
+                  >
+                </div>
+                <div
+                  class="Step-Subtext"
+                  v-if="(width > 1023 && width < 1223) || width < 768"
+                >
+                  (optional)
                 </div>
               </div>
             </div>
@@ -141,7 +174,7 @@
         </div>
       </div>
     </div>
-    <!-- <div class="row" v-if="$route.name == 'onBoarding'">
+    <!-- <div class="row" v-if="$route.name == 'onboarding'">
         <div
           class="sm-hide xs-hide text-footer q-py-38"
           style="background-color: #f9e7d8; margin-left: 0px !important"
@@ -155,9 +188,19 @@
 </template>
 
 <script>
+import {
+  removeToken,
+  removeCurrentUser,
+  removeFCMToken,
+  getCurrentUser,
+  getFCMToken
+} from '@utils/auth';
+import { removeFirebaseToken } from '@utils/firebase';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
+      user: {},
       width: window.innerWidth
     };
   },
@@ -165,6 +208,7 @@ export default {
     step: String
   },
   computed: {
+    ...mapGetters(['userName', 'organization']),
     CurrentYear() {
       const d = new Date();
       let year = d.getFullYear();
@@ -172,11 +216,36 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['deletePushNotificationToken', 'getOrganization']),
+    async logout() {
+      if (this.getFCMToken()) {
+        await this.deletePushNotificationToken(this.getFCMToken());
+        await this.removeFCMToken();
+      }
+      await this.removeFirebaseToken();
+
+      this.removeToken();
+      this.removeCurrentUser();
+      location.reload();
+    },
+    clickedLogo() {
+      window.location.href = 'https://claimguru.cilalabs.dev/';
+    },
+    removeToken,
+    removeCurrentUser,
+    removeFCMToken,
+    removeFirebaseToken,
+    getCurrentUser,
+    getFCMToken,
     onResize(e) {
       this.width = window.innerWidth;
     }
   },
-  created() {
+  async created() {
+    await this.getOrganization();
+    if (this.getCurrentUser().attributes) {
+      this.user = getCurrentUser().attributes;
+    }
     window.addEventListener('resize', this.onResize);
   },
   destroyed() {
@@ -186,27 +255,95 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.q-banner {
+  border: 2px solid #e8e9ec;
+  border-radius: 20px !important;
+  top: 70px !important;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+.userDetailContainer {
+  margin: 16px 39px 16px 16px;
+  color: #667085;
+  font-weight: 500;
+  .userEmail {
+    font-size: 12px;
+    line-height: 18px;
+    margin: 0px;
+  }
+  .companyName {
+    font-size: 10px;
+    line-height: 15px;
+    margin-top: 4px;
+  }
+}
+.logoutContainer {
+  display: flex;
+  justify-content: space-between;
+  border-top: 2px solid #ccc;
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+  cursor: pointer;
+
+  .logoutText {
+    margin: 0px;
+    padding: 0px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    color: #152141;
+  }
+  .logoutLogo {
+    height: 15px;
+    width: 15px;
+    margin-top: 5px;
+  }
+}
+
 .poppinsFont {
   font-family: poppins;
 }
 .step1Logon {
   width: 32px !important;
   height: 32px !important;
-  // border: 2px solid #EF5926;
-  // border-radius: 16px;
 }
+.LogoSize {
+  width: 151px;
+  height: 51px;
+  margin-left: 15px;
+  margin-top: 15px;
+}
+.avatarContainer {
+  width: 40px !important;
+  height: 40px !important;
+  .avatarImage {
+    max-width: 100%;
+  }
+}
+
 .stepWorking {
   width: 32px !important;
   height: 32px !important;
-  border: 2px solid #ffff;
-  border-radius: 16px;
+  // border: 2px solid #EF5926;
+  border-radius: 50%;
+  .stepClass {
+    max-width: 100%;
+    border-radius: 50%;
+  }
 }
 .q-page-container {
   margin: 0 auto !important;
   max-width: 120rem;
 }
 .min-height {
-  min-height: auto !important;
+  @media (min-width: 1024px) {
+    height: calc(100vh - 215px);
+  }
+}
+
+.stepLabelContainer {
+  margin-left: 16px;
 }
 .inside-text {
   border-bottom: px solid #e5e5e5 !important;
@@ -263,10 +400,15 @@ export default {
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
-  line-height: 24px;
+  line-height: 32px;
   display: flex;
   align-items: center;
   color: #0c0c0c;
+
+  @media (max-width: 1024px) {
+    line-height: 24px;
+    font-size: 20px;
+  }
 }
 .q-px-32 {
   padding-left: 40px;
@@ -551,7 +693,7 @@ export default {
   color: #8a90a0 !important;
 }
 
-@media screen and (min-width: 1024px) {
+@media (min-width: 1024px) {
   .ml-32 {
     margin-left: 32px;
   }
@@ -572,9 +714,12 @@ export default {
     margin-left: -50px;
     margin-right: -50px;
   }
+  .max-width {
+    max-width: 480px;
+  }
 }
 /* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (max-width: 1023px) {
+@media (max-width: 1024px) {
   .ml-32 {
     margin-left: 15px;
   }
@@ -597,13 +742,5 @@ export default {
   .q-mt-43 {
     margin-top: 24px;
   }
-}
-@media only screen and (max-width: 600px) {
-}
-
-@media only screen and (width: 1024px) {
-}
-
-@media only screen and (width: 1440px) {
 }
 </style>

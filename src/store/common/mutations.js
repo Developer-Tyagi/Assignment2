@@ -217,3 +217,7 @@ export function webMenuSubOptionTab(state, key) {
   startState.webSubOptionMenuTab = '';
   state.webSubOptionMenuTab = key;
 }
+//this function is used to store the User's Signup page details as temp basis
+export function setTempUser(state, data) {
+  state.tempUser = data;
+}

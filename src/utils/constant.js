@@ -49,6 +49,7 @@ export const constants = {
   maxLength: {
     firstName: 128,
     lastName: 128,
-    companyName: 256
+    companyName: 256,
+    cardName: 128
   }
 };

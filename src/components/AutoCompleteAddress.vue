@@ -121,7 +121,7 @@
         type="text"
         outlined
         :id="'id' + id"
-        class="full-width inside-text"
+        class="full-width inside-text companyAddressInput"
         v-model="address.address1"
         v-bind:disabled="this.readOnly"
         style="
@@ -136,10 +136,18 @@
         lazy-rules
         :rules="[
           val => val.length > 0 || 'Please fill address',
-          val => validateAddress(val) || 'You have entered an invalid address!'
+          val => validateAddress(val) || 'Please add company address'
         ]"
       />
-      <span class="q-pl-sm" style="color: #c10015 !important; font-size: 11px">
+      <span
+        class="q-pl-sm"
+        style="
+          color: #c10015 !important;
+          font-size: 11px;
+          line-height: 10px;
+          padding-top: 3px;
+        "
+      >
         {{ errorMSG }}
       </span>
       <!-- <q-input
@@ -181,16 +189,21 @@
           input-class="inside-text"
           v-model="address.addressRegion"
           :options="states"
+          hide-dropdown-icon
           behavior="menu"
           label="Select State"
           lazy-rules
           :rules="[val => val.length > 0 || 'Please fill the state']"
-        />
+        >
+          <template v-slot:append>
+            <q-icon class="q-my-sm" size="sm" name="keyboard_arrow_down" />
+          </template>
+        </q-select>
       </div>
     </div>
     <div class="row">
       <div class="col-12 col-md-6 col-lg-6 col-xl-6 q-pr-lg mt-30">
-        <div class="row text-subtitle1 text-weight-bold">ZIP Code</div>
+        <div class="row text-subtitle1 text-weight-bold">Zipcode</div>
         <q-input
           outlined
           dense
@@ -217,12 +230,17 @@
           input-class="inside-text"
           :class="{ required: isAsteriskMark }"
           v-model="address.country"
+          hide-dropdown-icon
           label="Select Country"
           :options="country"
           behavior="menu"
           lazy-rules
           :rules="[val => val.length > 0 || 'Please fill the Country']"
-        />
+        >
+          <template v-slot:append>
+            <q-icon class="q-my-sm" size="sm" name="keyboard_arrow_down" />
+          </template>
+        </q-select>
       </div>
     </div>
 
@@ -443,7 +461,7 @@
         style="width: 46%"
         :class="{ required: isAsteriskMark }"
         v-model="address.postalCode"
-        label="ZIP Code"
+        label="Zipcode"
         lazy-rules
         :rules="[val => checkValidations(val) || 'Please fill the zip code']"
         :disable="isOfflineClientEdit"
@@ -534,7 +552,6 @@ export default {
     ...mapGetters(['isOfflineClientEdit'])
   },
   mounted() {
-    console.log('ye call hua', this.address.addressCountry);
     this.address.addressCountry = 'United States';
     this.onCountrySelect(this.address.addressCountry);
     this['obj' + this.id] = new google.maps.places.Autocomplete(
@@ -644,6 +661,22 @@ export default {
 };
 </script>
 <style lang="scss">
+::v-deep {
+  input {
+    color: #101828 !important;
+  }
+  input::placeholder {
+    color: #8a90a0;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+  }
+}
+
+.q-field__label {
+  color: #8a90a0;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+}
 .input-autocomplete {
   width: 102%;
   // border: 0;
@@ -666,7 +699,11 @@ export default {
     }
   }
 }
-
+input.companyAddressInput {
+  &:focus {
+    border: 2px solid #c10015 !important;
+  }
+}
 .inside-text {
   font-weight: 500 !important;
   font-size: 16px !important;
