@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div>
+    <div class="test">
       <div>
         <div style="margin: 34px 0px 24px 6px" class="breadCrumb">
           <q-img
@@ -68,103 +68,103 @@
         <span v-if="paid">Paid Role</span>
         <span v-else>Free Role</span>
       </div> -->
-      <q-scroll-area class="claim-list-scrollable">
-        <div class="privilegeContainer" v-if="selectedRole">
-          <q-list
-            bordered
-            v-for="(priv, index) in privileges"
-            :key="index"
-            style="margin-bottom: 20px"
-          >
-            <q-expansion-item>
-              <template v-slot:header>
-                <div
+      <!-- <q-scroll-area class="claim-list-scrollable"> -->
+      <div class="privilegeContainer" v-if="selectedRole">
+        <q-list
+          bordered
+          v-for="(priv, index) in privileges"
+          :key="index"
+          style="margin-bottom: 20px"
+        >
+          <q-expansion-item>
+            <template v-slot:header>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  width: 100%;
+                "
+              >
+                <span
+                  class="text-capitalize"
                   style="
-                    display: flex;
-                    justify-content: space-between;
-                    width: 100%;
+                    margin: 7px 8px;
+                    font-size: 16px;
+                    line-height: 18px;
+                    font-weight: 500;
+                    color: #0c0c0c;
                   "
+                  >{{ priv }} privileges</span
                 >
-                  <span
-                    class="text-capitalize"
-                    style="
-                      margin: 7px 8px;
-                      font-size: 16px;
-                      line-height: 18px;
-                      font-weight: 500;
-                      color: #0c0c0c;
-                    "
-                    >{{ priv }} privileges</span
-                  >
-                </div>
-              </template>
-              <div v-ripple v-for="(us, ind) in sortedPermissions" :key="ind">
+              </div>
+            </template>
+            <div v-ripple v-for="(us, ind) in sortedPermissions" :key="ind">
+              <div
+                v-if="privCategory(us.category, priv)"
+                style="border-top: 1px solid #ccc"
+              >
                 <div
-                  v-if="privCategory(us.category, priv)"
-                  style="border-top: 1px solid #ccc"
+                  style="margin-left: 24px"
+                  v-for="(user, index) in arrOfRoles"
+                  :key="index"
                 >
                   <div
-                    style="margin-left: 24px"
-                    v-for="(user, index) in arrOfRoles"
-                    :key="index"
+                    class="row items-center optionsBox no-wrap"
+                    v-if="
+                      roleSelection(
+                        user.value.name,
+                        selectedRole,
+                        user.value.isPaid
+                      )
+                    "
                   >
                     <div
-                      class="row items-center optionsBox no-wrap"
+                      class="toggleBox"
                       v-if="
-                        roleSelection(
-                          user.value.name,
-                          selectedRole,
-                          user.value.isPaid
+                        user.value.permission != null &&
+                        checkPermission(
+                          permissions[ind].machineValue,
+                          user.machineValue,
+                          index
                         )
                       "
                     >
-                      <div
-                        class="toggleBox"
-                        v-if="
-                          user.value.permission != null &&
-                          checkPermission(
-                            permissions[ind].machineValue,
-                            user.machineValue,
-                            index
-                          )
-                        "
-                      >
-                        <img
-                          src="~assets/basetoggleOn.svg"
-                          alt="toogle off switch"
-                          @click="rolePermission(ind, index, 'selected')"
-                          style="margin-top: 5px"
-                        />
-                      </div>
+                      <img
+                        src="~assets/basetoggleOn.svg"
+                        alt="toogle off switch"
+                        @click="rolePermission(ind, index, 'selected')"
+                        style="margin-top: 5px"
+                      />
+                    </div>
 
-                      <div v-else class="toggleBox">
-                        <img
-                          src="~assets/basetoggleOff.svg"
-                          alt="toogle off switch"
-                          @click="rolePermission(ind, index, 'unselected')"
-                          style="margin-top: 5px"
-                        />
-                      </div>
-                      <div>
-                        <span
-                          style="
-                            font-size: 16px;
-                            color: #101828;
-                            font-weight: 500;
-                            font-family: 'Poppins';
-                            line-height: 24px;
-                          "
-                          >{{ us.name }}</span
-                        >
-                      </div>
+                    <div v-else class="toggleBox">
+                      <img
+                        src="~assets/basetoggleOff.svg"
+                        alt="toogle off switch"
+                        @click="rolePermission(ind, index, 'unselected')"
+                        style="margin-top: 5px"
+                      />
+                    </div>
+                    <div>
+                      <span
+                        style="
+                          font-size: 16px;
+                          color: #101828;
+                          font-weight: 500;
+                          font-family: 'Poppins';
+                          line-height: 24px;
+                        "
+                        >{{ us.name }}</span
+                      >
                     </div>
                   </div>
                 </div>
               </div>
-            </q-expansion-item>
-          </q-list>
+            </div>
+          </q-expansion-item>
+        </q-list>
 
-          <!-- <div v-for="(priv, index) in privileges" :key="index">
+        <!-- <div v-for="(priv, index) in privileges" :key="index">
             <div class="text-capitalize text-h6">{{ priv }} privileges</div>
             <hr />
             <div v-for="(us, ind) in sortedPermissions" :key="ind">
@@ -218,8 +218,8 @@
               </div>
             </div>
           </div> -->
-        </div>
-      </q-scroll-area>
+      </div>
+      <!-- </q-scroll-area> -->
     </div>
   </q-page>
 </template>
@@ -449,6 +449,7 @@ export default {
   }
   .toggleBox {
     margin-right: 12px;
+    cursor: pointer;
   }
   @media (max-width: 1023px) {
     margin-top: 20px;
