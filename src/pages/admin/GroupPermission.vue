@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="test">
+    <div>
       <div>
         <div style="margin: 34px 0px 24px 6px" class="breadCrumb">
           <q-img
